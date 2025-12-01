@@ -1,5 +1,5 @@
 {
-  "name": "project",
+  "name": "analytics",
   "version": "1.0.0",
   "description": "Player Activity Analytics Dashboard with Supabase",
   "type": "module",
@@ -8,19 +8,7 @@
     "build": "vite build",
     "preview": "vite preview"
   },
-  "keywords": [
-    "analytics",
-    "dashboard",
-    "supabase",
-    "player-tracking",
-    "gaming-analytics"
-  ],
-  "author": "Tech Pulse",
-  "license": "MIT",
-  "dependencies": {
-    "@supabase/supabase-js": "^2.39.0"
-  },
-  "devDependencies": {
-    "vite": "^5.0.0"
-  }
+  "keywords": ["analytics", "dashboard", "supabase"],
+  "author": "Your Name",
+  "license": "MIT"
 }
