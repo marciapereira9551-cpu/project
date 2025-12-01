@@ -1,0 +1,4669 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Tracking Software</title>
+  <link rel="icon" type="image/png" href="https://cdn-icons-png.flaticon.com/512/8695/8695383.png">
+  <base target="_top">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <style>
+    /* === ALL YOUR EXISTING CSS STYLES === */
+    :root {
+      --primary: #4361ee;
+      --primary-dark: #3a56d4;
+      --secondary: #7209b7;
+      --success: #06d6a0;
+      --warning: #ffd166;
+      --danger: #ef476f;
+      --info: #118ab2;
+      --dark: #2b2d42;
+      --light: #f8f9fa;
+      --gray: #6c757d;
+      --border: #e9ecef;
+      --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+      --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+      
+      /* Theme variables */
+      --bg-primary: #ffffff;
+      --bg-secondary: #f8f9fa;
+      --bg-card: #ffffff;
+      --text-primary: #2b2d42;
+      --text-secondary: #6c757d;
+      --border-color: #e9ecef;
+      --shadow-color: rgba(0, 0, 0, 0.1);
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg-primary: #1a1b23;
+        --bg-secondary: #2d2e3a;
+        --bg-card: #2d2e3a;
+        --text-primary: #ffffff;
+        --text-secondary: #a0a0a0;
+        --border-color: #3a3b4a;
+        --shadow-color: rgba(0, 0, 0, 0.3);
+      }
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      min-height: 100vh;
+      line-height: 1.6;
+      transition: all 0.3s ease;
+    }
+
+    /* Landing Page */
+    #landing {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 2rem;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    }
+
+    .landing-container {
+      background: var(--bg-card);
+      border-radius: 20px;
+      padding: 3rem;
+      box-shadow: var(--shadow-lg);
+      text-align: center;
+      max-width: 600px;
+      width: 100%;
+      border: 1px solid var(--border-color);
+    }
+
+    .logo {
+      font-size: 3rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 1rem;
+    }
+
+    .subtitle {
+      color: var(--text-secondary);
+      font-size: 1.1rem;
+      margin-bottom: 2rem;
+      font-weight: 400;
+    }
+
+    .search-section {
+      margin-bottom: 2rem;
+      text-align: left;
+    }
+
+    .section-title {
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 0.75rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .search-container {
+      position: relative;
+      margin-bottom: 1rem;
+    }
+
+    .search-input {
+      width: 100%;
+      padding: 1rem 1.5rem;
+      border: 2px solid var(--border-color);
+      border-radius: 12px;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+      background: var(--bg-card);
+      color: var(--text-primary);
+    }
+
+    .search-input:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.1);
+    }
+
+    .search-icon {
+      position: absolute;
+      right: 1rem;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-secondary);
+    }
+
+    #pageSuggestions,
+    #playerSuggestions {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      box-shadow: var(--shadow-lg);
+      max-height: 200px;
+      overflow-y: auto;
+      z-index: 1000;
+      margin-top: 0.5rem;
+    }
+
+    .suggestion-item {
+      padding: 1rem 1.5rem;
+      cursor: pointer;
+      border-bottom: 1px solid var(--border-color);
+      transition: background-color 0.2s ease;
+      color: var(--text-primary);
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
+    }
+
+    .suggestion-item:hover {
+      background-color: var(--bg-secondary);
+    }
+
+    .suggestion-item:last-child {
+      border-bottom: none;
+    }
+
+    .page-emoji {
+      font-size: 1.2rem;
+      width: 24px;
+      text-align: center;
+    }
+
+    .player-pages {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.25rem;
+      margin-top: 0.25rem;
+    }
+
+    .page-indicator {
+      background: var(--primary);
+      color: white;
+      padding: 0.2rem 0.5rem;
+      border-radius: 12px;
+      font-size: 0.7rem;
+      font-weight: 500;
+      white-space: nowrap;
+    }
+
+    .btn {
+      padding: 1rem 2rem;
+      border: none;
+      border-radius: 12px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+      transition: left 0.5s ease;
+    }
+
+    .btn:hover::before {
+      left: 100%;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      color: white;
+      box-shadow: var(--shadow);
+    }
+
+    .btn-primary:hover:not(:disabled) {
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    /* Enhanced disabled button styles */
+    .btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none !important;
+      pointer-events: none;
+    }
+
+    .btn:disabled:hover::before {
+      left: -100%;
+    }
+
+    .btn-primary:disabled {
+      background: #94a3b8;
+      color: #cbd5e1;
+    }
+
+    .btn-secondary:disabled {
+      background: var(--bg-secondary);
+      color: var(--text-secondary);
+      border-color: var(--border-color);
+    }
+
+    .btn-success:disabled {
+      background: #a7f3d0;
+      color: #065f46;
+    }
+
+    .btn-warning:disabled {
+      background: #fef3c7;
+      color: #92400e;
+    }
+
+    .btn-danger:disabled {
+      background: #fecaca;
+      color: #991b1b;
+    }
+
+    .btn-secondary {
+      background: var(--bg-card);
+      color: var(--text-secondary);
+      border: 2px solid var(--border-color);
+      box-shadow: var(--shadow);
+    }
+
+    .btn-secondary:hover:not(:disabled) {
+      border-color: var(--primary);
+      color: var(--primary);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .btn-success {
+      background: var(--success);
+      color: white;
+      box-shadow: var(--shadow);
+    }
+
+    .btn-success:hover:not(:disabled) {
+      background: #05b58c;
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .btn-warning {
+      background: var(--warning);
+      color: var(--dark);
+      box-shadow: var(--shadow);
+    }
+
+    .btn-warning:hover:not(:disabled) {
+      background: #fbbf24;
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .btn-danger {
+      background: var(--danger);
+      color: white;
+      box-shadow: var(--shadow);
+    }
+
+    .btn-danger:hover:not(:disabled) {
+      background: #e53e3e;
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    /* Dashboard */
+    #dashboard {
+      display: none;
+      min-height: 100vh;
+      background: var(--bg-secondary);
+    }
+
+    .dashboard-header {
+      background: var(--bg-card);
+      box-shadow: var(--shadow);
+      padding: 1.5rem 2rem;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .header-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .page-title {
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    .control-buttons {
+      display: flex;
+      gap: 1rem;
+    }
+
+    .dashboard-content {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+
+    /* Stats Grid - FIXED 3-ROW LAYOUT */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .stats-grid-row-2 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .stats-grid-row-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .stat-card {
+      background: var(--bg-card);
+      border-radius: 16px;
+      padding: 2rem;
+      box-shadow: var(--shadow);
+      transition: all 0.3s ease;
+      cursor: pointer;
+      border-left: 4px solid var(--primary);
+      border: 1px solid var(--border-color);
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .stat-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--primary), var(--secondary));
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.3s ease;
+    }
+
+    .stat-card:hover {
+      transform: translateY(-5px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .stat-card:hover::before {
+      transform: scaleX(1);
+    }
+
+    .stat-card.total { border-left-color: var(--primary); }
+    .stat-card.active { border-left-color: var(--success); }
+    .stat-card.inactive { border-left-color: var(--danger); }
+    .stat-card.recent-active { border-left-color: var(--info); }
+    .stat-card.recent-inactive { border-left-color: var(--warning); }
+    .stat-card.high-risk { border-left-color: var(--danger); }
+    .stat-card.history { border-left-color: var(--secondary); }
+    .stat-card.deposits { border-left-color: #f59e0b; }
+    .stat-card.coming-soon { border-left-color: var(--gray); }
+
+    .stat-value {
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      color: var(--text-primary);
+      min-height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .stat-label {
+      color: var(--text-secondary);
+      font-weight: 500;
+      text-align: center;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      justify-content: center;
+    }
+
+    .stat-icon {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+      opacity: 0.8;
+      text-align: center;
+    }
+
+    /* Improved Table Styles for High Risk Players */
+    .high-risk-table {
+      font-size: 0.875rem;
+      width: 100%;
+    }
+
+    .high-risk-table th,
+    .high-risk-table td {
+      padding: 0.75rem 0.5rem;
+      word-wrap: break-word;
+    }
+
+    /* Specific column widths for high risk table */
+    .high-risk-table th:nth-child(1), /* S.No */
+    .high-risk-table td:nth-child(1) {
+      min-width: 50px;
+      max-width: 70px;
+      text-align: center;
+    }
+
+    .high-risk-table th:nth-child(2), /* Player */
+    .high-risk-table td:nth-child(2) {
+      min-width: 120px;
+      max-width: 150px;
+    }
+
+    .high-risk-table th:nth-child(3), /* Risk Level */
+    .high-risk-table td:nth-child(3) {
+      min-width: 80px;
+      max-width: 100px;
+    }
+
+    .high-risk-table th:nth-child(4), /* Total Gaps */
+    .high-risk-table td:nth-child(4) {
+      min-width: 60px;
+      max-width: 80px;
+      text-align: center;
+    }
+
+    .high-risk-table th:nth-child(5), /* Gap Details */
+    .high-risk-table td:nth-child(5) {
+      min-width: 180px;
+      max-width: 220px;
+      line-height: 1.3;
+    }
+
+    .high-risk-table th:nth-child(6), /* Last Deposit */
+    .high-risk-table td:nth-child(6) {
+      min-width: 140px;
+      max-width: 160px;
+    }
+
+    .high-risk-table th:nth-child(7), /* Gap */
+    .high-risk-table td:nth-child(7) {
+      min-width: 100px;
+      max-width: 120px;
+    }
+
+    .high-risk-table th:nth-child(8), /* Current Status */
+    .high-risk-table td:nth-child(8) {
+      min-width: 90px;
+      max-width: 110px;
+      text-align: center;
+    }
+
+    .high-risk-table th:nth-child(9), /* Total Deposits */
+    .high-risk-table td:nth-child(9) {
+      min-width: 70px;
+      max-width: 90px;
+      text-align: center;
+    }
+
+    .high-risk-table th:nth-child(10), /* Notes */
+    .high-risk-table td:nth-child(10) {
+      min-width: 90px;
+      max-width: 110px;
+      text-align: center;
+    }
+
+    /* Compact gap details */
+    .gap-details-compact {
+      font-size: 0.8rem;
+      line-height: 1.2;
+    }
+
+    .gap-item {
+      margin-bottom: 0.25rem;
+      padding: 0.2rem 0.4rem;
+      background: var(--bg-secondary);
+      border-radius: 4px;
+      border-left: 3px solid var(--primary);
+    }
+
+    .gap-item:last-child {
+      margin-bottom: 0;
+    }
+
+    /* Scrollable table container for mobile */
+    .table-scroll-container {
+      overflow-x: auto;
+      margin: 0 -1rem;
+      padding: 0 1rem;
+    }
+
+    /* Tables */
+    .table-container {
+      background: var(--bg-card);
+      border-radius: 16px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      margin-bottom: 2rem;
+      border: 1px solid var(--border-color);
+    }
+
+    .table-header {
+      padding: 1.5rem 2rem;
+      background: var(--bg-secondary);
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .table-title {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    .pagination-controls {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .pagination-info {
+      color: var(--text-secondary);
+      font-size: 0.875rem;
+    }
+
+    .pagination-buttons {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .pagination-btn {
+      padding: 0.5rem 1rem;
+      border: 1px solid var(--border-color);
+      background: var(--bg-card);
+      color: var(--text-primary);
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .pagination-btn:hover:not(:disabled) {
+      background: var(--primary);
+      color: white;
+      border-color: var(--primary);
+    }
+
+    .pagination-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .pagination-btn.active {
+      background: var(--primary);
+      color: white;
+      border-color: var(--primary);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    th {
+      background: var(--bg-secondary);
+      padding: 1rem 1.5rem;
+      text-align: left;
+      font-weight: 600;
+      color: var(--text-secondary);
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    td {
+      padding: 1rem 1.5rem;
+      border-bottom: 1px solid var(--border-color);
+      color: var(--text-primary);
+    }
+
+    tr:last-child td {
+      border-bottom: none;
+    }
+
+    tr:hover {
+      background: var(--bg-secondary);
+    }
+
+    .status-badge {
+      padding: 0.25rem 0.75rem;
+      border-radius: 20px;
+      font-size: 0.875rem;
+      font-weight: 500;
+    }
+
+    .status-active {
+      background: #d1fae5;
+      color: #065f46;
+    }
+
+    .status-inactive {
+      background: #fee2e2;
+      color: #991b1b;
+    }
+
+    .risk-high { color: var(--danger); font-weight: 600; }
+    .risk-very-high { color: #dc2626; font-weight: 700; }
+    .risk-medium { color: var(--warning); font-weight: 600; }
+    .risk-low { color: var(--success); font-weight: 600; }
+
+    /* Notes Button */
+    .notes-btn {
+      padding: 0.5rem 1rem;
+      border: 1px solid var(--border-color);
+      background: var(--bg-card);
+      color: var(--text-primary);
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-size: 0.875rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .notes-btn:hover {
+      background: var(--primary);
+      color: white;
+      border-color: var(--primary);
+    }
+
+    .notes-btn.has-notes {
+      background: var(--warning);
+      color: var(--dark);
+      border-color: var(--warning);
+    }
+
+    .notes-btn.has-notes:hover {
+      background: #f59e0b;
+      border-color: #f59e0b;
+    }
+
+    /* Player History */
+    .player-history {
+      background: var(--bg-card);
+      border-radius: 16px;
+      box-shadow: var(--shadow);
+      padding: 2rem;
+      margin-bottom: 2rem;
+      border: 1px solid var(--border-color);
+    }
+
+    .current-status {
+      font-size: 1.25rem;
+      font-weight: 600;
+      padding: 1rem;
+      border-radius: 12px;
+      margin-bottom: 2rem;
+      text-align: center;
+    }
+
+    .status-active-bg {
+      background: #d1fae5;
+      color: #065f46;
+      border: 2px solid #10b981;
+    }
+
+    .status-inactive-bg {
+      background: #fee2e2;
+      color: #991b1b;
+      border: 2px solid #ef4444;
+    }
+
+    .history-timeline {
+      margin: 2rem 0;
+    }
+
+    .timeline-item {
+      display: flex;
+      align-items: flex-start;
+      margin-bottom: 1.5rem;
+      padding-left: 2rem;
+      position: relative;
+    }
+
+    .timeline-dot {
+      position: absolute;
+      left: 0;
+      top: 0.5rem;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: var(--primary);
+    }
+
+    .timeline-content {
+      flex: 1;
+    }
+
+    .timeline-date {
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 0.25rem;
+    }
+
+    .timeline-event {
+      color: var(--text-secondary);
+    }
+
+    /* Enhanced Player History Table */
+    .enhanced-history-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 1rem;
+    }
+
+    .enhanced-history-table th {
+      background: var(--bg-secondary);
+      padding: 1rem;
+      text-align: left;
+      font-weight: 600;
+      color: var(--text-secondary);
+      border-bottom: 2px solid var(--border-color);
+    }
+
+    .enhanced-history-table td {
+      padding: 1rem;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .active-row {
+      background: rgba(16, 185, 129, 0.05);
+    }
+
+    .inactive-row {
+      background: rgba(239, 68, 68, 0.05);
+    }
+
+    .date-range-cell {
+      font-weight: 500;
+    }
+
+    .gap-cell {
+      text-align: center;
+      font-weight: 600;
+    }
+
+    .gap-high {
+      color: #dc2626;
+      background: rgba(220, 38, 38, 0.1);
+      padding: 0.25rem 0.5rem;
+      border-radius: 4px;
+    }
+
+    .gap-medium {
+      color: #d97706;
+      background: rgba(217, 119, 6, 0.1);
+      padding: 0.25rem 0.5rem;
+      border-radius: 4px;
+    }
+
+    .gap-low {
+      color: #059669;
+      background: rgba(5, 150, 105, 0.1);
+      padding: 0.25rem 0.5rem;
+      border-radius: 4px;
+    }
+
+    /* Daily Deposits Table - FIXED ALIGNMENT */
+    .daily-deposits-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 1rem;
+      font-size: 0.9rem;
+    }
+
+    .daily-deposits-table th {
+      background: var(--bg-secondary);
+      padding: 0.75rem 1rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+      border-bottom: 2px solid var(--border-color);
+      white-space: nowrap;
+    }
+
+    .daily-deposits-table td {
+      padding: 0.75rem 1rem;
+      border-bottom: 1px solid var(--border-color);
+      white-space: nowrap;
+    }
+
+    /* FIXED: All amount cells right-aligned */
+    .amount-cell {
+      text-align: right !important;
+      font-weight: 600;
+    }
+
+    .amount-cell.positive {
+      color: var(--success);
+    }
+
+    .amount-cell.zero {
+      color: var(--text-secondary);
+    }
+
+    .count-cell {
+      text-align: center;
+      font-weight: 500;
+    }
+
+    .trend-cell {
+      text-align: center;
+      min-width: 120px;
+    }
+
+    .total-row {
+      background: var(--bg-secondary);
+      font-weight: 700;
+    }
+
+    .total-row td {
+      border-top: 2px solid var(--border-color);
+    }
+
+    /* Trend indicators */
+    .trend-up {
+      color: #059669;
+      font-weight: 600;
+    }
+
+    .trend-down {
+      color: #dc2626;
+      font-weight: 600;
+    }
+
+    .trend-same {
+      color: #6b7280;
+      font-weight: 500;
+    }
+
+    .monthly-comparison {
+      padding: 1rem 1.5rem;
+      border-radius: 12px;
+      margin-bottom: 1.5rem;
+      font-weight: 600;
+      text-align: center;
+      border: 2px solid;
+    }
+
+    .monthly-comparison.up {
+      background: rgba(5, 150, 105, 0.1);
+      color: #059669;
+      border-color: #059669;
+    }
+
+    .monthly-comparison.down {
+      background: rgba(220, 38, 38, 0.1);
+      color: #dc2626;
+      border-color: #dc2626;
+    }
+
+    .monthly-comparison.same {
+      background: rgba(107, 114, 128, 0.1);
+      color: #6b7280;
+      border-color: #6b7280;
+    }
+
+    .monthly-summary {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .summary-card {
+      background: var(--bg-secondary);
+      padding: 1.5rem;
+      border-radius: 12px;
+      text-align: center;
+      border: 1px solid var(--border-color);
+    }
+
+    .summary-value {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 0.5rem;
+    }
+
+    .summary-label {
+      color: var(--text-secondary);
+      font-size: 0.875rem;
+      font-weight: 500;
+    }
+
+    /* Enhanced Loader Styles */
+    #loader {
+      display: none;
+      text-align: center;
+      padding: 4rem 2rem;
+    }
+
+    .loading-screen {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 50vh;
+      padding: 2rem;
+    }
+
+    .spinner {
+      width: 50px;
+      height: 50px;
+      border: 4px solid var(--border-color);
+      border-left: 4px solid var(--primary);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin: 0 auto 1rem;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .loading-progress {
+      margin-top: 1rem;
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+    }
+
+    /* Modal */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 2000;
+      backdrop-filter: blur(4px);
+    }
+
+    .modal-content {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: var(--bg-card);
+      border-radius: 20px;
+      padding: 2rem;
+      box-shadow: var(--shadow-lg);
+      max-width: 800px;
+      width: 90%;
+      border: 1px solid var(--border-color);
+      max-height: 80vh;
+      overflow-y: auto;
+    }
+
+    .modal-title {
+      font-size: 1.25rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+      text-align: center;
+      color: var(--text-primary);
+    }
+
+    .modal-input {
+      width: 100%;
+      padding: 1rem;
+      border: 2px solid var(--border-color);
+      border-radius: 12px;
+      font-size: 1rem;
+      text-align: center;
+      letter-spacing: 0.5rem;
+      margin-bottom: 1.5rem;
+      background: var(--bg-card);
+      color: var(--text-primary);
+    }
+
+    .modal-textarea {
+      width: 100%;
+      padding: 1rem;
+      border: 2px solid var(--border-color);
+      border-radius: 12px;
+      font-size: 1rem;
+      background: var(--bg-card);
+      color: var(--text-primary);
+      resize: vertical;
+      min-height: 120px;
+      font-family: inherit;
+    }
+
+    .modal-textarea:focus {
+      outline: none;
+      border-color: var(--primary);
+    }
+
+    .modal-input:focus {
+      outline: none;
+      border-color: var(--primary);
+    }
+
+    .modal-buttons {
+      display: flex;
+      gap: 1rem;
+      margin-top: 1.5rem;
+    }
+
+    .modal-buttons .btn {
+      flex: 1;
+      justify-content: center;
+    }
+
+    /* Notes History */
+    .notes-history {
+      margin-top: 1.5rem;
+      max-height: 300px;
+      overflow-y: auto;
+    }
+
+    .notes-history-title {
+      font-size: 1rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+      color: var(--text-primary);
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 0.5rem;
+    }
+
+    .note-item {
+      padding: 1rem;
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      margin-bottom: 0.75rem;
+      background: var(--bg-secondary);
+    }
+
+    .note-timestamp {
+      font-size: 0.75rem;
+      color: var(--text-secondary);
+      margin-bottom: 0.5rem;
+    }
+
+    .note-text {
+      color: var(--text-primary);
+      line-height: 1.4;
+    }
+
+    .no-notes {
+      text-align: center;
+      color: var(--text-secondary);
+      font-style: italic;
+      padding: 1rem;
+    }
+
+    /* Notifications */
+    .notification {
+      position: fixed;
+      top: 2rem;
+      right: 2rem;
+      padding: 1rem 1.5rem;
+      border-radius: 12px;
+      color: white;
+      font-weight: 500;
+      box-shadow: var(--shadow-lg);
+      z-index: 3000;
+      animation: slideIn 0.3s ease;
+    }
+
+    .notification.success { background: var(--success); }
+    .notification.error { background: var(--danger); }
+    .notification.warning { background: var(--warning); color: var(--dark); }
+
+    @keyframes slideIn {
+      from { transform: translateX(100%); opacity: 0; }
+      to { transform: translateX(0); opacity: 1; }
+    }
+
+    /* Coming Soon Button Styles */
+    .stat-card.coming-soon {
+      cursor: not-allowed;
+      opacity: 0.7;
+    }
+
+    .stat-card.coming-soon:hover {
+      transform: none;
+    }
+
+    .coming-soon-badge {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: var(--warning);
+      color: var(--dark);
+      padding: 0.25rem 0.5rem;
+      border-radius: 12px;
+      font-size: 0.7rem;
+      font-weight: 600;
+    }
+
+    /* Page Deposits View */
+    .page-deposits-view {
+      background: var(--bg-card);
+      border-radius: 16px;
+      box-shadow: var(--shadow);
+      padding: 2rem;
+      margin-bottom: 2rem;
+      border: 1px solid var(--border-color);
+      position: relative;
+    }
+
+    .deposits-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .deposits-title {
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    .close-deposits-btn {
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      color: var(--text-secondary);
+      cursor: pointer;
+      padding: 0.5rem;
+      border-radius: 8px;
+      transition: all 0.2s ease;
+    }
+
+    .close-deposits-btn:hover {
+      background: var(--bg-secondary);
+      color: var(--text-primary);
+    }
+
+    /* Responsive */
+    @media (max-width: 1024px) {
+      .stats-grid,
+      .stats-grid-row-2,
+      .stats-grid-row-3 {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      
+      .high-risk-table {
+        font-size: 0.8rem;
+      }
+      
+      .high-risk-table th,
+      .high-risk-table td {
+        padding: 0.5rem 0.3rem;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .landing-container {
+        padding: 2rem 1.5rem;
+      }
+      
+      .dashboard-content {
+        padding: 1rem;
+      }
+      
+      .stats-grid,
+      .stats-grid-row-2,
+      .stats-grid-row-3 {
+        grid-template-columns: 1fr;
+      }
+      
+      .header-content {
+        flex-direction: column;
+        gap: 1rem;
+        text-align: center;
+      }
+      
+      .control-buttons {
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+      
+      .table-header {
+        flex-direction: column;
+        gap: 1rem;
+        align-items: flex-start;
+      }
+      
+      .pagination-controls {
+        width: 100%;
+        justify-content: space-between;
+      }
+      
+      table {
+        font-size: 0.875rem;
+      }
+      
+      th, td {
+        padding: 0.75rem 1rem;
+      }
+      
+      .modal-content {
+        padding: 1.5rem;
+        max-width: 95%;
+      }
+
+      .daily-deposits-table {
+        font-size: 0.8rem;
+      }
+      
+      .daily-deposits-table th,
+      .daily-deposits-table td {
+        padding: 0.5rem 0.5rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Landing Page -->
+  <div id="landing">
+    <div class="landing-container">
+      <div class="logo">
+        <i class="fas fa-chart-line"></i> Tech Pulse
+      </div>
+      <p class="subtitle">Marketing Department Analytics Dashboard</p>
+      
+      <!-- Page Search Section -->
+      <div class="search-section">
+        <div class="section-title">
+          <i class="fas fa-search"></i> Search for a Page
+        </div>
+        <div class="search-container">
+          <input type="text" id="pageSelectSearch" class="search-input" placeholder="Search for a page...">
+          <i class="fas fa-search search-icon"></i>
+          <div id="pageSuggestions"></div>
+        </div>
+      </div>
+      
+      <!-- Player Search Section -->
+      <div class="search-section">
+        <div class="section-title">
+          <i class="fas fa-user"></i> Search for a Player (All Pages)
+        </div>
+        <div class="search-container">
+          <input type="text" id="playerSearchInput" class="search-input" placeholder="Search for a player across all pages...">
+          <i class="fas fa-search search-icon"></i>
+          <div id="playerSuggestions"></div>
+        </div>
+      </div>
+      
+      <button id="findBtn" class="btn btn-primary" onclick="findData()">
+        <i class="fas fa-arrow-right"></i> Access Dashboard
+      </button>
+    </div>
+  </div>
+
+  <!-- Dashboard -->
+  <div id="dashboard">
+    <header class="dashboard-header">
+      <div class="header-content">
+        <h1 class="page-title" id="pageTitle"></h1>
+        <div class="control-buttons">
+          <button id="changePageBtn" class="btn btn-secondary" onclick="goToRoute('/')">
+            <i class="fas fa-exchange-alt"></i> Change Page
+          </button>
+          <button id="refreshDataBtn" class="btn btn-success" onclick="showRefreshModal()">
+            <i class="fas fa-sync-alt"></i> Refresh Data
+          </button>
+          <button id="forceCleanupBtn" class="btn btn-warning" onclick="showCleanupModal()">
+            <i class="fas fa-broom"></i> Force Cleanup
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <div class="dashboard-content">
+      <div id="loader">
+        <div class="loading-screen">
+          <div class="spinner"></div>
+          <p>Loading dashboard data...</p>
+          <div id="loadingProgress" class="loading-progress"></div>
+        </div>
+      </div>
+
+      <!-- Navigation Breadcrumb -->
+      <div id="breadcrumb" style="margin-bottom: 1.5rem; display: none;">
+        <nav style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.875rem; color: var(--text-secondary);">
+          <a href="#" onclick="goToRoute('/')" style="color: var(--primary); text-decoration: none;">
+            <i class="fas fa-home"></i> Home
+          </a>
+          <i class="fas fa-chevron-right" style="font-size: 0.75rem;"></i>
+          <span id="currentPageBreadcrumb"></span>
+          <i class="fas fa-chevron-right" style="font-size: 0.75rem;"></i>
+          <span id="currentViewBreadcrumb"></span>
+        </nav>
+      </div>
+
+      <!-- Dashboard Stats Boxes -->
+      <div id="dashboardBoxes">
+        <!-- First Row: Total, Active, Inactive -->
+        <div class="stats-grid" id="statsRow1"></div>
+        <!-- Second Row: Recent Active, Recent Inactive, High Risk -->
+        <div class="stats-grid-row-2" id="statsRow2"></div>
+        <!-- Third Row: Player History, Page Deposits, and Coming Soon buttons -->
+        <div class="stats-grid-row-3" id="statsRow3"></div>
+      </div>
+
+      <!-- Page Deposits View (Inline, not modal) -->
+      <div id="pageDepositsView" style="display: none;"></div>
+
+      <!-- Player History Section for Dashboard (Specific Page) -->
+      <div id="playerHistorySection" style="display: none;">
+        <div class="player-history">
+          <h3>Player History Search - Current Page Only</h3>
+          <div style="display: flex; gap: 1rem; margin: 1.5rem 0;">
+            <input type="text" id="playerSearch" class="search-input" placeholder="Enter player name for current page...">
+            <button class="btn btn-primary" onclick="findPlayerForCurrentPage()">
+              <i class="fas fa-search"></i> Search
+            </button>
+          </div>
+          <div id="playerHistoryContainer"></div>
+        </div>
+      </div>
+
+      <!-- Global Player History Section (for landing page searches) -->
+      <div id="globalPlayerHistorySection" style="display: none;">
+        <div class="player-history">
+          <h3>Player History - All Pages</h3>
+          <div id="globalPlayerHistoryContainer"></div>
+        </div>
+      </div>
+
+      <div id="tableContainer"></div>
+      <div id="backContainer"></div>
+    </div>
+  </div>
+
+  <!-- Refresh Modal -->
+  <div id="refreshModal" class="modal">
+    <div class="modal-content">
+      <h3 class="modal-title">Authorization Required</h3>
+      <p style="text-align: center; color: var(--text-secondary); margin-bottom: 1.5rem;">
+        Enter PIN to refresh data
+      </p>
+      <input type="password" id="refreshPinInput" class="modal-input" placeholder="****" maxlength="4">
+      <div class="modal-buttons">
+        <button class="btn btn-secondary" onclick="hideRefreshModal()">
+          <i class="fas fa-times"></i> Cancel
+        </button>
+        <button class="btn btn-success" onclick="confirmRefresh()">
+          <i class="fas fa-check"></i> Confirm
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Cleanup Modal -->
+  <div id="cleanupModal" class="modal">
+    <div class="modal-content">
+      <h3 class="modal-title">Authorization Required</h3>
+      <p style="text-align: center; color: var(--text-secondary); margin-bottom: 1.5rem;">
+        Enter PIN to perform force cleanup
+      </p>
+      <input type="password" id="cleanupPinInput" class="modal-input" placeholder="****" maxlength="4">
+      <div class="modal-buttons">
+        <button class="btn btn-secondary" onclick="hideCleanupModal()">
+          <i class="fas fa-times"></i> Cancel
+        </button>
+        <button class="btn btn-warning" onclick="confirmForceCleanup()">
+          <i class="fas fa-check"></i> Confirm
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Notes Modal -->
+  <div id="notesModal" class="modal">
+    <div class="modal-content">
+      <h3 class="modal-title" id="notesModalTitle">Add Note for Player</h3>
+      
+      <div>
+        <label style="display: block; margin-bottom: 0.5rem; color: var(--text-primary); font-weight: 500;">
+          New Note:
+        </label>
+        <textarea id="noteTextInput" class="modal-textarea" placeholder="Enter your note here..."></textarea>
+      </div>
+      
+      <div class="notes-history" id="notesHistoryContainer">
+        <div class="notes-history-title">Previous Notes</div>
+        <div id="notesList" class="no-notes">No notes yet for this player.</div>
+      </div>
+      
+      <div class="modal-buttons">
+        <button class="btn btn-secondary" onclick="hideNotesModal()">
+          <i class="fas fa-times"></i> Cancel
+        </button>
+        <button id="saveNoteBtn" class="btn btn-success" onclick="savePlayerNote()">
+          <i class="fas fa-save"></i> Save Note
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // =============================================
+    // ROUTING SYSTEM - ADDED FOR MULTI-PAGE FUNCTIONALITY
+    // =============================================
+
+    // Router configuration
+    const ROUTES = {
+      '/': 'landing',
+      '/dashboard': 'dashboard',
+      '/total-players': 'totalPlayers',
+      '/active-players': 'activePlayers',
+      '/inactive-players': 'inactivePlayers',
+      '/recent-active': 'recentActive',
+      '/recent-inactive': 'recentInactive',
+      '/high-risk': 'highRisk',
+      '/player-history': 'playerHistory',
+      '/page-deposit': 'pageDeposit'
+    };
+
+    // State management for routing
+    let currentRoute = '/';
+    let routeParams = {};
+
+    // Initialize routing
+    function initRouter() {
+      // Parse current URL
+      parseCurrentURL();
+      
+      // Set up event listeners
+      window.addEventListener('hashchange', handleRouteChange);
+      window.addEventListener('popstate', handleRouteChange);
+      
+      // Initial route handling
+      handleRouteChange();
+    }
+
+    // Parse URL hash and parameters
+    function parseCurrentURL() {
+      const hash = window.location.hash.substring(1) || '/';
+      const [path, queryString] = hash.split('?');
+      
+      currentRoute = ROUTES[path] ? path : '/';
+      routeParams = {};
+      
+      if (queryString) {
+        const params = new URLSearchParams(queryString);
+        params.forEach((value, key) => {
+          routeParams[key] = decodeURIComponent(value);
+        });
+      }
+    }
+
+    // Handle route changes
+    function handleRouteChange() {
+      parseCurrentURL();
+      
+      // Update browser history
+      if (!window.location.hash) {
+        window.history.replaceState(null, '', '#/');
+      }
+      
+      // Execute route handler
+      executeRoute();
+    }
+
+    // Execute the current route
+    function executeRoute() {
+      const route = currentRoute;
+      
+      // Hide all views first
+      document.getElementById('landing').style.display = 'none';
+      document.getElementById('dashboard').style.display = 'none';
+      document.getElementById('dashboardBoxes').style.display = 'none';
+      document.getElementById('tableContainer').style.display = 'none';
+      document.getElementById('playerHistorySection').style.display = 'none';
+      document.getElementById('globalPlayerHistorySection').style.display = 'none';
+      document.getElementById('pageDepositsView').style.display = 'none';
+      document.getElementById('breadcrumb').style.display = 'none';
+      document.getElementById('backContainer').innerHTML = '';
+      
+      // Clear player history containers
+      document.getElementById('playerHistoryContainer').innerHTML = '';
+      document.getElementById('globalPlayerHistoryContainer').innerHTML = '';
+      
+      // Execute based on route
+      switch(route) {
+        case '/':
+          handleLandingRoute();
+          break;
+        case '/dashboard':
+          handleDashboardRoute();
+          break;
+        case '/total-players':
+          handleTotalPlayersRoute();
+          break;
+        case '/active-players':
+          handleActivePlayersRoute();
+          break;
+        case '/inactive-players':
+          handleInactivePlayersRoute();
+          break;
+        case '/recent-active':
+          handleRecentActiveRoute();
+          break;
+        case '/recent-inactive':
+          handleRecentInactiveRoute();
+          break;
+        case '/high-risk':
+          handleHighRiskRoute();
+          break;
+        case '/player-history':
+          handlePlayerHistoryRoute();
+          break;
+        case '/page-deposit':
+          handlePageDepositRoute();
+          break;
+        default:
+          goToRoute('/');
+          break;
+      }
+    }
+
+    // Navigation function
+    function goToRoute(path, params = {}) {
+      let queryString = '';
+      if (Object.keys(params).length > 0) {
+        const searchParams = new URLSearchParams();
+        Object.keys(params).forEach(key => {
+          if (params[key]) {
+            searchParams.set(key, encodeURIComponent(params[key]));
+          }
+        });
+        queryString = '?' + searchParams.toString();
+      }
+      
+      const newHash = '#' + path + queryString;
+      window.location.hash = newHash;
+      
+      // Save to session storage for refresh persistence
+      sessionStorage.setItem('lastRoute', newHash);
+    }
+
+    // =============================================
+    // ROUTE HANDLERS
+    // =============================================
+
+    function handleLandingRoute() {
+      document.getElementById('landing').style.display = 'flex';
+      clearAllSearchInputs();
+      clearPlayerHistory();
+      
+      // Update breadcrumb
+      document.getElementById('breadcrumb').style.display = 'none';
+      
+      // Clear session storage
+      sessionStorage.removeItem('currentPage');
+      sessionStorage.removeItem('currentView');
+      sessionStorage.removeItem('searchPlayerName');
+      sessionStorage.removeItem('searchPlayerPage');
+      sessionStorage.removeItem('currentSearchedPlayer');
+      
+      currentView = 'landing';
+    }
+
+    function handleDashboardRoute() {
+      const pageName = routeParams.page || sessionStorage.getItem('currentPage');
+      
+      if (!pageName) {
+        goToRoute('/');
+        return;
+      }
+      
+      document.getElementById('dashboard').style.display = 'block';
+      selectedPage = pageName;
+      currentPageObj = PAGES.find(p => p.name === pageName);
+      
+      if (!currentPageObj) {
+        showNotification('Page not found', 'error');
+        goToRoute('/');
+        return;
+      }
+      
+      sessionStorage.setItem('currentPage', pageName);
+      sessionStorage.setItem('currentView', 'dashboard');
+      
+      updatePageTitle();
+      updateBreadcrumb(pageName, 'Dashboard');
+      
+      showLoader();
+      disableControlButtons();
+      loadDashboardData();
+    }
+
+    function handleTotalPlayersRoute() {
+      const pageName = routeParams.page || sessionStorage.getItem('currentPage');
+      
+      if (!pageName || !currentPageData) {
+        goToRoute('/dashboard', { page: pageName });
+        return;
+      }
+      
+      document.getElementById('dashboard').style.display = 'block';
+      updatePageTitle();
+      updateBreadcrumb(pageName, 'Total Players');
+      
+      showBoxData('Total');
+      currentView = 'table';
+    }
+
+    function handleActivePlayersRoute() {
+      const pageName = routeParams.page || sessionStorage.getItem('currentPage');
+      
+      if (!pageName || !currentPageData) {
+        goToRoute('/dashboard', { page: pageName });
+        return;
+      }
+      
+      document.getElementById('dashboard').style.display = 'block';
+      updatePageTitle();
+      updateBreadcrumb(pageName, 'Active Players');
+      
+      showBoxData('Active');
+      currentView = 'table';
+    }
+
+    function handleInactivePlayersRoute() {
+      const pageName = routeParams.page || sessionStorage.getItem('currentPage');
+      
+      if (!pageName || !currentPageData) {
+        goToRoute('/dashboard', { page: pageName });
+        return;
+      }
+      
+      document.getElementById('dashboard').style.display = 'block';
+      updatePageTitle();
+      updateBreadcrumb(pageName, 'Inactive Players');
+      
+      showBoxData('Inactive');
+      currentView = 'table';
+    }
+
+    function handleRecentActiveRoute() {
+      const pageName = routeParams.page || sessionStorage.getItem('currentPage');
+      
+      if (!pageName || !currentPageData) {
+        goToRoute('/dashboard', { page: pageName });
+        return;
+      }
+      
+      document.getElementById('dashboard').style.display = 'block';
+      updatePageTitle();
+      updateBreadcrumb(pageName, 'Recent Active');
+      
+      showBoxData('RecentActive');
+      currentView = 'table';
+    }
+
+    function handleRecentInactiveRoute() {
+      const pageName = routeParams.page || sessionStorage.getItem('currentPage');
+      
+      if (!pageName || !currentPageData) {
+        goToRoute('/dashboard', { page: pageName });
+        return;
+      }
+      
+      document.getElementById('dashboard').style.display = 'block';
+      updatePageTitle();
+      updateBreadcrumb(pageName, 'Recent Inactive');
+      
+      showBoxData('RecentInactive');
+      currentView = 'table';
+    }
+
+    function handleHighRiskRoute() {
+      const pageName = routeParams.page || sessionStorage.getItem('currentPage');
+      
+      if (!pageName || !currentPageData) {
+        goToRoute('/dashboard', { page: pageName });
+        return;
+      }
+      
+      document.getElementById('dashboard').style.display = 'block';
+      updatePageTitle();
+      updateBreadcrumb(pageName, 'High Risk Players');
+      
+      showBoxData('HighRisk');
+      currentView = 'table';
+    }
+
+    function handlePlayerHistoryRoute() {
+      const pageName = routeParams.page || sessionStorage.getItem('currentPage');
+      const playerName = routeParams.player || sessionStorage.getItem('currentSearchedPlayer');
+      const isGlobal = routeParams.global === 'true' || !!sessionStorage.getItem('searchPlayerName');
+      
+      if (!pageName) {
+        goToRoute('/');
+        return;
+      }
+      
+      document.getElementById('dashboard').style.display = 'block';
+      
+      if (playerName) {
+        // Show specific player history
+        if (isGlobal) {
+          updatePageTitleForPlayerHistory(playerName, true);
+          updateBreadcrumb(pageName, `Player History: ${playerName}`);
+          showEnhancedGlobalPlayerHistory(playerName, pageName);
+        } else {
+          updatePageTitleForPlayerHistory(playerName, false);
+          updateBreadcrumb(pageName, `Player History: ${playerName}`);
+          showEnhancedPlayerHistoryForCurrentPage(playerName, pageName);
+        }
+      } else {
+        // Show player history search
+        updatePageTitle();
+        updateBreadcrumb(pageName, 'Player History Search');
+        document.getElementById('playerHistorySection').style.display = 'block';
+        document.getElementById('globalPlayerHistorySection').style.display = 'none';
+        currentView = 'playerHistory';
+      }
+    }
+
+    function handlePageDepositRoute() {
+      const pageName = routeParams.page || sessionStorage.getItem('currentPage');
+      const month = routeParams.month || 0;
+      
+      if (!pageName) {
+        goToRoute('/');
+        return;
+      }
+      
+      document.getElementById('dashboard').style.display = 'block';
+      updatePageTitle();
+      updateBreadcrumb(pageName, 'Page Deposits');
+      
+      showPageDeposits();
+      currentView = 'pageDeposit';
+    }
+
+    // =============================================
+    // BREADCRUMB FUNCTIONS
+    // =============================================
+
+    function updateBreadcrumb(pageName, viewName) {
+      const breadcrumb = document.getElementById('breadcrumb');
+      const pageBreadcrumb = document.getElementById('currentPageBreadcrumb');
+      const viewBreadcrumb = document.getElementById('currentViewBreadcrumb');
+      
+      if (pageName && viewName) {
+        pageBreadcrumb.innerHTML = `
+          <a href="#" onclick="goToRoute('/dashboard', { page: '${pageName}' })" style="color: var(--primary); text-decoration: none;">
+            ${pageName}
+          </a>
+        `;
+        viewBreadcrumb.textContent = viewName;
+        breadcrumb.style.display = 'block';
+      } else {
+        breadcrumb.style.display = 'none';
+      }
+    }
+
+    function updatePageTitleForPlayerHistory(playerName, isGlobal = false) {
+      if (isGlobal) {
+        pageTitle.textContent = `Player History: ${playerName} (All Pages)`;
+      } else {
+        pageTitle.textContent = `Player History: ${playerName} - ${selectedPage}`;
+      }
+    }
+
+    // =============================================
+    // SUPABASE CONFIGURATION
+    // =============================================
+    const SUPABASE_URL = "https://cqjeoslchevewbufpyzv.supabase.co";
+    const SUPABASE_KEY = "sb_publishable_PhMKOO9MpDZQIf5c624tiQ_AJPguAHp";
+    
+    // Initialize Supabase client
+    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+    // =============================================
+    // CONSTANTS AND CONFIGURATION
+    // =============================================
+    const DAYS_ACTIVE = 3;
+    const INACTIVE_THRESHOLD = 15;
+    const HIGH_RISK_MAX_DAYS = 15;
+    const RECENT_INACTIVE_MIN_DAYS = 3;
+    const RECENT_INACTIVE_MAX_DAYS = 5;
+    const PLAYERS_PER_PAGE = 50;
+    const AUTH_PIN = "8152";
+
+    // Page data with emojis - UPDATED WITH PROPER CASE NAMES
+    const PAGES = [
+      { name: "Juwa Slots", emoji: "🎰" },
+      { name: "Jackpot Casino", emoji: "💰" },
+      { name: "Milk+T", emoji: "🥛" },
+      { name: "Spin Royale", emoji: "👑" },
+      { name: "Milky Treasure", emoji: "💎" },
+      { name: "Legit Spin Casino", emoji: "♠️" },
+      { name: "Wealth Casino", emoji: "💵" },
+      { name: "Cash Vault", emoji: "🏦" },
+      { name: "Game Vault Slots", emoji: "🎮" },
+      { name: "Lucky Firekirin", emoji: "🐲" },
+      { name: "Payout Day", emoji: "📅" },
+      { name: "Ultra Panda", emoji: "🐼" },
+      { name: "Dragons Destiny", emoji: "🐉" },
+      { name: "Orion Star", emoji: "⭐" },
+      { name: "Daily Freebies", emoji: "🎁" },
+      { name: "Fortune Valley", emoji: "🏞️" },
+      { name: "Grill Girl", emoji: "👧" },
+      { name: "Earners Pick", emoji: "📌" },
+      { name: "Juwa 2.0", emoji: "🎰" },
+      { name: "Panda Master", emoji: "🐼" },
+      { name: "Casino Royal", emoji: "♣️" },
+      { name: "Diamond Riches", emoji: "💎" },
+      { name: "Cash Machine", emoji: "🏧" },
+      { name: "Win Star", emoji: "🌟" },
+      { name: "Fire Kirin", emoji: "🔥" },
+      { name: "Ruby Riches", emoji: "❤️" },
+      { name: "Vegas Sweeps", emoji: "🎲" },
+      { name: "Secret Spins", emoji: "🕵️" },
+      { name: "Mega Money Machine", emoji: "💸" },
+      { name: "Mystery Millions", emoji: "❓" },
+      { name: "Mafia City", emoji: "🕶️" },
+      { name: "VBlink", emoji: "🔗" },
+      { name: "Lucky Lady", emoji: "🍀" },
+      { name: "King of Pop", emoji: "👑" },
+      { name: "Golden Treasure", emoji: "🏆" },
+      { name: "River Sweeps", emoji: "🌊" },
+      { name: "Game Room", emoji: "🎪" },
+      { name: "Oyshee", emoji: "👻" },
+      { name: "Moolah", emoji: "💲" },
+      { name: "Mega Spin", emoji: "🌀" },
+      { name: "Lucky Vegas Slots", emoji: "🎰" },
+      { name: "Yolo Slots", emoji: "🔥" },
+      { name: "Juwa", emoji: "🎯" },
+      { name: "River Monster", emoji: "🐊" },
+      { name: "E-Games", emoji: "🎮" },
+      { name: "Big Winner", emoji: "🏆" }
+    ];
+
+    // Page name normalization mapping
+    const PAGE_NAME_MAP = {
+      "juwa slots": "Juwa Slots",
+      "jackpot casino": "Jackpot Casino", 
+      "milk+t": "Milk+T",
+      "milk + t": "Milk+T",
+      "spin royale": "Spin Royale",
+      "milky treasure": "Milky Treasure",
+      "legit spin casino": "Legit Spin Casino",
+      "wealth casino": "Wealth Casino",
+      "cash vault": "Cash Vault",
+      "game vault slots": "Game Vault Slots",
+      "lucky firekirin": "Lucky Firekirin",
+      "payout day": "Payout Day",
+      "ultra panda": "Ultra Panda",
+      "dragons destiny": "Dragons Destiny",
+      "orion star": "Orion Star",
+      "daily freebies": "Daily Freebies",
+      "fortune valley": "Fortune Valley",
+      "grill girl": "Grill Girl",
+      "earners pick": "Earners Pick",
+      "juwa 2.0": "Juwa 2.0",
+      "panda master": "Panda Master",
+      "casino royal": "Casino Royal",
+      "diamond riches": "Diamond Riches",
+      "cash machine": "Cash Machine",
+      "win star": "Win Star",
+      "fire kirin": "Fire Kirin",
+      "ruby riches": "Ruby Riches",
+      "vegas sweeps": "Vegas Sweeps",
+      "secret spins": "Secret Spins",
+      "mega money machine": "Mega Money Machine",
+      "mystery millions": "Mystery Millions",
+      "mafia city": "Mafia City",
+      "vblink": "VBlink",
+      "lucky lady": "Lucky Lady",
+      "king of pop": "King of Pop",
+      "golden treasure": "Golden Treasure",
+      "river sweeps": "River Sweeps",
+      "game room": "Game Room",
+      "oyshee": "Oyshee",
+      "moolah": "Moolah",
+      "mega spin": "Mega Spin",
+      "lucky vegas slots": "Lucky Vegas Slots",
+      "yolo slots": "Yolo Slots",
+      "juwa": "Juwa",
+      "river monster": "River Monster",
+      "e-games": "E-Games",
+      "e games": "E-Games",
+      "egames": "E-Games",
+      "big winner": "Big Winner"
+    };
+
+    // =============================================
+    // TIME CONVERSION UTILITIES - FIXED FOR PAKISTAN TIME
+    // =============================================
+
+    // Convert UTC to Pakistan Time (UTC+5) for display only
+    function convertUTCToPKT(utcDateString) {
+        if (!utcDateString) return 'N/A';
+        
+        try {
+            const date = new Date(utcDateString);
+            if (isNaN(date.getTime())) {
+                console.error('Invalid date:', utcDateString);
+                return 'Invalid Date';
+            }
+            
+            // Convert to Pakistan Time (UTC+5)
+            const pktOffset = 5 * 60 * 60 * 1000;
+            const pktDate = new Date(date.getTime() + pktOffset);
+            
+            const day = String(pktDate.getUTCDate()).padStart(2, '0');
+            const month = String(pktDate.getUTCMonth() + 1).padStart(2, '0');
+            const year = pktDate.getUTCFullYear();
+            
+            let hours = pktDate.getUTCHours();
+            const minutes = String(pktDate.getUTCMinutes()).padStart(2, '0');
+            const seconds = String(pktDate.getUTCSeconds()).padStart(2, '0');
+            
+            const ampm = hours >= 12 ? 'PM' : 'AM';
+            hours = hours % 12;
+            hours = hours ? hours : 12;
+            const hours12 = String(hours).padStart(2, '0');
+            
+            return `${day}/${month}/${year}, ${hours12}:${minutes}:${seconds} ${ampm}`;
+        } catch (error) {
+            console.error('Error converting date to PKT:', error, utcDateString);
+            return 'Date Error';
+        }
+    }
+
+    // Convert UTC to Pakistan Time date only (DD/MM/YYYY)
+    function convertUTCToPKTDateOnly(utcDateString) {
+        if (!utcDateString) return 'N/A';
+        
+        try {
+            const date = new Date(utcDateString);
+            if (isNaN(date.getTime())) {
+                return 'Invalid Date';
+            }
+            
+            const pktOffset = 5 * 60 * 60 * 1000;
+            const pktDate = new Date(date.getTime() + pktOffset);
+            
+            const day = String(pktDate.getUTCDate()).padStart(2, '0');
+            const month = String(pktDate.getUTCMonth() + 1).padStart(2, '0');
+            const year = pktDate.getUTCFullYear();
+            
+            return `${day}/${month}/${year}`;
+        } catch (error) {
+            console.error('Error converting date to PKT:', error);
+            return 'Date Error';
+        }
+    }
+
+    // Get current time in Pakistan Time
+    function getCurrentPKT() {
+        const now = new Date();
+        const pktOffset = 5 * 60 * 60 * 1000;
+        return new Date(now.getTime() + pktOffset);
+    }
+
+    // Format date as YYYY-MM-DD for grouping (using PKT timezone)
+    function formatDateForGrouping(pktDate) {
+        if (!pktDate) return '';
+        const year = pktDate.getUTCFullYear();
+        const month = String(pktDate.getUTCMonth() + 1).padStart(2, '0');
+        const day = String(pktDate.getUTCDate()).padStart(2, '0');
+        return `${year}-${month}-${day}`;
+    }
+
+    // Get start of day in PKT (00:00:00)
+    function getStartOfDayPKT(date) {
+        const pktDate = new Date(date);
+        pktDate.setUTCHours(0, 0, 0, 0);
+        return pktDate;
+    }
+
+    // Calculate time since last deposit in PKT
+    function formatTimeSince(utcDateString) {
+        if (!utcDateString) return 'N/A';
+        
+        try {
+            const nowPKT = getCurrentPKT();
+            const lastDepositUTC = new Date(utcDateString);
+            const lastDepositPKT = new Date(lastDepositUTC.getTime() + (5 * 60 * 60 * 1000));
+            
+            if (isNaN(nowPKT.getTime()) || isNaN(lastDepositPKT.getTime())) {
+                return 'N/A';
+            }
+            
+            const diffMs = nowPKT - lastDepositPKT;
+            
+            if (diffMs < 0) {
+                return 'Just now';
+            }
+            
+            const hoursSince = Math.floor(diffMs / (1000 * 60 * 60));
+            const minutesSince = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
+            const daysSince = hoursSince / 24;
+            const remainingHours = hoursSince % 24;
+            
+            if (daysSince < 1) {
+                if (hoursSince === 0) {
+                    return `${minutesSince} minutes ago`;
+                } else {
+                    return `${hoursSince} hours ${minutesSince} minutes ago`;
+                }
+            } else {
+                const fullDays = Math.floor(daysSince);
+                return `${fullDays} day${fullDays > 1 ? 's' : ''} ${remainingHours} hours ago`;
+            }
+        } catch (error) {
+            console.error('Error calculating time since:', error, utcDateString);
+            return 'N/A';
+        }
+    }
+
+    // =============================================
+    // STATE MANAGEMENT
+    // =============================================
+    let selectedPage = null;
+    let currentPageData = null;
+    let progressInterval = null;
+    let currentView = 'landing';
+    
+    const tableState = {
+        current: {
+            type: null,
+            page: 1,
+            data: null,
+            title: null
+        },
+        playerTables: {
+            'Total': { page: 1, data: null },
+            'Active': { page: 1, data: null },
+            'Inactive': { page: 1, data: null },
+            'RecentActive': { page: 1, data: null },
+            'RecentInactive': { page: 1, data: null }
+        },
+        highRisk: { page: 1, data: null },
+        history: { page: 1, data: null },
+        deposits: { month: 0, data: null }
+    };
+    
+    // Notes state
+    let currentNotesPlayer = null;
+    let currentNotesPlayerName = null;
+    let currentNotesButton = null;
+
+    // Navigation context tracking
+    let navigationContext = 'landing';
+    let currentPageObj = null;
+
+    // =============================================
+    // DOM ELEMENTS
+    // =============================================
+    const searchInput = document.getElementById('pageSelectSearch');
+    const playerSearchInput = document.getElementById('playerSearchInput');
+    const pageSuggestions = document.getElementById('pageSuggestions');
+    const playerSuggestions = document.getElementById('playerSuggestions');
+    const findBtn = document.getElementById('findBtn');
+    const loader = document.getElementById('loader');
+    const pageTitle = document.getElementById('pageTitle');
+    const refreshBtn = document.getElementById('refreshDataBtn');
+    const forceCleanupBtn = document.getElementById('forceCleanupBtn');
+    const changePageBtn = document.getElementById('changePageBtn');
+    const loadingProgress = document.getElementById('loadingProgress');
+    const refreshModal = document.getElementById('refreshModal');
+    const cleanupModal = document.getElementById('cleanupModal');
+    const notesModal = document.getElementById('notesModal');
+    const refreshPinInput = document.getElementById('refreshPinInput');
+    const cleanupPinInput = document.getElementById('cleanupPinInput');
+    const noteTextInput = document.getElementById('noteTextInput');
+    const saveNoteBtn = document.getElementById('saveNoteBtn');
+    const notesModalTitle = document.getElementById('notesModalTitle');
+    const notesList = document.getElementById('notesList');
+    const statsRow1 = document.getElementById('statsRow1');
+    const statsRow2 = document.getElementById('statsRow2');
+    const statsRow3 = document.getElementById('statsRow3');
+    const pageDepositsView = document.getElementById('pageDepositsView');
+
+    // =============================================
+    // UTILITY FUNCTIONS
+    // =============================================
+
+    function normalizePageName(pageName) {
+      if (!pageName || typeof pageName !== 'string') return pageName;
+      
+      const trimmedName = pageName.trim();
+      const lowerName = trimmedName.toLowerCase();
+      
+      if (PAGE_NAME_MAP[lowerName]) {
+        return PAGE_NAME_MAP[lowerName];
+      }
+      
+      return lowerName
+        .split(' ')
+        .map(word => {
+          if (word === '2.0') return '2.0';
+          if (word === 't') return 'T';
+          if (word === 'vblink') return 'VBlink';
+          return word.charAt(0).toUpperCase() + word.slice(1);
+        })
+        .join(' ')
+        .replace(/\s+\+\s+/g, '+')
+        .replace(/Egames/g, 'E-Games');
+    }
+
+    function showNotification(message, type = 'success') {
+      const notification = document.createElement('div');
+      notification.className = `notification ${type}`;
+      notification.textContent = message;
+      document.body.appendChild(notification);
+      
+      setTimeout(() => {
+        if (document.body.contains(notification)) {
+          document.body.removeChild(notification);
+        }
+      }, 5000);
+    }
+
+    function getPaginatedPlayers(players, page, pageSize) {
+      const startIndex = (page - 1) * pageSize;
+      const endIndex = startIndex + pageSize;
+      return players.slice(startIndex, endIndex);
+    }
+
+    function renderPagination(totalPlayers, currentPage, pageSize, container, onPageChange) {
+      const totalPages = Math.ceil(totalPlayers / pageSize);
+      
+      if (totalPages <= 1) return '';
+      
+      let html = `
+        <div class="pagination-buttons">
+      `;
+      
+      html += `<button class="pagination-btn" ${currentPage === 1 ? 'disabled' : ''} onclick="${onPageChange}(${currentPage - 1})">
+                <i class="fas fa-chevron-left"></i>
+              </button>`;
+      
+      const maxVisiblePages = 5;
+      let startPage = Math.max(1, currentPage - Math.floor(maxVisiblePages / 2));
+      let endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
+      
+      if (endPage - startPage + 1 < maxVisiblePages) {
+        startPage = Math.max(1, endPage - maxVisiblePages + 1);
+      }
+      
+      for (let i = startPage; i <= endPage; i++) {
+        html += `<button class="pagination-btn ${i === currentPage ? 'active' : ''}" onclick="${onPageChange}(${i})">${i}</button>`;
+      }
+      
+      html += `<button class="pagination-btn" ${currentPage === totalPages ? 'disabled' : ''} onclick="${onPageChange}(${currentPage + 1})">
+                <i class="fas fa-chevron-right"></i>
+              </button>`;
+      
+      html += `</div>`;
+      
+      container.innerHTML = html;
+    }
+
+    // =============================================
+    // SUPABASE DATA FUNCTIONS
+    // =============================================
+
+    async function searchPlayers(searchTerm) {
+      if (!searchTerm || searchTerm.length < 2) return [];
+      
+      try {
+        const { data, error } = await supabase
+          .from('latest_status')
+          .select('player_name, page_name')
+          .ilike('player_name', `%${searchTerm}%`)
+          .limit(50);
+        
+        if (error) throw error;
+        
+        const uniqueResults = [];
+        const seen = new Set();
+        
+        data.forEach(result => {
+          const key = `${result.player_name}||${result.page_name}`;
+          if (!seen.has(key)) {
+            seen.add(key);
+            uniqueResults.push({
+              name: result.player_name,
+              page: result.page_name,
+              displayName: `${result.player_name} - ${result.page_name}`
+            });
+          }
+        });
+        
+        uniqueResults.sort((a, b) => {
+          const nameCompare = a.name.localeCompare(b.name);
+          if (nameCompare !== 0) return nameCompare;
+          return a.page.localeCompare(b.page);
+        });
+        
+        return uniqueResults;
+      } catch (error) {
+        console.error('Error searching players:', error);
+        showNotification('Error searching players', 'error');
+        return [];
+      }
+    }
+
+    async function getPageActivity(pageName) {
+      try {
+        // Get latest status for the page
+        const { data: statusData, error: statusError } = await supabase
+          .from('latest_status')
+          .select('*')
+          .eq('page_name', pageName);
+        
+        if (statusError) throw statusError;
+        
+        if (!statusData || statusData.length === 0) {
+          return getEmptyPageData(pageName);
+        }
+
+        // Get deposit data for calculations
+        const depositData = await computePlayerDeposits(pageName);
+        const playersWithNotes = await getAllPlayersWithNotes(pageName);
+        
+        // Get status changes for this page to show in activity notes
+        const { data: changesData } = await supabase
+          .from('status_changes')
+          .select('*')
+          .eq('page_name', pageName)
+          .order('change_date', { ascending: false })
+          .limit(100);
+
+        // Create a map of recent status changes per player
+        const recentChanges = {};
+        if (changesData) {
+          changesData.forEach(change => {
+            const key = change.player_name;
+            if (!recentChanges[key]) {
+              recentChanges[key] = change;
+            }
+          });
+        }
+
+        const resultPlayers = [];
+        const recentActivePlayers = [];
+        const recentInactivePlayers = [];
+        
+        statusData.forEach(player => {
+          const playerName = player.player_name;
+          const originalTimestamp = player.last_deposit_date;
+          const lastDepositDisplay = convertUTCToPKT(originalTimestamp);
+          
+          // Calculate days since using UTC dates for consistency
+          const nowUTC = new Date();
+          const lastDepositUTC = new Date(originalTimestamp);
+          const daysSince = Math.floor((nowUTC - lastDepositUTC) / (1000 * 60 * 60 * 24));
+          
+          const status = player.status || "Inactive";
+          
+          const playerDeposits = depositData[playerName] || { total: 0, last7Days: 0 };
+          
+          // Enhanced activity notes with status change info
+          let activityNotes = player.activity_notes || "";
+          const recentChange = recentChanges[playerName];
+          if (recentChange) {
+            activityNotes += ` | Last status change: ${recentChange.old_status} → ${recentChange.new_status} on ${convertUTCToPKT(recentChange.change_date)}`;
+          }
+          
+          const playerData = {
+            player: playerName,
+            lastDeposit: lastDepositDisplay,
+            originalTimestamp: originalTimestamp,
+            daysSince: daysSince,
+            status: status,
+            totalDeposit: playerDeposits.total,
+            last7DaysDeposit: playerDeposits.last7Days,
+            activityNotes: activityNotes,
+            hasNotes: playersWithNotes[playerName] || false
+          };
+          
+          resultPlayers.push(playerData);
+          
+          const recentActiveCheck = isRecentActiveOptimized(playerName, depositData);
+          if (status === "Active" && recentActiveCheck.isRecentActive) {
+            playerData.gapDays = recentActiveCheck.gapDays;
+            recentActivePlayers.push(playerData);
+          }
+          
+          if (status === "Inactive" && daysSince >= RECENT_INACTIVE_MIN_DAYS && daysSince < RECENT_INACTIVE_MAX_DAYS) {
+            recentInactivePlayers.push(playerData);
+          }
+        });
+
+        const highRiskData = await getHighRiskPlayers(pageName);
+        const highRiskPlayers = highRiskData.highRiskPlayers || [];
+
+        highRiskPlayers.forEach(player => {
+          player.hasNotes = playersWithNotes[player.player] || false;
+        });
+
+        // Sort by original timestamp
+        resultPlayers.sort((a, b) => new Date(b.originalTimestamp) - new Date(a.originalTimestamp));
+        recentActivePlayers.sort((a, b) => new Date(b.originalTimestamp) - new Date(a.originalTimestamp));
+        recentInactivePlayers.sort((a, b) => new Date(b.originalTimestamp) - new Date(a.originalTimestamp));
+        highRiskPlayers.sort((a, b) => new Date(b.lastDeposit) - new Date(a.lastDeposit));
+
+        const counts = {
+          Total: resultPlayers.length,
+          Active: resultPlayers.filter(p => p.status === "Active").length,
+          Inactive: resultPlayers.filter(p => p.status === "Inactive" && p.daysSince >= INACTIVE_THRESHOLD).length,
+          RecentActive: recentActivePlayers.length,
+          RecentInactive: recentInactivePlayers.length,
+          HighRisk: highRiskPlayers.length
+        };
+
+        return { 
+          page: pageName, 
+          counts, 
+          players: resultPlayers, 
+          recentActivePlayers, 
+          recentInactivePlayers,
+          highRiskPlayers: highRiskPlayers
+        };
+      } catch (error) {
+        console.error('Error getting page activity:', error);
+        showNotification('Error loading page data', 'error');
+        return getEmptyPageData(pageName);
+      }
+    }
+
+    function getEmptyPageData(pageName) {
+      return {
+        page: pageName, 
+        counts: { Total: 0, Active: 0, Inactive: 0, RecentActive: 0, RecentInactive: 0, HighRisk: 0 }, 
+        players: [], 
+        recentActivePlayers: [], 
+        recentInactivePlayers: [],
+        highRiskPlayers: []
+      };
+    }
+
+    async function computePlayerDeposits(pageName) {
+      try {
+        const { data, error } = await supabase
+          .from('deposits')
+          .select('player_name, amount, deposit_date')
+          .eq('page_name', pageName);
+        
+        if (error) throw error;
+        
+        const depositData = {};
+        const todayUTC = new Date();
+        const sevenDaysAgo = new Date(todayUTC.getTime() - (7 * 24 * 60 * 60 * 1000));
+        
+        data.forEach(deposit => {
+          const playerName = deposit.player_name;
+          const amount = parseFloat(deposit.amount) || 0;
+          const depositDateUTC = new Date(deposit.deposit_date);
+          
+          if (!depositData[playerName]) {
+            depositData[playerName] = { total: 0, last7Days: 0, deposits: [] };
+          }
+          
+          depositData[playerName].total += amount;
+          depositData[playerName].deposits.push(depositDateUTC);
+          
+          if (depositDateUTC >= sevenDaysAgo) {
+            depositData[playerName].last7Days += amount;
+          }
+        });
+        
+        return depositData;
+      } catch (error) {
+        console.error('Error computing player deposits:', error);
+        return {};
+      }
+    }
+
+    function isRecentActiveOptimized(playerName, depositData) {
+      const playerData = depositData[playerName];
+      
+      if (!playerData || !playerData.deposits || playerData.deposits.length < 2) {
+        return { isRecentActive: false, gapDays: null };
+      }
+      
+      const deposits = playerData.deposits.sort((a, b) => b - a);
+      
+      const latest = deposits[0];
+      const secondLatest = deposits[1];
+      const gapHours = Math.floor((latest - secondLatest) / (1000 * 60 * 60));
+      const gapDays = gapHours / 24;
+      
+      const todayUTC = new Date();
+      const hoursSinceLatest = Math.floor((todayUTC - latest) / (1000 * 60 * 60));
+      const daysSinceLatest = hoursSinceLatest / 24;
+      
+      const isRecentActive = gapDays >= 3 && daysSinceLatest <= DAYS_ACTIVE;
+      
+      return { 
+        isRecentActive: isRecentActive, 
+        gapDays: isRecentActive ? Math.floor(gapDays) : null 
+      };
+    }
+
+    async function getAllPlayersWithNotes(pageName) {
+      try {
+        const { data, error } = await supabase
+          .from('player_notes')
+          .select('player_name')
+          .eq('page_name', pageName);
+        
+        if (error) throw error;
+        
+        const playersWithNotes = {};
+        data.forEach(note => {
+          playersWithNotes[note.player_name] = true;
+        });
+        
+        return playersWithNotes;
+      } catch (error) {
+        console.error('Error getting players with notes:', error);
+        return {};
+      }
+    }
+
+    async function getPlayerNotes(pageName, playerName) {
+      try {
+        const { data, error } = await supabase
+          .from('player_notes')
+          .select('*')
+          .eq('page_name', pageName)
+          .eq('player_name', playerName)
+          .order('created_at', { ascending: false });
+        
+        if (error) throw error;
+        
+        return { 
+          notes: data.map(note => ({
+            timestamp: note.created_at,
+            note: note.note_text
+          })), 
+          success: true 
+        };
+      } catch (error) {
+        console.error('Error getting player notes:', error);
+        return { notes: [], success: false };
+      }
+    }
+
+    async function addPlayerNote(pageName, playerName, noteText) {
+      try {
+        const { data, error } = await supabase
+          .from('player_notes')
+          .insert([
+            {
+              page_name: pageName,
+              player_name: playerName,
+              note_text: noteText,
+              created_at: new Date().toISOString()
+            }
+          ])
+          .select();
+        
+        if (error) throw error;
+        
+        return { 
+          success: true, 
+          message: "Note added successfully",
+          timestamp: new Date().toISOString()
+        };
+      } catch (error) {
+        console.error('Error adding player note:', error);
+        return { success: false, message: "Error adding note: " + error.toString() };
+      }
+    }
+
+    // FIXED: Properly group deposits by day without duplicates
+    function groupDepositsByDay(deposits) {
+      const depositsByDay = {};
+      
+      deposits.forEach(deposit => {
+        // Convert UTC to PKT for grouping
+        const pktDate = new Date(deposit.getTime() + (5 * 60 * 60 * 1000));
+        const dateKey = formatDateForGrouping(pktDate);
+        
+        if (!depositsByDay[dateKey]) {
+          depositsByDay[dateKey] = {
+            date: dateKey,
+            deposits: [deposit],
+            count: 1
+          };
+        } else {
+          depositsByDay[dateKey].deposits.push(deposit);
+          depositsByDay[dateKey].count++;
+        }
+      });
+      
+      return depositsByDay;
+    }
+
+    function calculateRiskLevel(totalGaps, maxGapDays) {
+      if (totalGaps === 1 && maxGapDays < 15) {
+        if (maxGapDays >= 12) return "Very High";
+        if (maxGapDays >= 10) return "High";
+        if (maxGapDays >= 8) return "Medium";
+        if (maxGapDays >= 5) return "Low";
+      }
+      
+      if (totalGaps >= 3 || maxGapDays >= 12) {
+        return "Very High";
+      } else if (totalGaps >= 2 || maxGapDays >= 10) {
+        return "High";
+      } else if (totalGaps >= 1 && maxGapDays >= 8) {
+        return "Medium";
+      } else {
+        return "Low";
+      }
+    }
+
+    async function getHighRiskPlayers(pageName) {
+      try {
+        const { data, error } = await supabase
+          .from('deposits')
+          .select('player_name, deposit_date')
+          .eq('page_name', pageName);
+        
+        if (error) throw error;
+        
+        const playerDeposits = {};
+        const todayUTC = new Date();
+        const fifteenDaysAgo = new Date(todayUTC.getTime() - (HIGH_RISK_MAX_DAYS * 24 * 60 * 60 * 1000));
+        
+        data.forEach(deposit => {
+          const playerName = deposit.player_name;
+          const depositDateUTC = new Date(deposit.deposit_date);
+          
+          if (!isNaN(depositDateUTC?.getTime()) && depositDateUTC >= fifteenDaysAgo) {
+            if (!playerDeposits[playerName]) {
+              playerDeposits[playerName] = [];
+            }
+            playerDeposits[playerName].push(depositDateUTC);
+          }
+        });
+
+        Object.keys(playerDeposits).forEach(player => {
+          playerDeposits[player] = groupDepositsByDay(playerDeposits[player]);
+        });
+
+        const highRiskPlayers = [];
+        const MIN_GAP_DAYS = 5;
+
+        Object.keys(playerDeposits).forEach(player => {
+          const depositsByDay = playerDeposits[player];
+          const depositDates = Object.keys(depositsByDay).sort();
+          
+          if (depositDates.length === 0) return;
+
+          const deposits = depositDates.map(date => {
+            const dayData = depositsByDay[date];
+            // Use the latest deposit time for that day
+            const latestDeposit = dayData.deposits.sort((a, b) => b - a)[0];
+            return latestDeposit;
+          }).sort((a, b) => a - b);
+          
+          if (deposits.length === 1) {
+            const singleDepositDate = deposits[0];
+            const hoursSinceSingleDeposit = Math.floor((todayUTC - singleDepositDate) / (1000 * 60 * 60));
+            const daysSinceSingleDeposit = hoursSinceSingleDeposit / 24;
+            
+            if (daysSinceSingleDeposit >= MIN_GAP_DAYS && daysSinceSingleDeposit < HIGH_RISK_MAX_DAYS) {
+              const currentStatus = daysSinceSingleDeposit <= DAYS_ACTIVE ? "Active" : "Inactive";
+              
+              highRiskPlayers.push({
+                player: player,
+                gaps: [{
+                  gapDays: Math.floor(daysSinceSingleDeposit),
+                  gapBetween: `Single activity day on ${convertUTCToPKTDateOnly(singleDepositDate.toISOString())}`
+                }],
+                totalQualifyingGaps: 1,
+                maxGapDays: Math.floor(daysSinceSingleDeposit),
+                lastDeposit: singleDepositDate.toISOString(),
+                daysSinceLastDeposit: Math.floor(daysSinceSingleDeposit),
+                currentStatus: currentStatus,
+                totalDeposits: depositsByDay[depositDates[0]].count,
+                riskLevel: calculateRiskLevel(1, Math.floor(daysSinceSingleDeposit)),
+                depositType: "single"
+              });
+            }
+            return;
+          }
+          
+          const allGaps = [];
+          const qualifyingGaps = [];
+          
+          for (let i = 0; i < deposits.length - 1; i++) {
+            const currentDeposit = deposits[i];
+            const nextDeposit = deposits[i + 1];
+            const gapHours = Math.floor((nextDeposit - currentDeposit) / (1000 * 60 * 60));
+            const gapDays = gapHours / 24;
+            allGaps.push(gapDays);
+            
+            if (gapDays >= MIN_GAP_DAYS && gapDays < HIGH_RISK_MAX_DAYS) {
+              qualifyingGaps.push({
+                gapDays: Math.floor(gapDays),
+                gapBetween: `${convertUTCToPKTDateOnly(currentDeposit.toISOString())} to ${convertUTCToPKTDateOnly(nextDeposit.toISOString())}`
+              });
+            }
+          }
+          
+          const lastDepositDate = deposits[deposits.length - 1];
+          const hoursSinceLastDeposit = Math.floor((todayUTC - lastDepositDate) / (1000 * 60 * 60));
+          const daysSinceLastDeposit = hoursSinceLastDeposit / 24;
+          
+          if (daysSinceLastDeposit >= MIN_GAP_DAYS && daysSinceLastDeposit < HIGH_RISK_MAX_DAYS) {
+            qualifyingGaps.push({
+              gapDays: Math.floor(daysSinceLastDeposit),
+              gapBetween: `${convertUTCToPKTDateOnly(lastDepositDate.toISOString())} to today`
+            });
+            allGaps.push(daysSinceLastDeposit);
+          }
+          
+          const hasExcessiveGap = allGaps.some(gap => gap >= HIGH_RISK_MAX_DAYS);
+          if (hasExcessiveGap) {
+            return;
+          }
+          
+          if (qualifyingGaps.length > 0) {
+            const currentStatus = daysSinceLastDeposit <= DAYS_ACTIVE ? "Active" : "Inactive";
+            const totalDepositCount = depositDates.reduce((sum, date) => sum + depositsByDay[date].count, 0);
+            
+            highRiskPlayers.push({
+              player: player,
+              gaps: qualifyingGaps,
+              totalQualifyingGaps: qualifyingGaps.length,
+              maxGapDays: Math.max(...qualifyingGaps.map(gap => gap.gapDays)),
+              lastDeposit: lastDepositDate.toISOString(),
+              daysSinceLastDeposit: Math.floor(daysSinceLastDeposit),
+              currentStatus: currentStatus,
+              totalDeposits: totalDepositCount,
+              riskLevel: calculateRiskLevel(qualifyingGaps.length, Math.max(...qualifyingGaps.map(gap => gap.gapDays))),
+              depositType: "multiple"
+            });
+          }
+        });
+
+        highRiskPlayers.sort((a, b) => new Date(b.lastDeposit) - new Date(a.lastDeposit));
+
+        return {
+          highRiskPlayers: highRiskPlayers,
+          message: `Found ${highRiskPlayers.length} high risk players`
+        };
+      } catch (error) {
+        console.error('Error getting high risk players:', error);
+        return { highRiskPlayers: [], message: "Error loading high risk players" };
+      }
+    }
+
+    // FIXED: Enhanced Player History Function with proper PKT timezone handling
+async function getEnhancedPlayerHistory(playerName, pageName) {
+  try {
+    const { data, error } = await supabase
+      .from('deposits')
+      .select('deposit_date, amount')
+      .eq('player_name', playerName)
+      .eq('page_name', pageName)
+      .order('deposit_date', { ascending: true });
+    
+    if (error) throw error;
+    
+    if (!data || data.length === 0) {
+      return { 
+        enhancedHistory: [], 
+        activityNotes: ["No data found for this player."],
+        currentStatus: "Inactive",
+        message: "No data found for this player",
+        rawDeposits: 0,
+        timeSinceDisplay: "N/A"
+      };
+    }
+
+    // Process ALL deposits and convert to PKT for display
+    const playerDeposits = data.map(deposit => {
+      const utcDate = new Date(deposit.deposit_date);
+      
+      // Convert to PKT for display (UTC+5)
+      const pktDate = new Date(utcDate.getTime() + (5 * 60 * 60 * 1000));
+      const displayDate = convertUTCToPKT(deposit.deposit_date);
+      const displayDateOnly = convertUTCToPKTDateOnly(deposit.deposit_date);
+      
+      return {
+        utcDate: utcDate,
+        pktDate: pktDate, // Store PKT date for calculations
+        timestamp: displayDate,
+        displayDateOnly: displayDateOnly,
+        amount: parseFloat(deposit.amount) || 0,
+        originalDate: deposit.deposit_date
+      };
+    }).filter(deposit => !isNaN(deposit.utcDate.getTime()));
+
+    playerDeposits.sort((a, b) => a.pktDate - b.pktDate); // Sort by PKT date
+    
+    // Get current time in PKT for calculations
+    const nowPKT = getCurrentPKT();
+    const mostRecentDeposit = playerDeposits[playerDeposits.length - 1];
+    
+    // Calculate time since using PKT dates
+    const timeSinceMs = nowPKT - mostRecentDeposit.pktDate;
+    const hoursSince = Math.floor(timeSinceMs / (1000 * 60 * 60));
+    const minutesSince = Math.floor((timeSinceMs % (1000 * 60 * 60)) / (1000 * 60));
+    const daysSince = hoursSince / 24;
+    const remainingHours = hoursSince % 24;
+    
+    const currentStatus = daysSince <= DAYS_ACTIVE ? "Active" : "Inactive";
+
+    let timeSinceDisplay = '';
+    if (daysSince < 1) {
+      if (hoursSince === 0) {
+        timeSinceDisplay = `${minutesSince} minutes ago`;
+      } else {
+        timeSinceDisplay = `${hoursSince} hours ${minutesSince} minutes ago`;
+      }
+    } else {
+      const fullDays = Math.floor(daysSince);
+      timeSinceDisplay = `${fullDays} day${fullDays > 1 ? 's' : ''} ${remainingHours} hours ago`;
+    }
+
+    // Group deposits by PKT date for display
+    const depositsByDay = {};
+    playerDeposits.forEach(deposit => {
+      const dateKey = deposit.displayDateOnly;
+      
+      if (!depositsByDay[dateKey]) {
+        depositsByDay[dateKey] = {
+          count: 0,
+          totalAmount: 0,
+          displayDate: dateKey,
+          deposits: [],
+          pktDate: deposit.pktDate
+        };
+      }
+      depositsByDay[dateKey].count++;
+      depositsByDay[dateKey].totalAmount += deposit.amount;
+      depositsByDay[dateKey].deposits.push(deposit);
+    });
+
+    // Create enhanced history
+    const enhancedHistory = [];
+    const depositDates = Object.keys(depositsByDay).sort((a, b) => {
+      return new Date(depositsByDay[a].pktDate) - new Date(depositsByDay[b].pktDate);
+    });
+    
+    if (depositDates.length === 0) {
+      return {
+        enhancedHistory: [],
+        currentStatus: "Inactive",
+        message: "No deposit data available",
+        rawDeposits: 0,
+        timeSinceDisplay: "N/A"
+      };
+    }
+
+    // Get the earliest and latest deposit dates in PKT
+    const firstDepositDate = new Date(playerDeposits[0].pktDate);
+    const lastDepositDate = new Date(playerDeposits[playerDeposits.length - 1].pktDate);
+    
+    // Create timeline from first deposit to today in PKT
+    let currentDate = new Date(firstDepositDate);
+    currentDate.setUTCHours(0, 0, 0, 0);
+    
+    const todayPKT = getStartOfDayPKT(nowPKT);
+    
+    const timeline = [];
+    
+    // Generate all days from first deposit to today in PKT
+    while (currentDate <= todayPKT) {
+      const dateKey = convertUTCToPKTDateOnly(currentDate.toISOString());
+      const dayData = depositsByDay[dateKey];
+      
+      timeline.push({
+        date: new Date(currentDate),
+        dateKey: dateKey,
+        isDepositDay: !!dayData,
+        depositCount: dayData ? dayData.count : 0,
+        totalAmount: dayData ? dayData.totalAmount : 0,
+        displayDate: dateKey,
+        deposits: dayData ? dayData.deposits : [],
+        pktDate: currentDate.getTime()
+      });
+      
+      currentDate.setDate(currentDate.getDate() + 1);
+      currentDate.setUTCHours(0, 0, 0, 0);
+    }
+
+    console.log(`Player ${playerName} timeline:`, {
+      firstDeposit: firstDepositDate.toISOString(),
+      lastDeposit: lastDepositDate.toISOString(),
+      todayPKT: todayPKT.toISOString(),
+      timelineDays: timeline.length,
+      depositsByDay: depositsByDay
+    });
+
+    // Group consecutive days with same activity status
+    let i = 0;
+    while (i < timeline.length) {
+      const currentDay = timeline[i];
+      
+      if (currentDay.isDepositDay) {
+        // This is a deposit day - create an entry for it
+        const depositText = currentDay.depositCount === 1 
+          ? "1 deposit" 
+          : `${currentDay.depositCount} deposits`;
+        
+        const amountText = currentDay.totalAmount > 0 
+          ? ` ($${currentDay.totalAmount.toFixed(2)})` 
+          : "";
+        
+        enhancedHistory.push({
+          dateRange: currentDay.displayDate,
+          activity: `${depositText}${amountText}`,
+          status: "Active",
+          inactiveGap: 0,
+          activityLevel: currentDay.depositCount > 1 ? "Multiple" : "Single",
+          depositCount: currentDay.depositCount,
+          totalAmount: currentDay.totalAmount,
+          isDepositDay: true,
+          timestamp: currentDay.pktDate
+        });
+        i++;
+      } else {
+        // This is an inactive day - find consecutive inactive days
+        let inactiveStart = i;
+        let inactiveCount = 0;
+        
+        while (i < timeline.length && !timeline[i].isDepositDay) {
+          inactiveCount++;
+          i++;
+        }
+        
+        if (inactiveCount === 1) {
+          // Single inactive day
+          enhancedHistory.push({
+            dateRange: timeline[inactiveStart].displayDate,
+            activity: "No deposits",
+            status: "Inactive",
+            inactiveGap: inactiveCount,
+            activityLevel: "None",
+            depositCount: 0,
+            totalAmount: 0,
+            isDepositDay: false,
+            timestamp: timeline[inactiveStart].pktDate
+          });
+        } else {
+          // Multiple consecutive inactive days
+          const startDate = timeline[inactiveStart].displayDate;
+          const endDate = timeline[i - 1].displayDate;
+          enhancedHistory.push({
+            dateRange: `${startDate} - ${endDate}`,
+            activity: "No deposits",
+            status: "Inactive",
+            inactiveGap: inactiveCount,
+            activityLevel: "None",
+            depositCount: 0,
+            totalAmount: 0,
+            isDepositDay: false,
+            timestamp: timeline[inactiveStart].pktDate
+          });
+        }
+      }
+    }
+
+    const totalDepositDays = Object.keys(depositsByDay).length;
+    const totalDepositCount = playerDeposits.length;
+    const totalAmount = playerDeposits.reduce((sum, deposit) => sum + deposit.amount, 0);
+
+    return {
+      enhancedHistory: enhancedHistory,
+      currentStatus: currentStatus,
+      rawDeposits: totalDepositCount,
+      totalDepositDays: totalDepositDays,
+      totalAmount: totalAmount,
+      timeSinceDisplay: timeSinceDisplay,
+      message: `Found ${totalDepositCount} deposit(s) across ${totalDepositDays} day(s) from ${depositDates[0]} to ${depositDates[depositDates.length - 1]}`
+    };
+  } catch (error) {
+    console.error('Error getting enhanced player history:', error);
+    return { 
+      enhancedHistory: [], 
+      currentStatus: "Inactive",
+      message: "Error loading player history",
+      rawDeposits: 0,
+      timeSinceDisplay: "N/A"
+    };
+  }
+}
+
+    // FIXED: Proper timezone handling for date generation
+async function getPageDailyDeposits(pageName, monthOffset = 0) {
+  try {
+    const { data, error } = await supabase
+      .from('deposits')
+      .select('deposit_date, amount, player_name')
+      .eq('page_name', pageName)
+      .order('deposit_date', { ascending: true });
+    
+    if (error) throw error;
+    
+    if (!data || data.length === 0) {
+      return {
+        success: false,
+        message: "No data found",
+        dailyDeposits: [],
+        totalAmount: 0,
+        totalTransactions: 0,
+        monthlyComparison: null,
+        availableMonths: []
+      };
+    }
+    
+    // Process all deposits and convert to PKT for grouping
+    const allDeposits = data.map(deposit => {
+      const utcDate = new Date(deposit.deposit_date);
+      // Convert to PKT for display and grouping
+      const pktDate = new Date(utcDate.getTime() + (5 * 60 * 60 * 1000));
+      const dateKey = formatDateForGrouping(pktDate);
+      const displayDate = convertUTCToPKTDateOnly(deposit.deposit_date);
+      const monthKey = pktDate.toISOString().substring(0, 7); // YYYY-MM format in PKT
+      
+      return {
+        utcDate: utcDate,
+        pktDate: pktDate,
+        dateKey: dateKey,
+        displayDate: displayDate,
+        monthKey: monthKey,
+        amount: parseFloat(deposit.amount) || 0,
+        player_name: deposit.player_name
+      };
+    }).filter(deposit => deposit.amount > 0);
+
+    if (allDeposits.length === 0) {
+      return {
+        success: false,
+        message: "No deposit data with positive amounts",
+        dailyDeposits: [],
+        totalAmount: 0,
+        totalTransactions: 0,
+        monthlyComparison: null,
+        availableMonths: []
+      };
+    }
+
+    // Group by PKT date
+    const depositsByDay = {};
+    allDeposits.forEach(deposit => {
+      if (!depositsByDay[deposit.dateKey]) {
+        depositsByDay[deposit.dateKey] = {
+          date: deposit.dateKey,
+          displayDate: deposit.displayDate,
+          monthKey: deposit.monthKey,
+          totalAmount: 0,
+          transactionCount: 0,
+          timestamp: deposit.pktDate.getTime()
+        };
+      }
+      depositsByDay[deposit.dateKey].totalAmount += deposit.amount;
+      depositsByDay[deposit.dateKey].transactionCount++;
+    });
+
+    // Get all unique months from actual deposit data in PKT
+    const allMonths = new Set();
+    Object.values(depositsByDay).forEach(day => {
+      allMonths.add(day.monthKey);
+    });
+    
+    const sortedMonths = Array.from(allMonths).sort().reverse();
+    const availableMonths = sortedMonths.map((month, index) => ({
+      month: month,
+      display: new Date(month + '-01').toLocaleDateString('en-US', { month: 'short', year: 'numeric' }),
+      page: index + 1
+    }));
+    
+    if (sortedMonths.length === 0) {
+      return {
+        success: false,
+        message: "No deposit data available",
+        dailyDeposits: [],
+        totalAmount: 0,
+        totalTransactions: 0,
+        monthlyComparison: null,
+        availableMonths: []
+      };
+    }
+    
+    const currentMonthIndex = Math.min(monthOffset, sortedMonths.length - 1);
+    const currentMonth = sortedMonths[currentMonthIndex];
+    const previousMonth = currentMonthIndex + 1 < sortedMonths.length ? sortedMonths[currentMonthIndex + 1] : null;
+    
+    // Get actual deposit days for the current month
+    const currentMonthDeposits = Object.values(depositsByDay).filter(day => day.monthKey === currentMonth);
+    
+    // FIXED: Explicit month days definition
+    const getDaysInMonth = (year, month) => {
+      const monthDays = {
+        1: 31,  // January
+        2: 28,  // February (not accounting for leap years for simplicity)
+        3: 31,  // March
+        4: 30,  // April
+        5: 31,  // May
+        6: 30,  // June
+        7: 31,  // July
+        8: 31,  // August
+        9: 30,  // September
+        10: 31, // October
+        11: 30, // November
+        12: 31  // December
+      };
+      
+      // Handle February in leap years
+      if (month === 2) {
+        const isLeapYear = (year % 4 === 0 && year % 100 !== 0) || (year % 400 === 0);
+        return isLeapYear ? 29 : 28;
+      }
+      
+      return monthDays[month] || 30; // Default to 30 if month is invalid
+    };
+    
+    // Parse current month
+    const [year, month] = currentMonth.split('-').map(Number);
+    const daysInMonth = getDaysInMonth(year, month);
+    
+    console.log(`Month: ${currentMonth}, Year: ${year}, Month: ${month}, Days in month: ${daysInMonth}`);
+    
+    // FIXED: Create dates in PKT timezone from the beginning
+    const currentMonthStart = new Date(Date.UTC(year, month - 1, 1, 0, 0, 0));
+    const currentMonthEnd = new Date(Date.UTC(year, month - 1, daysInMonth, 23, 59, 59));
+    
+    // Use current PKT time
+    const nowPKT = getCurrentPKT();
+    const today = getStartOfDayPKT(nowPKT);
+    
+    // Only generate dates up to today for current month, or full month for past months
+    const isCurrentMonth = currentMonth === formatDateForGrouping(nowPKT).substring(0, 7);
+    
+    // FIXED: Use the actual end date properly in PKT
+    let actualEndDate;
+    if (isCurrentMonth) {
+      actualEndDate = today;
+    } else {
+      // For past months, use the last day of that month in PKT
+      actualEndDate = new Date(Date.UTC(year, month - 1, daysInMonth, 0, 0, 0));
+    }
+    
+    // Create a map of all days in the month with deposits
+    const dailyDataMap = {};
+    currentMonthDeposits.forEach(day => {
+      dailyDataMap[day.date] = day;
+    });
+    
+    // FIXED: Generate ALL days in PKT timezone
+    const dailyDepositsArray = [];
+    
+    // Start from the first day of the month in PKT
+    let currentDate = new Date(currentMonthStart);
+    
+    // DEBUG: Log the date range we're generating
+    console.log(`Generating days for ${currentMonth}:`);
+    console.log(`Start (UTC): ${currentDate.toISOString()}`);
+    console.log(`End (UTC): ${actualEndDate.toISOString()}`);
+    console.log(`Days in month: ${daysInMonth}`);
+    console.log(`Is current month: ${isCurrentMonth}`);
+    
+    // FIXED: Generate dates using PKT-aware functions
+    for (let day = 1; day <= daysInMonth; day++) {
+      // Create date in UTC for the specific day in the month
+      const utcDate = new Date(Date.UTC(year, month - 1, day, 12, 0, 0)); // Use noon to avoid DST issues
+      
+      // Convert to PKT date string for display
+      const pktDate = new Date(utcDate.getTime() + (5 * 60 * 60 * 1000));
+      const dateKey = formatDateForGrouping(pktDate);
+      const displayDate = convertUTCToPKTDateOnly(utcDate.toISOString());
+      
+      // Check if we should include this day (for current month, only include up to today)
+      const shouldInclude = isCurrentMonth ? 
+        pktDate <= nowPKT : 
+        true; // For past months, include all days
+      
+      if (shouldInclude) {
+        if (dailyDataMap[dateKey]) {
+          // Day with deposits
+          dailyDepositsArray.push(dailyDataMap[dateKey]);
+        } else {
+          // Day without deposits
+          dailyDepositsArray.push({
+            date: dateKey,
+            displayDate: displayDate,
+            monthKey: currentMonth,
+            totalAmount: 0,
+            transactionCount: 0,
+            timestamp: pktDate.getTime()
+          });
+        }
+      }
+    }
+    
+    console.log(`Generated ${dailyDepositsArray.length} days for ${currentMonth}`);
+    console.log(`Available dates:`, dailyDepositsArray.map(d => d.displayDate));
+    
+    // Sort by date descending (newest first)
+    dailyDepositsArray.sort((a, b) => b.timestamp - a.timestamp);
+    
+    // Calculate trends
+    const dailyDepositsWithTrends = dailyDepositsArray.map((day, index) => {
+      let trend = null;
+      
+      if (index < dailyDepositsArray.length - 1) {
+        const previousDay = dailyDepositsArray[index + 1];
+        
+        if (previousDay.totalAmount > 0 || day.totalAmount > 0) {
+          const difference = day.totalAmount - previousDay.totalAmount;
+          let percentage = 0;
+          
+          if (previousDay.totalAmount === 0 && day.totalAmount > 0) {
+            percentage = 100;
+          } else if (previousDay.totalAmount > 0) {
+            percentage = (difference / previousDay.totalAmount) * 100;
+          }
+          
+          trend = {
+            difference: difference,
+            percentage: percentage.toFixed(1),
+            direction: difference > 0 ? 'up' : difference < 0 ? 'down' : 'same'
+          };
+        }
+      }
+      
+      return {
+        ...day,
+        trend: trend
+      };
+    });
+    
+    const currentMonthTotal = dailyDepositsWithTrends.reduce((sum, day) => sum + day.totalAmount, 0);
+    const currentMonthTransactions = dailyDepositsWithTrends.reduce((sum, day) => sum + day.transactionCount, 0);
+    const totalDaysInPeriod = dailyDepositsWithTrends.length;
+    const dailyAverage = totalDaysInPeriod > 0 ? currentMonthTotal / totalDaysInPeriod : 0;
+    
+    let previousMonthTotal = 0;
+    let previousMonthTransactions = 0;
+    let monthlyComparison = null;
+    
+    if (previousMonth) {
+      // Calculate previous month total from actual deposits in that month
+      Object.values(depositsByDay).forEach(day => {
+        if (day.monthKey === previousMonth) {
+          previousMonthTotal += day.totalAmount;
+          previousMonthTransactions += day.transactionCount;
+        }
+      });
+      
+      const monthlyDifference = currentMonthTotal - previousMonthTotal;
+      let monthlyPercentage = 0;
+      
+      if (previousMonthTotal > 0) {
+        monthlyPercentage = (monthlyDifference / previousMonthTotal) * 100;
+      } else if (currentMonthTotal > 0) {
+        monthlyPercentage = 100;
+      }
+      
+      monthlyComparison = {
+        previousMonth: new Date(previousMonth + '-01').toLocaleDateString('en-US', { month: 'short', year: 'numeric' }),
+        previousMonthTotal: previousMonthTotal,
+        previousMonthTransactions: previousMonthTransactions,
+        difference: monthlyDifference,
+        percentage: monthlyPercentage.toFixed(1),
+        direction: monthlyDifference > 0 ? 'up' : monthlyDifference < 0 ? 'down' : 'same'
+      };
+    }
+    
+    return {
+      success: true,
+      dailyDeposits: dailyDepositsWithTrends,
+      totalAmount: currentMonthTotal,
+      totalTransactions: currentMonthTransactions,
+      dailyAverage: dailyAverage,
+      totalDaysInPeriod: totalDaysInPeriod,
+      monthlyComparison: monthlyComparison,
+      currentMonth: new Date(currentMonth + '-01').toLocaleDateString('en-US', { month: 'short', year: 'numeric' }),
+      availableMonths: availableMonths,
+      currentPage: currentMonthIndex + 1,
+      totalPages: sortedMonths.length,
+      message: `Showing ${totalDaysInPeriod} days for ${new Date(currentMonth + '-01').toLocaleDateString('en-US', { month: 'short', year: 'numeric' })}`
+    };
+  } catch (error) {
+    console.error('Error getting page daily deposits:', error);
+    return {
+      success: false,
+      message: "Error loading daily deposits",
+      dailyDeposits: [],
+      totalAmount: 0,
+      totalTransactions: 0,
+      monthlyComparison: null,
+      availableMonths: []
+    };
+  }
+}
+
+    // =============================================
+    // UI FUNCTIONS - MODIFIED FOR ROUTING
+    // =============================================
+
+    // Initialize on load
+    document.addEventListener('DOMContentLoaded', function() {
+      initRouter(); // Initialize routing instead of old initializeApp
+    });
+
+    function updatePageTitle() {
+      if (currentPageObj) {
+        pageTitle.textContent = `${currentPageObj.name} ${currentPageObj.emoji} - Analytics Dashboard`;
+      } else if (selectedPage) {
+        const pageObj = PAGES.find(p => p.name === selectedPage);
+        if (pageObj) {
+          currentPageObj = pageObj;
+          pageTitle.textContent = `${pageObj.name} ${pageObj.emoji} - Analytics Dashboard`;
+        } else {
+          pageTitle.textContent = `${selectedPage} - Analytics Dashboard`;
+        }
+      }
+    }
+
+    async function loadDashboardData() {
+      if (!selectedPage) return;
+      
+      showLoader();
+      clearBackContainer();
+      disableControlButtons();
+      
+      try {
+        const data = await getPageActivity(selectedPage);
+        handleDashboardData(data);
+      } catch (error) {
+        handleDataError(error);
+      }
+    }
+
+    function handleDashboardData(data) {
+      hideLoader();
+      currentPageData = data;
+      renderDashboard(data);
+      currentView = 'dashboard';
+      sessionStorage.setItem('currentView', 'dashboard');
+      enableControlButtons();
+    }
+
+    function handleDataError(error) {
+      hideLoader();
+      showNotification('Error loading data: ' + error, 'error');
+      document.getElementById('dashboard').style.display = 'block';
+      enableControlButtons();
+    }
+
+    function showLoader() {
+      loader.style.display = 'block';
+      document.getElementById('dashboardBoxes').style.display = 'none';
+      document.getElementById('tableContainer').innerHTML = '';
+      document.getElementById('playerHistorySection').style.display = 'none';
+      document.getElementById('globalPlayerHistorySection').style.display = 'none';
+      document.getElementById('backContainer').innerHTML = '';
+      pageDepositsView.style.display = 'none';
+    }
+
+    function hideLoader() {
+      loader.style.display = 'none';
+      if (progressInterval) {
+        clearInterval(progressInterval);
+        progressInterval = null;
+      }
+    }
+
+    function disableControlButtons() {
+      changePageBtn.disabled = true;
+      refreshBtn.disabled = true;
+      forceCleanupBtn.disabled = true;
+    }
+
+    function enableControlButtons() {
+      changePageBtn.disabled = false;
+      refreshBtn.disabled = false;
+      forceCleanupBtn.disabled = false;
+    }
+
+    function clearBackContainer() {
+      document.getElementById('backContainer').innerHTML = '';
+    }
+
+    function clearPlayerHistory() {
+      const playerSearchInput = document.getElementById('playerSearch');
+      const playerHistoryContainer = document.getElementById('playerHistoryContainer');
+      const globalPlayerHistoryContainer = document.getElementById('globalPlayerHistoryContainer');
+      
+      if (playerSearchInput) playerSearchInput.value = '';
+      if (playerHistoryContainer) playerHistoryContainer.innerHTML = '';
+      if (globalPlayerHistoryContainer) globalPlayerHistoryContainer.innerHTML = '';
+    }
+
+    function clearAllSearchInputs() {
+      const playerSearchInput = document.getElementById('playerSearch');
+      const playerSearchLanding = document.getElementById('playerSearchInput');
+      const pageSearchInput = document.getElementById('pageSelectSearch');
+      
+      if (playerSearchInput) playerSearchInput.value = '';
+      if (playerSearchLanding) playerSearchLanding.value = '';
+      if (pageSearchInput) pageSearchInput.value = '';
+      
+      const pageSuggestions = document.getElementById('pageSuggestions');
+      const playerSuggestions = document.getElementById('playerSuggestions');
+      
+      if (pageSuggestions) pageSuggestions.innerHTML = '';
+      if (playerSuggestions) playerSuggestions.innerHTML = '';
+      
+      const findBtn = document.getElementById('findBtn');
+      if (findBtn) findBtn.style.display = 'none';
+    }
+
+    // Page search functionality
+    searchInput.addEventListener('input', function() {
+      const val = this.value.toLowerCase().trim();
+      pageSuggestions.innerHTML = '';
+      findBtn.style.display = 'none';
+      
+      if (!val) return;
+      
+      const matches = PAGES.filter(p => p.name.toLowerCase().includes(val));
+      if (matches.length === 0) {
+        const div = document.createElement('div');
+        div.className = 'suggestion-item';
+        div.innerHTML = '<span class="page-emoji">😕</span> No results found';
+        pageSuggestions.appendChild(div);
+      } else {
+        matches.forEach(p => {
+          const div = document.createElement('div');
+          div.className = 'suggestion-item';
+          div.innerHTML = `
+            <span class="page-emoji">${p.emoji}</span>
+            <span>${p.name}</span>
+          `;
+          div.onclick = () => {
+            searchInput.value = p.name;
+            pageSuggestions.innerHTML = '';
+            findBtn.style.display = 'inline-flex';
+          };
+          pageSuggestions.appendChild(div);
+        });
+        if (matches.length === 1) {
+          findBtn.style.display = 'inline-flex';
+        }
+      }
+    });
+
+    // Player search functionality for LANDING PAGE (All Pages)
+    playerSearchInput.addEventListener('input', async function() {
+      const val = this.value.toLowerCase().trim();
+      playerSuggestions.innerHTML = '';
+      
+      if (!val || val.length < 2) return;
+      
+      const loadingDiv = document.createElement('div');
+      loadingDiv.className = 'suggestion-item';
+      loadingDiv.innerHTML = '<span class="page-emoji">⏳</span> Searching players across all pages...';
+      playerSuggestions.appendChild(loadingDiv);
+      
+      try {
+        const players = await searchPlayers(val);
+        playerSuggestions.innerHTML = '';
+        
+        if (!players || players.length === 0) {
+          const div = document.createElement('div');
+          div.className = 'suggestion-item';
+          div.innerHTML = '<span class="page-emoji">😕</span> No players found';
+          playerSuggestions.appendChild(div);
+          return;
+        }
+        
+        players.forEach(player => {
+          const div = document.createElement('div');
+          div.className = 'suggestion-item';
+          
+          const pageObj = PAGES.find(p => p.name === player.page);
+          const pageEmoji = pageObj ? pageObj.emoji : '📄';
+          
+          div.innerHTML = `
+            <span class="page-emoji">${pageEmoji}</span>
+            <div style="flex: 1; min-width: 0;">
+              <div style="font-weight: 500; margin-bottom: 0.25rem;">${player.name}</div>
+              <div style="font-size: 0.875rem; color: var(--text-secondary);">
+                <span class="page-indicator">${player.page}</span>
+              </div>
+            </div>
+          `;
+          
+          div.onclick = () => {
+            goToRoute('/player-history', { 
+              player: player.name, 
+              page: player.page,
+              global: 'true' 
+            });
+          };
+          
+          playerSuggestions.appendChild(div);
+        });
+      } catch (error) {
+        playerSuggestions.innerHTML = '';
+        const div = document.createElement('div');
+        div.className = 'suggestion-item';
+        div.innerHTML = '<span class="page-emoji">❌</span> Error searching players';
+        playerSuggestions.appendChild(div);
+      }
+    });
+
+    async function showEnhancedGlobalPlayerHistory(playerName, pageName) {
+      showLoader();
+      disableControlButtons();
+      
+      document.getElementById('dashboardBoxes').style.display = 'none';
+      document.getElementById('tableContainer').style.display = 'none';
+      document.getElementById('playerHistorySection').style.display = 'none';
+      document.getElementById('globalPlayerHistorySection').style.display = 'block';
+      document.getElementById('backContainer').innerHTML = '';
+      pageDepositsView.style.display = 'none';
+      
+      pageTitle.textContent = `Enhanced Player History: ${playerName}`;
+      
+      showLoadingProgress();
+      
+      try {
+        const data = await getEnhancedPlayerHistory(playerName, pageName);
+        hideLoader();
+        const backDiv = document.getElementById('backContainer');
+        backDiv.innerHTML = '<button class="btn btn-secondary" onclick="goToRoute(\'/\')"><i class="fas fa-arrow-left"></i> Back to Search</button>';
+        renderEnhancedPlayerHistory(data, playerName, pageName, true);
+      } catch (error) {
+        hideLoader();
+        showNotification('Error loading enhanced player history: ' + error, 'error');
+        document.getElementById('globalPlayerHistoryContainer').innerHTML = 
+          `<div style="text-align: center; padding: 2rem; color: var(--danger);">
+            <p>Error loading enhanced history for ${playerName}</p>
+            <p style="margin-top: 1rem; color: var(--text-secondary);">${error}</p>
+          </div>`;
+      }
+    }
+
+    async function findPlayerForCurrentPage() {
+      const playerName = document.getElementById('playerSearch').value.trim();
+      if (!playerName) {
+        showNotification('Please enter a player name', 'error');
+        return;
+      }
+      
+      sessionStorage.setItem('currentSearchedPlayer', playerName);
+      tableState.history.page = 1;
+      
+      goToRoute('/player-history', { 
+        player: playerName, 
+        page: selectedPage,
+        global: 'false' 
+      });
+    }
+
+    async function showEnhancedPlayerHistoryForCurrentPage(playerName, pageName) {
+      const searchedPlayerName = sessionStorage.getItem('currentSearchedPlayer') || playerName;
+      
+      document.getElementById('playerHistoryContainer').innerHTML = `
+        <div style="text-align: center; padding: 2rem;">
+          <div class="spinner"></div>
+          <p style="margin-top: 1rem; color: var(--text-secondary);">Loading enhanced player history for <strong>${searchedPlayerName}</strong>...</p>
+        </div>
+      `;
+      
+      try {
+        const data = await getEnhancedPlayerHistory(playerName, pageName);
+        renderEnhancedPlayerHistory(data, searchedPlayerName, pageName, false);
+      } catch (error) {
+        document.getElementById('playerHistoryContainer').innerHTML = 
+          `<div style="text-align: center; padding: 2rem; color: var(--danger);">
+            <p><strong>Error loading enhanced history for ${searchedPlayerName}</strong></p>
+            <p style="margin-top: 1rem; color: var(--text-secondary);">${error}</p>
+          </div>`;
+      }
+    }
+
+    // MODIFIED: Uses routing instead of direct function call
+    function findData() {
+      const val = searchInput.value.trim();
+      const pageObj = PAGES.find(p => p.name.toLowerCase() === val.toLowerCase());
+      
+      if (!val || !pageObj) {
+        showNotification('Please select a valid page from the suggestions', 'error');
+        return;
+      }
+      
+      goToRoute('/dashboard', { page: pageObj.name });
+    }
+
+    // MODIFIED: Back functions use routing
+    function backToDashboard() {
+      resetAllTableStates();
+      clearPlayerHistory();
+      
+      sessionStorage.removeItem('searchPlayerName');
+      sessionStorage.removeItem('searchPlayerPage');
+      sessionStorage.removeItem('currentSearchedPlayer');
+      
+      goToRoute('/dashboard', { page: selectedPage });
+    }
+
+    function resetAllTableStates() {
+      tableState.current = { type: null, page: 1, data: null, title: null };
+      tableState.playerTables = {
+        'Total': { page: 1, data: null },
+        'Active': { page: 1, data: null },
+        'Inactive': { page: 1, data: null },
+        'RecentActive': { page: 1, data: null },
+        'RecentInactive': { page: 1, data: null }
+      };
+      tableState.highRisk = { page: 1, data: null };
+      tableState.history = { page: 1, data: null };
+      tableState.deposits = { month: 0, data: null };
+    }
+
+    function showLoadingProgress() {
+      const progressMessages = [
+        "Loading player data...",
+        "Calculating deposits...", 
+        "Analyzing activity...",
+        "Finalizing dashboard..."
+      ];
+      
+      let current = 0;
+      loadingProgress.textContent = progressMessages[0];
+      
+      progressInterval = setInterval(() => {
+        current++;
+        if (current < progressMessages.length) {
+          loadingProgress.textContent = progressMessages[current];
+        } else {
+          clearInterval(progressInterval);
+        }
+      }, 800);
+    }
+
+    function renderDashboard(data) {
+      currentPageData = data;
+
+      const dash = document.getElementById('dashboardBoxes');
+      dash.style.display = 'block';
+      document.getElementById('tableContainer').style.display = 'block';
+
+      statsRow1.innerHTML = "";
+      statsRow2.innerHTML = "";
+      statsRow3.innerHTML = "";
+
+      document.getElementById('playerHistorySection').style.display = 'none';
+      document.getElementById('globalPlayerHistorySection').style.display = 'none';
+      clearPlayerHistory();
+      pageDepositsView.style.display = 'none';
+
+      // MODIFIED: Stat cards use routing instead of direct function calls
+      const firstRowBoxes = [
+        { label: "Total Players", value: data.counts.Total || 0, type: "total-players", icon: "fas fa-users", colorClass: "total" },
+        { label: "Active Players", value: data.counts.Active || 0, type: "active-players", icon: "fas fa-user-check", colorClass: "active" },
+        { label: "Inactive Players", value: data.counts.Inactive || 0, type: "inactive-players", icon: "fas fa-user-times", colorClass: "inactive" }
+      ];
+
+      const secondRowBoxes = [
+        { label: "Recent Active", value: data.counts.RecentActive || 0, type: "recent-active", icon: "fas fa-bolt", colorClass: "recent-active" },
+        { label: "Recent Inactive", value: data.counts.RecentInactive || 0, type: "recent-inactive", icon: "fas fa-clock", colorClass: "recent-inactive" },
+        { label: "High Risk Players", value: data.counts.HighRisk || 0, type: "high-risk", icon: "fas fa-exclamation-triangle", colorClass: "high-risk" }
+      ];
+
+      const thirdRowBoxes = [
+        { label: "Player History", value: "", type: "player-history", icon: "fas fa-history", colorClass: "history" },
+        { label: "Page Deposits", value: "", type: "page-deposit", icon: "fas fa-money-bill-wave", colorClass: "deposits" },
+        { label: "Coming Soon", value: "", type: "ComingSoon2", icon: "fas fa-cogs", colorClass: "coming-soon" }
+      ];
+
+      firstRowBoxes.forEach(b => {
+        const div = document.createElement('div');
+        div.className = `stat-card ${b.colorClass}`;
+
+        let displayValue = (b.value === "" || b.value === undefined || b.value === null) ? 0 : b.value;
+
+        div.innerHTML = `
+          <div class="stat-icon">
+            <i class="${b.icon}"></i>
+          </div>
+          <div class="stat-value">${displayValue}</div>
+          <div class="stat-label">${b.label}</div>
+        `;
+
+        div.onclick = () => goToRoute(`/${b.type}`, { page: selectedPage });
+        statsRow1.appendChild(div);
+      });
+
+      secondRowBoxes.forEach(b => {
+        const div = document.createElement('div');
+        div.className = `stat-card ${b.colorClass}`;
+
+        let displayValue = (b.value === "" || b.value === undefined || b.value === null) ? 0 : b.value;
+
+        div.innerHTML = `
+          <div class="stat-icon">
+            <i class="${b.icon}"></i>
+          </div>
+          <div class="stat-value">${displayValue}</div>
+          <div class="stat-label">${b.label}</div>
+        `;
+
+        div.onclick = () => goToRoute(`/${b.type}`, { page: selectedPage });
+        statsRow2.appendChild(div);
+      });
+
+      thirdRowBoxes.forEach(b => {
+        const div = document.createElement('div');
+        div.className = `stat-card ${b.colorClass}`;
+
+        let displayValue = (b.type === "player-history" || b.type === "page-deposit" || b.type.startsWith("ComingSoon")) ? "" : (b.value === "" || b.value === undefined || b.value === null) ? 0 : b.value;
+
+        let comingSoonBadge = '';
+        if (b.type.startsWith("ComingSoon")) {
+          comingSoonBadge = '<div class="coming-soon-badge">Coming Soon</div>';
+        }
+
+        div.innerHTML = `
+          ${comingSoonBadge}
+          <div class="stat-icon">
+            <i class="${b.icon}"></i>
+          </div>
+          <div class="stat-value">${displayValue}</div>
+          <div class="stat-label">
+            ${b.label}
+          </div>
+        `;
+
+        if (b.type.startsWith("ComingSoon")) {
+          div.onclick = () => showNotification('This feature is coming soon!', 'warning');
+        } else {
+          div.onclick = () => goToRoute(`/${b.type}`, { page: selectedPage });
+        }
+        statsRow3.appendChild(div);
+      });
+
+      document.getElementById('tableContainer').innerHTML = "";
+      clearBackContainer();
+      document.getElementById('playerHistorySection').style.display = 'none';
+      document.getElementById('globalPlayerHistorySection').style.display = 'none';
+      
+      document.getElementById('dashboard').style.display = 'block';
+      
+      sessionStorage.removeItem('searchPlayerName');
+      sessionStorage.removeItem('searchPlayerPage');
+      sessionStorage.removeItem('currentSearchedPlayer');
+    }
+
+    // MODIFIED: Uses routing context instead of direct function
+    function showBoxData(type) {
+      // This function is now called from routing handlers
+      // Keeping it for backward compatibility with table pagination
+      const tbl = document.getElementById('tableContainer');
+      const backDiv = document.getElementById('backContainer');
+      tbl.innerHTML = "";
+      document.getElementById('playerHistorySection').style.display = 'none';
+      document.getElementById('globalPlayerHistorySection').style.display = 'none';
+      pageDepositsView.style.display = 'none';
+
+      tableState.current.type = type;
+      tableState.current.title = getTableTitle(type);
+
+      backDiv.innerHTML = '<button class="btn btn-secondary" onclick="backToDashboard()"><i class="fas fa-arrow-left"></i> Back to Dashboard</button>';
+      
+      let filtered = [];
+      let tableTitle = getTableTitle(type);
+      
+      switch(type) {
+        case "Total": 
+          filtered = currentPageData.players; 
+          break;
+        case "Active": 
+          filtered = currentPageData.players.filter(p => p.status === "Active"); 
+          break;
+        case "Inactive": 
+          filtered = currentPageData.players.filter(p => p.status === "Inactive" && p.daysSince >= 15); 
+          break;
+        case "RecentActive": 
+          filtered = currentPageData.recentActivePlayers || []; 
+          break;
+        case "RecentInactive": 
+          filtered = currentPageData.recentInactivePlayers || []; 
+          break;
+        case "HighRisk": 
+          if (currentPageData.highRiskPlayers && currentPageData.highRiskPlayers.length > 0) {
+            renderHighRiskTable();
+            return;
+          } else {
+            tbl.innerHTML = "<div class='table-container' style='text-align: center; padding: 2rem;'><p>No high risk players found.</p></div>";
+          }
+          break;
+      }
+
+      if (!filtered.length) {
+        tbl.innerHTML = `<div class='table-container' style='text-align: center; padding: 2rem;'><p>No ${type.toLowerCase()} players found.</p></div>`;
+      } else {
+        renderPlayerTable(filtered, tableTitle, type);
+      }
+
+      currentView = 'table';
+    }
+
+    function getTableTitle(type) {
+      switch(type) {
+        case "Total": return "All Players";
+        case "Active": return "Active Players (0-2 days)";
+        case "Inactive": return "Inactive Players (15+ days)";
+        case "RecentActive": return "Recent Active Players";
+        case "RecentInactive": return "Recent Inactive Players (3-4 days)";
+        case "HighRisk": return "High Risk Players Analysis";
+        default: return "Players";
+      }
+    }
+
+    function renderPlayerTable(players, title, type) {
+      const totalPlayers = players.length;
+      const currentPage = tableState.playerTables[type].page;
+      const paginatedPlayers = getPaginatedPlayers(players, currentPage, PLAYERS_PER_PAGE);
+      
+      let html = `
+        <div class="table-container">
+          <div class="table-header">
+            <h3 class="table-title">${title} (${totalPlayers} total)</h3>
+            <div id="paginationContainer"></div>
+          </div>
+          <div class="table-scroll-container">
+            <table style="font-size: 0.875rem;">
+              <thead>
+                <tr>
+                  <th style="min-width: 50px; text-align: center;">S.No</th>
+                  <th style="min-width: 120px;">Player</th>
+                  <th style="min-width: 140px;">Last Deposit</th>
+                  <th style="min-width: 100px;">Time Since</th>
+                  <th style="min-width: 80px;">Status</th>
+                  <th style="min-width: 90px; text-align: center;">Total $</th>
+                  <th style="min-width: 90px; text-align: center;">Last 7d $</th>
+                  ${type === "RecentActive" ? '<th style="min-width: 80px;">Gap Days</th>' : ''}
+                  <th style="min-width: 90px; text-align: center;">Notes</th>
+                </tr>
+              </thead>
+              <tbody>
+      `;
+      
+      paginatedPlayers.forEach((p, index) => {
+        const cls = p.status === "Active" ? "status-active" : "status-inactive";
+        
+        const gapDisplay = formatTimeSince(p.originalTimestamp);
+        const gapDays = p.gapDays ? p.gapDays : 'N/A';
+        
+        const notesBtnClass = p.hasNotes ? 'notes-btn has-notes' : 'notes-btn';
+        const notesBtnIcon = p.hasNotes ? 'fa-sticky-note' : 'fa-plus';
+        const notesBtnText = p.hasNotes ? 'Notes' : 'Add';
+        
+        const serialNumber = (currentPage - 1) * PLAYERS_PER_PAGE + index + 1;
+        
+        html += `
+          <tr>
+            <td style="text-align: center;">${serialNumber}</td>
+            <td>${p.player}</td>
+            <td>${p.lastDeposit}</td>
+            <td>${gapDisplay}</td>
+            <td><span class="status-badge ${cls}">${p.status}</span></td>
+            <td style="text-align: center;">${p.totalDeposit || 0}</td>
+            <td style="text-align: center;">${p.last7DaysDeposit || 0}</td>
+            ${type === "RecentActive" ? `<td style="text-align: center;">${gapDays}</td>` : ''}
+            <td style="text-align: center;">
+              <button class="${notesBtnClass}" onclick="showNotesModal('${p.player.replace(/'/g, "\\'")}', this)" title="${p.hasNotes ? 'View notes' : 'Add note'}">
+                <i class="fas ${notesBtnIcon}"></i> ${notesBtnText}
+              </button>
+            </td>
+          </tr>
+        `;
+      });
+      
+      html += `
+              </tbody>
+            </table>
+          </div>
+        </div>
+      `;
+      
+      document.getElementById('tableContainer').innerHTML = html;
+      
+      const paginationContainer = document.getElementById('paginationContainer');
+      renderPagination(totalPlayers, currentPage, PLAYERS_PER_PAGE, paginationContainer, `changePlayerPage_${type}`);
+    }
+
+    function renderHighRiskTable() {
+      const highRiskPlayers = currentPageData.highRiskPlayers;
+      const totalPlayers = highRiskPlayers.length;
+      const currentPage = tableState.highRisk.page;
+      const paginatedPlayers = getPaginatedPlayers(highRiskPlayers, currentPage, PLAYERS_PER_PAGE);
+      
+      let html = `
+        <div class="table-container">
+          <div class="table-header">
+            <h3 class="table-title">High Risk Players Analysis (${totalPlayers} total)</h3>
+            <div id="paginationContainer"></div>
+          </div>
+          <div class="table-scroll-container">
+            <table class="high-risk-table">
+              <thead>
+                <tr>
+                  <th style="text-align: center;">S.No</th>
+                  <th>Player</th>
+                  <th>Risk</th>
+                  <th>Gaps</th>
+                  <th>Gap Details</th>
+                  <th>Last Deposit</th>
+                  <th>Time Since</th>
+                  <th>Status</th>
+                  <th>Deposits</th>
+                  <th>Notes</th>
+                </tr>
+              </thead>
+              <tbody>
+      `;
+      
+      paginatedPlayers.forEach((p, index) => {
+        const statusClass = p.currentStatus === "Active" ? "status-active" : "status-inactive";
+        
+        const lastDepositPKT = convertUTCToPKT(p.lastDeposit);
+        const gapDisplay = formatTimeSince(p.lastDeposit);
+        
+        let gapDetails = '';
+        p.gaps.forEach((gap, gapIndex) => {
+          gapDetails += `
+            <div class="gap-item">
+              <strong>${gap.gapDays}d</strong>: ${gap.gapBetween}
+            </div>
+          `;
+        });
+        
+        let riskClass = '';
+        if (p.riskLevel === "Very High") riskClass = 'risk-very-high';
+        else if (p.riskLevel === "High") riskClass = 'risk-high';
+        else if (p.riskLevel === "Medium") riskClass = 'risk-medium';
+        else if (p.riskLevel === "Low") riskClass = 'risk-low';
+        
+        const notesBtnClass = p.hasNotes ? 'notes-btn has-notes' : 'notes-btn';
+        const notesBtnIcon = p.hasNotes ? 'fa-sticky-note' : 'fa-plus';
+        const notesBtnText = p.hasNotes ? 'Notes' : 'Add';
+        
+        const serialNumber = (currentPage - 1) * PLAYERS_PER_PAGE + index + 1;
+        
+        html += `
+          <tr>
+            <td style="text-align: center;">${serialNumber}</td>
+            <td><strong>${p.player}</strong></td>
+            <td class="${riskClass}"><strong>${p.riskLevel}</strong></td>
+            <td style="text-align: center;">${p.totalQualifyingGaps}</td>
+            <td>
+              <div class="gap-details-compact">
+                ${gapDetails}
+              </div>
+            </td>
+            <td>${lastDepositPKT}</td>
+            <td>${gapDisplay}</td>
+            <td><span class="status-badge ${statusClass}">${p.currentStatus}</span></td>
+            <td style="text-align: center;">${p.totalDeposits}</td>
+            <td>
+              <button class="${notesBtnClass}" onclick="showNotesModal('${p.player.replace(/'/g, "\\'")}', this)" title="${p.hasNotes ? 'View notes' : 'Add note'}">
+                <i class="fas ${notesBtnIcon}"></i> ${notesBtnText}
+              </button>
+            </td>
+          </tr>
+        `;
+      });
+      
+      html += `
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div style="margin-top: 1.5rem; background: var(--bg-card); padding: 1.5rem; border-radius: 12px; box-shadow: var(--shadow); border: 1px solid var(--border-color);">
+          <h4 style="color: var(--text-primary); margin-bottom: 1rem;">Risk Level Explanation</h4>
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-top: 1rem;">
+            <div><span class="risk-very-high">🔴 Very High</span>: 3+ gaps OR 12+ day gap</div>
+            <div><span class="risk-high">🟠 High</span>: 2+ gaps OR 10+ day gap</div>
+            <div><span class="risk-medium">🟡 Medium</span>: 1 gap with 8+ days</div>
+            <div><span class="risk-low">🟢 Low</span>: Single smaller gaps</div>
+          </div>
+          <div style="margin-top: 1rem; padding: 1rem; background: var(--bg-secondary); border-radius: 8px; border: 1px solid var(--border-color);">
+            <p style="color: var(--text-primary); font-weight: 500; font-size: 0.9rem;">Note: High Risk players include those with gaps from 5 to 14 days 23 hours 59 minutes. Players with 15+ day gaps are moved to Inactive.</p>
+          </div>
+        </div>
+      `;
+      
+      document.getElementById('tableContainer').innerHTML = html;
+      
+      const paginationContainer = document.getElementById('paginationContainer');
+      renderPagination(totalPlayers, currentPage, PLAYERS_PER_PAGE, paginationContainer, 'changeHighRiskPage');
+    }
+
+    // MODIFIED: Table pagination functions updated for routing
+    function createPlayerPageChangeFunction(type) {
+      return function(page) {
+        tableState.playerTables[type].page = page;
+        
+        // Update URL with page parameter
+        const currentParams = routeParams;
+        currentParams.page = selectedPage;
+        goToRoute(`/${type}`, currentParams);
+      };
+    }
+
+    const changePlayerPage_Total = createPlayerPageChangeFunction('total-players');
+    const changePlayerPage_Active = createPlayerPageChangeFunction('active-players');
+    const changePlayerPage_Inactive = createPlayerPageChangeFunction('inactive-players');
+    const changePlayerPage_RecentActive = createPlayerPageChangeFunction('recent-active');
+    const changePlayerPage_RecentInactive = createPlayerPageChangeFunction('recent-inactive');
+
+    function changeHighRiskPage(page) {
+      tableState.highRisk.page = page;
+      const currentParams = routeParams;
+      currentParams.page = selectedPage;
+      goToRoute('/high-risk', currentParams);
+    }
+
+    async function showPageDeposits() {
+      tableState.deposits.month = routeParams.month || 0;
+      
+      document.getElementById('tableContainer').innerHTML = '';
+      document.getElementById('playerHistorySection').style.display = 'none';
+      document.getElementById('globalPlayerHistorySection').style.display = 'none';
+      document.getElementById('backContainer').innerHTML = '';
+      
+      pageDepositsView.innerHTML = `
+        <div style="text-align: center; padding: 2rem;">
+          <div class="spinner"></div>
+          <p style="margin-top: 1rem; color: var(--text-secondary);">Loading daily deposits data...</p>
+        </div>
+      `;
+      pageDepositsView.style.display = 'block';
+      
+      await loadPageDepositsData();
+    }
+
+    async function loadPageDepositsData() {
+      try {
+        const data = await getPageDailyDeposits(selectedPage, tableState.deposits.month);
+        renderPageDeposits(data);
+      } catch (error) {
+        pageDepositsView.innerHTML = `
+          <div style="text-align: center; padding: 2rem; color: var(--danger);">
+            <p><strong>Error loading daily deposits:</strong></p>
+            <p style="margin-top: 1rem; color: var(--text-secondary);">${error}</p>
+          </div>
+        `;
+      }
+    }
+
+    async function changePageDepositsMonth(page) {
+      // Update URL with month parameter
+      const currentParams = routeParams;
+      currentParams.page = selectedPage;
+      currentParams.month = page - 1;
+      goToRoute('/page-deposit', currentParams);
+    }
+
+    function closePageDeposits() {
+      pageDepositsView.style.display = 'none';
+      tableState.deposits.month = 0;
+      goToRoute('/dashboard', { page: selectedPage });
+    }
+
+    function renderPageDeposits(data) {
+  if (!data.success || !data.dailyDeposits || data.dailyDeposits.length === 0) {
+    pageDepositsView.innerHTML = `
+      <div class="page-deposits-view">
+        <div class="deposits-header">
+          <h2 class="deposits-title">Daily Deposits - ${selectedPage}</h2>
+          <button class="close-deposits-btn" onclick="closePageDeposits()" title="Close">
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+        <div style="text-align: center; padding: 2rem; color: var(--text-secondary);">
+          <p>${data.message || "No daily deposit data available."}</p>
+        </div>
+      </div>
+    `;
+    return;
+  }
+
+  const totalDaysInPeriod = data.dailyDeposits.length;
+  const dailyAverage = totalDaysInPeriod > 0 ? data.totalAmount / totalDaysInPeriod : 0;
+
+  let html = `
+    <div class="page-deposits-view">
+      <div class="deposits-header">
+        <h2 class="deposits-title">Daily Deposits - ${selectedPage}</h2>
+        <button class="close-deposits-btn" onclick="closePageDeposits()" title="Close">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      
+      <div style="margin-bottom: 1.5rem;">
+        <h4 style="color: var(--text-primary); margin-bottom: 1rem; text-align: center;">${data.currentMonth}</h4>
+  `;
+
+  if (data.monthlyComparison) {
+    const comparison = data.monthlyComparison;
+    const comparisonClass = comparison.direction === 'up' ? 'up' : comparison.direction === 'down' ? 'down' : 'same';
+    const arrow = comparison.direction === 'up' ? '🔼' : comparison.direction === 'down' ? '🔽' : '⚪';
+    
+    html += `
+      <div class="monthly-comparison ${comparisonClass}">
+        ${arrow} $${Math.abs(comparison.difference).toFixed(2)} vs ${comparison.previousMonth} (${comparison.direction === 'up' ? '+' : ''}${comparison.percentage}%)
+      </div>
+    `;
+  }
+
+  html += `
+      <div class="monthly-summary">
+        <div class="summary-card">
+          <div class="summary-value">$${data.totalAmount.toFixed(2)}</div>
+          <div class="summary-label">Total Amount</div>
+        </div>
+        <div class="summary-card">
+          <div class="summary-value">${data.totalTransactions}</div>
+          <div class="summary-label">Total Transactions</div>
+        </div>
+        <div class="summary-card">
+          <div class="summary-value">${totalDaysInPeriod}</div>
+          <div class="summary-label">Total Days</div>
+        </div>
+        <div class="summary-card">
+          <div class="summary-value">$${dailyAverage.toFixed(2)}</div>
+          <div class="summary-label">Daily Average</div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="table-container">
+      <div class="table-header">
+        <h3 class="table-title">Daily Deposit Breakdown - ${data.currentMonth}</h3>
+        <div class="pagination-controls">
+          <div class="pagination-info">
+            Page ${data.currentPage} of ${data.totalPages}
+          </div>
+          <div class="pagination-buttons" id="pageDepositsPaginationContainer"></div>
+        </div>
+      </div>
+      <div class="table-scroll-container">
+        <table class="daily-deposits-table">
+          <thead>
+            <tr>
+              <th style="text-align: left; min-width: 120px;">Date</th>
+              <th style="text-align: right; min-width: 100px;">Amount</th>
+              <th style="text-align: center; min-width: 100px;">Transactions</th>
+              <th style="text-align: center; min-width: 140px;">Daily Trend</th>
+            </tr>
+          </thead>
+          <tbody>
+  `;
+
+  data.dailyDeposits.forEach(day => {
+    let trendHtml = '-';
+    if (day.trend) {
+      const trendClass = day.trend.direction === 'up' ? 'trend-up' : day.trend.direction === 'down' ? 'trend-down' : 'trend-same';
+      const arrow = day.trend.direction === 'up' ? '🔼' : day.trend.direction === 'down' ? '🔽' : '⚪';
+      const sign = day.trend.direction === 'up' ? '+' : '';
+      
+      trendHtml = `
+        <span class="${trendClass}">
+          ${arrow} $${Math.abs(day.trend.difference).toFixed(2)} (${sign}${day.trend.percentage}%)
+        </span>
+      `;
+    }
+
+    const amountClass = day.totalAmount > 0 ? 'amount-cell positive' : 'amount-cell zero';
+    const amountDisplay = day.totalAmount > 0 ? '$' + day.totalAmount.toFixed(2) : '$0.00';
+    
+    html += `
+      <tr>
+        <td style="text-align: left;">${day.displayDate}</td>
+        <td class="${amountClass}">${amountDisplay}</td>
+        <td class="count-cell">${day.transactionCount}</td>
+        <td class="trend-cell">${trendHtml}</td>
+      </tr>
+    `;
+  });
+
+  html += `
+            <tr class="total-row">
+              <td style="text-align: left;"><strong>TOTAL</strong></td>
+              <td class="amount-cell positive"><strong>$${data.totalAmount.toFixed(2)}</strong></td>
+              <td class="count-cell"><strong>${data.totalTransactions}</strong></td>
+              <td class="trend-cell">-</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    
+    <div style="margin-top: 1.5rem; background: var(--bg-secondary); padding: 1rem; border-radius: 8px; border: 1px solid var(--border-color);">
+      <p style="color: var(--text-primary); font-size: 0.9rem; text-align: center;">
+        <i class="fas fa-info-circle"></i> Showing ${data.dailyDeposits.length} day(s) for ${data.currentMonth}
+        ${data.monthlyComparison ? ` | Compared to ${data.monthlyComparison.previousMonth}` : ''}
+      </p>
+    </div>
+  `;
+
+  pageDepositsView.innerHTML = html;
+
+  const paginationContainer = document.getElementById('pageDepositsPaginationContainer');
+  if (data.totalPages > 1) {
+    renderPagination(data.totalPages, data.currentPage, 1, paginationContainer, 'changePageDepositsMonth');
+  }
+}
+
+    // FIXED: Enhanced Player History Rendering Function with proper timezone handling
+    function renderEnhancedPlayerHistory(data, playerName, pageName, isGlobal = false) {
+      const container = isGlobal ? 
+        document.getElementById('globalPlayerHistoryContainer') : 
+        document.getElementById('playerHistoryContainer');
+      
+      if (!data.enhancedHistory || data.enhancedHistory.length === 0) {
+        container.innerHTML = `
+          <div style="text-align: center; padding: 2rem; color: var(--text-secondary);">
+            <p>${data.message || "No enhanced history available for this player."}</p>
+          </div>
+        `;
+        return;
+      }
+
+      const pageObj = PAGES.find(p => p.name === pageName);
+      const pageEmoji = pageObj ? pageObj.emoji : '📄';
+      const currentStatus = data.currentStatus || "Unknown";
+      const isCurrentlyActive = currentStatus === "Active";
+
+      const reversedHistory = [...data.enhancedHistory].reverse();
+      const totalEntries = reversedHistory.length;
+      const startIndex = (tableState.history.page - 1) * PLAYERS_PER_PAGE;
+      const endIndex = Math.min(startIndex + PLAYERS_PER_PAGE, totalEntries);
+      const paginatedHistory = reversedHistory.slice(startIndex, endIndex);
+
+      let html = `
+        <div style="background: var(--bg-secondary); padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem; border: 1px solid var(--border-color);">
+          <div style="font-size: 0.875rem; color: var(--text-secondary); margin-bottom: 0.5rem; font-weight: 500;">
+            <i class="fas fa-layer-group"></i> Player on ${isGlobal ? 'Page' : 'Current Page'}:
+          </div>
+          <div style="display: flex; align-items: center; gap: 0.5rem;">
+            <span style="font-size: 1.2rem;">${pageEmoji}</span>
+            <span style="font-weight: 600; color: var(--text-primary);">${pageName}</span>
+          </div>
+          <div style="margin-top: 0.5rem; font-size: 0.875rem; color: var(--text-primary);">
+            <i class="fas fa-user"></i> Player: <strong>${playerName}</strong>
+          </div>
+        </div>
+        
+        <div class="current-status ${isCurrentlyActive ? 'status-active-bg' : 'status-inactive-bg'}">
+          <i class="fas ${isCurrentlyActive ? 'fa-check-circle' : 'fa-times-circle'}"></i>
+          Player is currently ${currentStatus} on ${pageName}
+        </div>
+        
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 2rem;">
+          <div style="background: var(--bg-secondary); padding: 1rem; border-radius: 8px; text-align: center; border: 1px solid var(--border-color);">
+            <div style="font-size: 0.875rem; color: var(--text-secondary);">Total Deposits</div>
+            <div style="font-size: 1.5rem; font-weight: 600; color: var(--text-primary);">${data.rawDeposits || 0}</div>
+          </div>
+          <div style="background: var(--bg-secondary); padding: 1rem; border-radius: 8px; text-align: center; border: 1px solid var(--border-color);">
+            <div style="font-size: 0.875rem; color: var(--text-secondary);">Deposit Days</div>
+            <div style="font-size: 1.5rem; font-weight: 600; color: var(--text-primary);">${data.totalDepositDays || 0}</div>
+          </div>
+          <div style="background: var(--bg-secondary); padding: 1rem; border-radius: 8px; text-align: center; border: 1px solid var(--border-color);">
+            <div style="font-size: 0.875rem; color: var(--text-secondary);">Time Since Last</div>
+            <div style="font-size: 1rem; font-weight: 600; color: var(--text-primary);">${data.timeSinceDisplay || 'N/A'}</div>
+          </div>
+          <div style="background: var(--bg-secondary); padding: 1rem; border-radius: 8px; text-align: center; border: 1px solid var(--border-color);">
+            <div style="font-size: 0.875rem; color: var(--text-secondary);">Total Amount</div>
+            <div style="font-size: 1rem; font-weight: 600; color: var(--text-primary);">$${(data.totalAmount || 0).toFixed(2)}</div>
+          </div>
+        </div>
+        
+        <div class="table-container">
+          <div class="table-header">
+            <h3 class="table-title">Complete Activity Timeline (Latest First) - Showing ALL Deposits</h3>
+            <div class="pagination-controls">
+              <div class="pagination-info">
+                Showing ${startIndex + 1}-${endIndex} of ${totalEntries} periods
+              </div>
+              <div class="pagination-buttons" id="historyPaginationContainer"></div>
+            </div>
+          </div>
+          <div class="table-scroll-container">
+            <table class="enhanced-history-table">
+              <thead>
+                <tr>
+                  <th style="text-align: left;">Date / Period</th>
+                  <th style="text-align: left;">Activity Details</th>
+                  <th style="text-align: center;">Status</th>
+                  <th style="text-align: center;">Inactive Gap</th>
+                  <th style="text-align: left;">Activity Level</th>
+                </tr>
+              </thead>
+              <tbody>
+      `;
+
+      paginatedHistory.forEach(period => {
+        const isActive = period.status === 'Active';
+        const rowClass = isActive ? 'active-row' : 'inactive-row';
+        const statusBadge = isActive ? 
+          '<span class="status-badge status-active">Active</span>' : 
+          '<span class="status-badge status-inactive">Inactive</span>';
+        
+        let gapDisplay = '-';
+        let gapClass = '';
+        
+        if (period.inactiveGap > 0) {
+          gapDisplay = `${period.inactiveGap} day${period.inactiveGap > 1 ? 's' : ''}`;
+          if (period.inactiveGap >= 7) gapClass = 'gap-high';
+          else if (period.inactiveGap >= 4) gapClass = 'gap-medium';
+          else gapClass = 'gap-low';
+        }
+
+        let activityDisplay = period.activity;
+        if (isActive && period.depositCount > 0) {
+          const amountText = period.totalAmount > 0 ? ` - $${period.totalAmount.toFixed(2)}` : '';
+          activityDisplay = `${period.depositCount} deposit${period.depositCount > 1 ? 's' : ''}${amountText}`;
+        }
+
+        html += `
+          <tr class="${rowClass}">
+            <td class="date-range-cell" style="text-align: left;">${period.dateRange}</td>
+            <td style="text-align: left;">
+              <div style="font-weight: 500;">${activityDisplay}</div>
+              ${isActive && period.depositCount > 1 ? 
+                `<div style="font-size: 0.8rem; color: var(--text-secondary); margin-top: 0.25rem;">
+                  <i class="fas fa-coins"></i> Multiple transactions this day
+                </div>` : ''
+              }
+            </td>
+            <td style="text-align: center;">${statusBadge}</td>
+            <td class="gap-cell" style="text-align: center;"><span class="${gapClass}">${gapDisplay}</span></td>
+            <td style="text-align: left;">
+              ${period.activityLevel === 'Multiple' ? 
+                '<span style="color: var(--success);"><i class="fas fa-bolt"></i> High Activity</span>' :
+               period.activityLevel === 'Single' ? 
+                '<span style="color: var(--info);"><i class="fas fa-check"></i> Normal</span>' :
+                '<span style="color: var(--text-secondary);"><i class="fas fa-moon"></i> No Activity</span>'
+              }
+            </td>
+          </tr>
+        `;
+      });
+
+      html += `
+          </tbody>
+        </table>
+      </div>
+    </div>
+  `;
+
+  container.innerHTML = html;
+
+  const paginationContainer = document.getElementById('historyPaginationContainer');
+  renderPagination(totalEntries, tableState.history.page, PLAYERS_PER_PAGE, paginationContainer, 'changeHistoryPage');
+}
+
+    function changeHistoryPage(page) {
+      tableState.history.page = page;
+      
+      const playerName = routeParams.player || sessionStorage.getItem('currentSearchedPlayer');
+      const pageName = routeParams.page || selectedPage;
+      const isGlobal = routeParams.global === 'true' || !!sessionStorage.getItem('searchPlayerName');
+      
+      if (isGlobal) {
+        showEnhancedGlobalPlayerHistory(playerName, pageName);
+      } else {
+        showEnhancedPlayerHistoryForCurrentPage(playerName, pageName);
+      }
+    }
+
+    // Notes Modal Functions
+    async function showNotesModal(playerName, buttonElement) {
+      currentNotesPlayer = playerName;
+      currentNotesPlayerName = playerName;
+      currentNotesButton = buttonElement;
+      
+      notesModalTitle.textContent = `Notes for ${playerName}`;
+      noteTextInput.value = '';
+      
+      await loadPlayerNotes(playerName);
+      
+      notesModal.style.display = 'block';
+      noteTextInput.focus();
+    }
+
+    function hideNotesModal() {
+      notesModal.style.display = 'none';
+      currentNotesPlayer = null;
+      currentNotesPlayerName = null;
+      currentNotesButton = null;
+      noteTextInput.value = '';
+    }
+
+    async function loadPlayerNotes(playerName) {
+      notesList.innerHTML = '<div class="no-notes">Loading notes...</div>';
+      
+      try {
+        const result = await getPlayerNotes(selectedPage, playerName);
+        if (result.success && result.notes.length > 0) {
+          let notesHtml = '';
+          result.notes.forEach(note => {
+            const formattedDate = convertUTCToPKT(note.timestamp);
+            
+            notesHtml += `
+              <div class="note-item">
+                <div class="note-timestamp">
+                  <i class="fas fa-clock"></i> ${formattedDate}
+                </div>
+                <div class="note-text">${note.note}</div>
+              </div>
+            `;
+          });
+          notesList.innerHTML = notesHtml;
+        } else {
+          notesList.innerHTML = '<div class="no-notes">No notes yet for this player.</div>';
+        }
+      } catch (error) {
+        notesList.innerHTML = '<div class="no-notes">Error loading notes.</div>';
+        console.error('Error loading notes:', error);
+      }
+    }
+
+    async function savePlayerNote() {
+      const noteText = noteTextInput.value.trim();
+      
+      if (!noteText) {
+        showNotification('Please enter a note before saving', 'error');
+        return;
+      }
+      
+      saveNoteBtn.disabled = true;
+      saveNoteBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...';
+      
+      try {
+        const result = await addPlayerNote(selectedPage, currentNotesPlayer, noteText);
+        if (result.success) {
+          showNotification('Note saved successfully!', 'success');
+          noteTextInput.value = '';
+          await loadPlayerNotes(currentNotesPlayer);
+          
+          if (currentNotesButton) {
+            currentNotesButton.innerHTML = '<i class="fas fa-sticky-note"></i> Notes';
+            currentNotesButton.className = 'notes-btn has-notes';
+          }
+          
+          updateCurrentPageDataWithNote(currentNotesPlayer);
+        } else {
+          showNotification('Error saving note: ' + result.message, 'error');
+        }
+      } catch (error) {
+        showNotification('Error saving note: ' + error, 'error');
+      } finally {
+        saveNoteBtn.disabled = false;
+        saveNoteBtn.innerHTML = '<i class="fas fa-save"></i> Save Note';
+      }
+    }
+
+    function updateCurrentPageDataWithNote(playerName) {
+      if (!currentPageData) return;
+      
+      currentPageData.players.forEach(player => {
+        if (player.player === playerName) {
+          player.hasNotes = true;
+        }
+      });
+      
+      if (currentPageData.recentActivePlayers) {
+        currentPageData.recentActivePlayers.forEach(player => {
+          if (player.player === playerName) {
+            player.hasNotes = true;
+          }
+        });
+      }
+      
+      if (currentPageData.recentInactivePlayers) {
+        currentPageData.recentInactivePlayers.forEach(player => {
+          if (player.player === playerName) {
+            player.hasNotes = true;
+          }
+        });
+      }
+      
+      if (currentPageData.highRiskPlayers) {
+        currentPageData.highRiskPlayers.forEach(player => {
+          if (player.player === playerName) {
+            player.hasNotes = true;
+          }
+        });
+      }
+    }
+
+    // Modal functions
+    function showRefreshModal() {
+      if (refreshBtn.disabled) return;
+      refreshPinInput.value = '';
+      refreshModal.style.display = 'block';
+      refreshPinInput.focus();
+    }
+
+    function hideRefreshModal() {
+      refreshModal.style.display = 'none';
+      refreshPinInput.value = '';
+    }
+
+    function showCleanupModal() {
+      if (forceCleanupBtn.disabled) return;
+      cleanupPinInput.value = '';
+      cleanupModal.style.display = 'block';
+      cleanupPinInput.focus();
+    }
+
+    function hideCleanupModal() {
+      cleanupModal.style.display = 'none';
+      cleanupPinInput.value = '';
+    }
+
+    // Updated refresh function
+    async function confirmRefresh() {
+      const pin = refreshPinInput.value.trim();
+      if (!pin) {
+        showNotification('Please enter PIN', 'error');
+        return;
+      }
+      
+      if (pin !== AUTH_PIN) {
+        showNotification('Invalid PIN', 'error');
+        return;
+      }
+      
+      hideRefreshModal();
+      disableAllButtons();
+      refreshBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Refreshing...';
+      showLoader();
+      
+      try {
+        // Call refresh_player_status with empty parameters
+        const { data, error } = await supabase.rpc('refresh_player_status', {});
+        
+        if (error) throw error;
+        
+        if (data && data.success) {
+          showNotification(data.message, 'success');
+          await loadDashboardData();
+        } else {
+          showNotification('Refresh failed: ' + (data?.message || 'Unknown error'), 'error');
+        }
+      } catch (error) {
+        showNotification('Error refreshing data: ' + error.message, 'error');
+      } finally {
+        refreshBtn.innerHTML = '<i class="fas fa-sync-alt"></i> Refresh Data';
+        enableAllButtons();
+      }
+    }
+
+    async function confirmForceCleanup() {
+      const pin = cleanupPinInput.value.trim();
+      if (!pin) {
+        showNotification('Please enter PIN', 'error');
+        return;
+      }
+      
+      if (pin !== AUTH_PIN) {
+        showNotification('Invalid PIN', 'error');
+        return;
+      }
+      
+      hideCleanupModal();
+      disableAllButtons();
+      forceCleanupBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Cleaning...';
+      showLoader();
+      
+      try {
+        // Call force_cleanup with empty parameters
+        const { data, error } = await supabase.rpc('force_cleanup', {});
+        
+        if (error) throw error;
+        
+        if (data && data.success) {
+          showNotification(data.message, 'warning');
+          await loadDashboardData();
+        } else {
+          showNotification('Cleanup failed: ' + (data?.message || 'Unknown error'), 'error');
+        }
+      } catch (error) {
+        showNotification('Error during cleanup: ' + error.message, 'error');
+      } finally {
+        forceCleanupBtn.innerHTML = '<i class="fas fa-broom"></i> Force Cleanup';
+        enableAllButtons();
+      }
+    }
+
+    function disableAllButtons() {
+      changePageBtn.disabled = true;
+      refreshBtn.disabled = true;
+      forceCleanupBtn.disabled = true;
+    }
+
+    function enableAllButtons() {
+      changePageBtn.disabled = false;
+      refreshBtn.disabled = false;
+      forceCleanupBtn.disabled = false;
+    }
+
+    // Event listeners
+    window.addEventListener('click', function(event) {
+      if (event.target === refreshModal) {
+        hideRefreshModal();
+      }
+      if (event.target === cleanupModal) {
+        hideCleanupModal();
+      }
+      if (event.target === notesModal) {
+        hideNotesModal();
+      }
+    });
+
+    refreshPinInput.addEventListener('keypress', function(event) {
+      if (event.key === 'Enter') {
+        confirmRefresh();
+      }
+    });
+
+    cleanupPinInput.addEventListener('keypress', function(event) {
+      if (event.key === 'Enter') {
+        confirmForceCleanup();
+      }
+    });
+
+    noteTextInput.addEventListener('keypress', function(event) {
+      if (event.key === 'Enter' && (event.ctrlKey || event.metaKey)) {
+        savePlayerNote();
+      }
+    });
+
+    document.addEventListener('click', function(event) {
+      if (!event.target.closest('.search-container')) {
+        pageSuggestions.innerHTML = '';
+        playerSuggestions.innerHTML = '';
+      }
+    });
+
+    // Theme detection
+    function detectTheme() {
+      const isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
+    }
+
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', detectTheme);
+    detectTheme();
+  </script>
+</body>
+</html>
