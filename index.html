@@ -1499,21 +1499,21 @@
 
   <script>
     // =============================================
-    // ROUTING SYSTEM - ADDED FOR MULTI-PAGE FUNCTIONALITY
+    // ROUTING SYSTEM - FIXED TYPE MAPPINGS
     // =============================================
 
     // Router configuration
     const ROUTES = {
       '/': 'landing',
       '/dashboard': 'dashboard',
-      '/total-players': 'totalPlayers',
-      '/active-players': 'activePlayers',
-      '/inactive-players': 'inactivePlayers',
-      '/recent-active': 'recentActive',
-      '/recent-inactive': 'recentInactive',
-      '/high-risk': 'highRisk',
-      '/player-history': 'playerHistory',
-      '/page-deposit': 'pageDeposit'
+      '/total-players': 'total-players',
+      '/active-players': 'active-players',
+      '/inactive-players': 'inactive-players',
+      '/recent-active': 'recent-active',
+      '/recent-inactive': 'recent-inactive',
+      '/high-risk': 'high-risk',
+      '/player-history': 'player-history',
+      '/page-deposit': 'page-deposit'
     };
 
     // State management for routing
@@ -1640,7 +1640,7 @@
     }
 
     // =============================================
-    // CENTRAL DATA MANAGEMENT SYSTEM - ADDED FIX
+    // CENTRAL DATA MANAGEMENT SYSTEM - FIXED
     // =============================================
 
     // Central function to update ALL data stores
@@ -1722,7 +1722,7 @@
     }
 
     // =============================================
-    // ROUTE HANDLERS - UPDATED WITH DATA MANAGEMENT
+    // ROUTE HANDLERS - UPDATED WITH FIXED TYPE MAPPINGS
     // =============================================
 
     function handleLandingRoute() {
@@ -1782,7 +1782,7 @@
         const data = await ensurePageDataLoaded(pageName);
         updatePageTitle();
         
-        showBoxData('Total');
+        showBoxData('total-players');
         currentView = 'table';
       } catch (error) {
         showNotification('Error loading players data: ' + error.message, 'error');
@@ -1805,7 +1805,7 @@
         const data = await ensurePageDataLoaded(pageName);
         updatePageTitle();
         
-        showBoxData('Active');
+        showBoxData('active-players');
         currentView = 'table';
       } catch (error) {
         showNotification('Error loading active players: ' + error.message, 'error');
@@ -1828,7 +1828,7 @@
         const data = await ensurePageDataLoaded(pageName);
         updatePageTitle();
         
-        showBoxData('Inactive');
+        showBoxData('inactive-players');
         currentView = 'table';
       } catch (error) {
         showNotification('Error loading inactive players: ' + error.message, 'error');
@@ -1851,7 +1851,7 @@
         const data = await ensurePageDataLoaded(pageName);
         updatePageTitle();
         
-        showBoxData('RecentActive');
+        showBoxData('recent-active');
         currentView = 'table';
       } catch (error) {
         showNotification('Error loading recent active players: ' + error.message, 'error');
@@ -1874,7 +1874,7 @@
         const data = await ensurePageDataLoaded(pageName);
         updatePageTitle();
         
-        showBoxData('RecentInactive');
+        showBoxData('recent-inactive');
         currentView = 'table';
       } catch (error) {
         showNotification('Error loading recent inactive players: ' + error.message, 'error');
@@ -1897,7 +1897,7 @@
         const data = await ensurePageDataLoaded(pageName);
         updatePageTitle();
         
-        showBoxData('HighRisk');
+        showBoxData('high-risk');
         currentView = 'table';
       } catch (error) {
         showNotification('Error loading high risk players: ' + error.message, 'error');
@@ -2994,14 +2994,6 @@
           currentDate.setUTCHours(0, 0, 0, 0);
         }
 
-        console.log(`Player ${playerName} timeline:`, {
-          firstDeposit: firstDepositDate.toISOString(),
-          lastDeposit: lastDepositDate.toISOString(),
-          todayPKT: todayPKT.toISOString(),
-          timelineDays: timeline.length,
-          depositsByDay: depositsByDay
-        });
-
         // Group consecutive days with same activity status
         let i = 0;
         while (i < timeline.length) {
@@ -3230,8 +3222,6 @@
         const [year, month] = currentMonth.split('-').map(Number);
         const daysInMonth = getDaysInMonth(year, month);
         
-        console.log(`Month: ${currentMonth}, Year: ${year}, Month: ${month}, Days in month: ${daysInMonth}`);
-        
         // FIXED: Create dates in PKT timezone from the beginning
         const currentMonthStart = new Date(Date.UTC(year, month - 1, 1, 0, 0, 0));
         const currentMonthEnd = new Date(Date.UTC(year, month - 1, daysInMonth, 23, 59, 59));
@@ -3263,13 +3253,6 @@
         
         // Start from the first day of the month in PKT
         let currentDate = new Date(currentMonthStart);
-        
-        // DEBUG: Log the date range we're generating
-        console.log(`Generating days for ${currentMonth}:`);
-        console.log(`Start (UTC): ${currentDate.toISOString()}`);
-        console.log(`End (UTC): ${actualEndDate.toISOString()}`);
-        console.log(`Days in month: ${daysInMonth}`);
-        console.log(`Is current month: ${isCurrentMonth}`);
         
         // FIXED: Generate dates using PKT-aware functions
         for (let day = 1; day <= daysInMonth; day++) {
@@ -3303,9 +3286,6 @@
             }
           }
         }
-        
-        console.log(`Generated ${dailyDepositsArray.length} days for ${currentMonth}`);
-        console.log(`Available dates:`, dailyDepositsArray.map(d => d.displayDate));
         
         // Sort by date descending (newest first)
         dailyDepositsArray.sort((a, b) => b.timestamp - a.timestamp);
@@ -3407,7 +3387,7 @@
     }
 
     // =============================================
-    // UI FUNCTIONS - UPDATED WITH DATA MANAGEMENT
+    // UI FUNCTIONS - FIXED WITH CORRECT TYPE MAPPINGS
     // =============================================
 
     // Initialize on load
@@ -3645,6 +3625,7 @@
       }
     }
 
+    // FIXED: This function now uses routing properly
     async function findPlayerForCurrentPage() {
       const playerName = document.getElementById('playerSearch').value.trim();
       if (!playerName) {
@@ -3684,7 +3665,7 @@
       }
     }
 
-    // MODIFIED: Uses routing instead of direct function call
+    // FIXED: Uses routing properly
     function findData() {
       const val = searchInput.value.trim();
       const pageObj = PAGES.find(p => p.name.toLowerCase() === val.toLowerCase());
@@ -3697,7 +3678,7 @@
       goToRoute('/dashboard', { page: pageObj.name });
     }
 
-    // MODIFIED: Back functions use routing
+    // FIXED: Back function uses routing
     function backToDashboard() {
       resetAllTableStates();
       clearPlayerHistory();
@@ -3744,6 +3725,7 @@
       }, 800);
     }
 
+    // FIXED: Type mapping in renderDashboard
     function renderDashboard(data) {
       const dash = document.getElementById('dashboardBoxes');
       dash.style.display = 'block';
@@ -3758,7 +3740,7 @@
       clearPlayerHistory();
       pageDepositsView.style.display = 'none';
 
-      // MODIFIED: Stat cards use routing instead of direct function calls
+      // FIXED: Route type mapping
       const firstRowBoxes = [
         { label: "Total Players", value: data.counts.Total || 0, type: "total-players", icon: "fas fa-users", colorClass: "total" },
         { label: "Active Players", value: data.counts.Active || 0, type: "active-players", icon: "fas fa-user-check", colorClass: "active" },
@@ -3776,6 +3758,18 @@
         { label: "Page Deposits", value: "", type: "page-deposit", icon: "fas fa-money-bill-wave", colorClass: "deposits" },
         { label: "Coming Soon", value: "", type: "ComingSoon2", icon: "fas fa-cogs", colorClass: "coming-soon" }
       ];
+
+      // FIXED: Route mapping for dashboard boxes
+      const routeMap = {
+        'Total': 'total-players',
+        'Active': 'active-players',
+        'Inactive': 'inactive-players',
+        'RecentActive': 'recent-active',
+        'RecentInactive': 'recent-inactive',
+        'HighRisk': 'high-risk',
+        'RecentActive': 'recent-active',
+        'RecentInactive': 'recent-inactive'
+      };
 
       firstRowBoxes.forEach(b => {
         const div = document.createElement('div');
@@ -3855,8 +3849,8 @@
       sessionStorage.removeItem('currentSearchedPlayer');
     }
 
-    // MODIFIED: Uses routing context instead of direct function
-    function showBoxData(type) {
+    // FIXED: showBoxData with proper type mapping
+    function showBoxData(routeType) {
       const tbl = document.getElementById('tableContainer');
       const backDiv = document.getElementById('backContainer');
       tbl.innerHTML = "";
@@ -3864,15 +3858,28 @@
       document.getElementById('globalPlayerHistorySection').style.display = 'none';
       pageDepositsView.style.display = 'none';
 
-      tableState.current.type = type;
-      tableState.current.title = getTableTitle(type);
+      // Map route type to table type
+      const typeMap = {
+        'total-players': 'Total',
+        'active-players': 'Active',
+        'inactive-players': 'Inactive',
+        'recent-active': 'RecentActive',
+        'recent-inactive': 'RecentInactive',
+        'high-risk': 'HighRisk'
+      };
+      
+      const tableType = typeMap[routeType] || routeType;
+      
+      tableState.current.type = tableType;
+      tableState.current.title = getTableTitle(routeType);
 
       backDiv.innerHTML = '<button class="btn btn-secondary" onclick="backToDashboard()"><i class="fas fa-arrow-left"></i> Back to Dashboard</button>';
       
       let filtered = [];
-      let tableTitle = getTableTitle(type);
+      let tableTitle = getTableTitle(routeType);
       
-      switch(type) {
+      // Use the tableType for filtering
+      switch(tableType) {
         case "Total": 
           filtered = currentPageData.players; 
           break;
@@ -3899,16 +3906,29 @@
       }
 
       if (!filtered.length) {
-        tbl.innerHTML = `<div class='table-container' style='text-align: center; padding: 2rem;'><p>No ${type.toLowerCase()} players found.</p></div>`;
+        tbl.innerHTML = `<div class='table-container' style='text-align: center; padding: 2rem;'><p>No ${tableType.toLowerCase()} players found.</p></div>`;
       } else {
-        renderPlayerTable(filtered, tableTitle, type);
+        renderPlayerTable(filtered, tableTitle, tableType);
       }
 
       currentView = 'table';
     }
 
+    // FIXED: getTableTitle with proper type mapping
     function getTableTitle(type) {
-      switch(type) {
+      // Map route types to display titles
+      const typeMap = {
+        'total-players': "Total",
+        'active-players': "Active",
+        'inactive-players': "Inactive",
+        'recent-active': "RecentActive",
+        'recent-inactive': "RecentInactive",
+        'high-risk': "HighRisk"
+      };
+      
+      const tableType = typeMap[type] || type;
+      
+      switch(tableType) {
         case "Total": return "All Players";
         case "Active": return "Active Players (0-2 days)";
         case "Inactive": return "Inactive Players (15+ days)";
@@ -4099,23 +4119,36 @@
       renderPagination(totalPlayers, currentPage, PLAYERS_PER_PAGE, paginationContainer, 'changeHighRiskPage');
     }
 
-    // MODIFIED: Table pagination functions updated for routing
+    // FIXED: Create page change functions with proper routing
     function createPlayerPageChangeFunction(type) {
       return function(page) {
         tableState.playerTables[type].page = page;
         
+        // Map table type back to route type
+        const routeMap = {
+          'Total': 'total-players',
+          'Active': 'active-players',
+          'Inactive': 'inactive-players',
+          'RecentActive': 'recent-active',
+          'RecentInactive': 'recent-inactive',
+          'HighRisk': 'high-risk'
+        };
+        
+        const routeType = routeMap[type] || type;
+        
         // Update URL with page parameter
         const currentParams = routeParams;
         currentParams.page = selectedPage;
-        goToRoute(`/${type}`, currentParams);
+        goToRoute(`/${routeType}`, currentParams);
       };
     }
 
-    const changePlayerPage_Total = createPlayerPageChangeFunction('total-players');
-    const changePlayerPage_Active = createPlayerPageChangeFunction('active-players');
-    const changePlayerPage_Inactive = createPlayerPageChangeFunction('inactive-players');
-    const changePlayerPage_RecentActive = createPlayerPageChangeFunction('recent-active');
-    const changePlayerPage_RecentInactive = createPlayerPageChangeFunction('recent-inactive');
+    // Create page change functions
+    const changePlayerPage_Total = createPlayerPageChangeFunction('Total');
+    const changePlayerPage_Active = createPlayerPageChangeFunction('Active');
+    const changePlayerPage_Inactive = createPlayerPageChangeFunction('Inactive');
+    const changePlayerPage_RecentActive = createPlayerPageChangeFunction('RecentActive');
+    const changePlayerPage_RecentInactive = createPlayerPageChangeFunction('RecentInactive');
 
     function changeHighRiskPage(page) {
       tableState.highRisk.page = page;
@@ -4632,7 +4665,7 @@
       cleanupPinInput.value = '';
     }
 
-    // UPDATED: Refresh function with data management
+    // FIXED: Refresh function with data management
     async function confirmRefresh() {
       const pin = refreshPinInput.value.trim();
       if (!pin) {
@@ -4681,7 +4714,7 @@
       }
     }
 
-    // UPDATED: Cleanup function with data management
+    // FIXED: Cleanup function with data management
     async function confirmForceCleanup() {
       const pin = cleanupPinInput.value.trim();
       if (!pin) {
