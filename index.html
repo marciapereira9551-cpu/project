@@ -3422,7 +3422,6 @@ function calculateExactGapDuration(startDate, endDate) {
   try {
     console.log(`Getting enhanced history for player: ${playerName} on page: ${pageName}`);
     
-    // FIXED: Use pagination helper to get ALL deposits for this player
     const allDeposits = await fetchAllRows('deposits', { 
       player_name: playerName, 
       page_name: pageName 
@@ -3433,7 +3432,6 @@ function calculateExactGapDuration(startDate, endDate) {
     if (!allDeposits || allDeposits.length === 0) {
       return { 
         enhancedHistory: [], 
-        activityNotes: ["No data found for this player."],
         currentStatus: "Inactive",
         message: "No data found for this player",
         rawDeposits: 0,
@@ -3441,19 +3439,19 @@ function calculateExactGapDuration(startDate, endDate) {
       };
     }
 
+    // Convert ALL deposits to PKT with exact timestamps
     const playerDeposits = allDeposits.map(deposit => {
       const utcDate = new Date(deposit.deposit_date);
       const pktDate = new Date(utcDate.getTime() + (5 * 60 * 60 * 1000));
-      const displayDate = convertUTCToPKT(deposit.deposit_date);
-      const displayDateOnly = convertUTCToPKTDateOnly(deposit.deposit_date);
       
       return {
         utcDate: utcDate,
         pktDate: pktDate,
-        timestamp: displayDate,
-        displayDateOnly: displayDateOnly,
+        displayDate: convertUTCToPKT(deposit.deposit_date),
+        displayDateOnly: convertUTCToPKTDateOnly(deposit.deposit_date),
         amount: parseFloat(deposit.amount) || 0,
-        originalDate: deposit.deposit_date
+        originalDate: deposit.deposit_date,
+        exactTimePKT: pktDate.getTime() // Exact timestamp in PKT
       };
     }).filter(deposit => !isNaN(deposit.utcDate.getTime()));
 
@@ -3462,13 +3460,13 @@ function calculateExactGapDuration(startDate, endDate) {
     const nowPKT = getCurrentPKT();
     const mostRecentDeposit = playerDeposits[playerDeposits.length - 1];
     
+    // Calculate time since last deposit (for display)
     const timeSinceMs = nowPKT - mostRecentDeposit.pktDate;
     const hoursSince = Math.floor(timeSinceMs / (1000 * 60 * 60));
     const minutesSince = Math.floor((timeSinceMs % (1000 * 60 * 60)) / (1000 * 60));
     const daysSince = hoursSince / 24;
     const remainingHours = hoursSince % 24;
     
-    // FIXED: Use the correct status calculation
     const currentStatus = calculatePlayerStatus(daysSince);
 
     let timeSinceDisplay = '';
@@ -3487,6 +3485,7 @@ function calculateExactGapDuration(startDate, endDate) {
       }
     }
 
+    // Group deposits by day, but keep track of LATEST deposit time each day
     const depositsByDay = {};
     playerDeposits.forEach(deposit => {
       const dateKey = deposit.displayDateOnly;
@@ -3498,17 +3497,24 @@ function calculateExactGapDuration(startDate, endDate) {
           displayDate: dateKey,
           deposits: [],
           pktDate: deposit.pktDate,
-          utcDate: deposit.utcDate
+          latestDepositTime: deposit.pktDate, // Track latest deposit time of the day
+          exactTimePKT: deposit.exactTimePKT
         };
       }
       depositsByDay[dateKey].count++;
       depositsByDay[dateKey].totalAmount += deposit.amount;
       depositsByDay[dateKey].deposits.push(deposit);
+      
+      // Update latest deposit time if this deposit is later
+      if (deposit.pktDate > depositsByDay[dateKey].latestDepositTime) {
+        depositsByDay[dateKey].latestDepositTime = deposit.pktDate;
+        depositsByDay[dateKey].exactTimePKT = deposit.exactTimePKT;
+      }
     });
 
     const enhancedHistory = [];
     const depositDates = Object.keys(depositsByDay).sort((a, b) => {
-      return new Date(depositsByDay[a].pktDate) - new Date(depositsByDay[b].pktDate);
+      return depositsByDay[a].pktDate - depositsByDay[b].pktDate;
     });
     
     if (depositDates.length === 0) {
@@ -3521,42 +3527,62 @@ function calculateExactGapDuration(startDate, endDate) {
       };
     }
 
-    const firstDepositDate = new Date(playerDeposits[0].pktDate);
-    const lastDepositDate = new Date(playerDeposits[playerDeposits.length - 1].pktDate);
+    // Build timeline with EXACT deposit times
+    const timeline = [];
+    const firstDepositDate = new Date(depositsByDay[depositDates[0]].pktDate);
+    const lastDepositDate = new Date(depositsByDay[depositDates[depositDates.length - 1]].pktDate);
     
     let currentDate = new Date(firstDepositDate);
     currentDate.setUTCHours(0, 0, 0, 0);
     
     const todayPKT = getStartOfDayPKT(nowPKT);
     
-    const timeline = [];
-    
+    // Build day-by-day timeline
     while (currentDate <= todayPKT) {
       const dateKey = convertUTCToPKTDateOnly(currentDate.toISOString());
       const dayData = depositsByDay[dateKey];
       
-      timeline.push({
-        date: new Date(currentDate),
-        dateKey: dateKey,
-        isDepositDay: !!dayData,
-        depositCount: dayData ? dayData.count : 0,
-        totalAmount: dayData ? dayData.totalAmount : 0,
-        displayDate: dateKey,
-        deposits: dayData ? dayData.deposits : [],
-        pktDate: currentDate.getTime(),
-        utcDate: new Date(currentDate.getTime() - (5 * 60 * 60 * 1000))
-      });
+      if (dayData) {
+        // This is a deposit day
+        timeline.push({
+          date: new Date(currentDate),
+          dateKey: dateKey,
+          isDepositDay: true,
+          depositCount: dayData.count,
+          totalAmount: dayData.totalAmount,
+          displayDate: dateKey,
+          deposits: dayData.deposits,
+          pktDate: currentDate.getTime(),
+          latestDepositTime: dayData.latestDepositTime, // EXACT time of last deposit that day
+          exactTimePKT: dayData.exactTimePKT
+        });
+      } else {
+        // This is a non-deposit day
+        timeline.push({
+          date: new Date(currentDate),
+          dateKey: dateKey,
+          isDepositDay: false,
+          depositCount: 0,
+          totalAmount: 0,
+          displayDate: dateKey,
+          deposits: [],
+          pktDate: currentDate.getTime(),
+          latestDepositTime: null,
+          exactTimePKT: null
+        });
+      }
       
       currentDate.setDate(currentDate.getDate() + 1);
       currentDate.setUTCHours(0, 0, 0, 0);
     }
 
+    // Build enhanced history with EXACT gap calculations
     let i = 0;
     while (i < timeline.length) {
       const currentDay = timeline[i];
       
       if (currentDay.isDepositDay) {
-        // Determine activity level based on NEW logic
+        // Determine activity level
         let activityLevel = "Normal";
         if (currentDay.depositCount > 4 || currentDay.totalAmount > 50) {
           activityLevel = "High";
@@ -3580,43 +3606,48 @@ function calculateExactGapDuration(startDate, endDate) {
           totalAmount: currentDay.totalAmount,
           isDepositDay: true,
           timestamp: currentDay.pktDate,
-          gapDuration: "—" // FIXED: Show dash for active days
+          exactDepositTime: currentDay.latestDepositTime, // Store exact time
+          gapDuration: "—"
         });
         i++;
       } else {
         let inactiveStart = i;
         let inactiveCount = 0;
-        let startDate = timeline[inactiveStart];
+        let startDay = timeline[inactiveStart];
+        
+        // Find previous deposit day for exact time reference
+        let previousDepositTime = null;
+        for (let j = inactiveStart - 1; j >= 0; j--) {
+          if (timeline[j].isDepositDay) {
+            previousDepositTime = timeline[j].latestDepositTime;
+            break;
+          }
+        }
+        
+        // If no previous deposit found (shouldn't happen), use start of day
+        if (!previousDepositTime) {
+          previousDepositTime = new Date(startDay.date);
+          previousDepositTime.setUTCHours(0, 0, 0, 0);
+          previousDepositTime = new Date(previousDepositTime.getTime() + (5 * 60 * 60 * 1000));
+        }
         
         while (i < timeline.length && !timeline[i].isDepositDay) {
           inactiveCount++;
           i++;
         }
         
-        // FIXED: Calculate exact gap duration using PKT TIMES
-        const endDate = i < timeline.length ? 
-          timeline[i] : // Next deposit day
-          timeline[timeline.length - 1]; // Last day in timeline
-        
-        // Get the exact start time IN PKT (beginning of the inactive period)
-        const startTime = new Date(startDate.date);
-        startTime.setUTCHours(0, 0, 0, 0);
-        const startTimePKT = new Date(startTime.getTime() + (5 * 60 * 60 * 1000));
-        
-        // Get the exact end time IN PKT
+        // Calculate gap using EXACT TIMES
         let endTimePKT;
         if (i < timeline.length) {
-          // Next deposit day - start of that day in PKT
-          const nextDay = new Date(timeline[i].date);
-          nextDay.setUTCHours(0, 0, 0, 0);
-          endTimePKT = new Date(nextDay.getTime() + (5 * 60 * 60 * 1000));
+          // Next deposit day - use its exact deposit time
+          endTimePKT = timeline[i].latestDepositTime;
         } else {
-          // Current PKT time (if no more deposits)
+          // Current PKT time
           endTimePKT = nowPKT;
         }
         
-        // Calculate exact gap duration IN PKT
-        const gapDuration = calculateExactGapDuration(startTimePKT, endTimePKT);
+        // Calculate exact gap from last deposit to next deposit/now
+        const gapDuration = calculateExactGapDuration(previousDepositTime, endTimePKT);
         
         if (inactiveCount === 1) {
           enhancedHistory.push({
@@ -3629,7 +3660,7 @@ function calculateExactGapDuration(startDate, endDate) {
             totalAmount: 0,
             isDepositDay: false,
             timestamp: timeline[inactiveStart].pktDate,
-            gapDuration: gapDuration // Shows exact hours like "1 day 5 hours"
+            gapDuration: gapDuration
           });
         } else {
           const startDateStr = timeline[inactiveStart].displayDate;
@@ -3644,7 +3675,7 @@ function calculateExactGapDuration(startDate, endDate) {
             totalAmount: 0,
             isDepositDay: false,
             timestamp: timeline[inactiveStart].pktDate,
-            gapDuration: gapDuration // Shows exact hours like "10 days 3 hours"
+            gapDuration: gapDuration
           });
         }
       }
