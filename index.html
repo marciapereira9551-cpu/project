@@ -62,16 +62,21 @@
     }
 
     /* ==================== */
-    /* NEW: PIN SCREEN STYLES */
+    /* NEW: PIN SCREEN STYLES - FIXED WITH position: fixed */
     /* ==================== */
     #pinScreen {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      min-height: 100vh;
       padding: 2rem;
       background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      z-index: 9999;
     }
 
     .pin-container {
@@ -268,7 +273,7 @@
 
     /* Landing Page */
     #landing {
-      display: flex;
+      display: none;
       flex-direction: column;
       align-items: center;
       justify-content: center;
@@ -302,6 +307,35 @@
       font-size: 1.1rem;
       margin-bottom: 2rem;
       font-weight: 400;
+    }
+
+    /* Landing page logout button specific styles */
+    #logoutBtnLanding {
+      background: rgba(239, 68, 68, 0.1);
+      color: var(--danger);
+      border: 2px solid var(--danger);
+      transition: all 0.3s ease;
+      width: auto !important;
+      padding: 0.75rem 1.5rem !important;
+      margin-top: 1rem;
+    }
+
+    #logoutBtnLanding:hover:not(:disabled) {
+      background: var(--danger);
+      color: white;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+    }
+
+    #logoutBtnLanding:active:not(:disabled) {
+      transform: translateY(0);
+    }
+
+    #logoutBtnLanding:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none !important;
+      pointer-events: none;
     }
 
     .search-section {
@@ -1552,7 +1586,7 @@
 
 <body>
   <!-- ==================== -->
-  <!-- NEW: PIN SCREEN -->
+  <!-- NEW: PIN SCREEN - FIXED WITH position: fixed -->
   <!-- ==================== -->
   <div id="pinScreen">
     <div class="pin-container">
@@ -1646,6 +1680,16 @@
       <button id="findBtn" class="btn btn-primary" onclick="findData()">
         <i class="fas fa-arrow-right"></i> Access Dashboard
       </button>
+      
+      <!-- NEW: Logout Button on Landing Page -->
+      <div id="landingLogoutSection" style="margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid var(--border-color); text-align: center; display: none;">
+        <button id="logoutBtnLanding" class="btn btn-secondary" style="width: auto; padding: 0.75rem 1.5rem;" disabled>
+          <i class="fas fa-sign-out-alt"></i> Logout
+        </button>
+        <div style="margin-top: 0.5rem; font-size: 0.85rem; color: var(--text-secondary);">
+          <i class="fas fa-user-shield"></i> Secure Session Active
+        </div>
+      </div>
     </div>
   </div>
 
@@ -1663,6 +1707,9 @@
           </button>
           <button id="forceCleanupBtn" class="btn btn-warning" onclick="showCleanupModal()">
             <i class="fas fa-broom"></i> Force Cleanup
+          </button>
+          <button id="logoutBtnDashboard" class="btn btn-secondary" style="display: none;" disabled>
+            <i class="fas fa-sign-out-alt"></i> Logout
           </button>
         </div>
       </div>
@@ -2187,6 +2234,20 @@
       }, 800); // Simulated delay
     }
     
+    // Setup logout button
+    function setupLogoutButton() {
+      const logoutBtnLanding = document.getElementById('logoutBtnLanding');
+      const logoutBtnDashboard = document.getElementById('logoutBtnDashboard');
+      
+      if (logoutBtnLanding) {
+        logoutBtnLanding.onclick = logout;
+      }
+      
+      if (logoutBtnDashboard) {
+        logoutBtnDashboard.onclick = logout;
+      }
+    }
+    
     // Show application (your existing code)
     function showApplication() {
       pinScreen.style.display = 'none';
@@ -2209,6 +2270,9 @@
       
       // Apply role-based permissions
       applyRolePermissions();
+      
+      // Setup logout button
+      setupLogoutButton();
     }
     
     // Apply role-based permissions
@@ -2253,20 +2317,26 @@
       }
     }
     
-    // Logout function (optional)
+    // Logout function (FIXED FOR BOTH LOCATIONS)
     function logout() {
+      // Clear all session data
       sessionStorage.removeItem('pinAuthenticated');
       sessionStorage.removeItem('userRole');
       sessionStorage.removeItem('loginTime');
       sessionStorage.removeItem('currentPage');
       sessionStorage.removeItem('currentView');
+      sessionStorage.removeItem('searchPlayerName');
+      sessionStorage.removeItem('searchPlayerPage');
+      sessionStorage.removeItem('searchPlayerPages');
+      sessionStorage.removeItem('currentSearchedPlayer');
       
+      // Reset user role
       userRole = PIN_CONFIG.ROLES.NONE;
       
-      // Hide application, show PIN screen
+      // Show PIN screen, hide everything else
+      pinScreen.style.display = 'flex';
       document.getElementById('landing').style.display = 'none';
       document.getElementById('dashboard').style.display = 'none';
-      pinScreen.style.display = 'flex';
       
       // Reset PIN input
       pinInput.value = '';
@@ -2278,20 +2348,9 @@
       
       // Check lockout status
       checkLockoutStatus();
-    }
-    
-    // Add logout button to header (optional)
-    function addLogoutButton() {
-      const headerContent = document.querySelector('.header-content');
-      if (headerContent && !document.getElementById('logoutBtn')) {
-        const logoutBtn = document.createElement('button');
-        logoutBtn.id = 'logoutBtn';
-        logoutBtn.className = 'btn btn-secondary';
-        logoutBtn.innerHTML = '<i class="fas fa-sign-out-alt"></i> Logout';
-        logoutBtn.onclick = logout;
-        
-        headerContent.appendChild(logoutBtn);
-      }
+      
+      // Show logout notification
+      showNotification('Successfully logged out', 'success');
     }
     
     // =============================================
@@ -2563,35 +2622,51 @@
         }
     }
 
-    // NEW FUNCTION: Calculate exact gap duration between two dates
+    // NEW FUNCTION: Calculate exact gap duration between two dates - FIXED VERSION
     function calculateExactGapDuration(startDate, endDate) {
-        if (!startDate || !endDate) return 'N/A';
+        if (!startDate || !endDate) return '—';
         
         try {
             const start = new Date(startDate);
             const end = new Date(endDate);
             
             if (isNaN(start.getTime()) || isNaN(end.getTime())) {
-                return 'N/A';
+                return '—';
             }
             
             const diffMs = end - start;
-            if (diffMs < 0) return 'N/A';
+            if (diffMs <= 0) return '—';
             
             const hours = Math.floor(diffMs / (1000 * 60 * 60));
+            const minutes = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
             const days = Math.floor(hours / 24);
             const remainingHours = hours % 24;
             
+            // For active deposit days, return dash
+            if (days === 0 && hours === 0 && minutes === 0) {
+                return '—';
+            }
+            
             if (days === 0) {
-                return `${hours} hours`;
-            } else if (remainingHours === 0) {
+                if (hours === 0) {
+                    return `${minutes} minutes`;
+                } else if (minutes === 0) {
+                    return `${hours} hours`;
+                } else {
+                    return `${hours} hours ${minutes} minutes`;
+                }
+            } else if (remainingHours === 0 && minutes === 0) {
                 return `${days} day${days > 1 ? 's' : ''}`;
             } else {
-                return `${days} day${days > 1 ? 's' : ''} ${remainingHours} hour${remainingHours > 1 ? 's' : ''}`;
+                if (minutes === 0) {
+                    return `${days} day${days > 1 ? 's' : ''} ${remainingHours} hour${remainingHours > 1 ? 's' : ''}`;
+                } else {
+                    return `${days} day${days > 1 ? 's' : ''} ${remainingHours} hour${remainingHours > 1 ? 's' : ''} ${minutes} minutes`;
+                }
             }
         } catch (error) {
             console.error('Error calculating gap duration:', error);
-            return 'N/A';
+            return '—';
         }
     }
 
@@ -2644,6 +2719,7 @@
     const refreshBtn = document.getElementById('refreshDataBtn');
     const forceCleanupBtn = document.getElementById('forceCleanupBtn');
     const changePageBtn = document.getElementById('changePageBtn');
+    const logoutBtnDashboard = document.getElementById('logoutBtnDashboard');
     const loadingProgress = document.getElementById('loadingProgress');
     const refreshModal = document.getElementById('refreshModal');
     const cleanupModal = document.getElementById('cleanupModal');
@@ -2658,6 +2734,8 @@
     const statsRow2 = document.getElementById('statsRow2');
     const statsRow3 = document.getElementById('statsRow3');
     const pageDepositsView = document.getElementById('pageDepositsView');
+    const landingLogoutSection = document.getElementById('landingLogoutSection');
+    const logoutBtnLanding = document.getElementById('logoutBtnLanding');
 
     // =============================================
     // UTILITY FUNCTIONS
@@ -3495,7 +3573,7 @@
               totalAmount: currentDay.totalAmount,
               isDepositDay: true,
               timestamp: currentDay.pktDate,
-              gapDuration: "0 hours"
+              gapDuration: "—" // FIXED: Show dash for active days
             });
             i++;
           } else {
@@ -3508,7 +3586,7 @@
               i++;
             }
             
-            // Calculate exact gap duration in days and hours
+            // Calculate exact gap duration in days and hours - FIXED VERSION
             const endDate = i < timeline.length ? timeline[i] : timeline[timeline.length - 1];
             const gapDuration = calculateExactGapDuration(
               startDate.date,
@@ -3526,7 +3604,7 @@
                 totalAmount: 0,
                 isDepositDay: false,
                 timestamp: timeline[inactiveStart].pktDate,
-                gapDuration: gapDuration
+                gapDuration: gapDuration // FIXED: Shows exact hours like "1 day 5 hours"
               });
             } else {
               const startDate = timeline[inactiveStart].displayDate;
@@ -3541,7 +3619,7 @@
                 totalAmount: 0,
                 isDepositDay: false,
                 timestamp: timeline[inactiveStart].pktDate,
-                gapDuration: gapDuration
+                gapDuration: gapDuration // FIXED: Shows exact hours like "10 days 3 hours"
               });
             }
           }
@@ -3866,23 +3944,33 @@
     function initializeApp() {
       // Start with PIN system
       initPinSystem();
+      setupLogoutButton();
     }
 
     function showLandingPage() {
       clearAllSearchInputs();
       clearPlayerHistory();
       
-      sessionStorage.removeItem('searchPlayerName');
-      sessionStorage.removeItem('searchPlayerPage');
-      sessionStorage.removeItem('searchPlayerPages');
+      sessionStorage.removeItem('currentPage');
+      sessionStorage.removeItem('currentView');
       
       navigationContext = 'landing';
       
       document.getElementById('dashboard').style.display = 'none';
       document.getElementById('landing').style.display = 'flex';
+      
+      // Show/hide logout button based on authentication
+      const isAuthenticated = sessionStorage.getItem('pinAuthenticated') === 'true';
+      
+      if (landingLogoutSection) {
+        landingLogoutSection.style.display = isAuthenticated ? 'block' : 'none';
+      }
+      
+      if (logoutBtnLanding) {
+        logoutBtnLanding.disabled = false; // Enable logout button on landing page
+      }
+      
       currentView = 'landing';
-      sessionStorage.removeItem('currentPage');
-      sessionStorage.removeItem('currentView');
     }
 
     function loadDashboard(pageObj) {
@@ -3898,14 +3986,16 @@
       document.getElementById('landing').style.display = 'none';
       document.getElementById('dashboard').style.display = 'block';
       
+      // Show logout button in dashboard
+      if (logoutBtnDashboard) {
+        logoutBtnDashboard.style.display = 'inline-flex';
+      }
+      
       updatePageTitle();
       
       showLoader();
       disableControlButtons();
       loadDashboardData();
-      
-      // Add logout button if not already present
-      addLogoutButton();
     }
 
     function updatePageTitle() {
@@ -3975,12 +4065,16 @@
       changePageBtn.disabled = true;
       refreshBtn.disabled = true;
       forceCleanupBtn.disabled = true;
+      if (logoutBtnDashboard) logoutBtnDashboard.disabled = true;
+      if (logoutBtnLanding) logoutBtnLanding.disabled = true;
     }
 
     function enableControlButtons() {
       changePageBtn.disabled = false;
       refreshBtn.disabled = false;
       forceCleanupBtn.disabled = false;
+      if (logoutBtnDashboard) logoutBtnDashboard.disabled = false;
+      if (logoutBtnLanding) logoutBtnLanding.disabled = false;
     }
 
     function clearBackContainer() {
@@ -4988,10 +5082,11 @@
           '<span class="status-badge status-active">Active</span>' : 
           '<span class="status-badge status-inactive">Inactive</span>';
         
-        let gapDisplay = period.gapDuration || '-';
+        // FIXED: Active days show dash, inactive days show exact gap
+        const gapDisplay = period.gapDuration;
         let gapClass = '';
         
-        if (period.inactiveGap > 0) {
+        if (!isActive && period.inactiveGap > 0) {
           if (period.inactiveGap >= 7) gapClass = 'gap-high';
           else if (period.inactiveGap >= 4) gapClass = 'gap-medium';
           else gapClass = 'gap-low';
@@ -5027,7 +5122,12 @@
               }
             </td>
             <td style="text-align: center;">${statusBadge}</td>
-            <td class="gap-cell" style="text-align: center;"><span class="${gapClass}">${gapDisplay}</span></td>
+            <td class="gap-cell" style="text-align: center;">
+              ${isActive ? 
+                '<span>—</span>' : 
+                `<span class="${gapClass}">${gapDisplay}</span>`
+              }
+            </td>
             <td style="text-align: left;">
               ${activityLevelDisplay}
             </td>
@@ -5324,12 +5424,16 @@
       changePageBtn.disabled = true;
       refreshBtn.disabled = true;
       forceCleanupBtn.disabled = true;
+      if (logoutBtnDashboard) logoutBtnDashboard.disabled = true;
+      if (logoutBtnLanding) logoutBtnLanding.disabled = true;
     }
 
     function enableAllButtons() {
       changePageBtn.disabled = false;
       refreshBtn.disabled = false;
       forceCleanupBtn.disabled = false;
+      if (logoutBtnDashboard) logoutBtnDashboard.disabled = false;
+      if (logoutBtnLanding) logoutBtnLanding.disabled = false;
     }
 
     // Event listeners
