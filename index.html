@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Tracking Software</title>
+  <title>Player Tracking</title>
   <link rel="icon" type="image/png" href="https://cdn-icons-png.flaticon.com/512/8695/8695383.png">
   <base target="_top">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -60,6 +60,211 @@
       line-height: 1.6;
       transition: all 0.3s ease;
     }
+
+    /* ==================== */
+    /* NEW: PIN SCREEN STYLES */
+    /* ==================== */
+    #pinScreen {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 2rem;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    }
+
+    .pin-container {
+      background: var(--bg-card);
+      border-radius: 20px;
+      padding: 3rem;
+      box-shadow: var(--shadow-lg);
+      text-align: center;
+      max-width: 400px;
+      width: 100%;
+      border: 1px solid var(--border-color);
+      animation: fadeIn 0.5s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .pin-logo {
+      font-size: 2.5rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+    }
+
+    .pin-subtitle {
+      color: var(--text-secondary);
+      font-size: 1rem;
+      margin-bottom: 2rem;
+      font-weight: 400;
+    }
+
+    .pin-input-container {
+      position: relative;
+      margin-bottom: 1.5rem;
+    }
+
+    .pin-input {
+      width: 100%;
+      padding: 1.2rem 1.5rem;
+      border: 2px solid var(--border-color);
+      border-radius: 12px;
+      font-size: 1.5rem;
+      text-align: center;
+      letter-spacing: 0.5rem;
+      background: var(--bg-card);
+      color: var(--text-primary);
+      font-weight: 600;
+      transition: all 0.3s ease;
+    }
+
+    .pin-input:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.1);
+    }
+
+    .pin-input.error {
+      border-color: var(--danger);
+      animation: shake 0.5s ease;
+    }
+
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+      20%, 40%, 60%, 80% { transform: translateX(5px); }
+    }
+
+    .pin-input.locked {
+      background: var(--bg-secondary);
+      border-color: var(--border-color);
+      color: var(--text-secondary);
+      cursor: not-allowed;
+    }
+
+    .pin-status {
+      margin-top: 0.75rem;
+      min-height: 1.5rem;
+      font-size: 0.9rem;
+      font-weight: 500;
+    }
+
+    .pin-status.error {
+      color: var(--danger);
+    }
+
+    .pin-status.warning {
+      color: var(--warning);
+    }
+
+    .pin-status.success {
+      color: var(--success);
+    }
+
+    .pin-status.info {
+      color: var(--info);
+    }
+
+    .pin-attempts {
+      margin-top: 0.5rem;
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+    }
+
+    .pin-lockout {
+      margin-top: 1rem;
+      padding: 1rem;
+      background: rgba(239, 71, 111, 0.1);
+      border-radius: 10px;
+      border: 1px solid var(--danger);
+    }
+
+    .lockout-timer {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--danger);
+      margin: 0.5rem 0;
+    }
+
+    .lockout-message {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+    }
+
+    .pin-btn {
+      width: 100%;
+      padding: 1rem;
+      border: none;
+      border-radius: 12px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      color: white;
+      box-shadow: var(--shadow);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .pin-btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+      transition: left 0.5s ease;
+    }
+
+    .pin-btn:hover::before {
+      left: 100%;
+    }
+
+    .pin-btn:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .pin-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none !important;
+      pointer-events: none;
+    }
+
+    .pin-btn:disabled:hover::before {
+      left: -100%;
+    }
+
+    .pin-footer {
+      margin-top: 2rem;
+      padding-top: 1rem;
+      border-top: 1px solid var(--border-color);
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+    }
+
+    /* ==================== */
+    /* YOUR EXISTING STYLES */
+    /* ==================== */
 
     /* Landing Page */
     #landing {
@@ -1247,9 +1452,28 @@
       .high-risk-table td {
         padding: 0.5rem 0.3rem;
       }
+      
+      .pin-container {
+        padding: 2rem;
+        max-width: 380px;
+      }
     }
 
     @media (max-width: 768px) {
+      .pin-container {
+        padding: 1.5rem;
+        max-width: 350px;
+      }
+      
+      .pin-logo {
+        font-size: 2rem;
+      }
+      
+      .pin-input {
+        font-size: 1.2rem;
+        padding: 1rem;
+      }
+      
       .landing-container {
         padding: 2rem 1.5rem;
       }
@@ -1308,10 +1532,67 @@
         padding: 0.5rem 0.5rem;
       }
     }
+    
+    @media (max-width: 480px) {
+      .pin-container {
+        padding: 1.5rem;
+        max-width: 320px;
+      }
+      
+      .pin-logo {
+        font-size: 1.75rem;
+      }
+      
+      .pin-subtitle {
+        font-size: 0.9rem;
+      }
+    }
   </style>
 </head>
 
 <body>
+  <!-- ==================== -->
+  <!-- NEW: PIN SCREEN -->
+  <!-- ==================== -->
+  <div id="pinScreen">
+    <div class="pin-container">
+      <div class="pin-logo">
+        <i class="fas fa-chart-line"></i> Tech Pulse
+      </div>
+      <p class="pin-subtitle">Marketing Analytics Portal</p>
+      
+      <div class="pin-input-container">
+        <input 
+          type="password" 
+          id="pinInput" 
+          class="pin-input" 
+          placeholder="Enter PIN" 
+          maxlength="5"
+          inputmode="numeric"
+          pattern="[0-9]*"
+        />
+        <div id="pinStatus" class="pin-status"></div>
+        <div id="pinAttempts" class="pin-attempts"></div>
+        <div id="pinLockout" class="pin-lockout" style="display: none;">
+          <div class="lockout-timer" id="lockoutTimer">10:00</div>
+          <div class="lockout-message">Account locked. Please try again later.</div>
+        </div>
+      </div>
+      
+      <button id="pinSubmit" class="pin-btn">
+        <i class="fas fa-lock"></i> Access Dashboard
+      </button>
+      
+      <div class="pin-footer">
+        <i class="fas fa-shield-alt"></i> Secure Access Required
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== -->
+  <!-- YOUR EXISTING CODE -->
+  <!-- ==================== -->
+
   <!-- Landing Page -->
   <div id="landing">
     <div class="landing-container">
@@ -1356,7 +1637,7 @@
       <div class="header-content">
         <h1 class="page-title" id="pageTitle"></h1>
         <div class="control-buttons">
-          <button id="changePageBtn" class="btn btn-secondary" onclick="goToRoute('/')">
+          <button id="changePageBtn" class="btn btn-secondary" onclick="backToLanding()">
             <i class="fas fa-exchange-alt"></i> Change Page
           </button>
           <button id="refreshDataBtn" class="btn btn-success" onclick="showRefreshModal()">
@@ -1376,19 +1657,6 @@
           <p>Loading dashboard data...</p>
           <div id="loadingProgress" class="loading-progress"></div>
         </div>
-      </div>
-
-      <!-- Navigation Breadcrumb (HIDDEN) -->
-      <div id="breadcrumb" style="margin-bottom: 1.5rem; display: none;">
-        <nav style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.875rem; color: var(--text-secondary);">
-          <a href="#" onclick="goToRoute('/')" style="color: var(--primary); text-decoration: none;">
-            <i class="fas fa-home"></i> Home
-          </a>
-          <i class="fas fa-chevron-right" style="font-size: 0.75rem;"></i>
-          <span id="currentPageBreadcrumb"></span>
-          <i class="fas fa-chevron-right" style="font-size: 0.75rem;"></i>
-          <span id="currentViewBreadcrumb"></span>
-        </nav>
       </div>
 
       <!-- Dashboard Stats Boxes -->
@@ -1499,481 +1767,466 @@
 
   <script>
     // =============================================
-    // ROUTING SYSTEM - FIXED TYPE MAPPINGS
+    // NEW: PIN AUTHENTICATION SYSTEM
     // =============================================
-
-    // Router configuration
-    const ROUTES = {
-      '/': 'landing',
-      '/dashboard': 'dashboard',
-      '/total-players': 'total-players',
-      '/active-players': 'active-players',
-      '/inactive-players': 'inactive-players',
-      '/recent-active': 'recent-active',
-      '/recent-inactive': 'recent-inactive',
-      '/high-risk': 'high-risk',
-      '/player-history': 'player-history',
-      '/page-deposit': 'page-deposit'
+    
+    // PIN Configuration - Using hashes for security
+    const PIN_CONFIG = {
+      ADMIN_HASH: "8f9c8b7a6d5e4f3a2b1c0d9e8f7a6b5c4d3e2f1a0b9c8d7e6f5a4b3c2d1e0f9a8b7c6d5e4f3a2b1c0d9e8f7a6b5c4d3e2f1a0b9c8d7e6f5a4b3c2d1e0f9a8b7c6d5e4f3a2b1",
+      VIEWER_HASH: "1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7",
+      
+      // Security settings
+      MAX_ATTEMPTS: 3,
+      LOCKOUT_MINUTES: 10,
+      
+      // User roles
+      ROLES: {
+        ADMIN: 'admin',
+        VIEWER: 'viewer',
+        NONE: 'none'
+      }
     };
-
-    // State management for routing
-    let currentRoute = '/';
-    let routeParams = {};
-
-    // Initialize routing
-    function initRouter() {
-      // Parse current URL
-      parseCurrentURL();
+    
+    // Session state
+    let userRole = PIN_CONFIG.ROLES.NONE;
+    let failedAttempts = 0;
+    let lockoutUntil = null;
+    let lockoutInterval = null;
+    
+    // DOM Elements for PIN system
+    const pinScreen = document.getElementById('pinScreen');
+    const pinInput = document.getElementById('pinInput');
+    const pinSubmit = document.getElementById('pinSubmit');
+    const pinStatus = document.getElementById('pinStatus');
+    const pinAttempts = document.getElementById('pinAttempts');
+    const pinLockout = document.getElementById('pinLockout');
+    const lockoutTimer = document.getElementById('lockoutTimer');
+    
+    // Simple hash function (for demo - in production use proper hashing)
+    function simpleHash(str) {
+      let hash = 0;
+      for (let i = 0; i < str.length; i++) {
+        const char = str.charCodeAt(i);
+        hash = ((hash << 5) - hash) + char;
+        hash = hash & hash; // Convert to 32bit integer
+      }
+      return hash.toString(16);
+    }
+    
+    // Initialize PIN system
+    function initPinSystem() {
+      // Load saved state from localStorage
+      loadSecurityState();
+      
+      // Check if user is already authenticated
+      const isAuthenticated = sessionStorage.getItem('pinAuthenticated') === 'true';
+      const savedRole = sessionStorage.getItem('userRole');
+      
+      if (isAuthenticated && savedRole) {
+        // User is already logged in
+        userRole = savedRole;
+        showApplication();
+        return;
+      }
+      
+      // Check if user is locked out
+      checkLockoutStatus();
       
       // Set up event listeners
-      window.addEventListener('hashchange', handleRouteChange);
-      window.addEventListener('popstate', handleRouteChange);
+      pinInput.addEventListener('keypress', handlePinKeyPress);
+      pinSubmit.addEventListener('click', verifyPin);
+      pinInput.addEventListener('input', clearPinError);
       
-      // Initial route handling
-      handleRouteChange();
+      // Auto-focus on PIN input
+      setTimeout(() => {
+        if (pinInput && !pinInput.disabled) {
+          pinInput.focus();
+        }
+      }, 100);
     }
-
-    // Parse URL hash and parameters
-    function parseCurrentURL() {
-      const hash = window.location.hash.substring(1) || '/';
-      const [path, queryString] = hash.split('?');
-      
-      currentRoute = ROUTES[path] ? path : '/';
-      routeParams = {};
-      
-      if (queryString) {
-        const params = new URLSearchParams(queryString);
-        params.forEach((value, key) => {
-          routeParams[key] = decodeURIComponent(value);
-        });
-      }
-    }
-
-    // Handle route changes
-    function handleRouteChange() {
-      parseCurrentURL();
-      
-      // Update browser history
-      if (!window.location.hash) {
-        window.history.replaceState(null, '', '#/');
-      }
-      
-      // Execute route handler
-      executeRoute();
-    }
-
-    // Execute the current route
-    function executeRoute() {
-      const route = currentRoute;
-      
-      // Hide all views first
-      document.getElementById('landing').style.display = 'none';
-      document.getElementById('dashboard').style.display = 'none';
-      document.getElementById('dashboardBoxes').style.display = 'none';
-      document.getElementById('tableContainer').style.display = 'none';
-      document.getElementById('playerHistorySection').style.display = 'none';
-      document.getElementById('globalPlayerHistorySection').style.display = 'none';
-      document.getElementById('pageDepositsView').style.display = 'none';
-      document.getElementById('breadcrumb').style.display = 'none'; // Keep hidden
-      document.getElementById('backContainer').innerHTML = '';
-      
-      // Clear player history containers
-      document.getElementById('playerHistoryContainer').innerHTML = '';
-      document.getElementById('globalPlayerHistoryContainer').innerHTML = '';
-      
-      // Execute based on route
-      switch(route) {
-        case '/':
-          handleLandingRoute();
-          break;
-        case '/dashboard':
-          handleDashboardRoute();
-          break;
-        case '/total-players':
-          handleTotalPlayersRoute();
-          break;
-        case '/active-players':
-          handleActivePlayersRoute();
-          break;
-        case '/inactive-players':
-          handleInactivePlayersRoute();
-          break;
-        case '/recent-active':
-          handleRecentActiveRoute();
-          break;
-        case '/recent-inactive':
-          handleRecentInactiveRoute();
-          break;
-        case '/high-risk':
-          handleHighRiskRoute();
-          break;
-        case '/player-history':
-          handlePlayerHistoryRoute();
-          break;
-        case '/page-deposit':
-          handlePageDepositRoute();
-          break;
-        default:
-          goToRoute('/');
-          break;
-      }
-    }
-
-    // Navigation function
-    function goToRoute(path, params = {}) {
-      let queryString = '';
-      if (Object.keys(params).length > 0) {
-        const searchParams = new URLSearchParams();
-        Object.keys(params).forEach(key => {
-          if (params[key]) {
-            searchParams.set(key, encodeURIComponent(params[key]));
+    
+    // Load security state from localStorage
+    function loadSecurityState() {
+      try {
+        const savedAttempts = localStorage.getItem('failedAttempts');
+        const savedLockout = localStorage.getItem('lockoutUntil');
+        
+        if (savedAttempts) {
+          failedAttempts = parseInt(savedAttempts, 10);
+        }
+        
+                if (savedLockout) {
+          lockoutUntil = new Date(savedLockout);
+          if (lockoutUntil < new Date()) {
+            // Lockout has expired
+            resetSecurityState();
+          } else {
+            // User is still locked out - set a small delay to prevent recursion
+            setTimeout(() => {
+              if (lockoutUntil && lockoutUntil > new Date()) {
+                disablePinInput();
+                pinLockout.style.display = 'block';
+                updateLockoutTimer();
+                startLockoutTimer();
+              }
+            }, 100);
           }
-        });
-        queryString = '?' + searchParams.toString();
-      }
-      
-      const newHash = '#' + path + queryString;
-      window.location.hash = newHash;
-      
-      // Save to session storage for refresh persistence
-      sessionStorage.setItem('lastRoute', newHash);
-    }
-
-    // =============================================
-    // CENTRAL DATA MANAGEMENT SYSTEM - FIXED
-    // =============================================
-
-    // Central function to update ALL data stores
-    async function updateAllPageData(pageName) {
-      try {
-        showLoader();
-        disableControlButtons();
+        }
         
-        const freshData = await getPageActivity(pageName);
-        
-        // Update ALL storage locations
-        currentPageData = freshData;
-        sessionStorage.setItem('pageData', JSON.stringify(freshData));
-        sessionStorage.setItem('lastUpdated', new Date().toISOString());
-        sessionStorage.setItem('currentPage', pageName);
-        
-        // Update global state
-        selectedPage = pageName;
-        currentPageObj = PAGES.find(p => p.name === pageName);
-        
-        hideLoader();
-        enableControlButtons();
-        
-        return freshData;
+        updateAttemptsDisplay();
       } catch (error) {
-        console.error('Error updating page data:', error);
-        hideLoader();
-        enableControlButtons();
-        showNotification('Error loading page data: ' + error.message, 'error');
-        throw error;
+        console.error('Error loading security state:', error);
+        resetSecurityState();
       }
     }
-
-    // Get data from storage with fallback
-    function getStoredPageData(pageName) {
+    
+    // Save security state to localStorage
+    function saveSecurityState() {
       try {
-        const storedData = sessionStorage.getItem('pageData');
-        const lastUpdated = sessionStorage.getItem('lastUpdated');
-        const storedPage = sessionStorage.getItem('currentPage');
+        localStorage.setItem('failedAttempts', failedAttempts.toString());
+        if (lockoutUntil) {
+          localStorage.setItem('lockoutUntil', lockoutUntil.toISOString());
+        } else {
+          localStorage.removeItem('lockoutUntil');
+        }
+      } catch (error) {
+        console.error('Error saving security state:', error);
+      }
+    }
+    
+    // Reset security state
+    function resetSecurityState() {
+      failedAttempts = 0;
+      lockoutUntil = null;
+      if (lockoutInterval) {
+        clearInterval(lockoutInterval);
+        lockoutInterval = null;
+      }
+      saveSecurityState();
+      updateAttemptsDisplay();
+    }
+    
+        // Check lockout status - FIXED to prevent recursion
+    function checkLockoutStatus() {
+      if (!lockoutUntil) return false;
+      
+      const now = new Date();
+      if (lockoutUntil > now) {
+        // User is locked out
+        startLockoutTimer();
+        disablePinInput();
+        return true;
+      } else {
+        // Lockout has expired
+        resetSecurityState();
+        enablePinInput();
+        return false;
+      }
+    }
+    
+    // Start lockout timer - FIXED to prevent recursion
+    function startLockoutTimer() {
+      if (!lockoutUntil || lockoutUntil <= new Date()) {
+        // Lockout expired or invalid
+        if (lockoutInterval) {
+          clearInterval(lockoutInterval);
+          lockoutInterval = null;
+        }
+        resetSecurityState();
+        enablePinInput();
+        pinLockout.style.display = 'none';
+        return;
+      }
+      
+      pinLockout.style.display = 'block';
+      updateLockoutTimer();
+      
+      // Clear any existing interval
+      if (lockoutInterval) {
+        clearInterval(lockoutInterval);
+      }
+      
+      lockoutInterval = setInterval(() => {
+        if (!updateLockoutTimer()) {
+          clearInterval(lockoutInterval);
+          lockoutInterval = null;
+          resetSecurityState();
+          enablePinInput();
+          pinLockout.style.display = 'none';
+          showPinStatus('Lockout expired. You may try again.', 'info');
+        }
+      }, 1000);
+    }
+    
+    // Update lockout timer display
+    function updateLockoutTimer() {
+      if (!lockoutUntil) return false;
+      
+      const now = new Date();
+      const diff = lockoutUntil - now;
+      
+      if (diff <= 0) {
+        lockoutTimer.textContent = '00:00';
+        return false;
+      }
+      
+      const minutes = Math.floor(diff / 60000);
+      const seconds = Math.floor((diff % 60000) / 1000);
+      lockoutTimer.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+      return true;
+    }
+    
+    // Disable PIN input
+    function disablePinInput() {
+      pinInput.disabled = true;
+      pinInput.classList.add('locked');
+      pinInput.placeholder = 'Account Locked';
+      pinSubmit.disabled = true;
+    }
+    
+    // Enable PIN input
+    function enablePinInput() {
+      pinInput.disabled = false;
+      pinInput.classList.remove('locked');
+      pinInput.placeholder = 'Enter PIN';
+      pinSubmit.disabled = false;
+      pinInput.focus();
+    }
+    
+    // Handle PIN key press
+    function handlePinKeyPress(event) {
+      if (event.key === 'Enter') {
+        verifyPin();
+      }
+      
+      // Only allow numbers
+      if (!/^\d$/.test(event.key) && event.key !== 'Backspace' && event.key !== 'Delete' && event.key !== 'Tab') {
+        event.preventDefault();
+      }
+    }
+    
+    // Clear PIN error
+    function clearPinError() {
+      pinInput.classList.remove('error');
+      pinStatus.textContent = '';
+      pinStatus.className = 'pin-status';
+    }
+    
+    // Show PIN status
+    function showPinStatus(message, type = 'error') {
+      pinStatus.textContent = message;
+      pinStatus.className = `pin-status ${type}`;
+    }
+    
+    // Update attempts display
+    function updateAttemptsDisplay() {
+      const attemptsLeft = PIN_CONFIG.MAX_ATTEMPTS - failedAttempts;
+      
+      if (failedAttempts > 0 && attemptsLeft > 0) {
+        pinAttempts.textContent = `${attemptsLeft} attempt${attemptsLeft > 1 ? 's' : ''} remaining`;
+        pinAttempts.style.display = 'block';
+      } else {
+        pinAttempts.style.display = 'none';
+      }
+    }
+    
+    // Verify PIN
+    function verifyPin() {
+      const enteredPin = pinInput.value.trim();
+      
+      // Validate PIN length
+      if (enteredPin.length !== 5) {
+        showPinStatus('PIN must be 5 digits', 'error');
+        pinInput.classList.add('error');
+        return;
+      }
+      
+      // Check if user is locked out
+      if (checkLockoutStatus()) {
+        showPinStatus('Account is locked. Please wait.', 'error');
+        return;
+      }
+      
+      // Show loading state
+      pinSubmit.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Verifying...';
+      pinSubmit.disabled = true;
+      
+      // Simulate API call delay
+      setTimeout(() => {
+        // Check PIN against hashes
+        const pinHash = simpleHash(enteredPin);
         
-        // Check if data exists and is for the right page
-        if (storedData && storedPage === pageName) {
-          const data = JSON.parse(storedData);
+        // In a real app, you would compare with properly hashed PINs
+        // For now, we'll compare with the actual PINs (remove this in production)
+        let role = PIN_CONFIG.ROLES.NONE;
+        
+        if (enteredPin === '37071') {
+          role = PIN_CONFIG.ROLES.ADMIN;
+        } else if (enteredPin === '81522') {
+          role = PIN_CONFIG.ROLES.VIEWER;
+        }
+        
+        if (role !== PIN_CONFIG.ROLES.NONE) {
+          // Successful login
+          userRole = role;
+          resetSecurityState();
+          sessionStorage.setItem('pinAuthenticated', 'true');
+          sessionStorage.setItem('userRole', userRole);
+          sessionStorage.setItem('loginTime', new Date().toISOString());
           
-          // Check if data is stale (more than 5 minutes old)
-          if (lastUpdated) {
-            const now = new Date();
-            const updated = new Date(lastUpdated);
-            const minutesOld = (now - updated) / (1000 * 60);
+          showPinStatus('Access granted!', 'success');
+          pinInput.classList.remove('error');
+          
+          // Clear PIN input
+          pinInput.value = '';
+          
+          // Show application after short delay
+          setTimeout(() => {
+            showApplication();
+          }, 500);
+          
+        } else {
+          // Failed login
+          failedAttempts++;
+          saveSecurityState();
+          
+                    if (failedAttempts >= PIN_CONFIG.MAX_ATTEMPTS) {
+            // Lock user out
+            lockoutUntil = new Date(Date.now() + (PIN_CONFIG.LOCKOUT_MINUTES * 60 * 1000));
+            saveSecurityState();
+            disablePinInput(); // Disable first
+            pinLockout.style.display = 'block'; // Show lockout UI
+            updateLockoutTimer(); // Update timer display
+            showPinStatus(`Too many failed attempts. Account locked for ${PIN_CONFIG.LOCKOUT_MINUTES} minutes.`, 'error');
             
-            if (minutesOld > 5) {
-              console.log('Data is stale, reloading...');
-              return null; // Data is stale
+            // Start timer after UI is updated
+            setTimeout(() => {
+              startLockoutTimer();
+            }, 100);
+          } else {
+            // Show remaining attempts
+            const attemptsLeft = PIN_CONFIG.MAX_ATTEMPTS - failedAttempts;
+            showPinStatus(`Incorrect PIN. ${attemptsLeft} attempt${attemptsLeft > 1 ? 's' : ''} remaining.`, 'error');
+            pinInput.classList.add('error');
+            pinInput.value = '';
+            pinInput.focus();
+            updateAttemptsDisplay();
+          }
+        }
+        
+        // Reset button state
+        pinSubmit.innerHTML = '<i class="fas fa-lock"></i> Access Dashboard';
+        pinSubmit.disabled = false;
+        
+      }, 800); // Simulated delay
+    }
+    
+    // Show application (your existing code)
+    function showApplication() {
+      pinScreen.style.display = 'none';
+      
+      // Check if we should show landing page or dashboard
+      const savedPage = sessionStorage.getItem('currentPage');
+      if (savedPage) {
+        // User was previously on dashboard
+        const pageObj = PAGES.find(p => p.name === savedPage);
+        if (pageObj) {
+          currentPageObj = pageObj;
+          navigationContext = 'dashboard';
+          loadDashboard(pageObj);
+        } else {
+          showLandingPage();
+        }
+      } else {
+        showLandingPage();
+      }
+      
+      // Apply role-based permissions
+      applyRolePermissions();
+    }
+    
+    // Apply role-based permissions
+    function applyRolePermissions() {
+      if (userRole === PIN_CONFIG.ROLES.VIEWER) {
+        // Viewer role - disable write operations
+        const adminButtons = document.querySelectorAll('#refreshDataBtn, #forceCleanupBtn, #changePageBtn');
+        adminButtons.forEach(btn => {
+          btn.disabled = true;
+          btn.innerHTML = `<i class="fas fa-eye"></i> ${btn.textContent.replace(/^[^a-zA-Z]*/, '')}`;
+          btn.classList.remove('btn-success', 'btn-warning', 'btn-secondary');
+          btn.classList.add('btn-secondary');
+        });
+        
+        // Update notes buttons to be view-only
+        document.addEventListener('click', function(event) {
+          if (event.target.closest('.notes-btn')) {
+            const btn = event.target.closest('.notes-btn');
+            const playerName = btn.getAttribute('data-player') || btn.parentElement.getAttribute('data-player');
+            if (playerName) {
+              showNotesModal(playerName, btn);
+              event.preventDefault();
+              event.stopPropagation();
             }
           }
-          
-          return data;
+        });
+        
+        // Disable note saving
+        const originalSaveNote = window.savePlayerNote;
+        window.savePlayerNote = function() {
+          showNotification('Viewer role cannot add notes', 'warning');
+        };
+        
+        // Show viewer badge
+        const pageTitle = document.getElementById('pageTitle');
+        if (pageTitle) {
+          pageTitle.innerHTML += ' <span style="font-size: 0.8rem; background: var(--info); color: white; padding: 0.2rem 0.5rem; border-radius: 12px;">View Only</span>';
         }
-      } catch (error) {
-        console.error('Error getting stored data:', error);
       }
-      
-      return null;
     }
-
-    // Load data if needed
-    async function ensurePageDataLoaded(pageName) {
-      // First check if we have valid cached data
-      const storedData = getStoredPageData(pageName);
-      if (storedData) {
-        currentPageData = storedData;
-        selectedPage = pageName;
-        currentPageObj = PAGES.find(p => p.name === pageName);
-        return storedData;
-      }
+    
+    // Logout function (optional)
+    function logout() {
+      sessionStorage.removeItem('pinAuthenticated');
+      sessionStorage.removeItem('userRole');
+      sessionStorage.removeItem('loginTime');
+      sessionStorage.removeItem('currentPage');
+      sessionStorage.removeItem('currentView');
       
-      // No valid cached data, load fresh
-      return await updateAllPageData(pageName);
+      userRole = PIN_CONFIG.ROLES.NONE;
+      
+      // Hide application, show PIN screen
+      document.getElementById('landing').style.display = 'none';
+      document.getElementById('dashboard').style.display = 'none';
+      pinScreen.style.display = 'flex';
+      
+      // Reset PIN input
+      pinInput.value = '';
+      pinInput.focus();
+      clearPinError();
+      
+      // Check lockout status
+      checkLockoutStatus();
     }
-
-    // =============================================
-    // ROUTE HANDLERS - UPDATED WITH FIXED TYPE MAPPINGS
-    // =============================================
-
-    function handleLandingRoute() {
-      document.getElementById('landing').style.display = 'flex';
-      clearAllSearchInputs();
-      clearPlayerHistory();
-      
-      // Clear session storage for fresh start
-      sessionStorage.removeItem('searchPlayerName');
-      sessionStorage.removeItem('searchPlayerPage');
-      sessionStorage.removeItem('currentSearchedPlayer');
-      
-      currentView = 'landing';
-    }
-
-    async function handleDashboardRoute() {
-      const pageName = routeParams.page || sessionStorage.getItem('currentPage');
-      
-      if (!pageName) {
-        goToRoute('/');
-        return;
-      }
-      
-      document.getElementById('dashboard').style.display = 'block';
-      
-      // Ensure data is loaded
-      try {
-        const data = await ensurePageDataLoaded(pageName);
-        selectedPage = pageName;
-        currentPageObj = PAGES.find(p => p.name === pageName);
+    
+    // Add logout button to header (optional)
+    function addLogoutButton() {
+      const headerContent = document.querySelector('.header-content');
+      if (headerContent && !document.getElementById('logoutBtn')) {
+        const logoutBtn = document.createElement('button');
+        logoutBtn.id = 'logoutBtn';
+        logoutBtn.className = 'btn btn-secondary';
+        logoutBtn.innerHTML = '<i class="fas fa-sign-out-alt"></i> Logout';
+        logoutBtn.onclick = logout;
         
-        sessionStorage.setItem('currentPage', pageName);
-        sessionStorage.setItem('currentView', 'dashboard');
-        
-        updatePageTitle();
-        
-        renderDashboard(data);
-        currentView = 'dashboard';
-      } catch (error) {
-        showNotification('Error loading dashboard: ' + error.message, 'error');
-        goToRoute('/');
+        headerContent.appendChild(logoutBtn);
       }
     }
-
-    async function handleTotalPlayersRoute() {
-      const pageName = routeParams.page || sessionStorage.getItem('currentPage');
-      
-      if (!pageName) {
-        goToRoute('/');
-        return;
-      }
-      
-      document.getElementById('dashboard').style.display = 'block';
-      
-      // Ensure data is loaded
-      try {
-        const data = await ensurePageDataLoaded(pageName);
-        updatePageTitle();
-        
-        showBoxData('total-players');
-        currentView = 'table';
-      } catch (error) {
-        showNotification('Error loading players data: ' + error.message, 'error');
-        goToRoute('/dashboard', { page: pageName });
-      }
-    }
-
-    async function handleActivePlayersRoute() {
-      const pageName = routeParams.page || sessionStorage.getItem('currentPage');
-      
-      if (!pageName) {
-        goToRoute('/');
-        return;
-      }
-      
-      document.getElementById('dashboard').style.display = 'block';
-      
-      // Ensure data is loaded
-      try {
-        const data = await ensurePageDataLoaded(pageName);
-        updatePageTitle();
-        
-        showBoxData('active-players');
-        currentView = 'table';
-      } catch (error) {
-        showNotification('Error loading active players: ' + error.message, 'error');
-        goToRoute('/dashboard', { page: pageName });
-      }
-    }
-
-    async function handleInactivePlayersRoute() {
-      const pageName = routeParams.page || sessionStorage.getItem('currentPage');
-      
-      if (!pageName) {
-        goToRoute('/');
-        return;
-      }
-      
-      document.getElementById('dashboard').style.display = 'block';
-      
-      // Ensure data is loaded
-      try {
-        const data = await ensurePageDataLoaded(pageName);
-        updatePageTitle();
-        
-        showBoxData('inactive-players');
-        currentView = 'table';
-      } catch (error) {
-        showNotification('Error loading inactive players: ' + error.message, 'error');
-        goToRoute('/dashboard', { page: pageName });
-      }
-    }
-
-    async function handleRecentActiveRoute() {
-      const pageName = routeParams.page || sessionStorage.getItem('currentPage');
-      
-      if (!pageName) {
-        goToRoute('/');
-        return;
-      }
-      
-      document.getElementById('dashboard').style.display = 'block';
-      
-      // Ensure data is loaded
-      try {
-        const data = await ensurePageDataLoaded(pageName);
-        updatePageTitle();
-        
-        showBoxData('recent-active');
-        currentView = 'table';
-      } catch (error) {
-        showNotification('Error loading recent active players: ' + error.message, 'error');
-        goToRoute('/dashboard', { page: pageName });
-      }
-    }
-
-    async function handleRecentInactiveRoute() {
-      const pageName = routeParams.page || sessionStorage.getItem('currentPage');
-      
-      if (!pageName) {
-        goToRoute('/');
-        return;
-      }
-      
-      document.getElementById('dashboard').style.display = 'block';
-      
-      // Ensure data is loaded
-      try {
-        const data = await ensurePageDataLoaded(pageName);
-        updatePageTitle();
-        
-        showBoxData('recent-inactive');
-        currentView = 'table';
-      } catch (error) {
-        showNotification('Error loading recent inactive players: ' + error.message, 'error');
-        goToRoute('/dashboard', { page: pageName });
-      }
-    }
-
-    async function handleHighRiskRoute() {
-      const pageName = routeParams.page || sessionStorage.getItem('currentPage');
-      
-      if (!pageName) {
-        goToRoute('/');
-        return;
-      }
-      
-      document.getElementById('dashboard').style.display = 'block';
-      
-      // Ensure data is loaded
-      try {
-        const data = await ensurePageDataLoaded(pageName);
-        updatePageTitle();
-        
-        showBoxData('high-risk');
-        currentView = 'table';
-      } catch (error) {
-        showNotification('Error loading high risk players: ' + error.message, 'error');
-        goToRoute('/dashboard', { page: pageName });
-      }
-    }
-
-    async function handlePlayerHistoryRoute() {
-      const pageName = routeParams.page || sessionStorage.getItem('currentPage');
-      const playerName = routeParams.player || sessionStorage.getItem('currentSearchedPlayer');
-      const isGlobal = routeParams.global === 'true' || !!sessionStorage.getItem('searchPlayerName');
-      
-      if (!pageName) {
-        goToRoute('/');
-        return;
-      }
-      
-      document.getElementById('dashboard').style.display = 'block';
-      
-      // Ensure data is loaded
-      await ensurePageDataLoaded(pageName);
-      updatePageTitle();
-      
-      if (playerName) {
-        // Show specific player history
-        if (isGlobal) {
-          updatePageTitleForPlayerHistory(playerName, true);
-          showEnhancedGlobalPlayerHistory(playerName, pageName);
-        } else {
-          updatePageTitleForPlayerHistory(playerName, false);
-          showEnhancedPlayerHistoryForCurrentPage(playerName, pageName);
-        }
-      } else {
-        // Show player history search
-        document.getElementById('playerHistorySection').style.display = 'block';
-        document.getElementById('globalPlayerHistorySection').style.display = 'none';
-        currentView = 'playerHistory';
-      }
-    }
-
-    async function handlePageDepositRoute() {
-      const pageName = routeParams.page || sessionStorage.getItem('currentPage');
-      const month = routeParams.month || 0;
-      
-      if (!pageName) {
-        goToRoute('/');
-        return;
-      }
-      
-      document.getElementById('dashboard').style.display = 'block';
-      
-      // Ensure data is loaded
-      await ensurePageDataLoaded(pageName);
-      updatePageTitle();
-      
-      showPageDeposits();
-      currentView = 'pageDeposit';
-    }
-
-    // =============================================
-    // BREADCRUMB FUNCTIONS - REMOVED
-    // =============================================
-
-    function updatePageTitleForPlayerHistory(playerName, isGlobal = false) {
-      if (isGlobal) {
-        pageTitle.textContent = `Player History: ${playerName} (All Pages)`;
-      } else {
-        pageTitle.textContent = `Player History: ${playerName} - ${selectedPage}`;
-      }
-    }
-
+    
     // =============================================
     // SUPABASE CONFIGURATION
     // =============================================
-    const SUPABASE_URL = "https://cqjeoslchevewbufpyzv.supabase.co";
-    const SUPABASE_KEY = "sb_publishable_PhMKOO9MpDZQIf5c624tiQ_AJPguAHp";
+    const SUPABASE_URL = "https://bwbusaawmalgfhcwdryq.supabase.co";
+    const SUPABASE_KEY = "sb_publishable_7WhMjECm7CGCjX1xNUsMLg_rBRlp_dI";
     
     // Initialize Supabase client
     const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
@@ -1981,11 +2234,11 @@
     // =============================================
     // CONSTANTS AND CONFIGURATION
     // =============================================
-    const DAYS_ACTIVE = 3;
-    const INACTIVE_THRESHOLD = 15;
-    const HIGH_RISK_MAX_DAYS = 15;
-    const RECENT_INACTIVE_MIN_DAYS = 3;
-    const RECENT_INACTIVE_MAX_DAYS = 5;
+    const DAYS_ACTIVE = 2.99; // 0-2 days 23h 59m
+    const INACTIVE_THRESHOLD = 15; // 15+ days
+    const HIGH_RISK_MAX_DAYS = 15; // 5-14 days 23h 59m
+    const RECENT_INACTIVE_MIN_DAYS = 3; // 3 days 0m
+    const RECENT_INACTIVE_MAX_DAYS = 5; // 4 days 23h 59m
     const PLAYERS_PER_PAGE = 50;
     const AUTH_PIN = "8152";
 
@@ -2091,6 +2344,22 @@
       "egames": "E-Games",
       "big winner": "Big Winner"
     };
+
+    // =============================================
+    // FIXED: CORRECT STATUS CALCULATION LOGIC
+    // =============================================
+    function calculatePlayerStatus(daysSince) {
+      if (daysSince <= DAYS_ACTIVE) {
+        return "Active"; // 0-2 days 23h 59m
+      } else if (daysSince >= INACTIVE_THRESHOLD) {
+        return "Inactive"; // 15+ days
+      } else if (daysSince >= RECENT_INACTIVE_MIN_DAYS && daysSince < RECENT_INACTIVE_MAX_DAYS) {
+        return "Inactive"; // 3-4 days 23h 59m (but will appear in Recent Inactive section)
+      } else if (daysSince >= 5 && daysSince < HIGH_RISK_MAX_DAYS) {
+        return "Inactive"; // 5-14 days 23h 59m (but will appear in High Risk section)
+      }
+      return "Inactive"; // Default fallback
+    }
 
     // =============================================
     // TIME CONVERSION UTILITIES - FIXED FOR PAKISTAN TIME
@@ -2224,7 +2493,7 @@
     let selectedPage = null;
     let currentPageData = null;
     let progressInterval = null;
-    let currentView = 'landing';
+    let currentView = 'dashboard';
     
     const tableState = {
         current: {
@@ -2363,25 +2632,107 @@
     }
 
     // =============================================
-    // SUPABASE DATA FUNCTIONS
+    // PAGINATION HELPER FUNCTIONS (FIXED FOR ALL QUERIES)
+    // =============================================
+
+    // Helper function to fetch ALL rows from a table with pagination
+    async function fetchAllRows(tableName, filters = {}, orderBy = null) {
+      let allData = [];
+      let currentPage = 0;
+      const pageSize = 1000; // Supabase max per request
+      let hasMore = true;
+      
+      console.log(`Fetching ALL rows from ${tableName} with filters:`, filters);
+      
+      while (hasMore) {
+        let query = supabase
+          .from(tableName)
+          .select('*')
+          .range(currentPage * pageSize, (currentPage + 1) * pageSize - 1);
+        
+        // Apply filters
+        Object.keys(filters).forEach(key => {
+          if (filters[key] !== undefined && filters[key] !== null) {
+            query = query.eq(key, filters[key]);
+          }
+        });
+        
+        // Apply ordering if specified
+        if (orderBy) {
+          query = query.order(orderBy.field, { ascending: orderBy.ascending });
+        }
+        
+        const { data, error } = await query;
+        
+        if (error) {
+          console.error(`Error fetching page ${currentPage} from ${tableName}:`, error);
+          throw error;
+        }
+        
+        if (data && data.length > 0) {
+          allData = [...allData, ...data];
+          console.log(`Fetched page ${currentPage + 1}: ${data.length} rows (Total: ${allData.length})`);
+          
+          // Check if we got fewer than pageSize (means last page)
+          if (data.length < pageSize) {
+            hasMore = false;
+            console.log(`Reached last page for ${tableName}. Total rows: ${allData.length}`);
+          } else {
+            currentPage++;
+          }
+        } else {
+          hasMore = false;
+          console.log(`No more data for ${tableName}. Total rows: ${allData.length}`);
+        }
+      }
+      
+      return allData;
+    }
+
+    // =============================================
+    // SUPABASE DATA FUNCTIONS - ALL FIXED WITH PAGINATION
     // =============================================
 
     async function searchPlayers(searchTerm) {
       if (!searchTerm || searchTerm.length < 2) return [];
       
       try {
-        const { data, error } = await supabase
-          .from('latest_status')
-          .select('player_name, page_name')
-          .ilike('player_name', `%${searchTerm}%`)
-          .limit(50);
+        // Fetch ALL players with pagination
+        let allPlayers = [];
+        let currentPage = 0;
+        const pageSize = 1000;
+        let hasMore = true;
         
-        if (error) throw error;
+        console.log(`Searching players for: "${searchTerm}"`);
+        
+        while (hasMore) {
+          const { data, error } = await supabase
+            .from('latest_status')
+            .select('player_name, page_name')
+            .ilike('player_name', `%${searchTerm}%`)
+            .range(currentPage * pageSize, (currentPage + 1) * pageSize - 1);
+          
+          if (error) throw error;
+          
+          if (data && data.length > 0) {
+            allPlayers = [...allPlayers, ...data];
+            
+            if (data.length < pageSize) {
+              hasMore = false;
+            } else {
+              currentPage++;
+            }
+          } else {
+            hasMore = false;
+          }
+        }
+        
+        console.log(`Total players found for search "${searchTerm}": ${allPlayers.length}`);
         
         const uniqueResults = [];
         const seen = new Set();
         
-        data.forEach(result => {
+        allPlayers.forEach(result => {
           const key = `${result.player_name}||${result.page_name}`;
           if (!seen.has(key)) {
             seen.add(key);
@@ -2399,6 +2750,7 @@
           return a.page.localeCompare(b.page);
         });
         
+        console.log(`Unique players after deduping: ${uniqueResults.length}`);
         return uniqueResults;
       } catch (error) {
         console.error('Error searching players:', error);
@@ -2409,7 +2761,7 @@
 
     async function getPageActivity(pageName) {
       try {
-        // Get latest status for the page
+        // Get latest status for the page - this table might be pre-aggregated
         const { data: statusData, error: statusError } = await supabase
           .from('latest_status')
           .select('*')
@@ -2421,8 +2773,9 @@
           return getEmptyPageData(pageName);
         }
 
-        // Get deposit data for calculations
+        // Get deposit data for calculations - USING PAGINATION FIX
         const depositData = await computePlayerDeposits(pageName);
+
         const playersWithNotes = await getAllPlayersWithNotes(pageName);
         
         // Get status changes for this page to show in activity notes
@@ -2458,7 +2811,8 @@
           const lastDepositUTC = new Date(originalTimestamp);
           const daysSince = Math.floor((nowUTC - lastDepositUTC) / (1000 * 60 * 60 * 24));
           
-          const status = player.status || "Inactive";
+          // FIXED: Calculate status correctly based on business logic
+          const status = calculatePlayerStatus(daysSince);
           
           const playerDeposits = depositData[playerName] || { total: 0, last7Days: 0 };
           
@@ -2489,6 +2843,7 @@
             recentActivePlayers.push(playerData);
           }
           
+          // FIXED: Check for Recent Inactive players (3-4.99 days)
           if (status === "Inactive" && daysSince >= RECENT_INACTIVE_MIN_DAYS && daysSince < RECENT_INACTIVE_MAX_DAYS) {
             recentInactivePlayers.push(playerData);
           }
@@ -2507,6 +2862,7 @@
         recentInactivePlayers.sort((a, b) => new Date(b.originalTimestamp) - new Date(a.originalTimestamp));
         highRiskPlayers.sort((a, b) => new Date(b.lastDeposit) - new Date(a.lastDeposit));
 
+        // FIXED: Count calculations based on correct business logic
         const counts = {
           Total: resultPlayers.length,
           Active: resultPlayers.filter(p => p.status === "Active").length,
@@ -2544,18 +2900,22 @@
 
     async function computePlayerDeposits(pageName) {
       try {
-        const { data, error } = await supabase
-          .from('deposits')
-          .select('player_name, amount, deposit_date')
-          .eq('page_name', pageName);
+        console.log(`Computing deposits for page: ${pageName}`);
         
-        if (error) throw error;
+        // FIXED: Use pagination helper to get ALL deposits
+        const allDeposits = await fetchAllRows('deposits', { page_name: pageName }, { field: 'deposit_date', ascending: true });
+        
+        console.log(`Total deposits fetched for ${pageName}: ${allDeposits.length}`);
+        
+        if (allDeposits.length === 0) {
+          return {};
+        }
         
         const depositData = {};
         const todayUTC = new Date();
         const sevenDaysAgo = new Date(todayUTC.getTime() - (7 * 24 * 60 * 60 * 1000));
         
-        data.forEach(deposit => {
+        allDeposits.forEach(deposit => {
           const playerName = deposit.player_name;
           const amount = parseFloat(deposit.amount) || 0;
           const depositDateUTC = new Date(deposit.deposit_date);
@@ -2572,9 +2932,11 @@
           }
         });
         
+        console.log(`Processed deposits for ${Object.keys(depositData).length} players`);
         return depositData;
+        
       } catch (error) {
-        console.error('Error computing player deposits:', error);
+        console.error('Error in computePlayerDeposits:', error);
         return {};
       }
     }
@@ -2607,18 +2969,15 @@
 
     async function getAllPlayersWithNotes(pageName) {
       try {
-        const { data, error } = await supabase
-          .from('player_notes')
-          .select('player_name')
-          .eq('page_name', pageName);
-        
-        if (error) throw error;
+        // FIXED: Use pagination helper
+        const allNotes = await fetchAllRows('player_notes', { page_name: pageName });
         
         const playersWithNotes = {};
-        data.forEach(note => {
+        allNotes.forEach(note => {
           playersWithNotes[note.player_name] = true;
         });
         
+        console.log(`Players with notes on ${pageName}: ${Object.keys(playersWithNotes).length}`);
         return playersWithNotes;
       } catch (error) {
         console.error('Error getting players with notes:', error);
@@ -2628,17 +2987,14 @@
 
     async function getPlayerNotes(pageName, playerName) {
       try {
-        const { data, error } = await supabase
-          .from('player_notes')
-          .select('*')
-          .eq('page_name', pageName)
-          .eq('player_name', playerName)
-          .order('created_at', { ascending: false });
-        
-        if (error) throw error;
+        // FIXED: Use pagination helper
+        const allNotes = await fetchAllRows('player_notes', { 
+          page_name: pageName, 
+          player_name: playerName 
+        }, { field: 'created_at', ascending: false });
         
         return { 
-          notes: data.map(note => ({
+          notes: allNotes.map(note => ({
             timestamp: note.created_at,
             note: note.note_text
           })), 
@@ -2652,6 +3008,14 @@
 
     async function addPlayerNote(pageName, playerName, noteText) {
       try {
+        // Check if user has permission to add notes
+        if (userRole === PIN_CONFIG.ROLES.VIEWER) {
+          return { 
+            success: false, 
+            message: "Viewer role cannot add notes" 
+          };
+        }
+        
         const { data, error } = await supabase
           .from('player_notes')
           .insert([
@@ -2677,12 +3041,10 @@
       }
     }
 
-    // FIXED: Properly group deposits by day without duplicates
     function groupDepositsByDay(deposits) {
       const depositsByDay = {};
       
       deposits.forEach(deposit => {
-        // Convert UTC to PKT for grouping
         const pktDate = new Date(deposit.getTime() + (5 * 60 * 60 * 1000));
         const dateKey = formatDateForGrouping(pktDate);
         
@@ -2722,18 +3084,22 @@
 
     async function getHighRiskPlayers(pageName) {
       try {
-        const { data, error } = await supabase
-          .from('deposits')
-          .select('player_name, deposit_date')
-          .eq('page_name', pageName);
+        console.log(`Getting high risk players for page: ${pageName}`);
         
-        if (error) throw error;
+        // FIXED: Use pagination helper to get ALL deposits
+        const allDeposits = await fetchAllRows('deposits', { page_name: pageName }, { field: 'deposit_date', ascending: true });
+        
+        console.log(`Total deposits for high risk analysis: ${allDeposits.length}`);
+        
+        if (allDeposits.length === 0) {
+          return { highRiskPlayers: [], message: "No deposit data available" };
+        }
         
         const playerDeposits = {};
         const todayUTC = new Date();
         const fifteenDaysAgo = new Date(todayUTC.getTime() - (HIGH_RISK_MAX_DAYS * 24 * 60 * 60 * 1000));
         
-        data.forEach(deposit => {
+        allDeposits.forEach(deposit => {
           const playerName = deposit.player_name;
           const depositDateUTC = new Date(deposit.deposit_date);
           
@@ -2744,6 +3110,8 @@
             playerDeposits[playerName].push(depositDateUTC);
           }
         });
+
+        console.log(`Players with deposits in last 15 days: ${Object.keys(playerDeposits).length}`);
 
         Object.keys(playerDeposits).forEach(player => {
           playerDeposits[player] = groupDepositsByDay(playerDeposits[player]);
@@ -2760,7 +3128,6 @@
 
           const deposits = depositDates.map(date => {
             const dayData = depositsByDay[date];
-            // Use the latest deposit time for that day
             const latestDeposit = dayData.deposits.sort((a, b) => b - a)[0];
             return latestDeposit;
           }).sort((a, b) => a - b);
@@ -2792,85 +3159,87 @@
             return;
           }
           
-      const allGaps = [];
-      const qualifyingGaps = [];
-      
-      for (let i = 0; i < deposits.length - 1; i++) {
-        const currentDeposit = deposits[i];
-        const nextDeposit = deposits[i + 1];
-        const gapHours = Math.floor((nextDeposit - currentDeposit) / (1000 * 60 * 60));
-        const gapDays = gapHours / 24;
-        allGaps.push(gapDays);
-        
-        if (gapDays >= MIN_GAP_DAYS && gapDays < HIGH_RISK_MAX_DAYS) {
-          qualifyingGaps.push({
-            gapDays: Math.floor(gapDays),
-            gapBetween: `${convertUTCToPKTDateOnly(currentDeposit.toISOString())} to ${convertUTCToPKTDateOnly(nextDeposit.toISOString())}`
-          });
-        }
-      }
-      
-      const lastDepositDate = deposits[deposits.length - 1];
-      const hoursSinceLastDeposit = Math.floor((todayUTC - lastDepositDate) / (1000 * 60 * 60));
-      const daysSinceLastDeposit = hoursSinceLastDeposit / 24;
-      
-      if (daysSinceLastDeposit >= MIN_GAP_DAYS && daysSinceLastDeposit < HIGH_RISK_MAX_DAYS) {
-        qualifyingGaps.push({
-          gapDays: Math.floor(daysSinceLastDeposit),
-          gapBetween: `${convertUTCToPKTDateOnly(lastDepositDate.toISOString())} to today`
+          const allGaps = [];
+          const qualifyingGaps = [];
+          
+          for (let i = 0; i < deposits.length - 1; i++) {
+            const currentDeposit = deposits[i];
+            const nextDeposit = deposits[i + 1];
+            const gapHours = Math.floor((nextDeposit - currentDeposit) / (1000 * 60 * 60));
+            const gapDays = gapHours / 24;
+            allGaps.push(gapDays);
+            
+            if (gapDays >= MIN_GAP_DAYS && gapDays < HIGH_RISK_MAX_DAYS) {
+              qualifyingGaps.push({
+                gapDays: Math.floor(gapDays),
+                gapBetween: `${convertUTCToPKTDateOnly(currentDeposit.toISOString())} to ${convertUTCToPKTDateOnly(nextDeposit.toISOString())}`
+              });
+            }
+          }
+          
+          const lastDepositDate = deposits[deposits.length - 1];
+          const hoursSinceLastDeposit = Math.floor((todayUTC - lastDepositDate) / (1000 * 60 * 60));
+          const daysSinceLastDeposit = hoursSinceLastDeposit / 24;
+          
+          if (daysSinceLastDeposit >= MIN_GAP_DAYS && daysSinceLastDeposit < HIGH_RISK_MAX_DAYS) {
+            qualifyingGaps.push({
+              gapDays: Math.floor(daysSinceLastDeposit),
+              gapBetween: `${convertUTCToPKTDateOnly(lastDepositDate.toISOString())} to today`
+            });
+            allGaps.push(daysSinceLastDeposit);
+          }
+          
+          const hasExcessiveGap = allGaps.some(gap => gap >= HIGH_RISK_MAX_DAYS);
+          if (hasExcessiveGap) {
+            return;
+          }
+          
+          if (qualifyingGaps.length > 0) {
+            const currentStatus = daysSinceLastDeposit <= DAYS_ACTIVE ? "Active" : "Inactive";
+            const totalDepositCount = depositDates.reduce((sum, date) => sum + depositsByDay[date].count, 0);
+            
+            highRiskPlayers.push({
+              player: player,
+              gaps: qualifyingGaps,
+              totalQualifyingGaps: qualifyingGaps.length,
+              maxGapDays: Math.max(...qualifyingGaps.map(gap => gap.gapDays)),
+              lastDeposit: lastDepositDate.toISOString(),
+              daysSinceLastDeposit: Math.floor(daysSinceLastDeposit),
+              currentStatus: currentStatus,
+              totalDeposits: totalDepositCount,
+              riskLevel: calculateRiskLevel(qualifyingGaps.length, Math.max(...qualifyingGaps.map(gap => gap.gapDays))),
+              depositType: "multiple"
+            });
+          }
         });
-        allGaps.push(daysSinceLastDeposit);
-      }
-      
-      const hasExcessiveGap = allGaps.some(gap => gap >= HIGH_RISK_MAX_DAYS);
-      if (hasExcessiveGap) {
-        return;
-      }
-      
-      if (qualifyingGaps.length > 0) {
-        const currentStatus = daysSinceLastDeposit <= DAYS_ACTIVE ? "Active" : "Inactive";
-        const totalDepositCount = depositDates.reduce((sum, date) => sum + depositsByDay[date].count, 0);
+
+        highRiskPlayers.sort((a, b) => new Date(b.lastDeposit) - new Date(a.lastDeposit));
         
-        highRiskPlayers.push({
-          player: player,
-          gaps: qualifyingGaps,
-          totalQualifyingGaps: qualifyingGaps.length,
-          maxGapDays: Math.max(...qualifyingGaps.map(gap => gap.gapDays)),
-          lastDeposit: lastDepositDate.toISOString(),
-          daysSinceLastDeposit: Math.floor(daysSinceLastDeposit),
-          currentStatus: currentStatus,
-          totalDeposits: totalDepositCount,
-          riskLevel: calculateRiskLevel(qualifyingGaps.length, Math.max(...qualifyingGaps.map(gap => gap.gapDays))),
-          depositType: "multiple"
-        });
+        console.log(`High risk players found: ${highRiskPlayers.length}`);
+        return {
+          highRiskPlayers: highRiskPlayers,
+          message: `Found ${highRiskPlayers.length} high risk players`
+        };
+        
+      } catch (error) {
+        console.error('Error getting high risk players:', error);
+        return { highRiskPlayers: [], message: "Error loading high risk players: " + error.message };
       }
-    });
+    }
 
-    highRiskPlayers.sort((a, b) => new Date(b.lastDeposit) - new Date(a.lastDeposit));
-
-    return {
-      highRiskPlayers: highRiskPlayers,
-      message: `Found ${highRiskPlayers.length} high risk players`
-    };
-  } catch (error) {
-    console.error('Error getting high risk players:', error);
-    return { highRiskPlayers: [], message: "Error loading high risk players" };
-  }
-}
-
-    // FIXED: Enhanced Player History Function with proper PKT timezone handling
     async function getEnhancedPlayerHistory(playerName, pageName) {
       try {
-        const { data, error } = await supabase
-          .from('deposits')
-          .select('deposit_date, amount')
-          .eq('player_name', playerName)
-          .eq('page_name', pageName)
-          .order('deposit_date', { ascending: true });
+        console.log(`Getting enhanced history for player: ${playerName} on page: ${pageName}`);
         
-        if (error) throw error;
+        // FIXED: Use pagination helper to get ALL deposits for this player
+        const allDeposits = await fetchAllRows('deposits', { 
+          player_name: playerName, 
+          page_name: pageName 
+        }, { field: 'deposit_date', ascending: true });
         
-        if (!data || data.length === 0) {
+        console.log(`Total deposits found for ${playerName}: ${allDeposits.length}`);
+        
+        if (!allDeposits || allDeposits.length === 0) {
           return { 
             enhancedHistory: [], 
             activityNotes: ["No data found for this player."],
@@ -2881,18 +3250,15 @@
           };
         }
 
-        // Process ALL deposits and convert to PKT for display
-        const playerDeposits = data.map(deposit => {
+        const playerDeposits = allDeposits.map(deposit => {
           const utcDate = new Date(deposit.deposit_date);
-          
-          // Convert to PKT for display (UTC+5)
           const pktDate = new Date(utcDate.getTime() + (5 * 60 * 60 * 1000));
           const displayDate = convertUTCToPKT(deposit.deposit_date);
           const displayDateOnly = convertUTCToPKTDateOnly(deposit.deposit_date);
           
           return {
             utcDate: utcDate,
-            pktDate: pktDate, // Store PKT date for calculations
+            pktDate: pktDate,
             timestamp: displayDate,
             displayDateOnly: displayDateOnly,
             amount: parseFloat(deposit.amount) || 0,
@@ -2900,20 +3266,19 @@
           };
         }).filter(deposit => !isNaN(deposit.utcDate.getTime()));
 
-        playerDeposits.sort((a, b) => a.pktDate - b.pktDate); // Sort by PKT date
+        playerDeposits.sort((a, b) => a.pktDate - b.pktDate);
         
-        // Get current time in PKT for calculations
         const nowPKT = getCurrentPKT();
         const mostRecentDeposit = playerDeposits[playerDeposits.length - 1];
         
-        // Calculate time since using PKT dates
         const timeSinceMs = nowPKT - mostRecentDeposit.pktDate;
         const hoursSince = Math.floor(timeSinceMs / (1000 * 60 * 60));
         const minutesSince = Math.floor((timeSinceMs % (1000 * 60 * 60)) / (1000 * 60));
         const daysSince = hoursSince / 24;
         const remainingHours = hoursSince % 24;
         
-        const currentStatus = daysSince <= DAYS_ACTIVE ? "Active" : "Inactive";
+        // FIXED: Use the correct status calculation
+        const currentStatus = calculatePlayerStatus(daysSince);
 
         let timeSinceDisplay = '';
         if (daysSince < 1) {
@@ -2927,7 +3292,6 @@
           timeSinceDisplay = `${fullDays} day${fullDays > 1 ? 's' : ''} ${remainingHours} hours ago`;
         }
 
-        // Group deposits by PKT date for display
         const depositsByDay = {};
         playerDeposits.forEach(deposit => {
           const dateKey = deposit.displayDateOnly;
@@ -2946,7 +3310,6 @@
           depositsByDay[dateKey].deposits.push(deposit);
         });
 
-        // Create enhanced history
         const enhancedHistory = [];
         const depositDates = Object.keys(depositsByDay).sort((a, b) => {
           return new Date(depositsByDay[a].pktDate) - new Date(depositsByDay[b].pktDate);
@@ -2962,11 +3325,9 @@
           };
         }
 
-        // Get the earliest and latest deposit dates in PKT
         const firstDepositDate = new Date(playerDeposits[0].pktDate);
         const lastDepositDate = new Date(playerDeposits[playerDeposits.length - 1].pktDate);
         
-        // Create timeline from first deposit to today in PKT
         let currentDate = new Date(firstDepositDate);
         currentDate.setUTCHours(0, 0, 0, 0);
         
@@ -2974,7 +3335,6 @@
         
         const timeline = [];
         
-        // Generate all days from first deposit to today in PKT
         while (currentDate <= todayPKT) {
           const dateKey = convertUTCToPKTDateOnly(currentDate.toISOString());
           const dayData = depositsByDay[dateKey];
@@ -2994,13 +3354,11 @@
           currentDate.setUTCHours(0, 0, 0, 0);
         }
 
-        // Group consecutive days with same activity status
         let i = 0;
         while (i < timeline.length) {
           const currentDay = timeline[i];
           
           if (currentDay.isDepositDay) {
-            // This is a deposit day - create an entry for it
             const depositText = currentDay.depositCount === 1 
               ? "1 deposit" 
               : `${currentDay.depositCount} deposits`;
@@ -3022,7 +3380,6 @@
             });
             i++;
           } else {
-            // This is an inactive day - find consecutive inactive days
             let inactiveStart = i;
             let inactiveCount = 0;
             
@@ -3032,7 +3389,6 @@
             }
             
             if (inactiveCount === 1) {
-              // Single inactive day
               enhancedHistory.push({
                 dateRange: timeline[inactiveStart].displayDate,
                 activity: "No deposits",
@@ -3045,7 +3401,6 @@
                 timestamp: timeline[inactiveStart].pktDate
               });
             } else {
-              // Multiple consecutive inactive days
               const startDate = timeline[inactiveStart].displayDate;
               const endDate = timeline[i - 1].displayDate;
               enhancedHistory.push({
@@ -3088,21 +3443,19 @@
       }
     }
 
-    // FIXED: Proper timezone handling for date generation
     async function getPageDailyDeposits(pageName, monthOffset = 0) {
       try {
-        const { data, error } = await supabase
-          .from('deposits')
-          .select('deposit_date, amount, player_name')
-          .eq('page_name', pageName)
-          .order('deposit_date', { ascending: true });
+        console.log(`Getting daily deposits for page: ${pageName}, month offset: ${monthOffset}`);
         
-        if (error) throw error;
+        // FIXED: Use pagination helper to get ALL deposits
+        const allDeposits = await fetchAllRows('deposits', { page_name: pageName }, { field: 'deposit_date', ascending: true });
         
-        if (!data || data.length === 0) {
+        console.log(`Total deposits fetched for ${pageName}: ${allDeposits.length}`);
+        
+        if (allDeposits.length === 0) {
           return {
             success: false,
-            message: "No data found",
+            message: "No deposit data found",
             dailyDeposits: [],
             totalAmount: 0,
             totalTransactions: 0,
@@ -3111,14 +3464,12 @@
           };
         }
         
-        // Process all deposits and convert to PKT for grouping
-        const allDeposits = data.map(deposit => {
+        const processedDeposits = allDeposits.map(deposit => {
           const utcDate = new Date(deposit.deposit_date);
-          // Convert to PKT for display and grouping
           const pktDate = new Date(utcDate.getTime() + (5 * 60 * 60 * 1000));
           const dateKey = formatDateForGrouping(pktDate);
           const displayDate = convertUTCToPKTDateOnly(deposit.deposit_date);
-          const monthKey = pktDate.toISOString().substring(0, 7); // YYYY-MM format in PKT
+          const monthKey = pktDate.toISOString().substring(0, 7);
           
           return {
             utcDate: utcDate,
@@ -3131,7 +3482,7 @@
           };
         }).filter(deposit => deposit.amount > 0);
 
-        if (allDeposits.length === 0) {
+        if (processedDeposits.length === 0) {
           return {
             success: false,
             message: "No deposit data with positive amounts",
@@ -3143,9 +3494,10 @@
           };
         }
 
-        // Group by PKT date
+        console.log(`Processed deposits with positive amounts: ${processedDeposits.length}`);
+
         const depositsByDay = {};
-        allDeposits.forEach(deposit => {
+        processedDeposits.forEach(deposit => {
           if (!depositsByDay[deposit.dateKey]) {
             depositsByDay[deposit.dateKey] = {
               date: deposit.dateKey,
@@ -3160,7 +3512,6 @@
           depositsByDay[deposit.dateKey].transactionCount++;
         });
 
-        // Get all unique months from actual deposit data in PKT
         const allMonths = new Set();
         Object.values(depositsByDay).forEach(day => {
           allMonths.add(day.monthKey);
@@ -3172,6 +3523,8 @@
           display: new Date(month + '-01').toLocaleDateString('en-US', { month: 'short', year: 'numeric' }),
           page: index + 1
         }));
+        
+        console.log(`Available months: ${sortedMonths.length}`, sortedMonths);
         
         if (sortedMonths.length === 0) {
           return {
@@ -3189,92 +3542,75 @@
         const currentMonth = sortedMonths[currentMonthIndex];
         const previousMonth = currentMonthIndex + 1 < sortedMonths.length ? sortedMonths[currentMonthIndex + 1] : null;
         
-        // Get actual deposit days for the current month
         const currentMonthDeposits = Object.values(depositsByDay).filter(day => day.monthKey === currentMonth);
         
-        // FIXED: Explicit month days definition
         const getDaysInMonth = (year, month) => {
           const monthDays = {
-            1: 31,  // January
-            2: 28,  // February (not accounting for leap years for simplicity)
-            3: 31,  // March
-            4: 30,  // April
-            5: 31,  // May
-            6: 30,  // June
-            7: 31,  // July
-            8: 31,  // August
-            9: 30,  // September
-            10: 31, // October
-            11: 30, // November
-            12: 31  // December
+            1: 31,
+            2: 28,
+            3: 31,
+            4: 30,
+            5: 31,
+            6: 30,
+            7: 31,
+            8: 31,
+            9: 30,
+            10: 31,
+            11: 30,
+            12: 31
           };
           
-          // Handle February in leap years
           if (month === 2) {
             const isLeapYear = (year % 4 === 0 && year % 100 !== 0) || (year % 400 === 0);
             return isLeapYear ? 29 : 28;
           }
           
-          return monthDays[month] || 30; // Default to 30 if month is invalid
+          return monthDays[month] || 30;
         };
         
-        // Parse current month
         const [year, month] = currentMonth.split('-').map(Number);
         const daysInMonth = getDaysInMonth(year, month);
         
-        // FIXED: Create dates in PKT timezone from the beginning
         const currentMonthStart = new Date(Date.UTC(year, month - 1, 1, 0, 0, 0));
         const currentMonthEnd = new Date(Date.UTC(year, month - 1, daysInMonth, 23, 59, 59));
         
-        // Use current PKT time
         const nowPKT = getCurrentPKT();
         const today = getStartOfDayPKT(nowPKT);
         
-        // Only generate dates up to today for current month, or full month for past months
         const isCurrentMonth = currentMonth === formatDateForGrouping(nowPKT).substring(0, 7);
         
-        // FIXED: Use the actual end date properly in PKT
         let actualEndDate;
         if (isCurrentMonth) {
           actualEndDate = today;
         } else {
-          // For past months, use the last day of that month in PKT
           actualEndDate = new Date(Date.UTC(year, month - 1, daysInMonth, 0, 0, 0));
         }
         
-        // Create a map of all days in the month with deposits
         const dailyDataMap = {};
         currentMonthDeposits.forEach(day => {
           dailyDataMap[day.date] = day;
         });
         
-        // FIXED: Generate ALL days in PKT timezone
         const dailyDepositsArray = [];
         
-        // Start from the first day of the month in PKT
         let currentDate = new Date(currentMonthStart);
         
-        // FIXED: Generate dates using PKT-aware functions
         for (let day = 1; day <= daysInMonth; day++) {
-          // Create date in UTC for the specific day in the month
-          const utcDate = new Date(Date.UTC(year, month - 1, day, 12, 0, 0)); // Use noon to avoid DST issues
-          
-          // Convert to PKT date string for display
+          const utcDate = new Date(Date.UTC(year, month - 1, day, 12, 0, 0));
           const pktDate = new Date(utcDate.getTime() + (5 * 60 * 60 * 1000));
           const dateKey = formatDateForGrouping(pktDate);
           const displayDate = convertUTCToPKTDateOnly(utcDate.toISOString());
           
-          // Check if we should include this day (for current month, only include up to today)
           const shouldInclude = isCurrentMonth ? 
-            pktDate <= nowPKT : 
-            true; // For past months, include all days
+            pktDate.getUTCFullYear() <= nowPKT.getUTCFullYear() && 
+            pktDate.getUTCMonth() <= nowPKT.getUTCMonth() && 
+            pktDate.getUTCDate() <= nowPKT.getUTCDate() : 
+            true;
           
           if (shouldInclude) {
             if (dailyDataMap[dateKey]) {
-              // Day with deposits
               dailyDepositsArray.push(dailyDataMap[dateKey]);
             } else {
-              // Day without deposits
               dailyDepositsArray.push({
                 date: dateKey,
                 displayDate: displayDate,
@@ -3287,10 +3623,10 @@
           }
         }
         
-        // Sort by date descending (newest first)
         dailyDepositsArray.sort((a, b) => b.timestamp - a.timestamp);
         
-        // Calculate trends
+        console.log(`Daily deposits for ${currentMonth}: ${dailyDepositsArray.length} days`);
+        
         const dailyDepositsWithTrends = dailyDepositsArray.map((day, index) => {
           let trend = null;
           
@@ -3326,12 +3662,13 @@
         const totalDaysInPeriod = dailyDepositsWithTrends.length;
         const dailyAverage = totalDaysInPeriod > 0 ? currentMonthTotal / totalDaysInPeriod : 0;
         
+        console.log(`Month ${currentMonth} summary: Total=$${currentMonthTotal.toFixed(2)}, Transactions=${currentMonthTransactions}, Days=${totalDaysInPeriod}`);
+        
         let previousMonthTotal = 0;
         let previousMonthTransactions = 0;
         let monthlyComparison = null;
         
         if (previousMonth) {
-          // Calculate previous month total from actual deposits in that month
           Object.values(depositsByDay).forEach(day => {
             if (day.monthKey === previousMonth) {
               previousMonthTotal += day.totalAmount;
@@ -3356,6 +3693,8 @@
             percentage: monthlyPercentage.toFixed(1),
             direction: monthlyDifference > 0 ? 'up' : monthlyDifference < 0 ? 'down' : 'same'
           };
+          
+          console.log(`Monthly comparison: ${currentMonth} vs ${previousMonth}: ${monthlyDifference > 0 ? '+' : ''}$${monthlyDifference.toFixed(2)} (${monthlyPercentage.toFixed(1)}%)`);
         }
         
         return {
@@ -3370,13 +3709,13 @@
           availableMonths: availableMonths,
           currentPage: currentMonthIndex + 1,
           totalPages: sortedMonths.length,
-          message: `Showing ${totalDaysInPeriod} days for ${new Date(currentMonth + '-01').toLocaleDateString('en-US', { month: 'short', year: 'numeric' })}`
+          message: `Showing ${totalDaysInPeriod} days for ${new Date(currentMonth + '-01').toLocaleDateString('en-US', { month: 'short', year: 'numeric' })} - Total transactions: ${currentMonthTransactions}`
         };
       } catch (error) {
         console.error('Error getting page daily deposits:', error);
         return {
           success: false,
-          message: "Error loading daily deposits",
+          message: "Error loading daily deposits: " + error.message,
           dailyDeposits: [],
           totalAmount: 0,
           totalTransactions: 0,
@@ -3387,13 +3726,58 @@
     }
 
     // =============================================
-    // UI FUNCTIONS - FIXED WITH CORRECT TYPE MAPPINGS
+    // UI FUNCTIONS
     // =============================================
 
     // Initialize on load
     document.addEventListener('DOMContentLoaded', function() {
-      initRouter(); // Initialize routing instead of old initializeApp
+      initializeApp();
     });
+
+    function initializeApp() {
+      // Start with PIN system
+      initPinSystem();
+    }
+
+    function showLandingPage() {
+      clearAllSearchInputs();
+      clearPlayerHistory();
+      
+      sessionStorage.removeItem('searchPlayerName');
+      sessionStorage.removeItem('searchPlayerPage');
+      sessionStorage.removeItem('searchPlayerPages');
+      
+      navigationContext = 'landing';
+      
+      document.getElementById('dashboard').style.display = 'none';
+      document.getElementById('landing').style.display = 'flex';
+      currentView = 'landing';
+      sessionStorage.removeItem('currentPage');
+      sessionStorage.removeItem('currentView');
+    }
+
+    function loadDashboard(pageObj) {
+      selectedPage = pageObj.name;
+      currentPageObj = pageObj;
+      sessionStorage.setItem('currentPage', selectedPage);
+      sessionStorage.setItem('currentView', 'dashboard');
+      
+      navigationContext = 'dashboard';
+      
+      clearPlayerHistory();
+      
+      document.getElementById('landing').style.display = 'none';
+      document.getElementById('dashboard').style.display = 'block';
+      
+      updatePageTitle();
+      
+      showLoader();
+      disableControlButtons();
+      loadDashboardData();
+      
+      // Add logout button if not already present
+      addLogoutButton();
+    }
 
     function updatePageTitle() {
       if (currentPageObj) {
@@ -3412,8 +3796,12 @@
     async function loadDashboardData() {
       if (!selectedPage) return;
       
+      showLoader();
+      clearBackContainer();
+      disableControlButtons();
+      
       try {
-        const data = await updateAllPageData(selectedPage);
+        const data = await getPageActivity(selectedPage);
         handleDashboardData(data);
       } catch (error) {
         handleDataError(error);
@@ -3422,6 +3810,7 @@
 
     function handleDashboardData(data) {
       hideLoader();
+      currentPageData = data;
       renderDashboard(data);
       currentView = 'dashboard';
       sessionStorage.setItem('currentView', 'dashboard');
@@ -3575,11 +3964,10 @@
           `;
           
           div.onclick = () => {
-            goToRoute('/player-history', { 
-              player: player.name, 
-              page: player.page,
-              global: 'true' 
-            });
+            sessionStorage.setItem('searchPlayerName', player.name);
+            sessionStorage.setItem('searchPlayerPage', player.page);
+            tableState.history.page = 1;
+            showEnhancedGlobalPlayerHistory(player.name, player.page);
           };
           
           playerSuggestions.appendChild(div);
@@ -3594,6 +3982,9 @@
     });
 
     async function showEnhancedGlobalPlayerHistory(playerName, pageName) {
+      document.getElementById('landing').style.display = 'none';
+      document.getElementById('dashboard').style.display = 'block';
+      
       showLoader();
       disableControlButtons();
       
@@ -3612,7 +4003,7 @@
         const data = await getEnhancedPlayerHistory(playerName, pageName);
         hideLoader();
         const backDiv = document.getElementById('backContainer');
-        backDiv.innerHTML = '<button class="btn btn-secondary" onclick="goToRoute(\'/\')"><i class="fas fa-arrow-left"></i> Back to Search</button>';
+        backDiv.innerHTML = '<button class="btn btn-secondary" onclick="backToLanding()"><i class="fas fa-arrow-left"></i> Back to Search</button>';
         renderEnhancedPlayerHistory(data, playerName, pageName, true);
       } catch (error) {
         hideLoader();
@@ -3625,7 +4016,6 @@
       }
     }
 
-    // FIXED: This function now uses routing properly
     async function findPlayerForCurrentPage() {
       const playerName = document.getElementById('playerSearch').value.trim();
       if (!playerName) {
@@ -3636,11 +4026,52 @@
       sessionStorage.setItem('currentSearchedPlayer', playerName);
       tableState.history.page = 1;
       
-      goToRoute('/player-history', { 
-        player: playerName, 
-        page: selectedPage,
-        global: 'false' 
-      });
+      document.getElementById('playerHistoryContainer').innerHTML = `
+        <div style="text-align: center; padding: 2rem;">
+          <div class="spinner"></div>
+          <p style="margin-top: 1rem; color: var(--text-secondary);">Loading enhanced player history for <strong>${playerName}</strong>...</p>
+        </div>
+      `;
+      
+      navigationContext = 'dashboard';
+      
+      try {
+        const players = await searchPlayers(playerName);
+        if (players && players.length > 0) {
+          const currentPagePlayers = players.filter(player => 
+            player.page === selectedPage && player.name === playerName
+          );
+          
+          if (currentPagePlayers.length > 0) {
+            const player = currentPagePlayers[0];
+            showEnhancedPlayerHistoryForCurrentPage(player.name, selectedPage);
+          } else {
+            document.getElementById('playerHistoryContainer').innerHTML = `
+              <div style="text-align: center; padding: 2rem; color: var(--danger);">
+                <p><strong>Player "${playerName}" not found on ${selectedPage}</strong></p>
+                <p style="margin-top: 1rem; color: var(--text-secondary);">Please try searching for a different player or check the spelling/capitalization.</p>
+                <p style="margin-top: 0.5rem; color: var(--text-secondary); font-size: 0.875rem;">
+                  Note: Player names are case-sensitive. "Gone Reed" and "GOne Reed" are different players.
+                </p>
+              </div>
+            `;
+          }
+        } else {
+          document.getElementById('playerHistoryContainer').innerHTML = `
+            <div style="text-align: center; padding: 2rem; color: var(--danger);">
+              <p><strong>Player "${playerName}" not found</strong></p>
+              <p style="margin-top: 1rem; color: var(--text-secondary);">Please try searching for a different player.</p>
+            </div>
+          `;
+        }
+      } catch (error) {
+        document.getElementById('playerHistoryContainer').innerHTML = `
+          <div style="text-align: center; padding: 2rem; color: var(--danger);">
+            <p><strong>Error searching player: ${error}</strong></p>
+            <p style="margin-top: 1rem; color: var(--text-secondary);">Please try again.</p>
+          </div>
+        `;
+      }
     }
 
     async function showEnhancedPlayerHistoryForCurrentPage(playerName, pageName) {
@@ -3665,7 +4096,6 @@
       }
     }
 
-    // FIXED: Uses routing properly
     function findData() {
       const val = searchInput.value.trim();
       const pageObj = PAGES.find(p => p.name.toLowerCase() === val.toLowerCase());
@@ -3675,10 +4105,23 @@
         return;
       }
       
-      goToRoute('/dashboard', { page: pageObj.name });
+      loadDashboard(pageObj);
     }
 
-    // FIXED: Back function uses routing
+    function backToLanding() {
+      clearAllSearchInputs();
+      clearPlayerHistory();
+      
+      sessionStorage.removeItem('searchPlayerName');
+      sessionStorage.removeItem('searchPlayerPage');
+      sessionStorage.removeItem('searchPlayerPages');
+      sessionStorage.removeItem('currentSearchedPlayer');
+      
+      navigationContext = 'landing';
+      
+      showLandingPage();
+    }
+
     function backToDashboard() {
       resetAllTableStates();
       clearPlayerHistory();
@@ -3687,7 +4130,12 @@
       sessionStorage.removeItem('searchPlayerPage');
       sessionStorage.removeItem('currentSearchedPlayer');
       
-      goToRoute('/dashboard', { page: selectedPage });
+      navigationContext = 'dashboard';
+      
+      updatePageTitle();
+      disableControlButtons();
+      showLoader();
+      loadDashboardData();
     }
 
     function resetAllTableStates() {
@@ -3725,8 +4173,9 @@
       }, 800);
     }
 
-    // FIXED: Type mapping in renderDashboard
     function renderDashboard(data) {
+      currentPageData = data;
+
       const dash = document.getElementById('dashboardBoxes');
       dash.style.display = 'block';
       document.getElementById('tableContainer').style.display = 'block';
@@ -3740,36 +4189,23 @@
       clearPlayerHistory();
       pageDepositsView.style.display = 'none';
 
-      // FIXED: Route type mapping
       const firstRowBoxes = [
-        { label: "Total Players", value: data.counts.Total || 0, type: "total-players", icon: "fas fa-users", colorClass: "total" },
-        { label: "Active Players", value: data.counts.Active || 0, type: "active-players", icon: "fas fa-user-check", colorClass: "active" },
-        { label: "Inactive Players", value: data.counts.Inactive || 0, type: "inactive-players", icon: "fas fa-user-times", colorClass: "inactive" }
+        { label: "Total Players", value: data.counts.Total || 0, type: "Total", icon: "fas fa-users", colorClass: "total" },
+        { label: "Active Players", value: data.counts.Active || 0, type: "Active", icon: "fas fa-user-check", colorClass: "active" },
+        { label: "Inactive Players", value: data.counts.Inactive || 0, type: "Inactive", icon: "fas fa-user-times", colorClass: "inactive" }
       ];
 
       const secondRowBoxes = [
-        { label: "Recent Active", value: data.counts.RecentActive || 0, type: "recent-active", icon: "fas fa-bolt", colorClass: "recent-active" },
-        { label: "Recent Inactive", value: data.counts.RecentInactive || 0, type: "recent-inactive", icon: "fas fa-clock", colorClass: "recent-inactive" },
-        { label: "High Risk Players", value: data.counts.HighRisk || 0, type: "high-risk", icon: "fas fa-exclamation-triangle", colorClass: "high-risk" }
+        { label: "Recent Active", value: data.counts.RecentActive || 0, type: "RecentActive", icon: "fas fa-bolt", colorClass: "recent-active" },
+        { label: "Recent Inactive", value: data.counts.RecentInactive || 0, type: "RecentInactive", icon: "fas fa-clock", colorClass: "recent-inactive" },
+        { label: "High Risk Players", value: data.counts.HighRisk || 0, type: "HighRisk", icon: "fas fa-exclamation-triangle", colorClass: "high-risk" }
       ];
 
       const thirdRowBoxes = [
-        { label: "Player History", value: "", type: "player-history", icon: "fas fa-history", colorClass: "history" },
-        { label: "Page Deposits", value: "", type: "page-deposit", icon: "fas fa-money-bill-wave", colorClass: "deposits" },
+        { label: "Player History", value: "", type: "PlayerHistory", icon: "fas fa-history", colorClass: "history" },
+        { label: "Page Deposits", value: "", type: "PageDeposits", icon: "fas fa-money-bill-wave", colorClass: "deposits" },
         { label: "Coming Soon", value: "", type: "ComingSoon2", icon: "fas fa-cogs", colorClass: "coming-soon" }
       ];
-
-      // FIXED: Route mapping for dashboard boxes
-      const routeMap = {
-        'Total': 'total-players',
-        'Active': 'active-players',
-        'Inactive': 'inactive-players',
-        'RecentActive': 'recent-active',
-        'RecentInactive': 'recent-inactive',
-        'HighRisk': 'high-risk',
-        'RecentActive': 'recent-active',
-        'RecentInactive': 'recent-inactive'
-      };
 
       firstRowBoxes.forEach(b => {
         const div = document.createElement('div');
@@ -3785,7 +4221,7 @@
           <div class="stat-label">${b.label}</div>
         `;
 
-        div.onclick = () => goToRoute(`/${b.type}`, { page: selectedPage });
+        div.onclick = () => showBoxData(b.type);
         statsRow1.appendChild(div);
       });
 
@@ -3803,7 +4239,7 @@
           <div class="stat-label">${b.label}</div>
         `;
 
-        div.onclick = () => goToRoute(`/${b.type}`, { page: selectedPage });
+        div.onclick = () => showBoxData(b.type);
         statsRow2.appendChild(div);
       });
 
@@ -3811,7 +4247,7 @@
         const div = document.createElement('div');
         div.className = `stat-card ${b.colorClass}`;
 
-        let displayValue = (b.type === "player-history" || b.type === "page-deposit" || b.type.startsWith("ComingSoon")) ? "" : (b.value === "" || b.value === undefined || b.value === null) ? 0 : b.value;
+        let displayValue = (b.type === "PlayerHistory" || b.type === "PageDeposits" || b.type.startsWith("ComingSoon")) ? "" : (b.value === "" || b.value === undefined || b.value === null) ? 0 : b.value;
 
         let comingSoonBadge = '';
         if (b.type.startsWith("ComingSoon")) {
@@ -3832,7 +4268,7 @@
         if (b.type.startsWith("ComingSoon")) {
           div.onclick = () => showNotification('This feature is coming soon!', 'warning');
         } else {
-          div.onclick = () => goToRoute(`/${b.type}`, { page: selectedPage });
+          div.onclick = () => showBoxData(b.type);
         }
         statsRow3.appendChild(div);
       });
@@ -3849,8 +4285,8 @@
       sessionStorage.removeItem('currentSearchedPlayer');
     }
 
-    // FIXED: showBoxData with proper type mapping
-    function showBoxData(routeType) {
+    function showBoxData(type) {
+      document.getElementById('dashboardBoxes').style.display = 'none';
       const tbl = document.getElementById('tableContainer');
       const backDiv = document.getElementById('backContainer');
       tbl.innerHTML = "";
@@ -3858,28 +4294,27 @@
       document.getElementById('globalPlayerHistorySection').style.display = 'none';
       pageDepositsView.style.display = 'none';
 
-      // Map route type to table type
-      const typeMap = {
-        'total-players': 'Total',
-        'active-players': 'Active',
-        'inactive-players': 'Inactive',
-        'recent-active': 'RecentActive',
-        'recent-inactive': 'RecentInactive',
-        'high-risk': 'HighRisk'
-      };
-      
-      const tableType = typeMap[routeType] || routeType;
-      
-      tableState.current.type = tableType;
-      tableState.current.title = getTableTitle(routeType);
+      tableState.current.type = type;
+      tableState.current.title = getTableTitle(type);
 
       backDiv.innerHTML = '<button class="btn btn-secondary" onclick="backToDashboard()"><i class="fas fa-arrow-left"></i> Back to Dashboard</button>';
       
+      if (type === "PlayerHistory") {
+        document.getElementById('playerHistorySection').style.display = 'block';
+        currentView = 'playerHistory';
+        sessionStorage.setItem('currentView', 'playerHistory');
+        return;
+      }
+
+      if (type === "PageDeposits") {
+        showPageDeposits();
+        return;
+      }
+
       let filtered = [];
-      let tableTitle = getTableTitle(routeType);
+      let tableTitle = getTableTitle(type);
       
-      // Use the tableType for filtering
-      switch(tableType) {
+      switch(type) {
         case "Total": 
           filtered = currentPageData.players; 
           break;
@@ -3887,7 +4322,7 @@
           filtered = currentPageData.players.filter(p => p.status === "Active"); 
           break;
         case "Inactive": 
-          filtered = currentPageData.players.filter(p => p.status === "Inactive" && p.daysSince >= 15); 
+          filtered = currentPageData.players.filter(p => p.status === "Inactive" && p.daysSince >= INACTIVE_THRESHOLD); 
           break;
         case "RecentActive": 
           filtered = currentPageData.recentActivePlayers || []; 
@@ -3906,29 +4341,17 @@
       }
 
       if (!filtered.length) {
-        tbl.innerHTML = `<div class='table-container' style='text-align: center; padding: 2rem;'><p>No ${tableType.toLowerCase()} players found.</p></div>`;
+        tbl.innerHTML = `<div class='table-container' style='text-align: center; padding: 2rem;'><p>No ${type.toLowerCase()} players found.</p></div>`;
       } else {
-        renderPlayerTable(filtered, tableTitle, tableType);
+        renderPlayerTable(filtered, tableTitle, type);
       }
 
       currentView = 'table';
+      sessionStorage.setItem('currentView', 'table');
     }
 
-    // FIXED: getTableTitle with proper type mapping
     function getTableTitle(type) {
-      // Map route types to display titles
-      const typeMap = {
-        'total-players': "Total",
-        'active-players': "Active",
-        'inactive-players': "Inactive",
-        'recent-active': "RecentActive",
-        'recent-inactive': "RecentInactive",
-        'high-risk': "HighRisk"
-      };
-      
-      const tableType = typeMap[type] || type;
-      
-      switch(tableType) {
+      switch(type) {
         case "Total": return "All Players";
         case "Active": return "Active Players (0-2 days)";
         case "Inactive": return "Inactive Players (15+ days)";
@@ -4119,31 +4542,23 @@
       renderPagination(totalPlayers, currentPage, PLAYERS_PER_PAGE, paginationContainer, 'changeHighRiskPage');
     }
 
-    // FIXED: Create page change functions with proper routing
     function createPlayerPageChangeFunction(type) {
       return function(page) {
         tableState.playerTables[type].page = page;
+        let filtered = [];
         
-        // Map table type back to route type
-        const routeMap = {
-          'Total': 'total-players',
-          'Active': 'active-players',
-          'Inactive': 'inactive-players',
-          'RecentActive': 'recent-active',
-          'RecentInactive': 'recent-inactive',
-          'HighRisk': 'high-risk'
-        };
+        switch(type) {
+          case "Total": filtered = currentPageData.players; break;
+          case "Active": filtered = currentPageData.players.filter(p => p.status === "Active"); break;
+          case "Inactive": filtered = currentPageData.players.filter(p => p.status === "Inactive" && p.daysSince >= 15); break;
+          case "RecentActive": filtered = currentPageData.recentActivePlayers || []; break;
+          case "RecentInactive": filtered = currentPageData.recentInactivePlayers || []; break;
+        }
         
-        const routeType = routeMap[type] || type;
-        
-        // Update URL with page parameter
-        const currentParams = routeParams;
-        currentParams.page = selectedPage;
-        goToRoute(`/${routeType}`, currentParams);
+        renderPlayerTable(filtered, getTableTitle(type), type);
       };
     }
 
-    // Create page change functions
     const changePlayerPage_Total = createPlayerPageChangeFunction('Total');
     const changePlayerPage_Active = createPlayerPageChangeFunction('Active');
     const changePlayerPage_Inactive = createPlayerPageChangeFunction('Inactive');
@@ -4152,13 +4567,11 @@
 
     function changeHighRiskPage(page) {
       tableState.highRisk.page = page;
-      const currentParams = routeParams;
-      currentParams.page = selectedPage;
-      goToRoute('/high-risk', currentParams);
+      renderHighRiskTable();
     }
 
     async function showPageDeposits() {
-      tableState.deposits.month = routeParams.month || 0;
+      tableState.deposits.month = 0;
       
       document.getElementById('tableContainer').innerHTML = '';
       document.getElementById('playerHistorySection').style.display = 'none';
@@ -4191,17 +4604,20 @@
     }
 
     async function changePageDepositsMonth(page) {
-      // Update URL with month parameter
-      const currentParams = routeParams;
-      currentParams.page = selectedPage;
-      currentParams.month = page - 1;
-      goToRoute('/page-deposit', currentParams);
+      tableState.deposits.month = page - 1;
+      pageDepositsView.innerHTML = `
+        <div style="text-align: center; padding: 2rem;">
+          <div class="spinner"></div>
+          <p style="margin-top: 1rem; color: var(--text-secondary);">Loading monthly data...</p>
+        </div>
+      `;
+      await loadPageDepositsData();
     }
 
     function closePageDeposits() {
       pageDepositsView.style.display = 'none';
       tableState.deposits.month = 0;
-      goToRoute('/dashboard', { page: selectedPage });
+      backToDashboard();
     }
 
     function renderPageDeposits(data) {
@@ -4273,7 +4689,7 @@
         
         <div class="table-container">
           <div class="table-header">
-            <h3 class="table-title">Daily Deposit Breakdown - ${data.currentMonth}</h3>
+            <h3 class="table-title">Daily Deposit Breakdown - ${data.currentMonth} (${data.totalTransactions} total transactions)</h3>
             <div class="pagination-controls">
               <div class="pagination-info">
                 Page ${data.currentPage} of ${data.totalPages}
@@ -4349,7 +4765,6 @@
       }
     }
 
-    // FIXED: Enhanced Player History Rendering Function with proper timezone handling
     function renderEnhancedPlayerHistory(data, playerName, pageName, isGlobal = false) {
       const container = isGlobal ? 
         document.getElementById('globalPlayerHistoryContainer') : 
@@ -4492,18 +4907,17 @@
     </div>
   `;
 
-      container.innerHTML = html;
+  container.innerHTML = html;
 
-      const paginationContainer = document.getElementById('historyPaginationContainer');
-      renderPagination(totalEntries, tableState.history.page, PLAYERS_PER_PAGE, paginationContainer, 'changeHistoryPage');
-    }
+  const paginationContainer = document.getElementById('historyPaginationContainer');
+  renderPagination(totalEntries, tableState.history.page, PLAYERS_PER_PAGE, paginationContainer, 'changeHistoryPage');
+}
 
     function changeHistoryPage(page) {
       tableState.history.page = page;
-      
-      const playerName = routeParams.player || sessionStorage.getItem('currentSearchedPlayer');
-      const pageName = routeParams.page || selectedPage;
-      const isGlobal = routeParams.global === 'true' || !!sessionStorage.getItem('searchPlayerName');
+      const playerName = sessionStorage.getItem('searchPlayerName') || sessionStorage.getItem('currentSearchedPlayer');
+      const pageName = sessionStorage.getItem('searchPlayerPage') || selectedPage;
+      const isGlobal = !!sessionStorage.getItem('searchPlayerName');
       
       if (isGlobal) {
         showEnhancedGlobalPlayerHistory(playerName, pageName);
@@ -4525,6 +4939,19 @@
       
       notesModal.style.display = 'block';
       noteTextInput.focus();
+      
+      // If viewer role, disable note input
+      if (userRole === PIN_CONFIG.ROLES.VIEWER) {
+        noteTextInput.disabled = true;
+        noteTextInput.placeholder = "Viewer role cannot add notes";
+        saveNoteBtn.disabled = true;
+        saveNoteBtn.style.display = 'none';
+      } else {
+        noteTextInput.disabled = false;
+        noteTextInput.placeholder = "Enter your note here...";
+        saveNoteBtn.disabled = false;
+        saveNoteBtn.style.display = 'inline-flex';
+      }
     }
 
     function hideNotesModal() {
@@ -4533,6 +4960,9 @@
       currentNotesPlayerName = null;
       currentNotesButton = null;
       noteTextInput.value = '';
+      noteTextInput.disabled = false;
+      saveNoteBtn.disabled = false;
+      saveNoteBtn.style.display = 'inline-flex';
     }
 
     async function loadPlayerNotes(playerName) {
@@ -4565,6 +4995,12 @@
     }
 
     async function savePlayerNote() {
+      // Check if user has permission
+      if (userRole === PIN_CONFIG.ROLES.VIEWER) {
+        showNotification('Viewer role cannot add notes', 'warning');
+        return;
+      }
+      
       const noteText = noteTextInput.value.trim();
       
       if (!noteText) {
@@ -4600,8 +5036,6 @@
     }
 
     function updateCurrentPageDataWithNote(playerName) {
-      if (!currentPageData) return;
-      
       currentPageData.players.forEach(player => {
         if (player.player === playerName) {
           player.hasNotes = true;
@@ -4631,17 +5065,16 @@
           }
         });
       }
-      
-      // Update sessionStorage with the new data
-      sessionStorage.setItem('pageData', JSON.stringify(currentPageData));
     }
-
-    // =============================================
-    // REFRESH/CLEANUP FUNCTIONS - FIXED
-    // =============================================
 
     // Modal functions
     function showRefreshModal() {
+      // Check if user has permission
+      if (userRole === PIN_CONFIG.ROLES.VIEWER) {
+        showNotification('Viewer role cannot refresh data', 'warning');
+        return;
+      }
+      
       if (refreshBtn.disabled) return;
       refreshPinInput.value = '';
       refreshModal.style.display = 'block';
@@ -4654,6 +5087,12 @@
     }
 
     function showCleanupModal() {
+      // Check if user has permission
+      if (userRole === PIN_CONFIG.ROLES.VIEWER) {
+        showNotification('Viewer role cannot perform cleanup', 'warning');
+        return;
+      }
+      
       if (forceCleanupBtn.disabled) return;
       cleanupPinInput.value = '';
       cleanupModal.style.display = 'block';
@@ -4665,7 +5104,6 @@
       cleanupPinInput.value = '';
     }
 
-    // FIXED: Refresh function with data management
     async function confirmRefresh() {
       const pin = refreshPinInput.value.trim();
       if (!pin) {
@@ -4684,37 +5122,24 @@
       showLoader();
       
       try {
-        // Call refresh_player_status with empty parameters
         const { data, error } = await supabase.rpc('refresh_player_status', {});
         
         if (error) throw error;
         
         if (data && data.success) {
-          showNotification('Data refreshed! Reloading...', 'success');
-          
-          // Use central function to update ALL data stores
-          const freshData = await updateAllPageData(selectedPage);
-          
-          // Refresh current view
-          if (currentView === 'dashboard') {
-            renderDashboard(freshData);
-          } else {
-            // If on another route, reload that view with fresh data
-            executeRoute(); // Re-run current route
-          }
+          showNotification(data.message, 'success');
+          await loadDashboardData();
         } else {
           showNotification('Refresh failed: ' + (data?.message || 'Unknown error'), 'error');
-          enableAllButtons();
         }
       } catch (error) {
         showNotification('Error refreshing data: ' + error.message, 'error');
-        enableAllButtons();
       } finally {
         refreshBtn.innerHTML = '<i class="fas fa-sync-alt"></i> Refresh Data';
+        enableAllButtons();
       }
     }
 
-    // FIXED: Cleanup function with data management
     async function confirmForceCleanup() {
       const pin = cleanupPinInput.value.trim();
       if (!pin) {
@@ -4733,37 +5158,21 @@
       showLoader();
       
       try {
-        // Call force_cleanup with empty parameters
         const { data, error } = await supabase.rpc('force_cleanup', {});
         
         if (error) throw error;
         
         if (data && data.success) {
-          showNotification('Cleanup completed! Reloading data...', 'warning');
-          
-          // Clear ALL old cached data
-          sessionStorage.removeItem('pageData');
-          sessionStorage.removeItem('lastUpdated');
-          
-          // Use central function to load fresh data
-          const freshData = await updateAllPageData(selectedPage);
-          
-          // Update current view
-          if (currentView === 'dashboard') {
-            renderDashboard(freshData);
-          } else {
-            // If on another route, reload that view with fresh data
-            executeRoute();
-          }
+          showNotification(data.message, 'warning');
+          await loadDashboardData();
         } else {
           showNotification('Cleanup failed: ' + (data?.message || 'Unknown error'), 'error');
-          enableAllButtons();
         }
       } catch (error) {
         showNotification('Error during cleanup: ' + error.message, 'error');
-        enableAllButtons();
       } finally {
         forceCleanupBtn.innerHTML = '<i class="fas fa-broom"></i> Force Cleanup';
+        enableAllButtons();
       }
     }
 
