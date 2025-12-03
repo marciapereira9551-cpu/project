@@ -1607,7 +1607,16 @@
           <i class="fas fa-search"></i> Search for a Page
         </div>
         <div class="search-container">
-          <input type="text" id="pageSelectSearch" class="search-input" placeholder="Search for a page...">
+          <input 
+            type="text" 
+            id="pageSelectSearch" 
+            class="search-input" 
+            placeholder="Search for a page..."
+            autocomplete="off"
+            autocorrect="off"
+            autocapitalize="off"
+            spellcheck="false"
+          >
           <i class="fas fa-search search-icon"></i>
           <div id="pageSuggestions"></div>
         </div>
@@ -1619,7 +1628,16 @@
           <i class="fas fa-user"></i> Search for a Player (All Pages)
         </div>
         <div class="search-container">
-          <input type="text" id="playerSearchInput" class="search-input" placeholder="Search for a player across all pages...">
+          <input 
+            type="text" 
+            id="playerSearchInput" 
+            class="search-input" 
+            placeholder="Search for a player across all pages..."
+            autocomplete="off"
+            autocorrect="off"
+            autocapitalize="off"
+            spellcheck="false"
+          >
           <i class="fas fa-search search-icon"></i>
           <div id="playerSuggestions"></div>
         </div>
@@ -1677,7 +1695,16 @@
         <div class="player-history">
           <h3>Player History Search - Current Page Only</h3>
           <div style="display: flex; gap: 1rem; margin: 1.5rem 0;">
-            <input type="text" id="playerSearch" class="search-input" placeholder="Enter player name for current page...">
+            <input 
+              type="text" 
+              id="playerSearch" 
+              class="search-input" 
+              placeholder="Enter player name for current page..."
+              autocomplete="off"
+              autocorrect="off"
+              autocapitalize="off"
+              spellcheck="false"
+            >
             <button class="btn btn-primary" onclick="findPlayerForCurrentPage()">
               <i class="fas fa-search"></i> Search
             </button>
@@ -1802,6 +1829,9 @@
     const pinLockout = document.getElementById('pinLockout');
     const lockoutTimer = document.getElementById('lockoutTimer');
     
+    // Store original button states for UI reset
+    let originalButtonStates = {};
+    
     // Simple hash function (for demo - in production use proper hashing)
     function simpleHash(str) {
       let hash = 0;
@@ -1837,12 +1867,48 @@
       pinSubmit.addEventListener('click', verifyPin);
       pinInput.addEventListener('input', clearPinError);
       
+      // Store original button states for UI reset
+      storeOriginalButtonStates();
+      
       // Auto-focus on PIN input
       setTimeout(() => {
         if (pinInput && !pinInput.disabled) {
           pinInput.focus();
         }
       }, 100);
+    }
+    
+    // Store original button states for UI reset
+    function storeOriginalButtonStates() {
+      const adminButtons = document.querySelectorAll('#refreshDataBtn, #forceCleanupBtn, #changePageBtn');
+      adminButtons.forEach(btn => {
+        const id = btn.id;
+        originalButtonStates[id] = {
+          className: btn.className,
+          innerHTML: btn.innerHTML,
+          disabled: btn.disabled
+        };
+      });
+    }
+    
+    // Reset UI to default state before applying role-based styling
+    function resetUI() {
+      // Reset control buttons to original state
+      Object.keys(originalButtonStates).forEach(id => {
+        const btn = document.getElementById(id);
+        if (btn && originalButtonStates[id]) {
+          const original = originalButtonStates[id];
+          btn.className = original.className;
+          btn.innerHTML = original.innerHTML;
+          btn.disabled = original.disabled;
+        }
+      });
+      
+      // Reset page title
+      const pageTitle = document.getElementById('pageTitle');
+      if (pageTitle && pageTitle.textContent.includes('View Only')) {
+        pageTitle.textContent = pageTitle.textContent.replace(' <span style="font-size: 0.8rem; background: var(--info); color: white; padding: 0.2rem 0.5rem; border-radius: 12px;">View Only</span>', '');
+      }
     }
     
     // Load security state from localStorage
@@ -1855,7 +1921,7 @@
           failedAttempts = parseInt(savedAttempts, 10);
         }
         
-                if (savedLockout) {
+        if (savedLockout) {
           lockoutUntil = new Date(savedLockout);
           if (lockoutUntil < new Date()) {
             // Lockout has expired
@@ -1906,7 +1972,7 @@
       updateAttemptsDisplay();
     }
     
-        // Check lockout status - FIXED to prevent recursion
+    // Check lockout status - FIXED to prevent recursion
     function checkLockoutStatus() {
       if (!lockoutUntil) return false;
       
@@ -2090,7 +2156,7 @@
           failedAttempts++;
           saveSecurityState();
           
-                    if (failedAttempts >= PIN_CONFIG.MAX_ATTEMPTS) {
+          if (failedAttempts >= PIN_CONFIG.MAX_ATTEMPTS) {
             // Lock user out
             lockoutUntil = new Date(Date.now() + (PIN_CONFIG.LOCKOUT_MINUTES * 60 * 1000));
             saveSecurityState();
@@ -2147,6 +2213,9 @@
     
     // Apply role-based permissions
     function applyRolePermissions() {
+      // Reset UI first to remove any previous role styling
+      resetUI();
+      
       if (userRole === PIN_CONFIG.ROLES.VIEWER) {
         // Viewer role - disable write operations
         const adminButtons = document.querySelectorAll('#refreshDataBtn, #forceCleanupBtn, #changePageBtn');
@@ -2203,6 +2272,9 @@
       pinInput.value = '';
       pinInput.focus();
       clearPinError();
+      
+      // Reset UI to default state
+      resetUI();
       
       // Check lockout status
       checkLockoutStatus();
@@ -2447,7 +2519,7 @@
         return pktDate;
     }
 
-    // Calculate time since last deposit in PKT
+    // Calculate time since last deposit in PKT - EXACT HOURS/DAYS
     function formatTimeSince(utcDateString) {
         if (!utcDateString) return 'N/A';
         
@@ -2468,21 +2540,57 @@
             
             const hoursSince = Math.floor(diffMs / (1000 * 60 * 60));
             const minutesSince = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
-            const daysSince = hoursSince / 24;
+            const daysSince = Math.floor(hoursSince / 24);
             const remainingHours = hoursSince % 24;
+            const remainingMinutes = minutesSince % 60;
             
-            if (daysSince < 1) {
+            if (daysSince === 0) {
                 if (hoursSince === 0) {
                     return `${minutesSince} minutes ago`;
                 } else {
                     return `${hoursSince} hours ${minutesSince} minutes ago`;
                 }
             } else {
-                const fullDays = Math.floor(daysSince);
-                return `${fullDays} day${fullDays > 1 ? 's' : ''} ${remainingHours} hours ago`;
+                if (remainingHours === 0) {
+                    return `${daysSince} day${daysSince > 1 ? 's' : ''} ago`;
+                } else {
+                    return `${daysSince} day${daysSince > 1 ? 's' : ''} ${remainingHours} hour${remainingHours > 1 ? 's' : ''} ago`;
+                }
             }
         } catch (error) {
             console.error('Error calculating time since:', error, utcDateString);
+            return 'N/A';
+        }
+    }
+
+    // NEW FUNCTION: Calculate exact gap duration between two dates
+    function calculateExactGapDuration(startDate, endDate) {
+        if (!startDate || !endDate) return 'N/A';
+        
+        try {
+            const start = new Date(startDate);
+            const end = new Date(endDate);
+            
+            if (isNaN(start.getTime()) || isNaN(end.getTime())) {
+                return 'N/A';
+            }
+            
+            const diffMs = end - start;
+            if (diffMs < 0) return 'N/A';
+            
+            const hours = Math.floor(diffMs / (1000 * 60 * 60));
+            const days = Math.floor(hours / 24);
+            const remainingHours = hours % 24;
+            
+            if (days === 0) {
+                return `${hours} hours`;
+            } else if (remainingHours === 0) {
+                return `${days} day${days > 1 ? 's' : ''}`;
+            } else {
+                return `${days} day${days > 1 ? 's' : ''} ${remainingHours} hour${remainingHours > 1 ? 's' : ''}`;
+            }
+        } catch (error) {
+            console.error('Error calculating gap duration:', error);
             return 'N/A';
         }
     }
@@ -3289,7 +3397,11 @@
           }
         } else {
           const fullDays = Math.floor(daysSince);
-          timeSinceDisplay = `${fullDays} day${fullDays > 1 ? 's' : ''} ${remainingHours} hours ago`;
+          if (remainingHours === 0) {
+            timeSinceDisplay = `${fullDays} day${fullDays > 1 ? 's' : ''} ago`;
+          } else {
+            timeSinceDisplay = `${fullDays} day${fullDays > 1 ? 's' : ''} ${remainingHours} hour${remainingHours > 1 ? 's' : ''} ago`;
+          }
         }
 
         const depositsByDay = {};
@@ -3359,6 +3471,12 @@
           const currentDay = timeline[i];
           
           if (currentDay.isDepositDay) {
+            // Determine activity level based on NEW logic
+            let activityLevel = "Normal";
+            if (currentDay.depositCount > 4 || currentDay.totalAmount > 50) {
+              activityLevel = "High";
+            }
+            
             const depositText = currentDay.depositCount === 1 
               ? "1 deposit" 
               : `${currentDay.depositCount} deposits`;
@@ -3372,21 +3490,30 @@
               activity: `${depositText}${amountText}`,
               status: "Active",
               inactiveGap: 0,
-              activityLevel: currentDay.depositCount > 1 ? "Multiple" : "Single",
+              activityLevel: activityLevel,
               depositCount: currentDay.depositCount,
               totalAmount: currentDay.totalAmount,
               isDepositDay: true,
-              timestamp: currentDay.pktDate
+              timestamp: currentDay.pktDate,
+              gapDuration: "0 hours"
             });
             i++;
           } else {
             let inactiveStart = i;
             let inactiveCount = 0;
+            let startDate = timeline[inactiveStart];
             
             while (i < timeline.length && !timeline[i].isDepositDay) {
               inactiveCount++;
               i++;
             }
+            
+            // Calculate exact gap duration in days and hours
+            const endDate = i < timeline.length ? timeline[i] : timeline[timeline.length - 1];
+            const gapDuration = calculateExactGapDuration(
+              startDate.date,
+              endDate ? endDate.date : nowPKT
+            );
             
             if (inactiveCount === 1) {
               enhancedHistory.push({
@@ -3398,7 +3525,8 @@
                 depositCount: 0,
                 totalAmount: 0,
                 isDepositDay: false,
-                timestamp: timeline[inactiveStart].pktDate
+                timestamp: timeline[inactiveStart].pktDate,
+                gapDuration: gapDuration
               });
             } else {
               const startDate = timeline[inactiveStart].displayDate;
@@ -3412,7 +3540,8 @@
                 depositCount: 0,
                 totalAmount: 0,
                 isDepositDay: false,
-                timestamp: timeline[inactiveStart].pktDate
+                timestamp: timeline[inactiveStart].pktDate,
+                gapDuration: gapDuration
               });
             }
           }
@@ -4819,7 +4948,7 @@
             <div style="font-size: 1.5rem; font-weight: 600; color: var(--text-primary);">${data.totalDepositDays || 0}</div>
           </div>
           <div style="background: var(--bg-secondary); padding: 1rem; border-radius: 8px; text-align: center; border: 1px solid var(--border-color);">
-            <div style="font-size: 0.875rem; color: var(--text-secondary);">Time Since Last</div>
+            <div style="font-size: 0.875rem; color: var(--text-secondary);">Last Deposit</div>
             <div style="font-size: 1rem; font-weight: 600; color: var(--text-primary);">${data.timeSinceDisplay || 'N/A'}</div>
           </div>
           <div style="background: var(--bg-secondary); padding: 1rem; border-radius: 8px; text-align: center; border: 1px solid var(--border-color);">
@@ -4845,7 +4974,7 @@
                   <th style="text-align: left;">Date / Period</th>
                   <th style="text-align: left;">Activity Details</th>
                   <th style="text-align: center;">Status</th>
-                  <th style="text-align: center;">Inactive Gap</th>
+                  <th style="text-align: center;">Gap Duration</th>
                   <th style="text-align: left;">Activity Level</th>
                 </tr>
               </thead>
@@ -4859,11 +4988,10 @@
           '<span class="status-badge status-active">Active</span>' : 
           '<span class="status-badge status-inactive">Inactive</span>';
         
-        let gapDisplay = '-';
+        let gapDisplay = period.gapDuration || '-';
         let gapClass = '';
         
         if (period.inactiveGap > 0) {
-          gapDisplay = `${period.inactiveGap} day${period.inactiveGap > 1 ? 's' : ''}`;
           if (period.inactiveGap >= 7) gapClass = 'gap-high';
           else if (period.inactiveGap >= 4) gapClass = 'gap-medium';
           else gapClass = 'gap-low';
@@ -4873,6 +5001,18 @@
         if (isActive && period.depositCount > 0) {
           const amountText = period.totalAmount > 0 ? ` - $${period.totalAmount.toFixed(2)}` : '';
           activityDisplay = `${period.depositCount} deposit${period.depositCount > 1 ? 's' : ''}${amountText}`;
+        }
+
+        // Determine activity level display with new logic
+        let activityLevelDisplay = '';
+        if (isActive) {
+          if (period.activityLevel === 'High') {
+            activityLevelDisplay = '<span style="color: var(--success);"><i class="fas fa-bolt"></i> High Activity</span>';
+          } else {
+            activityLevelDisplay = '<span style="color: var(--info);"><i class="fas fa-check"></i> Normal</span>';
+          }
+        } else {
+          activityLevelDisplay = '<span style="color: var(--text-secondary);"><i class="fas fa-moon"></i> No Activity</span>';
         }
 
         html += `
@@ -4889,12 +5029,7 @@
             <td style="text-align: center;">${statusBadge}</td>
             <td class="gap-cell" style="text-align: center;"><span class="${gapClass}">${gapDisplay}</span></td>
             <td style="text-align: left;">
-              ${period.activityLevel === 'Multiple' ? 
-                '<span style="color: var(--success);"><i class="fas fa-bolt"></i> High Activity</span>' :
-               period.activityLevel === 'Single' ? 
-                '<span style="color: var(--info);"><i class="fas fa-check"></i> Normal</span>' :
-                '<span style="color: var(--text-secondary);"><i class="fas fa-moon"></i> No Activity</span>'
-              }
+              ${activityLevelDisplay}
             </td>
           </tr>
         `;
@@ -4903,6 +5038,15 @@
       html += `
           </tbody>
         </table>
+      </div>
+    </div>
+    
+    <div style="margin-top: 1.5rem; background: var(--bg-secondary); padding: 1rem; border-radius: 8px; border: 1px solid var(--border-color);">
+      <h5 style="color: var(--text-primary); margin-bottom: 0.5rem;">Activity Level Legend:</h5>
+      <div style="display: flex; flex-wrap: wrap; gap: 1rem; font-size: 0.875rem;">
+        <div><span style="color: var(--success);"><i class="fas fa-bolt"></i> High Activity</span>: >4 deposits OR >$50 in one day</div>
+        <div><span style="color: var(--info);"><i class="fas fa-check"></i> Normal Activity</span>: ≤4 deposits AND ≤$50 in one day</div>
+        <div><span style="color: var(--text-secondary);"><i class="fas fa-moon"></i> No Activity</span>: No deposits</div>
       </div>
     </div>
   `;
