@@ -293,45 +293,66 @@
       border: 1px solid var(--border-color);
     }
 
+    /* NEW: Logo header with logout button */
+    .logo-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.5rem;
+      width: 100%;
+    }
+
+    .logo-left {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      text-align: left;
+    }
+
     .logo {
       font-size: 3rem;
       font-weight: 700;
       background: linear-gradient(135deg, var(--primary), var(--secondary));
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
-      margin-bottom: 1rem;
+      margin-bottom: 0.25rem;
     }
 
     .subtitle {
       color: var(--text-secondary);
       font-size: 1.1rem;
-      margin-bottom: 2rem;
       font-weight: 400;
     }
 
-    /* Landing page logout button specific styles */
-    #logoutBtnLanding {
+    /* NEW: Top-right logout button */
+    .logout-top {
       background: rgba(239, 68, 68, 0.1);
       color: var(--danger);
       border: 2px solid var(--danger);
+      border-radius: 12px;
+      padding: 0.5rem 1rem;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
       transition: all 0.3s ease;
-      width: auto !important;
-      padding: 0.75rem 1.5rem !important;
-      margin-top: 1rem;
+      white-space: nowrap;
     }
 
-    #logoutBtnLanding:hover:not(:disabled) {
+    .logout-top:hover:not(:disabled) {
       background: var(--danger);
       color: white;
       transform: translateY(-2px);
       box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
     }
 
-    #logoutBtnLanding:active:not(:disabled) {
+    .logout-top:active:not(:disabled) {
       transform: translateY(0);
     }
 
-    #logoutBtnLanding:disabled {
+    .logout-top:disabled {
       opacity: 0.5;
       cursor: not-allowed;
       transform: none !important;
@@ -1512,6 +1533,25 @@
         padding: 2rem 1.5rem;
       }
       
+      /* Mobile responsive for logo header */
+      .logo-header {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 1rem;
+        margin-bottom: 1rem;
+      }
+      
+      .logo-left {
+        text-align: center;
+        align-items: center;
+      }
+      
+      #landingLogoutSection {
+        display: flex;
+        justify-content: center;
+        margin-top: 0.5rem;
+      }
+      
       .dashboard-content {
         padding: 1rem;
       }
@@ -1580,6 +1620,14 @@
       .pin-subtitle {
         font-size: 0.9rem;
       }
+      
+      .logo {
+        font-size: 2.5rem;
+      }
+      
+      .subtitle {
+        font-size: 1rem;
+      }
     }
   </style>
 </head>
@@ -1630,10 +1678,22 @@
   <!-- Landing Page -->
   <div id="landing">
     <div class="landing-container">
-      <div class="logo">
-        <i class="fas fa-chart-line"></i> Tech Pulse
+      <!-- NEW: Logo header with logout button in top-right -->
+      <div class="logo-header">
+        <div class="logo-left">
+          <div class="logo">
+            <i class="fas fa-chart-line"></i> Tech Pulse
+          </div>
+          <p class="subtitle">Marketing Department Analytics Dashboard</p>
+        </div>
+        
+        <!-- NEW: Logout button moved to top-right -->
+        <div id="landingLogoutSection" style="display: none;">
+          <button id="logoutBtnLanding" class="logout-top">
+            <i class="fas fa-sign-out-alt"></i> Logout
+          </button>
+        </div>
       </div>
-      <p class="subtitle">Marketing Department Analytics Dashboard</p>
       
       <!-- Page Search Section -->
       <div class="search-section">
@@ -1680,16 +1740,6 @@
       <button id="findBtn" class="btn btn-primary" onclick="findData()">
         <i class="fas fa-arrow-right"></i> Access Dashboard
       </button>
-      
-      <!-- NEW: Logout Button on Landing Page -->
-      <div id="landingLogoutSection" style="margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid var(--border-color); text-align: center; display: none;">
-        <button id="logoutBtnLanding" class="btn btn-secondary" style="width: auto; padding: 0.75rem 1.5rem;" disabled>
-          <i class="fas fa-sign-out-alt"></i> Logout
-        </button>
-        <div style="margin-top: 0.5rem; font-size: 0.85rem; color: var(--text-secondary);">
-          <i class="fas fa-user-shield"></i> Secure Session Active
-        </div>
-      </div>
     </div>
   </div>
 
@@ -1840,6 +1890,7 @@
   </div>
 
   <script>
+    
     // =============================================
     // NEW: PIN AUTHENTICATION SYSTEM
     // =============================================
