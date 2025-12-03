@@ -2622,54 +2622,58 @@
         }
     }
 
-    // NEW FUNCTION: Calculate exact gap duration between two dates - FIXED VERSION
-    function calculateExactGapDuration(startDate, endDate) {
-        if (!startDate || !endDate) return '—';
+    // FIXED VERSION: Calculate exact gap duration between two dates
+function calculateExactGapDuration(startDate, endDate) {
+    if (!startDate || !endDate) return '—';
+    
+    try {
+        const start = new Date(startDate);
+        const end = new Date(endDate);
         
-        try {
-            const start = new Date(startDate);
-            const end = new Date(endDate);
-            
-            if (isNaN(start.getTime()) || isNaN(end.getTime())) {
-                return '—';
-            }
-            
-            const diffMs = end - start;
-            if (diffMs <= 0) return '—';
-            
-            const hours = Math.floor(diffMs / (1000 * 60 * 60));
-            const minutes = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
-            const days = Math.floor(hours / 24);
-            const remainingHours = hours % 24;
-            
-            // For active deposit days, return dash
-            if (days === 0 && hours === 0 && minutes === 0) {
-                return '—';
-            }
-            
-            if (days === 0) {
-                if (hours === 0) {
-                    return `${minutes} minutes`;
-                } else if (minutes === 0) {
-                    return `${hours} hours`;
-                } else {
-                    return `${hours} hours ${minutes} minutes`;
-                }
-            } else if (remainingHours === 0 && minutes === 0) {
-                return `${days} day${days > 1 ? 's' : ''}`;
-            } else {
-                if (minutes === 0) {
-                    return `${days} day${days > 1 ? 's' : ''} ${remainingHours} hour${remainingHours > 1 ? 's' : ''}`;
-                } else {
-                    return `${days} day${days > 1 ? 's' : ''} ${remainingHours} hour${remainingHours > 1 ? 's' : ''} ${minutes} minutes`;
-                }
-            }
-        } catch (error) {
-            console.error('Error calculating gap duration:', error);
+        if (isNaN(start.getTime()) || isNaN(end.getTime())) {
             return '—';
         }
+        
+        // Calculate EXACT difference in milliseconds
+        const diffMs = end.getTime() - start.getTime();
+        
+        if (diffMs <= 0) return '—';
+        
+        // Convert to hours, minutes
+        const totalHours = Math.floor(diffMs / (1000 * 60 * 60));
+        const totalMinutes = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
+        const days = Math.floor(totalHours / 24);
+        const hours = totalHours % 24;
+        
+        // For active deposit days (same day), return dash
+        if (days === 0 && hours === 0 && totalMinutes === 0) {
+            return '—';
+        }
+        
+        // Build the gap string
+        let gapString = '';
+        
+        if (days > 0) {
+            gapString += `${days} day${days > 1 ? 's' : ''}`;
+        }
+        
+        if (hours > 0) {
+            if (gapString) gapString += ' ';
+            gapString += `${hours} hour${hours > 1 ? 's' : ''}`;
+        }
+        
+        // Only show minutes if there are no days and hours < 2
+        if (totalMinutes > 0 && days === 0 && hours < 2) {
+            if (gapString) gapString += ' ';
+            gapString += `${totalMinutes} minute${totalMinutes > 1 ? 's' : ''}`;
+        }
+        
+        return gapString || '—';
+    } catch (error) {
+        console.error('Error calculating gap duration:', error);
+        return '—';
     }
-
+}
     // =============================================
     // STATE MANAGEMENT
     // =============================================
@@ -3546,84 +3550,100 @@
 
         let i = 0;
         while (i < timeline.length) {
-          const currentDay = timeline[i];
-          
-          if (currentDay.isDepositDay) {
-            // Determine activity level based on NEW logic
-            let activityLevel = "Normal";
-            if (currentDay.depositCount > 4 || currentDay.totalAmount > 50) {
-              activityLevel = "High";
-            }
-            
-            const depositText = currentDay.depositCount === 1 
-              ? "1 deposit" 
-              : `${currentDay.depositCount} deposits`;
-            
-            const amountText = currentDay.totalAmount > 0 
-              ? ` ($${currentDay.totalAmount.toFixed(2)})` 
-              : "";
-            
-            enhancedHistory.push({
-              dateRange: currentDay.displayDate,
-              activity: `${depositText}${amountText}`,
-              status: "Active",
-              inactiveGap: 0,
-              activityLevel: activityLevel,
-              depositCount: currentDay.depositCount,
-              totalAmount: currentDay.totalAmount,
-              isDepositDay: true,
-              timestamp: currentDay.pktDate,
-              gapDuration: "—" // FIXED: Show dash for active days
-            });
-            i++;
-          } else {
-            let inactiveStart = i;
-            let inactiveCount = 0;
-            let startDate = timeline[inactiveStart];
-            
-            while (i < timeline.length && !timeline[i].isDepositDay) {
-              inactiveCount++;
-              i++;
-            }
-            
-            // Calculate exact gap duration in days and hours - FIXED VERSION
-            const endDate = i < timeline.length ? timeline[i] : timeline[timeline.length - 1];
-            const gapDuration = calculateExactGapDuration(
-              startDate.date,
-              endDate ? endDate.date : nowPKT
-            );
-            
-            if (inactiveCount === 1) {
-              enhancedHistory.push({
-                dateRange: timeline[inactiveStart].displayDate,
-                activity: "No deposits",
-                status: "Inactive",
-                inactiveGap: inactiveCount,
-                activityLevel: "None",
-                depositCount: 0,
-                totalAmount: 0,
-                isDepositDay: false,
-                timestamp: timeline[inactiveStart].pktDate,
-                gapDuration: gapDuration // FIXED: Shows exact hours like "1 day 5 hours"
-              });
-            } else {
-              const startDate = timeline[inactiveStart].displayDate;
-              const endDate = timeline[i - 1].displayDate;
-              enhancedHistory.push({
-                dateRange: `${startDate} - ${endDate}`,
-                activity: "No deposits",
-                status: "Inactive",
-                inactiveGap: inactiveCount,
-                activityLevel: "None",
-                depositCount: 0,
-                totalAmount: 0,
-                isDepositDay: false,
-                timestamp: timeline[inactiveStart].pktDate,
-                gapDuration: gapDuration // FIXED: Shows exact hours like "10 days 3 hours"
-              });
-            }
-          }
-        }
+  const currentDay = timeline[i];
+  
+  if (currentDay.isDepositDay) {
+    // Determine activity level based on NEW logic
+    let activityLevel = "Normal";
+    if (currentDay.depositCount > 4 || currentDay.totalAmount > 50) {
+      activityLevel = "High";
+    }
+    
+    const depositText = currentDay.depositCount === 1 
+      ? "1 deposit" 
+      : `${currentDay.depositCount} deposits`;
+    
+    const amountText = currentDay.totalAmount > 0 
+      ? ` ($${currentDay.totalAmount.toFixed(2)})` 
+      : "";
+    
+    enhancedHistory.push({
+      dateRange: currentDay.displayDate,
+      activity: `${depositText}${amountText}`,
+      status: "Active",
+      inactiveGap: 0,
+      activityLevel: activityLevel,
+      depositCount: currentDay.depositCount,
+      totalAmount: currentDay.totalAmount,
+      isDepositDay: true,
+      timestamp: currentDay.pktDate,
+      gapDuration: "—" // FIXED: Show dash for active days
+    });
+    i++;
+  } else {
+    let inactiveStart = i;
+    let inactiveCount = 0;
+    let startDate = timeline[inactiveStart];
+    
+    while (i < timeline.length && !timeline[i].isDepositDay) {
+      inactiveCount++;
+      i++;
+    }
+    
+    // FIXED: Calculate exact gap duration using EXACT TIMESTAMPS
+    const endDate = i < timeline.length ? 
+      timeline[i].date : // Next deposit day
+      nowPKT; // Current time if no more deposits
+    
+    // Get the exact start time (beginning of the inactive period)
+    const startTime = new Date(startDate.date);
+    startTime.setUTCHours(0, 0, 0, 0); // Start of day
+    
+    // Get the exact end time
+    let endTime;
+    if (i < timeline.length) {
+      // Next deposit day
+      endTime = new Date(timeline[i].date);
+      endTime.setUTCHours(0, 0, 0, 0); // Start of deposit day
+    } else {
+      // Current time
+      endTime = nowPKT;
+    }
+    
+    // Calculate exact gap duration
+    const gapDuration = calculateExactGapDuration(startTime, endTime);
+    
+    if (inactiveCount === 1) {
+      enhancedHistory.push({
+        dateRange: timeline[inactiveStart].displayDate,
+        activity: "No deposits",
+        status: "Inactive",
+        inactiveGap: inactiveCount,
+        activityLevel: "None",
+        depositCount: 0,
+        totalAmount: 0,
+        isDepositDay: false,
+        timestamp: timeline[inactiveStart].pktDate,
+        gapDuration: gapDuration // Shows exact hours like "1 day 5 hours"
+      });
+    } else {
+      const startDateStr = timeline[inactiveStart].displayDate;
+      const endDateStr = timeline[i - 1].displayDate;
+      enhancedHistory.push({
+        dateRange: `${startDateStr} - ${endDateStr}`,
+        activity: "No deposits",
+        status: "Inactive",
+        inactiveGap: inactiveCount,
+        activityLevel: "None",
+        depositCount: 0,
+        totalAmount: 0,
+        isDepositDay: false,
+        timestamp: timeline[inactiveStart].pktDate,
+        gapDuration: gapDuration // Shows exact hours like "10 days 3 hours"
+      });
+    }
+  }
+}
 
         const totalDepositDays = Object.keys(depositsByDay).length;
         const totalDepositCount = playerDeposits.length;
