@@ -3245,32 +3245,30 @@
     // =============================================
 
     // Show recovery modal
-function showRecoveryModal(playerName, pageName) {
-  // Check if user has permission
-  if (userRole === PIN_CONFIG.ROLES.VIEWER) {
-    showNotification('Viewer role cannot mark recoveries', 'warning');
-    return;
-  }
-  
-  console.log(`showRecoveryModal called with playerName: ${playerName}, pageName: ${pageName}`);
-  
-  recoveryPlayerName = playerName;
-  recoveryPlayerPage = pageName || selectedPage;
-  
-  recoveryModalTitle.textContent = `Mark ${playerName} as Recovered`;
-  recoveryPlayerNameInput.value = playerName;
-  recoveryPlayerPageInput.value = recoveryPlayerPage;
-  recoveryNotesInput.value = '';
-  
-  // Reset method selection
-  selectedRecoveryMethod = null;
-  document.querySelectorAll('.recovery-method-btn').forEach(btn => {
-    btn.classList.remove('active');
-  });
-  
-  recoveryModal.style.display = 'block';
-  recoveryNotesInput.focus();
-}
+    function showRecoveryModal(playerName, pageName) {
+      // Check if user has permission
+      if (userRole === PIN_CONFIG.ROLES.VIEWER) {
+        showNotification('Viewer role cannot mark recoveries', 'warning');
+        return;
+      }
+      
+      recoveryPlayerName = playerName;
+      recoveryPlayerPage = pageName || selectedPage;
+      
+      recoveryModalTitle.textContent = `Mark ${playerName} as Recovered`;
+      recoveryPlayerNameInput.value = playerName;
+      recoveryPlayerPageInput.value = recoveryPlayerPage;
+      recoveryNotesInput.value = '';
+      
+      // Reset method selection
+      selectedRecoveryMethod = null;
+      document.querySelectorAll('.recovery-method-btn').forEach(btn => {
+        btn.classList.remove('active');
+      });
+      
+      recoveryModal.style.display = 'block';
+      recoveryNotesInput.focus();
+    }
 
     // Hide recovery modal
     function hideRecoveryModal() {
@@ -3295,100 +3293,161 @@ function showRecoveryModal(playerName, pageName) {
     }
 
     // Confirm recovery - FIXED WITH REAL-TIME BUTTON UPDATE
-async function confirmRecovery() {
-  if (!selectedRecoveryMethod) {
-    showNotification('Please select a recovery method (Chat or Offer)', 'error');
-    return;
-  }
-  
-  const recoveryNotes = recoveryNotesInput.value.trim();
-  const playerNameToRecover = recoveryPlayerName; // Capture the player name before async operation
-  
-  if (!playerNameToRecover) {
-    showNotification('Error: Player name not found', 'error');
-    return;
-  }
-  
-  confirmRecoveryBtn.disabled = true;
-  confirmRecoveryBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...';
-  
-  try {
-    const { data, error } = await supabase
-      .from('client_recoveries')
-      .insert([
-        {
-          page_name: recoveryPlayerPage,
-          player_name: playerNameToRecover,
-          recovery_method: selectedRecoveryMethod,
-          recovery_notes: recoveryNotes || null,
-          added_by: userRole,
-          recovered_date: new Date().toISOString(),
-          is_active_in_list: true,
-          created_at: new Date().toISOString(),
-          updated_at: new Date().toISOString()
+    async function confirmRecovery() {
+      if (!selectedRecoveryMethod) {
+        showNotification('Please select a recovery method (Chat or Offer)', 'error');
+        return;
+      }
+      
+      const recoveryNotes = recoveryNotesInput.value.trim();
+      
+      confirmRecoveryBtn.disabled = true;
+      confirmRecoveryBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...';
+      
+      try {
+        const { data, error } = await supabase
+          .from('client_recoveries')
+          .insert([
+            {
+              page_name: recoveryPlayerPage,
+              player_name: recoveryPlayerName,
+              recovery_method: selectedRecoveryMethod,
+              recovery_notes: recoveryNotes || null,
+              added_by: userRole,
+              recovered_date: new Date().toISOString(),
+              is_active_in_list: true,
+              created_at: new Date().toISOString(),
+              updated_at: new Date().toISOString()
+            }
+          ])
+          .select();
+        
+        if (error) throw error;
+        
+        showNotification(`Player ${recoveryPlayerName} marked as recovered via ${selectedRecoveryMethod === 'chat' ? 'Chat' : 'Offer'}`, 'success');
+        
+        hideRecoveryModal();
+        
+        // Update recovery cache
+        recoveryStatusCache.set(recoveryPlayerName, true);
+        
+        // REAL-TIME UPDATE: Update recovery button in all tables - FIXED VERSION
+        updateRecoveryButtonInTables(recoveryPlayerName, true);
+        
+        // If we're in recovery dashboard, refresh it
+        if (currentView === 'clientRecovery') {
+          await loadRecoveryData();
         }
-      ])
-      .select();
-    
-    if (error) throw error;
-    
-    showNotification(`Player ${playerNameToRecover} marked as recovered via ${selectedRecoveryMethod === 'chat' ? 'Chat' : 'Offer'}`, 'success');
-    
-    hideRecoveryModal();
-    
-    // Update recovery cache
-    recoveryStatusCache.set(playerNameToRecover, true);
-    
-    // REAL-TIME UPDATE: Update recovery button in all tables - FIXED VERSION
-    updateRecoveryButtonInTables(playerNameToRecover, true);
-    
-    // If we're in recovery dashboard, refresh it
-    if (currentView === 'clientRecovery') {
-      await loadRecoveryData();
+        
+        // Update recovery stats in dashboard
+        await updateRecoveryStats();
+        
+        // Update dashboard stats
+        await updateDashboardRecoveryCount();
+        
+      } catch (error) {
+        console.error('Error marking player as recovered:', error);
+        showNotification('Error marking player as recovered: ' + error.message, 'error');
+      } finally {
+        confirmRecoveryBtn.disabled = false;
+        confirmRecoveryBtn.innerHTML = '<i class="fas fa-check"></i> Mark as Recovered';
+      }
     }
-    
-    // Update recovery stats in dashboard
-    await updateRecoveryStats();
-    
-    // Update dashboard stats
-    await updateDashboardRecoveryCount();
-    
-  } catch (error) {
-    console.error('Error marking player as recovered:', error);
-    showNotification('Error marking player as recovered: ' + error.message, 'error');
-  } finally {
-    confirmRecoveryBtn.disabled = false;
-    confirmRecoveryBtn.innerHTML = '<i class="fas fa-check"></i> Mark as Recovered';
-  }
-}
 
-    // Show recovery modal
-function showRecoveryModal(playerName, pageName) {
-  // Check if user has permission
-  if (userRole === PIN_CONFIG.ROLES.VIEWER) {
-    showNotification('Viewer role cannot mark recoveries', 'warning');
-    return;
-  }
-  
-  console.log(`showRecoveryModal called with playerName: ${playerName}, pageName: ${pageName}`);
-  
-  recoveryPlayerName = playerName;
-  recoveryPlayerPage = pageName || selectedPage;
-  
-  recoveryModalTitle.textContent = `Mark ${playerName} as Recovered`;
-  recoveryPlayerNameInput.value = playerName;
-  recoveryPlayerPageInput.value = recoveryPlayerPage;
-  recoveryNotesInput.value = '';
-  
-  // Reset method selection
-  selectedRecoveryMethod = null;
-  document.querySelectorAll('.recovery-method-btn').forEach(btn => {
-    btn.classList.remove('active');
-  });
-  
-  recoveryModal.style.display = 'block';
-  recoveryNotesInput.focus();
-}
+    // Update recovery button in all tables - FIXED VERSION
+    function updateRecoveryButtonInTables(playerName, isRecovered) {
+      console.log(`Updating recovery button for player: ${playerName}, isRecovered: ${isRecovered}`);
+      
+      // Find all recovery buttons in the document
+      const allButtons = document.querySelectorAll('.recovery-btn');
+      
+      allButtons.forEach(btn => {
+        // Get the parent row
+        const row = btn.closest('tr');
+        if (!row) return;
+        
+        // Get the player name from the row (2nd column in most tables)
+        const playerCell = row.querySelector('td:nth-child(2)');
+        if (!playerCell) return;
+        
+        const rowPlayerName = playerCell.textContent.trim();
+        
+        if (rowPlayerName === playerName) {
+          console.log(`Found button for ${playerName} in row`, row);
+          
+          if (isRecovered) {
+            // Change to recovered state
+            btn.innerHTML = '<i class="fas fa-check"></i> Recovered';
+            btn.className = 'recovery-btn recovered';
+            btn.disabled = true;
+            btn.onclick = null;
+            console.log(`Button updated to Recovered for ${playerName}`);
+          } else {
+            // Change to mark state (with proper viewer check)
+            if (userRole === PIN_CONFIG.ROLES.VIEWER) {
+              btn.innerHTML = '<i class="fas fa-redo"></i> Mark';
+              btn.className = 'recovery-btn mark';
+              btn.disabled = true;
+              btn.style.opacity = '0.5';
+              btn.style.cursor = 'not-allowed';
+              btn.title = 'Viewer cannot mark recoveries';
+              btn.onclick = null;
+            } else {
+              btn.innerHTML = '<i class="fas fa-redo"></i> Mark';
+              btn.className = 'recovery-btn mark';
+              btn.disabled = false;
+              btn.style.opacity = '';
+              btn.style.cursor = '';
+              btn.title = '';
+              btn.onclick = function() { showRecoveryModal(playerName); };
+            }
+            console.log(`Button updated to Mark for ${playerName}`);
+          }
+        }
+      });
+      
+      // Also update buttons in high risk table (different column index)
+      const highRiskButtons = document.querySelectorAll('.high-risk-table .recovery-btn');
+      highRiskButtons.forEach(btn => {
+        const row = btn.closest('tr');
+        if (!row) return;
+        
+        // High risk table has player in 3rd column
+        const playerCell = row.querySelector('td:nth-child(3)');
+        if (!playerCell) return;
+        
+        const rowPlayerName = playerCell.textContent.trim();
+        
+        if (rowPlayerName === playerName) {
+          if (isRecovered) {
+            btn.innerHTML = '<i class="fas fa-check"></i> Recovered';
+            btn.className = 'recovery-btn recovered';
+            btn.disabled = true;
+            btn.onclick = null;
+          } else {
+            if (userRole === PIN_CONFIG.ROLES.VIEWER) {
+              btn.innerHTML = '<i class="fas fa-redo"></i> Mark';
+              btn.className = 'recovery-btn mark';
+              btn.disabled = true;
+              btn.style.opacity = '0.5';
+              btn.style.cursor = 'not-allowed';
+              btn.title = 'Viewer cannot mark recoveries';
+              btn.onclick = null;
+            } else {
+              btn.innerHTML = '<i class="fas fa-redo"></i> Mark';
+              btn.className = 'recovery-btn mark';
+              btn.disabled = false;
+              btn.style.opacity = '';
+              btn.style.cursor = '';
+              btn.title = '';
+              btn.onclick = function() { showRecoveryModal(playerName); };
+            }
+          }
+        }
+      });
+      
+      console.log(`Finished updating buttons for ${playerName}`);
+    }
 
     // Update dashboard recovery count
     async function updateDashboardRecoveryCount() {
