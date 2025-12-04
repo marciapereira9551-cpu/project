@@ -32,6 +32,9 @@
       --text-secondary: #6c757d;
       --border-color: #e9ecef;
       --shadow-color: rgba(0, 0, 0, 0.1);
+      
+      /* Fluid typography base */
+      font-size: 16px;
     }
 
     @media (prefers-color-scheme: dark) {
@@ -43,6 +46,25 @@
         --text-secondary: #a0a0a0;
         --border-color: #3a3b4a;
         --shadow-color: rgba(0, 0, 0, 0.3);
+      }
+    }
+
+    /* Fluid typography scaling */
+    @media (min-width: 1920px) {
+      :root {
+        font-size: 18px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      :root {
+        font-size: 14px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      :root {
+        font-size: 13px;
       }
     }
 
@@ -85,8 +107,8 @@
       padding: 3rem;
       box-shadow: var(--shadow-lg);
       text-align: center;
+      width: 95%;
       max-width: 400px;
-      width: 100%;
       border: 1px solid var(--border-color);
       animation: fadeIn 0.5s ease;
     }
@@ -284,8 +306,8 @@
       padding: 3rem;
       box-shadow: var(--shadow-lg);
       text-align: center;
+      width: 95%;
       max-width: 600px;
-      width: 100%;
       border: 1px solid var(--border-color);
     }
 
@@ -452,6 +474,18 @@
       overflow: hidden;
     }
 
+    @media (min-width: 1920px) {
+      .btn {
+        padding: 1.2rem 2.4rem;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .btn {
+        padding: 0.8rem 1.2rem;
+      }
+    }
+
     .btn::before {
       content: '';
       position: absolute;
@@ -570,24 +604,42 @@
       display: none;
       min-height: 100vh;
       background: var(--bg-secondary);
+      width: 100%;
     }
 
     .dashboard-header {
       background: var(--bg-card);
       box-shadow: var(--shadow);
-      padding: 1.5rem 2rem;
+      padding: 1.5rem;
       position: sticky;
       top: 0;
       z-index: 100;
       border-bottom: 1px solid var(--border-color);
+      width: 100%;
     }
 
     .header-content {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      max-width: 1400px;
+      width: 95%;
       margin: 0 auto;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    @media (min-width: 1920px) {
+      .header-content {
+        width: 90%;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .header-content {
+        width: 100%;
+        padding: 0 1rem;
+        flex-direction: column;
+      }
     }
 
     .page-title {
@@ -599,34 +651,43 @@
     .control-buttons {
       display: flex;
       gap: 1rem;
+      flex-wrap: wrap;
     }
 
     .dashboard-content {
-      max-width: 1400px;
+      width: 95%;
       margin: 0 auto;
       padding: 2rem;
     }
 
+    @media (min-width: 1920px) {
+      .dashboard-content {
+        width: 90%;
+      }
+    }
+
+    @media (max-width: 1920px) {
+      .dashboard-content {
+        width: 98%;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .dashboard-content {
+        width: 100%;
+        padding: 1rem;
+      }
+    }
+
     /* Stats Grid */
-    .stats-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 1.5rem;
-      margin-bottom: 1.5rem;
-    }
-
-    .stats-grid-row-2 {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 1.5rem;
-      margin-bottom: 1.5rem;
-    }
-
+    .stats-grid,
+    .stats-grid-row-2,
     .stats-grid-row-3 {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 1.5rem;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 2rem;
       margin-bottom: 2rem;
+      width: 100%;
     }
 
     .stat-card {
@@ -645,6 +706,7 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
+      width: 100%;
     }
 
     .stat-card::before {
@@ -698,6 +760,7 @@
       align-items: center;
       gap: 0.5rem;
       justify-content: center;
+      font-size: 1.1rem;
     }
 
     .stat-icon {
@@ -707,9 +770,9 @@
       text-align: center;
     }
 
-    /* CLIENT RECOVERY BUTTON STYLES */
+    /* CLIENT RECOVERY BUTTON STYLES - OPTIMIZED */
     .recovery-btn {
-      padding: 0.5rem 1rem;
+      padding: 0.4rem 0.8rem;
       border: none;
       border-radius: 6px;
       font-size: 0.875rem;
@@ -718,7 +781,9 @@
       transition: all 0.2s ease;
       display: inline-flex;
       align-items: center;
-      gap: 0.5rem;
+      gap: 0.25rem;
+      min-width: 70px;
+      justify-content: center;
     }
 
     .recovery-btn.mark {
@@ -736,6 +801,7 @@
       color: #6b7280;
       border: 1px solid #d1d5db;
       cursor: not-allowed;
+      min-width: 50px;
     }
 
     .recovery-btn:disabled {
@@ -766,8 +832,8 @@
       border-radius: 16px;
       padding: 2rem;
       box-shadow: var(--shadow-lg);
+      width: 95%;
       max-width: 500px;
-      width: 90%;
       border: 1px solid var(--border-color);
     }
 
@@ -784,6 +850,7 @@
       gap: 1rem;
       margin-bottom: 1.5rem;
       justify-content: center;
+      flex-wrap: wrap;
     }
 
     .recovery-method-btn {
@@ -801,6 +868,7 @@
       gap: 0.5rem;
       flex: 1;
       text-align: center;
+      min-width: 120px;
     }
 
     .recovery-method-btn:hover {
@@ -882,7 +950,9 @@
       border-color: var(--primary);
     }
 
-    /* RECOVERY DASHBOARD STYLES */
+    /* ==================== */
+    /* RECOVERY DASHBOARD REDESIGN */
+    /* ==================== */
     .recovery-dashboard {
       background: var(--bg-card);
       border-radius: 16px;
@@ -890,12 +960,105 @@
       overflow: hidden;
       margin-bottom: 2rem;
       border: 1px solid var(--border-color);
+      width: 100%;
     }
 
+    /* Recovery Header with Back Button */
+    .recovery-header {
+      padding: 1.5rem;
+      background: var(--bg-secondary);
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .recovery-header-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .recovery-title-section {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .recovery-page-title {
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .recovery-search-container {
+      flex: 1;
+      min-width: 250px;
+      max-width: 400px;
+    }
+
+    /* Recovery Stats Cards - REDESIGNED */
+    .recovery-stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 1.5rem;
+      margin-top: 1rem;
+    }
+
+    @media (min-width: 1200px) {
+      .recovery-stats-grid {
+        grid-template-columns: repeat(4, 1fr);
+      }
+    }
+
+    @media (max-width: 1199px) and (min-width: 768px) {
+      .recovery-stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 767px) {
+      .recovery-stats-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .recovery-stat-card {
+      background: var(--bg-card);
+      border-radius: 12px;
+      padding: 1.5rem;
+      text-align: center;
+      border: 1px solid var(--border-color);
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .recovery-stat-value {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      line-height: 1;
+    }
+
+    .recovery-stat-label {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      font-weight: 500;
+    }
+
+    /* Recovery Tabs */
     .recovery-tabs {
       display: flex;
       border-bottom: 1px solid var(--border-color);
       background: var(--bg-secondary);
+      flex-wrap: wrap;
     }
 
     .recovery-tab {
@@ -908,6 +1071,7 @@
       cursor: pointer;
       transition: all 0.2s ease;
       position: relative;
+      white-space: nowrap;
     }
 
     .recovery-tab:hover {
@@ -934,63 +1098,164 @@
       padding: 0;
     }
 
-    .recovery-search-container {
-      padding: 1.5rem 1.5rem 0;
-    }
-
-    .recovery-stats {
-      display: flex;
-      gap: 1rem;
-      padding: 1rem 1.5rem;
-      background: var(--bg-secondary);
-      border-bottom: 1px solid var(--border-color);
-      flex-wrap: wrap;
-    }
-
-    .recovery-stat {
-      display: flex;
-      flex-direction: column;
-      gap: 0.25rem;
-    }
-
-    .recovery-stat-value {
-      font-size: 1.25rem;
-      font-weight: 600;
-      color: var(--text-primary);
-    }
-
-    .recovery-stat-label {
-      font-size: 0.875rem;
-      color: var(--text-secondary);
-    }
-
+    /* Optimized Recovery Table */
     .recovery-table-container {
       overflow-x: auto;
+      width: 100%;
     }
 
     .recovery-table {
       width: 100%;
       border-collapse: collapse;
+      min-width: 100%;
+    }
+
+    @media (min-width: 1200px) {
+      .recovery-table {
+        table-layout: fixed;
+      }
+      
+      .recovery-table th:nth-child(1) { width: 50px; }
+      .recovery-table th:nth-child(2) { width: 25%; }
+      .recovery-table th:nth-child(3) { width: 35%; }
+      .recovery-table th:nth-child(4) { width: 20%; }
+      .recovery-table th:nth-child(5) { width: 80px; }
     }
 
     .recovery-table th {
       background: var(--bg-secondary);
-      padding: 1rem;
+      padding: 1.2rem 1.5rem;
       text-align: left;
       font-weight: 600;
       color: var(--text-secondary);
       border-bottom: 2px solid var(--border-color);
       white-space: nowrap;
+      font-size: 1rem;
     }
 
     .recovery-table td {
-      padding: 1rem;
+      padding: 1.2rem 1.5rem;
       border-bottom: 1px solid var(--border-color);
       color: var(--text-primary);
+      vertical-align: top;
+      font-size: 1rem;
     }
 
     .recovery-table tr:hover {
       background: var(--bg-secondary);
+    }
+
+    /* Player Info Cell - Optimized */
+    .player-info-cell {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .player-name {
+      font-weight: 600;
+      font-size: 1.1rem;
+    }
+
+    .page-badge {
+      background: var(--primary);
+      color: white;
+      padding: 0.2rem 0.5rem;
+      border-radius: 12px;
+      font-size: 0.75rem;
+      display: inline-block;
+      width: fit-content;
+    }
+
+    /* Recovery Details Cell - Optimized */
+    .recovery-details {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .recovery-date {
+      font-weight: 500;
+      color: var(--text-primary);
+    }
+
+    .recovery-method-cell {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-weight: 500;
+    }
+
+    .method-chat { color: var(--info); }
+    .method-offer { color: #f59e0b; }
+
+    .recovery-notes-cell {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      background: var(--bg-secondary);
+      padding: 0.5rem;
+      border-radius: 6px;
+      margin-top: 0.5rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .recovery-notes-cell:hover {
+      background: var(--bg-primary);
+    }
+
+    .recovery-notes-cell.expanded {
+      white-space: normal;
+      max-height: none;
+    }
+
+    /* Status Cell - Optimized */
+    .status-cell {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      align-items: flex-start;
+    }
+
+    .recovery-status-badge {
+      padding: 0.4rem 0.8rem;
+      border-radius: 20px;
+      font-weight: 600;
+      font-size: 0.875rem;
+    }
+
+    .last-deposit {
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+    }
+
+    /* Action Buttons - Optimized */
+    .action-buttons {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .action-btn {
+      padding: 0.5rem;
+      border-radius: 6px;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+      transition: all 0.2s ease;
+    }
+
+    .remove-btn {
+      background: rgba(239, 68, 68, 0.1);
+      color: var(--danger);
+      border: 1px solid var(--danger);
+    }
+
+    .remove-btn:hover {
+      background: var(--danger);
+      color: white;
     }
 
     .recovery-table .status-active {
@@ -1003,32 +1268,7 @@
       font-weight: 600;
     }
 
-    .method-chat {
-      color: var(--info);
-    }
-
-    .method-offer {
-      color: #f59e0b;
-    }
-
-    .removal-btn {
-      padding: 0.5rem 1rem;
-      border: 1px solid var(--danger);
-      background: rgba(239, 68, 68, 0.1);
-      color: var(--danger);
-      border-radius: 6px;
-      font-size: 0.875rem;
-      font-weight: 500;
-      cursor: pointer;
-      transition: all 0.2s ease;
-    }
-
-    .removal-btn:hover {
-      background: var(--danger);
-      color: white;
-    }
-
-    /* ANALYTICS PANEL */
+    /* ANALYTICS PANEL - OPTIMIZED */
     .analytics-panel {
       padding: 2rem;
     }
@@ -1061,7 +1301,7 @@
       font-weight: 500;
     }
 
-    /* Tables */
+    /* Tables - OPTIMIZED FOR SCREEN WIDTH */
     .table-container {
       background: var(--bg-card);
       border-radius: 16px;
@@ -1069,6 +1309,7 @@
       overflow: hidden;
       margin-bottom: 2rem;
       border: 1px solid var(--border-color);
+      width: 100%;
     }
 
     .table-header {
@@ -1078,6 +1319,8 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
     }
 
     .table-title {
@@ -1090,16 +1333,19 @@
       display: flex;
       align-items: center;
       gap: 1rem;
+      flex-wrap: wrap;
     }
 
     .pagination-info {
       color: var(--text-secondary);
       font-size: 0.875rem;
+      white-space: nowrap;
     }
 
     .pagination-buttons {
       display: flex;
       gap: 0.5rem;
+      flex-wrap: wrap;
     }
 
     .pagination-btn {
@@ -1110,6 +1356,7 @@
       border-radius: 6px;
       cursor: pointer;
       transition: all 0.2s ease;
+      white-space: nowrap;
     }
 
     .pagination-btn:hover:not(:disabled) {
@@ -1129,24 +1376,28 @@
       border-color: var(--primary);
     }
 
+    /* OPTIMIZED MAIN TABLES */
     table {
       width: 100%;
       border-collapse: collapse;
+      min-width: 100%;
     }
 
     th {
       background: var(--bg-secondary);
-      padding: 1rem 1.5rem;
+      padding: 1.2rem 1.5rem;
       text-align: left;
       font-weight: 600;
       color: var(--text-secondary);
       border-bottom: 1px solid var(--border-color);
+      white-space: nowrap;
     }
 
     td {
-      padding: 1rem 1.5rem;
+      padding: 1.2rem 1.5rem;
       border-bottom: 1px solid var(--border-color);
       color: var(--text-primary);
+      font-size: 1rem;
     }
 
     tr:last-child td {
@@ -1157,11 +1408,13 @@
       background: var(--bg-secondary);
     }
 
+    /* COMPACT STATUS BADGES */
     .status-badge {
-      padding: 0.25rem 0.75rem;
+      padding: 0.4rem 0.8rem;
       border-radius: 20px;
       font-size: 0.875rem;
       font-weight: 500;
+      white-space: nowrap;
     }
 
     .status-active {
@@ -1174,9 +1427,9 @@
       color: #991b1b;
     }
 
-    /* Notes Button */
+    /* COMPACT NOTES BUTTON */
     .notes-btn {
-      padding: 0.5rem 1rem;
+      padding: 0.5rem;
       border: 1px solid var(--border-color);
       background: var(--bg-card);
       color: var(--text-primary);
@@ -1186,7 +1439,9 @@
       font-size: 0.875rem;
       display: inline-flex;
       align-items: center;
-      gap: 0.5rem;
+      justify-content: center;
+      gap: 0.25rem;
+      min-width: 40px;
     }
 
     .notes-btn:hover {
@@ -1214,6 +1469,7 @@
       padding: 2rem;
       margin-bottom: 2rem;
       border: 1px solid var(--border-color);
+      width: 100%;
     }
 
     /* Enhanced Player History Table */
@@ -1221,6 +1477,7 @@
       width: 100%;
       border-collapse: collapse;
       margin-top: 1rem;
+      min-width: 100%;
     }
 
     .enhanced-history-table th {
@@ -1230,11 +1487,13 @@
       font-weight: 600;
       color: var(--text-secondary);
       border-bottom: 2px solid var(--border-color);
+      white-space: nowrap;
     }
 
     .enhanced-history-table td {
       padding: 1rem;
       border-bottom: 1px solid var(--border-color);
+      white-space: nowrap;
     }
 
     /* Daily Deposits Table */
@@ -1243,6 +1502,7 @@
       border-collapse: collapse;
       margin-top: 1rem;
       font-size: 0.9rem;
+      min-width: 100%;
     }
 
     .daily-deposits-table th {
@@ -1332,8 +1592,8 @@
       border-radius: 20px;
       padding: 2rem;
       box-shadow: var(--shadow-lg);
+      width: 95%;
       max-width: 800px;
-      width: 90%;
       border: 1px solid var(--border-color);
       max-height: 80vh;
       overflow-y: auto;
@@ -1448,6 +1708,8 @@
       box-shadow: var(--shadow-lg);
       z-index: 3000;
       animation: slideIn 0.3s ease;
+      max-width: 400px;
+      word-wrap: break-word;
     }
 
     .notification.success { background: var(--success); }
@@ -1468,6 +1730,7 @@
       margin-bottom: 2rem;
       border: 1px solid var(--border-color);
       position: relative;
+      width: 100%;
     }
 
     .deposits-header {
@@ -1477,6 +1740,8 @@
       margin-bottom: 1.5rem;
       padding-bottom: 1rem;
       border-bottom: 1px solid var(--border-color);
+      flex-wrap: wrap;
+      gap: 1rem;
     }
 
     .deposits-title {
@@ -1501,7 +1766,7 @@
       color: var(--text-primary);
     }
 
-    /* Responsive */
+    /* MOBILE OPTIMIZATION */
     @media (max-width: 1024px) {
       .stats-grid,
       .stats-grid-row-2,
@@ -1512,6 +1777,17 @@
       .pin-container {
         padding: 2rem;
         max-width: 380px;
+      }
+      
+      .table-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+      }
+      
+      .pagination-controls {
+        width: 100%;
+        justify-content: space-between;
       }
     }
 
@@ -1555,17 +1831,6 @@
         justify-content: center;
       }
       
-      .table-header {
-        flex-direction: column;
-        gap: 1rem;
-        align-items: flex-start;
-      }
-      
-      .pagination-controls {
-        width: 100%;
-        justify-content: space-between;
-      }
-      
       table {
         font-size: 0.875rem;
       }
@@ -1591,6 +1856,21 @@
       .recovery-method-selector {
         flex-direction: column;
       }
+      
+      .recovery-header-top {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      
+      .recovery-search-container {
+        max-width: 100%;
+      }
+      
+      .recovery-table th,
+      .recovery-table td {
+        padding: 0.75rem 1rem;
+        font-size: 0.875rem;
+      }
     }
     
     @media (max-width: 480px) {
@@ -1605,6 +1885,39 @@
       
       .pin-subtitle {
         font-size: 0.9rem;
+      }
+      
+      .recovery-tabs {
+        overflow-x: auto;
+        flex-wrap: nowrap;
+      }
+      
+      .recovery-tab {
+        padding: 0.75rem 1rem;
+        font-size: 0.875rem;
+      }
+    }
+
+    /* CARD VIEW FOR MOBILE TABLES */
+    @media (max-width: 768px) {
+      .table-container table {
+        display: block;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+      }
+      
+      .table-container th,
+      .table-container td {
+        min-width: 100px;
+      }
+      
+      .enhanced-history-table {
+        display: block;
+        overflow-x: auto;
+      }
+      
+      .recovery-table-container {
+        -webkit-overflow-scrolling: touch;
       }
     }
   </style>
@@ -1905,11 +2218,12 @@
       <div id="playerHistorySection" style="display: none;">
         <div class="player-history">
           <h3>Player History Search - Current Page Only</h3>
-          <div style="display: flex; gap: 1rem; margin: 1.5rem 0;">
+          <div style="display: flex; gap: 1rem; margin: 1.5rem 0; flex-wrap: wrap;">
             <input 
               type="text" 
               id="playerSearch" 
               class="search-input" 
+              style="flex: 1; min-width: 250px;"
               placeholder="Enter player name for current page..."
               autocomplete="off"
               autocorrect="off"
@@ -2824,6 +3138,16 @@
     let selectedRemovalReason = null;
     let removalRecordId = null;
 
+    // Performance optimization: Cache recovery statuses
+    let recoveryStatusCache = {
+        data: new Map(),
+        timestamp: null,
+        expiresIn: 5 * 60 * 1000 // 5 minutes
+    };
+
+    // Performance optimization: Search debouncing
+    let searchTimeout = null;
+
     // =============================================
     // DOM ELEMENTS
     // =============================================
@@ -2875,8 +3199,79 @@
     const confirmRemovalBtn = document.getElementById('confirmRemovalBtn');
 
     // =============================================
-    // CLIENT RECOVERY FUNCTIONS
+    // CLIENT RECOVERY FUNCTIONS - OPTIMIZED
     // =============================================
+
+    // Cache recovery statuses for performance
+    async function cacheRecoveryStatuses(pageName) {
+        const now = Date.now();
+        if (recoveryStatusCache.data.has(pageName) && 
+            recoveryStatusCache.timestamp && 
+            (now - recoveryStatusCache.timestamp) < recoveryStatusCache.expiresIn) {
+            return recoveryStatusCache.data.get(pageName);
+        }
+
+        try {
+            const { data, error } = await supabase
+                .from('client_recoveries')
+                .select('player_name')
+                .eq('page_name', pageName)
+                .eq('is_active_in_list', true);
+            
+            if (error) throw error;
+            
+            const recoveredPlayers = new Set(data.map(item => item.player_name));
+            recoveryStatusCache.data.set(pageName, recoveredPlayers);
+            recoveryStatusCache.timestamp = now;
+            
+            return recoveredPlayers;
+        } catch (error) {
+            console.error('Error caching recovery statuses:', error);
+            return new Set();
+        }
+    }
+
+    // Get recovery button HTML - OPTIMIZED
+    async function getRecoveryButtonHTML(playerName) {
+        if (!selectedPage) return '';
+        
+        const recoveredPlayers = await cacheRecoveryStatuses(selectedPage);
+        const isRecovered = recoveredPlayers.has(playerName);
+        
+        if (isRecovered) {
+            return `<button class="recovery-btn recovered" disabled title="Already recovered">
+                      <i class="fas fa-check"></i> ✅
+                    </button>`;
+        } else {
+            return `<button class="recovery-btn mark" onclick="showRecoveryModal('${playerName.replace(/'/g, "\\'")}')" title="Mark as recovered">
+                      <i class="fas fa-redo"></i> 🔁 Mark
+                    </button>`;
+        }
+    }
+
+    // Batch get recovery buttons HTML - OPTIMIZED
+    async function getBatchRecoveryButtonsHTML(playerNames) {
+        if (!selectedPage) return new Map();
+        
+        const recoveredPlayers = await cacheRecoveryStatuses(selectedPage);
+        const buttonMap = new Map();
+        
+        playerNames.forEach(playerName => {
+            const isRecovered = recoveredPlayers.has(playerName);
+            
+            if (isRecovered) {
+                buttonMap.set(playerName, `<button class="recovery-btn recovered" disabled title="Already recovered">
+                    <i class="fas fa-check"></i> ✅
+                </button>`);
+            } else {
+                buttonMap.set(playerName, `<button class="recovery-btn mark" onclick="showRecoveryModal('${playerName.replace(/'/g, "\\'")}')" title="Mark as recovered">
+                    <i class="fas fa-redo"></i> 🔁 Mark
+                </button>`);
+            }
+        });
+        
+        return buttonMap;
+    }
 
     // Show recovery modal
     function showRecoveryModal(playerName, pageName) {
@@ -2962,6 +3357,9 @@
         
         hideRecoveryModal();
         
+        // Clear cache to force refresh
+        recoveryStatusCache.data.delete(recoveryPlayerPage);
+        
         // Update recovery button in all tables
         updateRecoveryButtonInTables(recoveryPlayerName, true);
         
@@ -2989,13 +3387,15 @@
       buttons.forEach(btn => {
         if (btn.textContent.includes(playerName) || btn.dataset.player === playerName) {
           if (isRecovered) {
-            btn.innerHTML = '<i class="fas fa-check"></i> ✅ Recovered';
+            btn.innerHTML = '<i class="fas fa-check"></i> ✅';
             btn.className = 'recovery-btn recovered';
             btn.disabled = true;
+            btn.title = 'Already recovered';
           } else {
-            btn.innerHTML = '<i class="fas fa-redo"></i> 🔁 Mark as Recovered';
+            btn.innerHTML = '<i class="fas fa-redo"></i> 🔁 Mark';
             btn.className = 'recovery-btn mark';
             btn.disabled = false;
+            btn.title = 'Mark as recovered';
           }
         }
       });
@@ -3084,6 +3484,9 @@
           
           hideRemovalModal();
           
+          // Clear cache to force refresh
+          recoveryStatusCache.data.delete(selectedPage);
+          
           // Update recovery button in all tables
           const playerName = removalPlayerName.textContent;
           updateRecoveryButtonInTables(playerName, false);
@@ -3109,7 +3512,7 @@
       }
     }
 
-    // Load recovery data
+    // Load recovery data - OPTIMIZED
     async function loadRecoveryData() {
       try {
         // Get active recoveries
@@ -3122,24 +3525,19 @@
         
         if (activeError) throw activeError;
         
-        // Get player status for each recovery
-        const recoveriesWithStatus = await Promise.all(
-          (activeData || []).map(async (recovery) => {
-            const { data: playerData } = await supabase
-              .from('latest_status')
-              .select('last_deposit_date, status')
-              .eq('page_name', selectedPage)
-              .eq('player_name', recovery.player_name)
-              .single();
-            
-            return {
-              ...recovery,
-              current_status: playerData?.status || 'inactive',
-              last_deposit: playerData?.last_deposit_date,
-              last_deposit_display: formatTimeSince(playerData?.last_deposit_date)
-            };
-          })
-        );
+        // Get player status for each recovery in batch
+        const playerNames = activeData.map(r => r.player_name);
+        const playerStatuses = await getBatchPlayerStatuses(playerNames);
+        
+        const recoveriesWithStatus = (activeData || []).map((recovery) => {
+          const status = playerStatuses.get(recovery.player_name);
+          return {
+            ...recovery,
+            current_status: status?.status || 'inactive',
+            last_deposit: status?.last_deposit_date,
+            last_deposit_display: formatTimeSince(status?.last_deposit_date)
+          };
+        });
         
         // Get removed recoveries
         const { data: removedData, error: removedError } = await supabase
@@ -3192,6 +3590,34 @@
       }
     }
 
+    // Batch get player statuses - OPTIMIZED
+    async function getBatchPlayerStatuses(playerNames) {
+      if (!playerNames.length) return new Map();
+      
+      try {
+        const { data, error } = await supabase
+          .from('latest_status')
+          .select('player_name, last_deposit_date, status')
+          .in('player_name', playerNames)
+          .eq('page_name', selectedPage);
+        
+        if (error) throw error;
+        
+        const statusMap = new Map();
+        data.forEach(player => {
+          statusMap.set(player.player_name, {
+            last_deposit_date: player.last_deposit_date,
+            status: player.status
+          });
+        });
+        
+        return statusMap;
+      } catch (error) {
+        console.error('Error getting batch player statuses:', error);
+        return new Map();
+      }
+    }
+
     // Update recovery stats in dashboard
     async function updateRecoveryStats() {
       try {
@@ -3228,7 +3654,7 @@
       }
     }
 
-    // Render recovery dashboard
+    // Render recovery dashboard - OPTIMIZED
     function renderRecoveryDashboard() {
       const stats = recoveryState.current.stats || { total: 0, active: 0, inactive: 0 };
       const analytics = recoveryState.analytics.data || {
@@ -3242,6 +3668,51 @@
       
       let html = `
         <div class="recovery-dashboard">
+          <div class="recovery-header">
+            <div class="recovery-header-top">
+              <div class="recovery-title-section">
+                <button class="btn btn-secondary" onclick="backToDashboard()">
+                  <i class="fas fa-arrow-left"></i> Back to Dashboard
+                </button>
+                <h2 class="recovery-page-title">
+                  <i class="fas fa-users-return"></i> Client Recovery - ${selectedPage} ${currentPageObj?.emoji || ''}
+                </h2>
+              </div>
+              <div class="recovery-search-container">
+                <input 
+                  type="text" 
+                  class="search-input" 
+                  placeholder="Search recovered players..." 
+                  value="${recoveryState.current.search}"
+                  oninput="searchRecoveries(this.value, 'active')"
+                >
+              </div>
+            </div>
+            
+            <div class="recovery-stats-grid">
+              <div class="recovery-stat-card">
+                <div class="recovery-stat-value">${stats.total}</div>
+                <div class="recovery-stat-label">Total Recovered</div>
+              </div>
+              <div class="recovery-stat-card">
+                <div class="recovery-stat-value" style="color: var(--success);">${stats.active}</div>
+                <div class="recovery-stat-label">Active Now</div>
+              </div>
+              <div class="recovery-stat-card">
+                <div class="recovery-stat-value" style="color: var(--danger);">${stats.inactive}</div>
+                <div class="recovery-stat-label">Inactive Again</div>
+              </div>
+              <div class="recovery-stat-card">
+                <div class="recovery-stat-value">${recoveryState.current.data?.filter(r => 
+                  !recoveryState.current.search || 
+                  r.player_name.toLowerCase().includes(recoveryState.current.search.toLowerCase()) ||
+                  (r.recovery_notes && r.recovery_notes.toLowerCase().includes(recoveryState.current.search.toLowerCase()))
+                ).length || 0}</div>
+                <div class="recovery-stat-label">Showing</div>
+              </div>
+            </div>
+          </div>
+          
           <div class="recovery-tabs">
             <button class="recovery-tab ${recoveryState.current.tab === 'active' ? 'active' : ''}" onclick="switchRecoveryTab('active')">
               Active Recoveries
@@ -3274,10 +3745,9 @@
       clientRecoveryDashboard.style.display = 'block';
     }
 
-    // Render active recoveries
+    // Render active recoveries - OPTIMIZED
     function renderActiveRecoveries() {
       const recoveries = recoveryState.current.data || [];
-      const stats = recoveryState.current.stats || { total: 0, active: 0, inactive: 0 };
       
       // Apply search filter
       let filteredRecoveries = recoveries;
@@ -3297,63 +3767,32 @@
       const endIndex = Math.min(startIndex + RECOVERY_PLAYERS_PER_PAGE, filteredRecoveries.length);
       const paginatedRecoveries = filteredRecoveries.slice(startIndex, endIndex);
       
-      let html = `
-        <div class="recovery-search-container">
-          <input 
-            type="text" 
-            class="search-input" 
-            placeholder="Search recovered players..." 
-            value="${recoveryState.current.search}"
-            oninput="searchRecoveries(this.value, 'active')"
-            style="width: 100%;"
-          >
-        </div>
-        
-        <div class="recovery-stats">
-          <div class="recovery-stat">
-            <div class="recovery-stat-value">${stats.total}</div>
-            <div class="recovery-stat-label">Total Recovered</div>
-          </div>
-          <div class="recovery-stat">
-            <div class="recovery-stat-value" style="color: var(--success);">${stats.active}</div>
-            <div class="recovery-stat-label">Currently Active</div>
-          </div>
-          <div class="recovery-stat">
-            <div class="recovery-stat-value" style="color: var(--danger);">${stats.inactive}</div>
-            <div class="recovery-stat-label">Became Inactive</div>
-          </div>
-          <div class="recovery-stat">
-            <div class="recovery-stat-value">${filteredRecoveries.length}</div>
-            <div class="recovery-stat-label">Showing</div>
-          </div>
-        </div>
-        
-        <div class="recovery-table-container">
-          <table class="recovery-table">
-            <thead>
-              <tr>
-                <th style="width: 30px;">#</th>
-                <th>Player Name</th>
-                <th>Recovery Date</th>
-                <th>Method</th>
-                <th>Current Status</th>
-                <th>Last Deposit</th>
-                <th>Recovery Notes</th>
-                <th style="width: 100px;">Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-      `;
+      let html = '';
       
       if (paginatedRecoveries.length === 0) {
-        html += `
-          <tr>
-            <td colspan="8" style="text-align: center; padding: 2rem; color: var(--text-secondary);">
-              ${recoveryState.current.search ? 'No matching recovered players found' : 'No recovered players yet'}
-            </td>
-          </tr>
+        html = `
+          <div style="text-align: center; padding: 3rem; color: var(--text-secondary);">
+            <i class="fas fa-users-slash" style="font-size: 3rem; margin-bottom: 1rem; opacity: 0.5;"></i>
+            <h3 style="margin-bottom: 0.5rem;">${recoveryState.current.search ? 'No matching recovered players found' : 'No recovered players yet'}</h3>
+            <p>${recoveryState.current.search ? 'Try a different search term' : 'Mark players as recovered to see them here'}</p>
+          </div>
         `;
       } else {
+        html = `
+          <div class="recovery-table-container">
+            <table class="recovery-table">
+              <thead>
+                <tr>
+                  <th style="width: 50px; text-align: center;">#</th>
+                  <th>Player Info</th>
+                  <th>Recovery Details</th>
+                  <th>Current Status</th>
+                  <th style="width: 80px; text-align: center;">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+        `;
+        
         paginatedRecoveries.forEach((recovery, index) => {
           const serialNumber = startIndex + index + 1;
           const methodClass = recovery.recovery_method === 'chat' ? 'method-chat' : 'method-offer';
@@ -3363,33 +3802,58 @@
           
           html += `
             <tr>
-              <td style="text-align: center;">${serialNumber}</td>
-              <td><strong>${recovery.player_name}</strong></td>
-              <td>${convertUTCToPKTDateOnly(recovery.recovered_date)}</td>
-              <td class="${methodClass}">${methodIcon} ${recovery.recovery_method.charAt(0).toUpperCase() + recovery.recovery_method.slice(1)}</td>
-              <td class="${statusClass}">${statusIcon} ${recovery.current_status}</td>
-              <td>${recovery.last_deposit_display || 'N/A'}</td>
-              <td>${recovery.recovery_notes || '-'}</td>
+              <td style="text-align: center; font-weight: 600;">${serialNumber}</td>
               <td>
-                <button class="removal-btn" onclick="showRemovalModal('${recovery.id}', '${recovery.player_name}', '${recovery.recovered_date}', '${recovery.recovery_method}')">
-                  <i class="fas fa-times"></i> Remove
-                </button>
+                <div class="player-info-cell">
+                  <div class="player-name">${recovery.player_name}</div>
+                  <span class="page-badge">${recovery.page_name}</span>
+                </div>
+              </td>
+              <td>
+                <div class="recovery-details">
+                  <div class="recovery-date">${convertUTCToPKTDateOnly(recovery.recovered_date)}</div>
+                  <div class="recovery-method-cell ${methodClass}">
+                    ${methodIcon} ${recovery.recovery_method.charAt(0).toUpperCase() + recovery.recovery_method.slice(1)}
+                  </div>
+                  ${recovery.recovery_notes ? `
+                    <div class="recovery-notes-cell" onclick="this.classList.toggle('expanded')" title="Click to expand">
+                      ${recovery.recovery_notes.length > 50 ? recovery.recovery_notes.substring(0, 50) + '...' : recovery.recovery_notes}
+                    </div>
+                  ` : ''}
+                </div>
+              </td>
+              <td>
+                <div class="status-cell">
+                  <span class="recovery-status-badge ${statusClass}">
+                    ${statusIcon} ${recovery.current_status}
+                  </span>
+                  <div class="last-deposit">
+                    ${recovery.last_deposit_display || 'No recent deposits'}
+                  </div>
+                </div>
+              </td>
+              <td style="text-align: center;">
+                <div class="action-buttons">
+                  <button class="action-btn remove-btn" onclick="showRemovalModal('${recovery.id}', '${recovery.player_name}', '${recovery.recovered_date}', '${recovery.recovery_method}')" title="Remove from list">
+                    <i class="fas fa-times"></i>
+                  </button>
+                </div>
               </td>
             </tr>
           `;
         });
+        
+        html += `
+              </tbody>
+            </table>
+          </div>
+        `;
       }
-      
-      html += `
-            </tbody>
-          </table>
-        </div>
-      `;
       
       // Add pagination if needed
       if (totalPages > 1) {
         html += `
-          <div style="padding: 1rem; border-top: 1px solid var(--border-color); display: flex; justify-content: center; align-items: center; gap: 1rem;">
+          <div style="padding: 1rem; border-top: 1px solid var(--border-color); display: flex; justify-content: center; align-items: center; gap: 1rem; flex-wrap: wrap;">
             <button class="pagination-btn" ${currentPage === 1 ? 'disabled' : ''} onclick="changeRecoveryPage(${currentPage - 1})">
               <i class="fas fa-chevron-left"></i> Previous
             </button>
@@ -3406,7 +3870,7 @@
       return html;
     }
 
-    // Render removed clients
+    // Render removed clients - OPTIMIZED
     function renderRemovedClients() {
       const removed = recoveryState.removed.data || [];
       
@@ -3429,58 +3893,50 @@
       const paginatedRemoved = filteredRemoved.slice(startIndex, endIndex);
       
       let html = `
-        <div class="recovery-search-container">
-          <input 
-            type="text" 
-            class="search-input" 
-            placeholder="Search removed clients..." 
-            value="${recoveryState.removed.search}"
-            oninput="searchRecoveries(this.value, 'removed')"
-            style="width: 100%;"
-          >
-        </div>
-        
-        <div class="recovery-stats">
-          <div class="recovery-stat">
-            <div class="recovery-stat-value">${removed.length}</div>
-            <div class="recovery-stat-label">Total Removed</div>
+        <div style="padding: 1.5rem;">
+          <div class="search-container" style="margin-bottom: 1.5rem;">
+            <input 
+              type="text" 
+              class="search-input" 
+              placeholder="Search removed clients..." 
+              value="${recoveryState.removed.search}"
+              oninput="searchRecoveries(this.value, 'removed')"
+            >
+            <i class="fas fa-search search-icon"></i>
           </div>
-          <div class="recovery-stat">
-            <div class="recovery-stat-value">${filteredRemoved.length}</div>
-            <div class="recovery-stat-label">Showing</div>
-          </div>
-        </div>
-        
-        <div class="recovery-table-container">
-          <table class="recovery-table">
-            <thead>
-              <tr>
-                <th style="width: 30px;">#</th>
-                <th>Player Name</th>
-                <th>Added Date</th>
-                <th>Removed Date</th>
-                <th>Removal Reason</th>
-                <th>Removal Notes</th>
-              </tr>
-            </thead>
-            <tbody>
       `;
       
       if (paginatedRemoved.length === 0) {
         html += `
-          <tr>
-            <td colspan="6" style="text-align: center; padding: 2rem; color: var(--text-secondary);">
-              ${recoveryState.removed.search ? 'No matching removed clients found' : 'No removed clients yet'}
-            </td>
-          </tr>
+          <div style="text-align: center; padding: 3rem; color: var(--text-secondary);">
+            <i class="fas fa-trash-restore" style="font-size: 3rem; margin-bottom: 1rem; opacity: 0.5;"></i>
+            <h3 style="margin-bottom: 0.5rem;">${recoveryState.removed.search ? 'No matching removed clients found' : 'No removed clients yet'}</h3>
+            <p>${recoveryState.removed.search ? 'Try a different search term' : 'Removed clients will appear here'}</p>
+          </div>
         `;
       } else {
+        html += `
+          <div class="recovery-table-container">
+            <table class="recovery-table">
+              <thead>
+                <tr>
+                  <th style="width: 50px; text-align: center;">#</th>
+                  <th>Player Name</th>
+                  <th>Added Date</th>
+                  <th>Removed Date</th>
+                  <th>Removal Reason</th>
+                  <th>Removal Notes</th>
+                </tr>
+              </thead>
+              <tbody>
+        `;
+        
         paginatedRemoved.forEach((record, index) => {
           const serialNumber = startIndex + index + 1;
           
           html += `
             <tr>
-              <td style="text-align: center;">${serialNumber}</td>
+              <td style="text-align: center; font-weight: 600;">${serialNumber}</td>
               <td><strong>${record.player_name}</strong></td>
               <td>${convertUTCToPKTDateOnly(record.recovered_date)}</td>
               <td>${record.removed_date ? convertUTCToPKTDateOnly(record.removed_date) : '-'}</td>
@@ -3489,18 +3945,18 @@
             </tr>
           `;
         });
+        
+        html += `
+              </tbody>
+            </table>
+          </div>
+        `;
       }
-      
-      html += `
-            </tbody>
-          </table>
-        </div>
-      `;
       
       // Add pagination if needed
       if (totalPages > 1) {
         html += `
-          <div style="padding: 1rem; border-top: 1px solid var(--border-color); display: flex; justify-content: center; align-items: center; gap: 1rem;">
+          <div style="padding: 1rem; border-top: 1px solid var(--border-color); display: flex; justify-content: center; align-items: center; gap: 1rem; flex-wrap: wrap; margin-top: 1rem;">
             <button class="pagination-btn" ${currentPage === 1 ? 'disabled' : ''} onclick="changeRemovedPage(${currentPage - 1})">
               <i class="fas fa-chevron-left"></i> Previous
             </button>
@@ -3514,10 +3970,11 @@
         `;
       }
       
+      html += `</div>`;
       return html;
     }
 
-    // Render analytics
+    // Render analytics - OPTIMIZED
     function renderAnalytics() {
       const analytics = recoveryState.analytics.data || {
         total_recovered: 0,
@@ -3578,16 +4035,19 @@
       renderRecoveryDashboard();
     }
 
-    // Search recoveries
+    // Search recoveries with debouncing
     function searchRecoveries(searchTerm, tab) {
-      if (tab === 'active') {
-        recoveryState.current.search = searchTerm;
-        recoveryState.current.page = 1;
-      } else if (tab === 'removed') {
-        recoveryState.removed.search = searchTerm;
-        recoveryState.removed.page = 1;
-      }
-      renderRecoveryDashboard();
+      clearTimeout(searchTimeout);
+      searchTimeout = setTimeout(() => {
+        if (tab === 'active') {
+          recoveryState.current.search = searchTerm;
+          recoveryState.current.page = 1;
+        } else if (tab === 'removed') {
+          recoveryState.removed.search = searchTerm;
+          recoveryState.removed.page = 1;
+        }
+        renderRecoveryDashboard();
+      }, 300);
     }
 
     // Change recovery page
@@ -3610,45 +4070,8 @@
       renderRecoveryDashboard();
     }
 
-    // Check if player is already recovered
-    async function checkIfPlayerRecovered(playerName) {
-      try {
-        const { data, error } = await supabase
-          .from('client_recoveries')
-          .select('id')
-          .eq('page_name', selectedPage)
-          .eq('player_name', playerName)
-          .eq('is_active_in_list', true)
-          .single();
-        
-        if (error && error.code !== 'PGRST116') {
-          throw error;
-        }
-        
-        return !!data;
-      } catch (error) {
-        console.error('Error checking if player recovered:', error);
-        return false;
-      }
-    }
-
-    // Get recovery button HTML
-    async function getRecoveryButtonHTML(playerName) {
-      const isRecovered = await checkIfPlayerRecovered(playerName);
-      
-      if (isRecovered) {
-        return `<button class="recovery-btn recovered" disabled>
-                  <i class="fas fa-check"></i> ✅ Recovered
-                </button>`;
-      } else {
-        return `<button class="recovery-btn mark" onclick="showRecoveryModal('${playerName.replace(/'/g, "\\'")}')">
-                  <i class="fas fa-redo"></i> 🔁 Mark as Recovered
-                </button>`;
-      }
-    }
-
     // =============================================
-    // EXISTING FUNCTIONS (Updated for Recovery System)
+    // EXISTING FUNCTIONS (Updated for Optimization)
     // =============================================
 
     // Initialize on load
@@ -3659,6 +4082,126 @@
     function initializeApp() {
       initPinSystem();
       setupLogoutButton();
+      setupSearchDebouncing();
+    }
+
+    // Setup search debouncing for all search inputs
+    function setupSearchDebouncing() {
+      const searchInputs = [
+        document.getElementById('pageSelectSearch'),
+        document.getElementById('playerSearchInput'),
+        document.getElementById('playerSearch')
+      ];
+      
+      searchInputs.forEach(input => {
+        if (input) {
+          input.addEventListener('input', function() {
+            clearTimeout(searchTimeout);
+            searchTimeout = setTimeout(() => {
+              // Trigger the appropriate search handler
+              if (this.id === 'pageSelectSearch') {
+                handlePageSearch(this.value);
+              } else if (this.id === 'playerSearchInput') {
+                handlePlayerSearch(this.value);
+              } else if (this.id === 'playerSearch') {
+                // This will be handled by the search button
+              }
+            }, 300);
+          });
+        }
+      });
+    }
+
+    function handlePageSearch(val) {
+      val = val.toLowerCase().trim();
+      pageSuggestions.innerHTML = '';
+      findBtn.style.display = 'none';
+      
+      if (!val) return;
+      
+      const matches = PAGES.filter(p => p.name.toLowerCase().includes(val));
+      if (matches.length === 0) {
+        const div = document.createElement('div');
+        div.className = 'suggestion-item';
+        div.innerHTML = '<span class="page-emoji">😕</span> No results found';
+        pageSuggestions.appendChild(div);
+      } else {
+        matches.forEach(p => {
+          const div = document.createElement('div');
+          div.className = 'suggestion-item';
+          div.innerHTML = `
+            <span class="page-emoji">${p.emoji}</span>
+            <span>${p.name}</span>
+          `;
+          div.onclick = () => {
+            searchInput.value = p.name;
+            pageSuggestions.innerHTML = '';
+            findBtn.style.display = 'inline-flex';
+          };
+          pageSuggestions.appendChild(div);
+        });
+        if (matches.length === 1) {
+          findBtn.style.display = 'inline-flex';
+        }
+      }
+    }
+
+    async function handlePlayerSearch(val) {
+      val = val.toLowerCase().trim();
+      playerSuggestions.innerHTML = '';
+      
+      if (!val || val.length < 2) return;
+      
+      const loadingDiv = document.createElement('div');
+      loadingDiv.className = 'suggestion-item';
+      loadingDiv.innerHTML = '<span class="page-emoji">⏳</span> Searching players across all pages...';
+      playerSuggestions.appendChild(loadingDiv);
+      
+      try {
+        const players = await searchPlayers(val);
+        playerSuggestions.innerHTML = '';
+        
+        if (!players || players.length === 0) {
+          const div = document.createElement('div');
+          div.className = 'suggestion-item';
+          div.innerHTML = '<span class="page-emoji">😕</span> No players found';
+          playerSuggestions.appendChild(div);
+          return;
+        }
+        
+        players.forEach(player => {
+          const div = document.createElement('div');
+          div.className = 'suggestion-item';
+          
+          const pageObj = PAGES.find(p => p.name === player.page);
+          const pageEmoji = pageObj ? pageObj.emoji : '📄';
+          
+          div.innerHTML = `
+            <span class="page-emoji">${pageEmoji}</span>
+            <div style="flex: 1; min-width: 0;">
+              <div style="font-weight: 500; margin-bottom: 0.25rem;">${player.name}</div>
+              <div style="font-size: 0.875rem; color: var(--text-secondary);">
+                <span class="page-indicator">${player.page}</span>
+              </div>
+            </div>
+          `;
+          
+          div.onclick = () => {
+            sessionStorage.setItem('searchPlayerName', player.name);
+            sessionStorage.setItem('searchPlayerPage', player.page);
+            tableState.history.page = 1;
+            showEnhancedGlobalPlayerHistory(player.name, player.page);
+          };
+          
+          playerSuggestions.appendChild(div);
+        });
+      } catch (error) {
+        playerSuggestions.innerHTML = '';
+        const div = document.createElement('div');
+        div.className = 'suggestion-item';
+        div.innerHTML = '<span class="page-emoji">❌</span> Error searching players';
+        playerSuggestions.appendChild(div);
+      }
     }
 
     function showLandingPage() {
@@ -3732,6 +4275,9 @@
       disableControlButtons();
       
       try {
+        // Clear cache when loading new page data
+        recoveryStatusCache.data.delete(selectedPage);
+        
         const data = await getPageActivity(selectedPage);
         handleDashboardData(data);
         
@@ -3828,96 +4374,18 @@
 
     // Page search functionality
     searchInput.addEventListener('input', function() {
-      const val = this.value.toLowerCase().trim();
-      pageSuggestions.innerHTML = '';
-      findBtn.style.display = 'none';
-      
-      if (!val) return;
-      
-      const matches = PAGES.filter(p => p.name.toLowerCase().includes(val));
-      if (matches.length === 0) {
-        const div = document.createElement('div');
-        div.className = 'suggestion-item';
-        div.innerHTML = '<span class="page-emoji">😕</span> No results found';
-        pageSuggestions.appendChild(div);
-      } else {
-        matches.forEach(p => {
-          const div = document.createElement('div');
-          div.className = 'suggestion-item';
-          div.innerHTML = `
-            <span class="page-emoji">${p.emoji}</span>
-            <span>${p.name}</span>
-          `;
-          div.onclick = () => {
-            searchInput.value = p.name;
-            pageSuggestions.innerHTML = '';
-            findBtn.style.display = 'inline-flex';
-          };
-          pageSuggestions.appendChild(div);
-        });
-        if (matches.length === 1) {
-          findBtn.style.display = 'inline-flex';
-        }
-      }
+      clearTimeout(searchTimeout);
+      searchTimeout = setTimeout(() => {
+        handlePageSearch(this.value);
+      }, 300);
     });
 
     // Player search functionality for LANDING PAGE
-    playerSearchInput.addEventListener('input', async function() {
-      const val = this.value.toLowerCase().trim();
-      playerSuggestions.innerHTML = '';
-      
-      if (!val || val.length < 2) return;
-      
-      const loadingDiv = document.createElement('div');
-      loadingDiv.className = 'suggestion-item';
-      loadingDiv.innerHTML = '<span class="page-emoji">⏳</span> Searching players across all pages...';
-      playerSuggestions.appendChild(loadingDiv);
-      
-      try {
-        const players = await searchPlayers(val);
-        playerSuggestions.innerHTML = '';
-        
-        if (!players || players.length === 0) {
-          const div = document.createElement('div');
-          div.className = 'suggestion-item';
-          div.innerHTML = '<span class="page-emoji">😕</span> No players found';
-          playerSuggestions.appendChild(div);
-          return;
-        }
-        
-        players.forEach(player => {
-          const div = document.createElement('div');
-          div.className = 'suggestion-item';
-          
-          const pageObj = PAGES.find(p => p.name === player.page);
-          const pageEmoji = pageObj ? pageObj.emoji : '📄';
-          
-          div.innerHTML = `
-            <span class="page-emoji">${pageEmoji}</span>
-            <div style="flex: 1; min-width: 0;">
-              <div style="font-weight: 500; margin-bottom: 0.25rem;">${player.name}</div>
-              <div style="font-size: 0.875rem; color: var(--text-secondary);">
-                <span class="page-indicator">${player.page}</span>
-              </div>
-            </div>
-          `;
-          
-          div.onclick = () => {
-            sessionStorage.setItem('searchPlayerName', player.name);
-            sessionStorage.setItem('searchPlayerPage', player.page);
-            tableState.history.page = 1;
-            showEnhancedGlobalPlayerHistory(player.name, player.page);
-          };
-          
-          playerSuggestions.appendChild(div);
-        });
-      } catch (error) {
-        playerSuggestions.innerHTML = '';
-        const div = document.createElement('div');
-        div.className = 'suggestion-item';
-        div.innerHTML = '<span class="page-emoji">❌</span> Error searching players';
-        playerSuggestions.appendChild(div);
-      }
+    playerSearchInput.addEventListener('input', function() {
+      clearTimeout(searchTimeout);
+      searchTimeout = setTimeout(() => {
+        handlePlayerSearch(this.value);
+      }, 300);
     });
 
     async function showEnhancedGlobalPlayerHistory(playerName, pageName) {
@@ -4144,15 +4612,8 @@
       // Get recovery count
       let recoveryCount = 0;
       try {
-        const { data: recoveryData, error } = await supabase
-          .from('client_recoveries')
-          .select('id')
-          .eq('page_name', selectedPage)
-          .eq('is_active_in_list', true);
-        
-        if (!error && recoveryData) {
-          recoveryCount = recoveryData.length;
-        }
+        const recoveredPlayers = await cacheRecoveryStatuses(selectedPage);
+        recoveryCount = recoveredPlayers.size;
       } catch (error) {
         console.error('Error getting recovery count:', error);
       }
@@ -4338,10 +4799,15 @@
       }
     }
 
+    // OPTIMIZED: Batch render player table with cached recovery buttons
     async function renderPlayerTable(players, title, type) {
       const totalPlayers = players.length;
       const currentPage = tableState.playerTables[type].page;
       const paginatedPlayers = getPaginatedPlayers(players, currentPage, PLAYERS_PER_PAGE);
+      
+      // Batch get recovery buttons for all players on this page
+      const playerNames = paginatedPlayers.map(p => p.player);
+      const recoveryButtonsMap = await getBatchRecoveryButtonsHTML(playerNames);
       
       let html = `
         <div class="table-container">
@@ -4350,23 +4816,27 @@
             <div id="paginationContainer"></div>
           </div>
           <div class="table-scroll-container">
-            <table style="font-size: 0.875rem;">
+            <table style="font-size: 1rem; width: 100%;">
               <thead>
                 <tr>
-                  <th style="min-width: 50px; text-align: center;">S.No</th>
-                  <th style="min-width: 120px;">Player</th>
-                  <th style="min-width: 140px;">Last Deposit</th>
-                  <th style="min-width: 100px;">Time Since</th>
+                  <th style="min-width: 50px; text-align: center;">#</th>
+                  <th style="min-width: 120px;">Name</th>
+                  <th style="min-width: 140px;">Last</th>
+                  <th style="min-width: 100px;">Since</th>
                   <th style="min-width: 80px;">Status</th>
-                  <th style="min-width: 90px; text-align: center;">Total $</th>
-                  <th style="min-width: 90px; text-align: center;">Last 7d $</th>
-                  ${type === "RecentActive" ? '<th style="min-width: 80px;">Gap Days</th>' : ''}
-                  <th style="min-width: 90px; text-align: center;">Notes</th>
-                  <th style="min-width: 110px; text-align: center;">Action</th>
+                  <th style="min-width: 90px; text-align: center;">Total</th>
+                  <th style="min-width: 90px; text-align: center;">7d</th>
+                  ${type === "RecentActive" ? '<th style="min-width: 80px;">Gap</th>' : ''}
+                  <th style="min-width: 50px; text-align: center;">Notes</th>
+                  <th style="min-width: 80px; text-align: center;">Action</th>
                 </tr>
               </thead>
               <tbody>
       `;
+      
+      // Use document fragment for better performance
+      const fragment = document.createDocumentFragment();
+      const tbody = document.createElement('tbody');
       
       for (let i = 0; i < paginatedPlayers.length; i++) {
         const p = paginatedPlayers[i];
@@ -4377,34 +4847,39 @@
         
         const notesBtnClass = p.hasNotes ? 'notes-btn has-notes' : 'notes-btn';
         const notesBtnIcon = p.hasNotes ? 'fa-sticky-note' : 'fa-plus';
-        const notesBtnText = p.hasNotes ? 'Notes' : 'Add';
+        const notesBtnText = p.hasNotes ? '' : '';
         
         const serialNumber = (currentPage - 1) * PLAYERS_PER_PAGE + i + 1;
         
-        // Get recovery button HTML
-        const recoveryButtonHTML = await getRecoveryButtonHTML(p.player);
+        // Get recovery button from cache
+        const recoveryButtonHTML = recoveryButtonsMap.get(p.player) || '';
         
-        html += `
-          <tr>
-            <td style="text-align: center;">${serialNumber}</td>
-            <td>${p.player}</td>
-            <td>${p.lastDeposit}</td>
-            <td>${gapDisplay}</td>
-            <td><span class="status-badge ${cls}">${p.status}</span></td>
-            <td style="text-align: center;">${p.totalDeposit || 0}</td>
-            <td style="text-align: center;">${p.last7DaysDeposit || 0}</td>
-            ${type === "RecentActive" ? `<td style="text-align: center;">${gapDays}</td>` : ''}
-            <td style="text-align: center;">
-              <button class="${notesBtnClass}" onclick="showNotesModal('${p.player.replace(/'/g, "\\'")}', this)" title="${p.hasNotes ? 'View notes' : 'Add note'}">
-                <i class="fas ${notesBtnIcon}"></i> ${notesBtnText}
-              </button>
-            </td>
-            <td style="text-align: center;">
-              ${recoveryButtonHTML}
-            </td>
-          </tr>
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td style="text-align: center;">${serialNumber}</td>
+          <td>${p.player}</td>
+          <td>${p.lastDeposit}</td>
+          <td>${gapDisplay}</td>
+          <td><span class="status-badge ${cls}">${p.status}</span></td>
+          <td style="text-align: center;">${p.totalDeposit || 0}</td>
+          <td style="text-align: center;">${p.last7DaysDeposit || 0}</td>
+          ${type === "RecentActive" ? `<td style="text-align: center;">${gapDays}</td>` : ''}
+          <td style="text-align: center;">
+            <button class="${notesBtnClass}" onclick="showNotesModal('${p.player.replace(/'/g, "\\'")}', this)" title="${p.hasNotes ? 'View notes' : 'Add note'}">
+              <i class="fas ${notesBtnIcon}"></i> ${notesBtnText}
+            </button>
+          </td>
+          <td style="text-align: center;">
+            ${recoveryButtonHTML}
+          </td>
         `;
+        tbody.appendChild(row);
       }
+      
+      // Append the fragment to the HTML string
+      const tempDiv = document.createElement('div');
+      tempDiv.appendChild(tbody);
+      html += tempDiv.innerHTML;
       
       html += `
               </tbody>
@@ -4419,11 +4894,16 @@
       renderPagination(totalPlayers, currentPage, PLAYERS_PER_PAGE, paginationContainer, `changePlayerPage_${type}`);
     }
 
+    // OPTIMIZED: High risk table with batch recovery buttons
     async function renderHighRiskTable() {
       const highRiskPlayers = currentPageData.highRiskPlayers;
       const totalPlayers = highRiskPlayers.length;
       const currentPage = tableState.highRisk.page;
       const paginatedPlayers = getPaginatedPlayers(highRiskPlayers, currentPage, PLAYERS_PER_PAGE);
+      
+      // Batch get recovery buttons for all players on this page
+      const playerNames = paginatedPlayers.map(p => p.player);
+      const recoveryButtonsMap = await getBatchRecoveryButtonsHTML(playerNames);
       
       let html = `
         <div class="table-container">
@@ -4432,16 +4912,16 @@
             <div id="paginationContainer"></div>
           </div>
           <div class="table-scroll-container">
-            <table style="font-size: 0.875rem;">
+            <table style="font-size: 1rem; width: 100%;">
               <thead>
                 <tr>
-                  <th style="text-align: center;">S.No</th>
+                  <th style="text-align: center;">#</th>
                   <th>Player</th>
                   <th>Risk</th>
                   <th>Gaps</th>
                   <th>Gap Details</th>
-                  <th>Last Deposit</th>
-                  <th>Time Since</th>
+                  <th>Last</th>
+                  <th>Since</th>
                   <th>Status</th>
                   <th>Deposits</th>
                   <th>Notes</th>
@@ -4450,6 +4930,10 @@
               </thead>
               <tbody>
       `;
+      
+      // Use document fragment for better performance
+      const fragment = document.createDocumentFragment();
+      const tbody = document.createElement('tbody');
       
       for (let i = 0; i < paginatedPlayers.length; i++) {
         const p = paginatedPlayers[i];
@@ -4475,39 +4959,44 @@
         
         const notesBtnClass = p.hasNotes ? 'notes-btn has-notes' : 'notes-btn';
         const notesBtnIcon = p.hasNotes ? 'fa-sticky-note' : 'fa-plus';
-        const notesBtnText = p.hasNotes ? 'Notes' : 'Add';
+        const notesBtnText = p.hasNotes ? '' : '';
         
         const serialNumber = (currentPage - 1) * PLAYERS_PER_PAGE + i + 1;
         
-        // Get recovery button HTML
-        const recoveryButtonHTML = await getRecoveryButtonHTML(p.player);
+        // Get recovery button from cache
+        const recoveryButtonHTML = recoveryButtonsMap.get(p.player) || '';
         
-        html += `
-          <tr>
-            <td style="text-align: center;">${serialNumber}</td>
-            <td><strong>${p.player}</strong></td>
-            <td class="${riskClass}"><strong>${p.riskLevel}</strong></td>
-            <td style="text-align: center;">${p.totalQualifyingGaps}</td>
-            <td>
-              <div>
-                ${gapDetails}
-              </div>
-            </td>
-            <td>${lastDepositPKT}</td>
-            <td>${gapDisplay}</td>
-            <td><span class="status-badge ${statusClass}">${p.currentStatus}</span></td>
-            <td style="text-align: center;">${p.totalDeposits}</td>
-            <td>
-              <button class="${notesBtnClass}" onclick="showNotesModal('${p.player.replace(/'/g, "\\'")}', this)" title="${p.hasNotes ? 'View notes' : 'Add note'}">
-                <i class="fas ${notesBtnIcon}"></i> ${notesBtnText}
-              </button>
-            </td>
-            <td style="text-align: center;">
-              ${recoveryButtonHTML}
-            </td>
-          </tr>
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td style="text-align: center;">${serialNumber}</td>
+          <td><strong>${p.player}</strong></td>
+          <td class="${riskClass}"><strong>${p.riskLevel}</strong></td>
+          <td style="text-align: center;">${p.totalQualifyingGaps}</td>
+          <td>
+            <div>
+              ${gapDetails}
+            </div>
+          </td>
+          <td>${lastDepositPKT}</td>
+          <td>${gapDisplay}</td>
+          <td><span class="status-badge ${statusClass}">${p.currentStatus}</span></td>
+          <td style="text-align: center;">${p.totalDeposits}</td>
+          <td>
+            <button class="${notesBtnClass}" onclick="showNotesModal('${p.player.replace(/'/g, "\\'")}', this)" title="${p.hasNotes ? 'View notes' : 'Add note'}">
+              <i class="fas ${notesBtnIcon}"></i> ${notesBtnText}
+            </button>
+          </td>
+          <td style="text-align: center;">
+            ${recoveryButtonHTML}
+          </td>
         `;
+        tbody.appendChild(row);
       }
+      
+      // Append the fragment to the HTML string
+      const tempDiv = document.createElement('div');
+      tempDiv.appendChild(tbody);
+      html += tempDiv.innerHTML;
       
       html += `
               </tbody>
@@ -6234,7 +6723,7 @@
           await loadPlayerNotes(currentNotesPlayer);
           
           if (currentNotesButton) {
-            currentNotesButton.innerHTML = '<i class="fas fa-sticky-note"></i> Notes';
+            currentNotesButton.innerHTML = '<i class="fas fa-sticky-note"></i>';
             currentNotesButton.className = 'notes-btn has-notes';
           }
           
