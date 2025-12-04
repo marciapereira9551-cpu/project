@@ -312,7 +312,7 @@
       transition: all 0.3s ease;
       width: auto !important;
       padding: 0.75rem 1.5rem !important;
-      margin-top: 1rem;
+      margin-top: 2.5rem; /* Increased margin */
     }
 
     #logoutBtnLanding:hover:not(:disabled) {
@@ -677,7 +677,7 @@
     .stat-card.high-risk { border-left-color: var(--danger); }
     .stat-card.history { border-left-color: var(--secondary); }
     .stat-card.deposits { border-left-color: #f59e0b; }
-    .stat-card.recovery { border-left-color: var(--success); }
+    .stat-card.recovery { border-left-color: #06d6a0; }
 
     .stat-value {
       font-size: 2.5rem;
@@ -873,23 +873,31 @@
       border: 1px solid var(--border-color);
     }
 
+    /* ENHANCED: Recovery tabs visibility */
     .recovery-tabs {
       display: flex;
       border-bottom: 1px solid var(--border-color);
-      background: var(--bg-secondary);
-      padding: 0 1.5rem;
+      background: var(--bg-primary);
+      padding: 0;
     }
 
     .recovery-tab {
-      padding: 1rem 1.5rem;
-      background: none;
+      padding: 1rem 2rem;
+      background: var(--bg-secondary);
       border: none;
       font-size: 1rem;
-      font-weight: 500;
+      font-weight: 600;
       color: var(--text-secondary);
       cursor: pointer;
       transition: all 0.2s ease;
       position: relative;
+      flex: 1;
+      text-align: center;
+      border-right: 1px solid var(--border-color);
+    }
+
+    .recovery-tab:last-child {
+      border-right: none;
     }
 
     .recovery-tab:hover {
@@ -900,25 +908,27 @@
     .recovery-tab.active {
       color: var(--primary);
       background: var(--bg-card);
-    }
-
-    .recovery-tab.active::after {
-      content: '';
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      height: 3px;
-      background: var(--primary);
+      border-bottom: 3px solid var(--primary);
     }
 
     .recovery-content {
       padding: 0;
     }
 
+    /* ENHANCED: Recovery search visibility */
     .recovery-search-container {
       padding: 1.5rem;
       border-bottom: 1px solid var(--border-color);
+      background: var(--bg-secondary);
+    }
+
+    .recovery-search-container .search-input {
+      width: 100%;
+      font-size: 1rem;
+      padding: 0.875rem 1.25rem;
+      border: 2px solid var(--primary);
+      background: var(--bg-card);
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     }
 
     /* FIXED: Recovery stats layout */
@@ -942,6 +952,7 @@
       border-radius: 12px;
       border: 1px solid var(--border-color);
       text-align: center;
+      box-shadow: var(--shadow);
     }
 
     .recovery-stat-value {
@@ -966,21 +977,24 @@
       width: 100%;
       border-collapse: collapse;
       table-layout: fixed;
-      font-size: 0.8rem; /* Smaller font size */
+      font-size: 0.85rem;
     }
 
     .recovery-table th {
       background: var(--bg-secondary);
-      padding: 0.75rem 0.5rem; /* Reduced padding */
+      padding: 0.875rem 0.75rem;
       text-align: left;
       font-weight: 600;
       color: var(--text-secondary);
       border-bottom: 2px solid var(--border-color);
       white-space: nowrap;
+      position: sticky;
+      top: 0;
+      z-index: 10;
     }
 
     .recovery-table td {
-      padding: 0.75rem 0.5rem; /* Reduced padding */
+      padding: 0.875rem 0.75rem;
       border-bottom: 1px solid var(--border-color);
       color: var(--text-primary);
       vertical-align: middle;
@@ -994,7 +1008,7 @@
     .recovery-table .status-active {
       color: var(--success);
       font-weight: 600;
-      background: #d1fae5;
+      background: rgba(6, 214, 160, 0.1);
       padding: 0.25rem 0.5rem;
       border-radius: 12px;
       font-size: 0.75rem;
@@ -1003,36 +1017,43 @@
     .recovery-table .status-inactive {
       color: var(--danger);
       font-weight: 600;
-      background: #fee2e2;
+      background: rgba(239, 71, 111, 0.1);
       padding: 0.25rem 0.5rem;
       border-radius: 12px;
       font-size: 0.75rem;
     }
 
+    /* Method styles - TEXT instead of emoji */
     .method-chat {
       color: var(--info);
+      font-weight: 500;
     }
 
-    .method- {
+    .method-offer {
       color: #f59e0b;
+      font-weight: 500;
     }
 
     .view-notes-btn {
-      padding: 0.3rem 0.6rem;
+      padding: 0.4rem 0.8rem;
       border: 1px solid var(--border-color);
       background: var(--bg-secondary);
       color: var(--text-primary);
-      border-radius: 4px;
-      font-size: 0.7rem;
+      border-radius: 6px;
+      font-size: 0.8rem;
       font-weight: 500;
       cursor: pointer;
       transition: all 0.2s ease;
       white-space: nowrap;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
     }
 
     .view-notes-btn:hover {
       background: var(--primary);
       color: white;
+      border-color: var(--primary);
     }
 
     .removal-btn {
@@ -1041,11 +1062,14 @@
       background: rgba(239, 68, 68, 0.1);
       color: var(--danger);
       border-radius: 6px;
-      font-size: 0.75rem; /* Smaller font */
+      font-size: 0.8rem;
       font-weight: 500;
       cursor: pointer;
       transition: all 0.2s ease;
       white-space: nowrap;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
     }
 
     .removal-btn:hover {
@@ -1053,14 +1077,49 @@
       color: white;
     }
 
-    /* ANALYTICS PANEL */
+    .removal-btn:disabled,
+    .removal-btn.disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      pointer-events: none;
+    }
+
+    /* NOTES MODAL STYLES */
+    .notes-modal-content {
+      max-width: 600px;
+      width: 90%;
+      max-height: 80vh;
+      overflow-y: auto;
+    }
+
+    .notes-display {
+      background: var(--bg-secondary);
+      padding: 1rem;
+      border-radius: 8px;
+      border: 1px solid var(--border-color);
+      margin-top: 1rem;
+      white-space: pre-wrap;
+      word-wrap: break-word;
+      line-height: 1.5;
+      max-height: 300px;
+      overflow-y: auto;
+    }
+
+    /* ANALYTICS PANEL - UPDATED LAYOUT */
     .analytics-panel {
       padding: 2rem;
     }
 
     .analytics-stats {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .analytics-stats-row2 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
       gap: 1.5rem;
       margin-bottom: 2rem;
     }
@@ -1071,6 +1130,7 @@
       border-radius: 12px;
       text-align: center;
       border: 1px solid var(--border-color);
+      box-shadow: var(--shadow);
     }
 
     .analytic-value {
@@ -1679,6 +1739,11 @@
       .monthly-summary {
         grid-template-columns: repeat(2, 1fr);
       }
+      
+      .analytics-stats,
+      .analytics-stats-row2 {
+        grid-template-columns: repeat(2, 1fr);
+      }
     }
 
     @media (max-width: 768px) {
@@ -1774,6 +1839,16 @@
       .recovery-table td {
         padding: 0.5rem;
       }
+      
+      .analytics-stats,
+      .analytics-stats-row2 {
+        grid-template-columns: 1fr;
+      }
+      
+      .recovery-tab {
+        padding: 0.75rem 1rem;
+        font-size: 0.9rem;
+      }
     }
     
     @media (max-width: 480px) {
@@ -1788,6 +1863,11 @@
       
       .pin-subtitle {
         font-size: 0.9rem;
+      }
+      
+      .recovery-tab {
+        padding: 0.5rem 0.75rem;
+        font-size: 0.8rem;
       }
     }
   </style>
@@ -1924,6 +2004,23 @@
     </div>
   </div>
 
+  <!-- NOTES VIEW MODAL -->
+  <div id="notesViewModal" class="modal">
+    <div class="modal-content notes-modal-content">
+      <h3 class="modal-title" id="notesViewModalTitle">Recovery Notes</h3>
+      
+      <div id="notesViewContent" class="notes-display">
+        Loading notes...
+      </div>
+      
+      <div class="modal-buttons">
+        <button class="btn btn-secondary" onclick="hideNotesViewModal()">
+          <i class="fas fa-times"></i> Close
+        </button>
+      </div>
+    </div>
+  </div>
+
   <!-- Landing Page -->
   <div id="landing">
     <div class="landing-container">
@@ -1978,14 +2075,12 @@
         <i class="fas fa-arrow-right"></i> Access Dashboard
       </button>
       
-      <!-- Logout Button on Landing Page -->
-      <div id="landingLogoutSection" style="margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid var(--border-color); text-align: center; display: none;">
-        <button id="logoutBtnLanding" class="btn btn-secondary" style="width: auto; padding: 0.75rem 1.5rem;" disabled>
+      <!-- Logout Button on Landing Page - UPDATED: Removed secure session text and added more spacing -->
+      <div id="landingLogoutSection" style="margin-top: 2.5rem; padding-top: 1.5rem; border-top: 1px solid var(--border-color); text-align: center; display: none;">
+        <button id="logoutBtnLanding" class="btn btn-secondary" style="width: auto; padding: 0.75rem 1.5rem;">
           <i class="fas fa-sign-out-alt"></i> Logout
         </button>
-        <div style="margin-top: 0.5rem; font-size: 0.85rem; color: var(--text-secondary);">
-          <i class="fas fa-user-shield"></i> Secure Session Active
-        </div>
+        <!-- Removed Secure Session Active text -->
       </div>
     </div>
   </div>
@@ -2005,7 +2100,7 @@
           <button id="forceCleanupBtn" class="btn btn-warning" onclick="showCleanupModal()">
             <i class="fas fa-broom"></i> Force Cleanup
           </button>
-          <button id="logoutBtnDashboard" class="btn btn-secondary" style="display: none;" disabled>
+          <button id="logoutBtnDashboard" class="btn btn-secondary" style="display: none;">
             <i class="fas fa-sign-out-alt"></i> Logout
           </button>
         </div>
@@ -3001,6 +3096,9 @@
     const landingLogoutSection = document.getElementById('landingLogoutSection');
     const logoutBtnLanding = document.getElementById('logoutBtnLanding');
     const clientRecoveryDashboard = document.getElementById('clientRecoveryDashboard');
+    const notesViewModal = document.getElementById('notesViewModal');
+    const notesViewModalTitle = document.getElementById('notesViewModalTitle');
+    const notesViewContent = document.getElementById('notesViewContent');
 
     // Recovery Modal Elements
     const recoveryModal = document.getElementById('recoveryModal');
@@ -3151,7 +3249,7 @@
       });
     }
 
-    // Confirm recovery - UPDATED FOR REAL-TIME BUTTON UPDATE
+    // Confirm recovery - FIXED WITH REAL-TIME BUTTON UPDATE
     async function confirmRecovery() {
       if (!selectedRecoveryMethod) {
         showNotification('Please select a recovery method (Chat or Offer)', 'error');
@@ -3183,7 +3281,7 @@
         
         if (error) throw error;
         
-        showNotification(`Player ${recoveryPlayerName} marked as recovered via ${selectedRecoveryMethod === 'chat' ? '💬 Chat' : '🎁 Offer'}`, 'success');
+        showNotification(`Player ${recoveryPlayerName} marked as recovered via ${selectedRecoveryMethod === 'chat' ? 'Chat' : 'Offer'}`, 'success');
         
         hideRecoveryModal();
         
@@ -3213,7 +3311,7 @@
       }
     }
 
-    // Update recovery button in all tables - UPDATED FOR REAL-TIME
+    // Update recovery button in all tables - FIXED FOR REAL-TIME
     function updateRecoveryButtonInTables(playerName, isRecovered) {
       // Find all recovery buttons for this player and update them
       const buttons = document.querySelectorAll('.recovery-btn');
@@ -3265,13 +3363,31 @@
       }
     }
 
+    // Show notes view modal
+    function showNotesViewModal(title, content) {
+      notesViewModalTitle.textContent = title;
+      notesViewContent.innerHTML = `<div class="notes-display">${content || 'No notes available.'}</div>`;
+      notesViewModal.style.display = 'block';
+    }
+
+    // Hide notes view modal
+    function hideNotesViewModal() {
+      notesViewModal.style.display = 'none';
+    }
+
     // Show removal modal
     function showRemovalModal(recordId, playerName, recoveredDate, method) {
+      // Check if viewer role
+      if (userRole === PIN_CONFIG.ROLES.VIEWER) {
+        showNotification('Viewer role cannot remove recovered clients', 'warning');
+        return;
+      }
+      
       removalRecordId = recordId;
       
       removalPlayerName.textContent = playerName;
       removalRecoveredDate.textContent = convertUTCToPKTDateOnly(recoveredDate);
-      removalMethod.textContent = method === 'chat' ? '💬 Chat' : '🎁 Offer';
+      removalMethod.textContent = method === 'chat' ? 'Chat' : 'Offer';
       removalRecordIdInput.value = recordId;
       removalNotesInput.value = '';
       removalPinInput.value = '';
@@ -3293,7 +3409,7 @@
     async function confirmRemoval() {
       const pin = removalPinInput.value.trim();
       if (pin !== RECOVERY_REMOVAL_PIN) {
-        showNotification('Invalid PIN. Please try again.', 'error'); // UPDATED: No PIN shown
+        showNotification('Invalid PIN. Please try again.', 'error');
         return;
       }
       
@@ -3610,38 +3726,41 @@
         paginatedRecoveries.forEach((recovery, index) => {
           const serialNumber = startIndex + index + 1;
           const methodClass = recovery.recovery_method === 'chat' ? 'method-chat' : 'method-offer';
-          const methodIcon = recovery.recovery_method === 'chat' ? '💬' : '🎁';
+          const methodText = recovery.recovery_method === 'chat' ? 'Chat' : 'Offer'; // TEXT instead of emoji
           const statusClass = recovery.current_status === 'Active' ? 'status-active' : 'status-inactive';
           const statusText = recovery.current_status === 'Active' ? 'Active' : 'Inactive';
           const statusIcon = recovery.current_status === 'Active' ? '✅' : '❌';
           
-          // Determine notes display
+          // Determine notes display - FIXED: Show "-" if no notes, "View Notes" button if notes exist
           let notesDisplay = '-';
-          if (recovery.recovery_notes) {
-            if (recovery.recovery_notes.length > 30) {
-              notesDisplay = `
-                <button class="view-notes-btn" onclick="showRecoveryNotesModal('${recovery.player_name}', '${recovery.recovery_notes.replace(/'/g, "\\'")}')">
-                  View Notes
-                </button>
-              `;
-            } else {
-              notesDisplay = recovery.recovery_notes;
-            }
+          if (recovery.recovery_notes && recovery.recovery_notes.trim() !== '') {
+            notesDisplay = `
+              <button class="view-notes-btn" onclick="showNotesViewModal('Notes for ${recovery.player_name}', '${recovery.recovery_notes.replace(/'/g, "\\'").replace(/\n/g, '<br>')}')">
+                <i class="fas fa-eye"></i> View Notes
+              </button>
+            `;
           }
+          
+          // Remove button - disabled for viewer role
+          const removeButton = userRole === PIN_CONFIG.ROLES.VIEWER 
+            ? `<button class="removal-btn disabled" disabled title="Viewer cannot remove">
+                <i class="fas fa-times"></i> Remove
+              </button>`
+            : `<button class="removal-btn" onclick="showRemovalModal('${recovery.id}', '${recovery.player_name}', '${recovery.recovered_date}', '${recovery.recovery_method}')">
+                <i class="fas fa-times"></i> Remove
+              </button>`;
           
           html += `
             <tr>
               <td style="text-align: center;">${serialNumber}</td>
               <td>${convertUTCToPKTDateOnly(recovery.recovered_date)}</td>
               <td><strong>${recovery.player_name}</strong></td>
-              <td class="${methodClass}">${methodIcon}</td>
+              <td class="${methodClass}"><strong>${methodText}</strong></td>
               <td><span class="${statusClass}">${statusIcon} ${statusText}</span></td>
               <td>${recovery.last_deposit_display || 'N/A'}</td>
               <td>${notesDisplay}</td>
               <td style="text-align: center;">
-                <button class="removal-btn" onclick="showRemovalModal('${recovery.id}', '${recovery.player_name}', '${recovery.recovered_date}', '${recovery.recovery_method}')">
-                  <i class="fas fa-times"></i> Remove
-                </button>
+                ${removeButton}
               </td>
             </tr>
           `;
@@ -3672,38 +3791,6 @@
       }
       
       return html;
-    }
-
-    // Show recovery notes modal
-    function showRecoveryNotesModal(playerName, notes) {
-      const modalHTML = `
-        <div class="modal" style="display: block;">
-          <div class="modal-content" style="max-width: 500px;">
-            <h3 class="modal-title">Recovery Notes - ${playerName}</h3>
-            <div style="background: var(--bg-secondary); padding: 1rem; border-radius: 8px; margin: 1rem 0; border: 1px solid var(--border-color);">
-              <p style="color: var(--text-primary); white-space: pre-wrap; line-height: 1.5;">${notes}</p>
-            </div>
-            <div class="modal-buttons">
-              <button class="btn btn-secondary" onclick="this.closest('.modal').style.display='none'">
-                <i class="fas fa-times"></i> Close
-              </button>
-            </div>
-          </div>
-        </div>
-      `;
-      
-      // Create and show modal
-      const modalDiv = document.createElement('div');
-      modalDiv.innerHTML = modalHTML;
-      document.body.appendChild(modalDiv);
-      
-      // Add click outside to close
-      modalDiv.querySelector('.modal').onclick = function(e) {
-        if (e.target === this) {
-          this.style.display = 'none';
-          document.body.removeChild(modalDiv);
-        }
-      };
     }
 
     // Render removed clients - FIXED VERSION WITH UPDATED STYLING
@@ -3759,6 +3846,7 @@
                 <th style="width: 120px;">Player Name</th>
                 <th style="width: 100px;">Added Date</th>
                 <th style="width: 100px;">Removed Date</th>
+                <th style="width: 80px;">Method</th>
                 <th style="width: 120px;">Removal Reason</th>
                 <th style="width: 150px;">Removal Notes</th>
               </tr>
@@ -3769,7 +3857,7 @@
       if (paginatedRemoved.length === 0) {
         html += `
           <tr>
-            <td colspan="6" style="text-align: center; padding: 2rem; color: var(--text-secondary);">
+            <td colspan="7" style="text-align: center; padding: 2rem; color: var(--text-secondary);">
               ${recoveryState.removed.search ? 'No matching removed clients found' : 'No removed clients yet'}
             </td>
           </tr>
@@ -3777,19 +3865,17 @@
       } else {
         paginatedRemoved.forEach((record, index) => {
           const serialNumber = startIndex + index + 1;
+          const methodClass = record.recovery_method === 'chat' ? 'method-chat' : 'method-offer';
+          const methodText = record.recovery_method === 'chat' ? 'Chat' : 'Offer'; // TEXT instead of emoji
           
-          // Determine notes display
+          // Determine notes display - FIXED: Show "-" if no notes, "View Notes" button if notes exist
           let notesDisplay = '-';
-          if (record.removal_notes) {
-            if (record.removal_notes.length > 30) {
-              notesDisplay = `
-                <button class="view-notes-btn" onclick="showRecoveryNotesModal('${record.player_name}', '${record.removal_notes.replace(/'/g, "\\'")}')">
-                  View Notes
-                </button>
-              `;
-            } else {
-              notesDisplay = record.removal_notes;
-            }
+          if (record.removal_notes && record.removal_notes.trim() !== '') {
+            notesDisplay = `
+              <button class="view-notes-btn" onclick="showNotesViewModal('Removal Notes for ${record.player_name}', '${record.removal_notes.replace(/'/g, "\\'").replace(/\n/g, '<br>')}')">
+                <i class="fas fa-eye"></i> View Notes
+              </button>
+            `;
           }
           
           html += `
@@ -3798,6 +3884,7 @@
               <td><strong>${record.player_name}</strong></td>
               <td>${convertUTCToPKTDateOnly(record.recovered_date)}</td>
               <td>${record.removed_date ? convertUTCToPKTDateOnly(record.removed_date) : '-'}</td>
+              <td class="${methodClass}"><strong>${methodText}</strong></td>
               <td>${record.removal_reason ? record.removal_reason.charAt(0).toUpperCase() + record.removal_reason.slice(1).replace('-', ' ') : 'User removed'}</td>
               <td>${notesDisplay}</td>
             </tr>
@@ -3831,7 +3918,7 @@
       return html;
     }
 
-    // Render analytics - FIXED VERSION
+    // Render analytics - FIXED VERSION WITH 2 ROWS
     function renderAnalytics() {
       const analytics = recoveryState.analytics.data || {
         total_recovered: 0,
@@ -3851,12 +3938,15 @@
             </div>
             <div class="analytic-card">
               <div class="analytic-value">${analytics.chat_success_rate}%</div>
-              <div class="analytic-label">💬 Chat Success</div>
+              <div class="analytic-label">Chat Success</div>
             </div>
             <div class="analytic-card">
               <div class="analytic-value">${analytics.offer_success_rate}%</div>
-              <div class="analytic-label">🎁 Offer Success</div>
+              <div class="analytic-label">Offer Success</div>
             </div>
+          </div>
+          
+          <div class="analytics-stats-row2">
             <div class="analytic-card">
               <div class="analytic-value">${analytics.total_recovered}</div>
               <div class="analytic-label">Total Recovered</div>
@@ -3875,8 +3965,8 @@
             <h4 style="color: var(--text-primary); margin-bottom: 1rem;">Recovery Analytics Summary</h4>
             <div style="color: var(--text-secondary); line-height: 1.6;">
               <p>• Out of <strong>${analytics.total_recovered}</strong> recovered players, <strong style="color: var(--success);">${analytics.currently_active}</strong> are still active and <strong style="color: var(--danger);">${analytics.currently_inactive}</strong> have become inactive again.</p>
-              <p>• <strong>💬 Chat recoveries</strong> have a <strong>${analytics.chat_success_rate}%</strong> success rate.</p>
-              <p>• <strong>🎁 Offer recoveries</strong> have a <strong>${analytics.offer_success_rate}%</strong> success rate.</p>
+              <p>• <strong>Chat recoveries</strong> have a <strong>${analytics.chat_success_rate}%</strong> success rate.</p>
+              <p>• <strong>Offer recoveries</strong> have a <strong>${analytics.offer_success_rate}%</strong> success rate.</p>
               <p>• The overall recovery success rate is <strong>${analytics.overall_success_rate}%</strong>.</p>
             </div>
           </div>
@@ -3944,7 +4034,7 @@
       
       // Initialize debounced search
       window.debouncedSearchRecoveries = debouncedSearchRecoveries;
-      window.showRecoveryNotesModal = showRecoveryNotesModal;
+      window.showNotesViewModal = showNotesViewModal;
     }
 
     function showLandingPage() {
@@ -4463,7 +4553,7 @@
       const thirdRowBoxes = [
         { label: "Player History", value: "", type: "PlayerHistory", icon: "fas fa-history", colorClass: "history" },
         { label: "Page Deposits", value: "", type: "PageDeposits", icon: "fas fa-money-bill-wave", colorClass: "deposits" },
-        { label: "Recovered Clients", value: recoveryCount, type: "ClientRecovery", icon: "fas fa-users-return", colorClass: "recovery" }
+        { label: "Recovered Clients", value: recoveryCount, type: "ClientRecovery", icon: "fas fa-users-return", colorClass: "recovery" } // Added icon
       ];
 
       firstRowBoxes.forEach(b => {
@@ -4633,6 +4723,19 @@
       const currentPage = tableState.playerTables[type].page;
       const paginatedPlayers = getPaginatedPlayers(players, currentPage, PLAYERS_PER_PAGE);
       
+      // Show loader for table
+      document.getElementById('tableContainer').innerHTML = `
+        <div class="table-container">
+          <div class="table-header">
+            <h3 class="table-title">${title} (${totalPlayers} total)</h3>
+          </div>
+          <div style="text-align: center; padding: 2rem;">
+            <div class="spinner"></div>
+            <p>Loading player data...</p>
+          </div>
+        </div>
+      `;
+      
       // Batch fetch recovery status for all players
       const recoveryButtonHTMLs = await getRecoveryButtonsHTMLBulk(paginatedPlayers);
       
@@ -4718,6 +4821,19 @@
       const totalPlayers = highRiskPlayers.length;
       const currentPage = tableState.highRisk.page;
       const paginatedPlayers = getPaginatedPlayers(highRiskPlayers, currentPage, PLAYERS_PER_PAGE);
+      
+      // Show loader for table
+      document.getElementById('tableContainer').innerHTML = `
+        <div class="table-container">
+          <div class="table-header">
+            <h3 class="table-title">High Risk Players Analysis (${totalPlayers} total)</h3>
+          </div>
+          <div style="text-align: center; padding: 2rem;">
+            <div class="spinner"></div>
+            <p>Loading high risk player data...</p>
+          </div>
+        </div>
+      `;
       
       // Batch fetch recovery status for all players
       const recoveryButtonHTMLs = await getRecoveryButtonsHTMLBulk(paginatedPlayers);
@@ -6729,6 +6845,9 @@
       }
       if (event.target === removalModal) {
         hideRemovalModal();
+      }
+      if (event.target === notesViewModal) {
+        hideNotesViewModal();
       }
     });
 
