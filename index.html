@@ -62,7 +62,7 @@
     }
 
     /* ==================== */
-    /* NEW: PIN SCREEN STYLES - FIXED WITH position: fixed */
+    /* PIN SCREEN STYLES */
     /* ==================== */
     #pinScreen {
       position: fixed;
@@ -267,10 +267,6 @@
       gap: 0.5rem;
     }
 
-    /* ==================== */
-    /* YOUR EXISTING STYLES */
-    /* ==================== */
-
     /* Landing Page */
     #landing {
       display: none;
@@ -309,7 +305,6 @@
       font-weight: 400;
     }
 
-    /* Landing page logout button specific styles */
     #logoutBtnLanding {
       background: rgba(239, 68, 68, 0.1);
       color: var(--danger);
@@ -483,7 +478,6 @@
       box-shadow: var(--shadow-lg);
     }
 
-    /* Enhanced disabled button styles */
     .btn:disabled {
       opacity: 0.5;
       cursor: not-allowed;
@@ -613,7 +607,7 @@
       padding: 2rem;
     }
 
-    /* Stats Grid - FIXED 3-ROW LAYOUT */
+    /* Stats Grid */
     .stats-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -683,7 +677,7 @@
     .stat-card.high-risk { border-left-color: var(--danger); }
     .stat-card.history { border-left-color: var(--secondary); }
     .stat-card.deposits { border-left-color: #f59e0b; }
-    .stat-card.coming-soon { border-left-color: var(--gray); }
+    .stat-card.recovery { border-left-color: var(--success); }
 
     .stat-value {
       font-size: 2.5rem;
@@ -713,108 +707,358 @@
       text-align: center;
     }
 
-    /* Improved Table Styles for High Risk Players */
-    .high-risk-table {
+    /* CLIENT RECOVERY BUTTON STYLES */
+    .recovery-btn {
+      padding: 0.5rem 1rem;
+      border: none;
+      border-radius: 6px;
       font-size: 0.875rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .recovery-btn.mark {
+      background: var(--primary);
+      color: white;
+    }
+
+    .recovery-btn.mark:hover:not(:disabled) {
+      background: var(--primary-dark);
+      transform: translateY(-1px);
+    }
+
+    .recovery-btn.recovered {
+      background: #e5e7eb;
+      color: #6b7280;
+      border: 1px solid #d1d5db;
+      cursor: not-allowed;
+    }
+
+    .recovery-btn:disabled {
+      opacity: 0.7;
+      cursor: not-allowed;
+      transform: none !important;
+    }
+
+    /* RECOVERY MODAL STYLES */
+    .recovery-modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
       width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 2001;
+      backdrop-filter: blur(4px);
     }
 
-    .high-risk-table th,
-    .high-risk-table td {
-      padding: 0.75rem 0.5rem;
-      word-wrap: break-word;
+    .recovery-modal-content {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: var(--bg-card);
+      border-radius: 16px;
+      padding: 2rem;
+      box-shadow: var(--shadow-lg);
+      max-width: 500px;
+      width: 90%;
+      border: 1px solid var(--border-color);
     }
 
-    /* Specific column widths for high risk table */
-    .high-risk-table th:nth-child(1), /* S.No */
-    .high-risk-table td:nth-child(1) {
-      min-width: 50px;
-      max-width: 70px;
+    .recovery-modal-title {
+      font-size: 1.25rem;
+      font-weight: 600;
+      margin-bottom: 1.5rem;
+      text-align: center;
+      color: var(--text-primary);
+    }
+
+    .recovery-method-selector {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+      justify-content: center;
+    }
+
+    .recovery-method-btn {
+      padding: 1rem 1.5rem;
+      border: 2px solid var(--border-color);
+      border-radius: 10px;
+      background: var(--bg-card);
+      color: var(--text-primary);
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+      flex: 1;
       text-align: center;
     }
 
-    .high-risk-table th:nth-child(2), /* Player */
-    .high-risk-table td:nth-child(2) {
-      min-width: 120px;
-      max-width: 150px;
-    }
-
-    .high-risk-table th:nth-child(3), /* Risk Level */
-    .high-risk-table td:nth-child(3) {
-      min-width: 80px;
-      max-width: 100px;
-    }
-
-    .high-risk-table th:nth-child(4), /* Total Gaps */
-    .high-risk-table td:nth-child(4) {
-      min-width: 60px;
-      max-width: 80px;
-      text-align: center;
-    }
-
-    .high-risk-table th:nth-child(5), /* Gap Details */
-    .high-risk-table td:nth-child(5) {
-      min-width: 180px;
-      max-width: 220px;
-      line-height: 1.3;
-    }
-
-    .high-risk-table th:nth-child(6), /* Last Deposit */
-    .high-risk-table td:nth-child(6) {
-      min-width: 140px;
-      max-width: 160px;
-    }
-
-    .high-risk-table th:nth-child(7), /* Gap */
-    .high-risk-table td:nth-child(7) {
-      min-width: 100px;
-      max-width: 120px;
-    }
-
-    .high-risk-table th:nth-child(8), /* Current Status */
-    .high-risk-table td:nth-child(8) {
-      min-width: 90px;
-      max-width: 110px;
-      text-align: center;
-    }
-
-    .high-risk-table th:nth-child(9), /* Total Deposits */
-    .high-risk-table td:nth-child(9) {
-      min-width: 70px;
-      max-width: 90px;
-      text-align: center;
-    }
-
-    .high-risk-table th:nth-child(10), /* Notes */
-    .high-risk-table td:nth-child(10) {
-      min-width: 90px;
-      max-width: 110px;
-      text-align: center;
-    }
-
-    /* Compact gap details */
-    .gap-details-compact {
-      font-size: 0.8rem;
-      line-height: 1.2;
-    }
-
-    .gap-item {
-      margin-bottom: 0.25rem;
-      padding: 0.2rem 0.4rem;
+    .recovery-method-btn:hover {
+      border-color: var(--primary);
       background: var(--bg-secondary);
-      border-radius: 4px;
-      border-left: 3px solid var(--primary);
     }
 
-    .gap-item:last-child {
-      margin-bottom: 0;
+    .recovery-method-btn.active {
+      border-color: var(--primary);
+      background: rgba(67, 97, 238, 0.1);
     }
 
-    /* Scrollable table container for mobile */
-    .table-scroll-container {
+    .recovery-method-icon {
+      font-size: 1.5rem;
+    }
+
+    .recovery-notes-input {
+      width: 100%;
+      padding: 1rem;
+      border: 2px solid var(--border-color);
+      border-radius: 10px;
+      font-size: 0.95rem;
+      background: var(--bg-card);
+      color: var(--text-primary);
+      resize: vertical;
+      min-height: 80px;
+      font-family: inherit;
+      margin-bottom: 1.5rem;
+    }
+
+    .recovery-notes-input:focus {
+      outline: none;
+      border-color: var(--primary);
+    }
+
+    /* REMOVAL MODAL STYLES */
+    .removal-reason-selector {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      margin: 1.5rem 0;
+    }
+
+    .removal-reason-option {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.75rem;
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .removal-reason-option:hover {
+      background: var(--bg-secondary);
+    }
+
+    .removal-reason-option.selected {
+      border-color: var(--primary);
+      background: rgba(67, 97, 238, 0.1);
+    }
+
+    .removal-pin-input {
+      width: 100%;
+      padding: 1rem;
+      border: 2px solid var(--border-color);
+      border-radius: 10px;
+      font-size: 1.2rem;
+      text-align: center;
+      letter-spacing: 0.3rem;
+      background: var(--bg-card);
+      color: var(--text-primary);
+      margin: 1.5rem 0;
+    }
+
+    .removal-pin-input:focus {
+      outline: none;
+      border-color: var(--primary);
+    }
+
+    /* RECOVERY DASHBOARD STYLES */
+    .recovery-dashboard {
+      background: var(--bg-card);
+      border-radius: 16px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      margin-bottom: 2rem;
+      border: 1px solid var(--border-color);
+    }
+
+    .recovery-tabs {
+      display: flex;
+      border-bottom: 1px solid var(--border-color);
+      background: var(--bg-secondary);
+    }
+
+    .recovery-tab {
+      padding: 1rem 1.5rem;
+      background: none;
+      border: none;
+      font-size: 1rem;
+      font-weight: 500;
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: all 0.2s ease;
+      position: relative;
+    }
+
+    .recovery-tab:hover {
+      color: var(--text-primary);
+      background: var(--bg-card);
+    }
+
+    .recovery-tab.active {
+      color: var(--primary);
+      background: var(--bg-card);
+    }
+
+    .recovery-tab.active::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: var(--primary);
+    }
+
+    .recovery-content {
+      padding: 0;
+    }
+
+    .recovery-search-container {
+      padding: 1.5rem 1.5rem 0;
+    }
+
+    .recovery-stats {
+      display: flex;
+      gap: 1rem;
+      padding: 1rem 1.5rem;
+      background: var(--bg-secondary);
+      border-bottom: 1px solid var(--border-color);
+      flex-wrap: wrap;
+    }
+
+    .recovery-stat {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+
+    .recovery-stat-value {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    .recovery-stat-label {
+      font-size: 0.875rem;
+      color: var(--text-secondary);
+    }
+
+    .recovery-table-container {
       overflow-x: auto;
-      margin: 0 -1rem;
-      padding: 0 1rem;
+    }
+
+    .recovery-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .recovery-table th {
+      background: var(--bg-secondary);
+      padding: 1rem;
+      text-align: left;
+      font-weight: 600;
+      color: var(--text-secondary);
+      border-bottom: 2px solid var(--border-color);
+      white-space: nowrap;
+    }
+
+    .recovery-table td {
+      padding: 1rem;
+      border-bottom: 1px solid var(--border-color);
+      color: var(--text-primary);
+    }
+
+    .recovery-table tr:hover {
+      background: var(--bg-secondary);
+    }
+
+    .recovery-table .status-active {
+      color: var(--success);
+      font-weight: 600;
+    }
+
+    .recovery-table .status-inactive {
+      color: var(--danger);
+      font-weight: 600;
+    }
+
+    .method-chat {
+      color: var(--info);
+    }
+
+    .method-offer {
+      color: #f59e0b;
+    }
+
+    .removal-btn {
+      padding: 0.5rem 1rem;
+      border: 1px solid var(--danger);
+      background: rgba(239, 68, 68, 0.1);
+      color: var(--danger);
+      border-radius: 6px;
+      font-size: 0.875rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .removal-btn:hover {
+      background: var(--danger);
+      color: white;
+    }
+
+    /* ANALYTICS PANEL */
+    .analytics-panel {
+      padding: 2rem;
+    }
+
+    .analytics-stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .analytic-card {
+      background: var(--bg-secondary);
+      padding: 1.5rem;
+      border-radius: 12px;
+      text-align: center;
+      border: 1px solid var(--border-color);
+    }
+
+    .analytic-value {
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      color: var(--text-primary);
+    }
+
+    .analytic-label {
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+      font-weight: 500;
     }
 
     /* Tables */
@@ -930,11 +1174,6 @@
       color: #991b1b;
     }
 
-    .risk-high { color: var(--danger); font-weight: 600; }
-    .risk-very-high { color: #dc2626; font-weight: 700; }
-    .risk-medium { color: var(--warning); font-weight: 600; }
-    .risk-low { color: var(--success); font-weight: 600; }
-
     /* Notes Button */
     .notes-btn {
       padding: 0.5rem 1rem;
@@ -977,63 +1216,6 @@
       border: 1px solid var(--border-color);
     }
 
-    .current-status {
-      font-size: 1.25rem;
-      font-weight: 600;
-      padding: 1rem;
-      border-radius: 12px;
-      margin-bottom: 2rem;
-      text-align: center;
-    }
-
-    .status-active-bg {
-      background: #d1fae5;
-      color: #065f46;
-      border: 2px solid #10b981;
-    }
-
-    .status-inactive-bg {
-      background: #fee2e2;
-      color: #991b1b;
-      border: 2px solid #ef4444;
-    }
-
-    .history-timeline {
-      margin: 2rem 0;
-    }
-
-    .timeline-item {
-      display: flex;
-      align-items: flex-start;
-      margin-bottom: 1.5rem;
-      padding-left: 2rem;
-      position: relative;
-    }
-
-    .timeline-dot {
-      position: absolute;
-      left: 0;
-      top: 0.5rem;
-      width: 12px;
-      height: 12px;
-      border-radius: 50%;
-      background: var(--primary);
-    }
-
-    .timeline-content {
-      flex: 1;
-    }
-
-    .timeline-date {
-      font-weight: 600;
-      color: var(--text-primary);
-      margin-bottom: 0.25rem;
-    }
-
-    .timeline-event {
-      color: var(--text-secondary);
-    }
-
     /* Enhanced Player History Table */
     .enhanced-history-table {
       width: 100%;
@@ -1055,45 +1237,7 @@
       border-bottom: 1px solid var(--border-color);
     }
 
-    .active-row {
-      background: rgba(16, 185, 129, 0.05);
-    }
-
-    .inactive-row {
-      background: rgba(239, 68, 68, 0.05);
-    }
-
-    .date-range-cell {
-      font-weight: 500;
-    }
-
-    .gap-cell {
-      text-align: center;
-      font-weight: 600;
-    }
-
-    .gap-high {
-      color: #dc2626;
-      background: rgba(220, 38, 38, 0.1);
-      padding: 0.25rem 0.5rem;
-      border-radius: 4px;
-    }
-
-    .gap-medium {
-      color: #d97706;
-      background: rgba(217, 119, 6, 0.1);
-      padding: 0.25rem 0.5rem;
-      border-radius: 4px;
-    }
-
-    .gap-low {
-      color: #059669;
-      background: rgba(5, 150, 105, 0.1);
-      padding: 0.25rem 0.5rem;
-      border-radius: 4px;
-    }
-
-    /* Daily Deposits Table - FIXED ALIGNMENT */
+    /* Daily Deposits Table */
     .daily-deposits-table {
       width: 100%;
       border-collapse: collapse;
@@ -1116,7 +1260,6 @@
       white-space: nowrap;
     }
 
-    /* FIXED: All amount cells right-aligned */
     .amount-cell {
       text-align: right !important;
       font-weight: 600;
@@ -1128,96 +1271,6 @@
 
     .amount-cell.zero {
       color: var(--text-secondary);
-    }
-
-    .count-cell {
-      text-align: center;
-      font-weight: 500;
-    }
-
-    .trend-cell {
-      text-align: center;
-      min-width: 120px;
-    }
-
-    .total-row {
-      background: var(--bg-secondary);
-      font-weight: 700;
-    }
-
-    .total-row td {
-      border-top: 2px solid var(--border-color);
-    }
-
-    /* Trend indicators */
-    .trend-up {
-      color: #059669;
-      font-weight: 600;
-    }
-
-    .trend-down {
-      color: #dc2626;
-      font-weight: 600;
-    }
-
-    .trend-same {
-      color: #6b7280;
-      font-weight: 500;
-    }
-
-    .monthly-comparison {
-      padding: 1rem 1.5rem;
-      border-radius: 12px;
-      margin-bottom: 1.5rem;
-      font-weight: 600;
-      text-align: center;
-      border: 2px solid;
-    }
-
-    .monthly-comparison.up {
-      background: rgba(5, 150, 105, 0.1);
-      color: #059669;
-      border-color: #059669;
-    }
-
-    .monthly-comparison.down {
-      background: rgba(220, 38, 38, 0.1);
-      color: #dc2626;
-      border-color: #dc2626;
-    }
-
-    .monthly-comparison.same {
-      background: rgba(107, 114, 128, 0.1);
-      color: #6b7280;
-      border-color: #6b7280;
-    }
-
-    .monthly-summary {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 1rem;
-      margin-bottom: 1.5rem;
-    }
-
-    .summary-card {
-      background: var(--bg-secondary);
-      padding: 1.5rem;
-      border-radius: 12px;
-      text-align: center;
-      border: 1px solid var(--border-color);
-    }
-
-    .summary-value {
-      font-size: 1.5rem;
-      font-weight: 700;
-      color: var(--text-primary);
-      margin-bottom: 0.5rem;
-    }
-
-    .summary-label {
-      color: var(--text-secondary);
-      font-size: 0.875rem;
-      font-weight: 500;
     }
 
     /* Enhanced Loader Styles */
@@ -1406,28 +1459,6 @@
       to { transform: translateX(0); opacity: 1; }
     }
 
-    /* Coming Soon Button Styles */
-    .stat-card.coming-soon {
-      cursor: not-allowed;
-      opacity: 0.7;
-    }
-
-    .stat-card.coming-soon:hover {
-      transform: none;
-    }
-
-    .coming-soon-badge {
-      position: absolute;
-      top: 10px;
-      right: 10px;
-      background: var(--warning);
-      color: var(--dark);
-      padding: 0.25rem 0.5rem;
-      border-radius: 12px;
-      font-size: 0.7rem;
-      font-weight: 600;
-    }
-
     /* Page Deposits View */
     .page-deposits-view {
       background: var(--bg-card);
@@ -1476,15 +1507,6 @@
       .stats-grid-row-2,
       .stats-grid-row-3 {
         grid-template-columns: repeat(2, 1fr);
-      }
-      
-      .high-risk-table {
-        font-size: 0.8rem;
-      }
-      
-      .high-risk-table th,
-      .high-risk-table td {
-        padding: 0.5rem 0.3rem;
       }
       
       .pin-container {
@@ -1565,6 +1587,10 @@
       .daily-deposits-table td {
         padding: 0.5rem 0.5rem;
       }
+
+      .recovery-method-selector {
+        flex-direction: column;
+      }
     }
     
     @media (max-width: 480px) {
@@ -1585,9 +1611,7 @@
 </head>
 
 <body>
-  <!-- ==================== -->
-  <!-- NEW: PIN SCREEN - FIXED WITH position: fixed -->
-  <!-- ==================== -->
+  <!-- PIN SCREEN -->
   <div id="pinScreen">
     <div class="pin-container">
       <div class="pin-logo">
@@ -1623,9 +1647,146 @@
     </div>
   </div>
 
-  <!-- ==================== -->
-  <!-- YOUR EXISTING CODE -->
-  <!-- ==================== -->
+  <!-- RECOVERY MODAL -->
+  <div id="recoveryModal" class="recovery-modal">
+    <div class="recovery-modal-content">
+      <h3 class="recovery-modal-title" id="recoveryModalTitle">Mark Player as Recovered</h3>
+      
+      <div class="recovery-method-selector">
+        <button class="recovery-method-btn" data-method="chat" onclick="selectRecoveryMethod('chat')">
+          <i class="fas fa-comment-dots recovery-method-icon"></i>
+          <span>💬 Chat</span>
+        </button>
+        <button class="recovery-method-btn" data-method="offer" onclick="selectRecoveryMethod('offer')">
+          <i class="fas fa-gift recovery-method-icon"></i>
+          <span>🎁 Offer</span>
+        </button>
+      </div>
+      
+      <input type="hidden" id="recoveryPlayerName">
+      <input type="hidden" id="recoveryPlayerPage">
+      
+      <div>
+        <label style="display: block; margin-bottom: 0.5rem; color: var(--text-primary); font-weight: 500;">
+          Recovery Notes (Optional):
+        </label>
+        <textarea 
+          id="recoveryNotesInput" 
+          class="recovery-notes-input" 
+          placeholder="Enter recovery notes... (e.g., WhatsApp, 20% bonus)"
+        ></textarea>
+      </div>
+      
+      <div class="modal-buttons">
+        <button class="btn btn-secondary" onclick="hideRecoveryModal()">
+          <i class="fas fa-times"></i> Cancel
+        </button>
+        <button class="btn btn-success" onclick="confirmRecovery()" id="confirmRecoveryBtn">
+          <i class="fas fa-check"></i> Mark as Recovered
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- REMOVAL MODAL -->
+  <div id="removalModal" class="recovery-modal">
+    <div class="recovery-modal-content">
+      <h3 class="recovery-modal-title">Remove from Recovery List</h3>
+      
+      <div style="margin-bottom: 1.5rem;">
+        <p style="color: var(--text-primary); margin-bottom: 0.5rem;">
+          Player: <strong id="removalPlayerName"></strong>
+        </p>
+        <p style="color: var(--text-secondary); font-size: 0.9rem;">
+          Recovered: <span id="removalRecoveredDate"></span> via <span id="removalMethod"></span>
+        </p>
+      </div>
+      
+      <div>
+        <label style="display: block; margin-bottom: 0.75rem; color: var(--text-primary); font-weight: 500;">
+          Reason for Removal:
+        </label>
+        <div class="removal-reason-selector">
+          <div class="removal-reason-option" onclick="selectRemovalReason('mistake')">
+            <input type="radio" id="reason-mistake" name="removal-reason" hidden>
+            <label for="reason-mistake" style="cursor: pointer; flex: 1;">
+              <strong>Added by mistake</strong>
+              <div style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 0.25rem;">
+                Wrong player or accidental click
+              </div>
+            </label>
+          </div>
+          
+          <div class="removal-reason-option" onclick="selectRemovalReason('not-recovered')">
+            <input type="radio" id="reason-not-recovered" name="removal-reason" hidden>
+            <label for="reason-not-recovered" style="cursor: pointer; flex: 1;">
+              <strong>Not actually recovered</strong>
+              <div style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 0.25rem;">
+                Player never became active after marking
+              </div>
+            </label>
+          </div>
+          
+          <div class="removal-reason-option" onclick="selectRemovalReason('duplicate')">
+            <input type="radio" id="reason-duplicate" name="removal-reason" hidden>
+            <label for="reason-duplicate" style="cursor: pointer; flex: 1;">
+              <strong>Duplicate entry</strong>
+              <div style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 0.25rem;">
+                Player already in recovery list
+              </div>
+            </label>
+          </div>
+          
+          <div class="removal-reason-option" onclick="selectRemovalReason('other')">
+            <input type="radio" id="reason-other" name="removal-reason" hidden>
+            <label for="reason-other" style="cursor: pointer; flex: 1;">
+              <strong>Other reason</strong>
+              <div style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 0.25rem;">
+                Specify in notes below
+              </div>
+            </label>
+          </div>
+        </div>
+      </div>
+      
+      <div style="margin-top: 1.5rem;">
+        <label style="display: block; margin-bottom: 0.5rem; color: var(--text-primary); font-weight: 500;">
+          Additional Notes (Optional):
+        </label>
+        <textarea 
+          id="removalNotesInput" 
+          class="recovery-notes-input" 
+          placeholder="Enter removal notes..."
+          rows="2"
+        ></textarea>
+      </div>
+      
+      <div style="margin-top: 1.5rem;">
+        <label style="display: block; margin-bottom: 0.5rem; color: var(--text-primary); font-weight: 500;">
+          Enter PIN to Confirm (8152):
+        </label>
+        <input 
+          type="password" 
+          id="removalPinInput" 
+          class="removal-pin-input" 
+          placeholder="••••" 
+          maxlength="4"
+          inputmode="numeric"
+        />
+      </div>
+      
+      <input type="hidden" id="removalRecordId">
+      
+      <div class="modal-buttons">
+        <button class="btn btn-secondary" onclick="hideRemovalModal()">
+          <i class="fas fa-times"></i> Cancel
+        </button>
+        <button class="btn btn-danger" onclick="confirmRemoval()" id="confirmRemovalBtn">
+          <i class="fas fa-trash"></i> Confirm Removal
+        </button>
+      </div>
+    </div>
+  </div>
 
   <!-- Landing Page -->
   <div id="landing">
@@ -1681,7 +1842,7 @@
         <i class="fas fa-arrow-right"></i> Access Dashboard
       </button>
       
-      <!-- NEW: Logout Button on Landing Page -->
+      <!-- Logout Button on Landing Page -->
       <div id="landingLogoutSection" style="margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid var(--border-color); text-align: center; display: none;">
         <button id="logoutBtnLanding" class="btn btn-secondary" style="width: auto; padding: 0.75rem 1.5rem;" disabled>
           <i class="fas fa-sign-out-alt"></i> Logout
@@ -1730,14 +1891,17 @@
         <div class="stats-grid" id="statsRow1"></div>
         <!-- Second Row: Recent Active, Recent Inactive, High Risk -->
         <div class="stats-grid-row-2" id="statsRow2"></div>
-        <!-- Third Row: Player History, Page Deposits, and Coming Soon buttons -->
+        <!-- Third Row: Player History, Page Deposits, and Recovered Clients -->
         <div class="stats-grid-row-3" id="statsRow3"></div>
       </div>
 
-      <!-- Page Deposits View (Inline, not modal) -->
+      <!-- Client Recovery Dashboard -->
+      <div id="clientRecoveryDashboard" style="display: none;"></div>
+
+      <!-- Page Deposits View -->
       <div id="pageDepositsView" style="display: none;"></div>
 
-      <!-- Player History Section for Dashboard (Specific Page) -->
+      <!-- Player History Section for Dashboard -->
       <div id="playerHistorySection" style="display: none;">
         <div class="player-history">
           <h3>Player History Search - Current Page Only</h3>
@@ -1760,7 +1924,7 @@
         </div>
       </div>
 
-      <!-- Global Player History Section (for landing page searches) -->
+      <!-- Global Player History Section -->
       <div id="globalPlayerHistorySection" style="display: none;">
         <div class="player-history">
           <h3>Player History - All Pages</h3>
@@ -1773,7 +1937,7 @@
     </div>
   </div>
 
-  <!-- Refresh Modal -->
+  <!-- Existing Modals -->
   <div id="refreshModal" class="modal">
     <div class="modal-content">
       <h3 class="modal-title">Authorization Required</h3>
@@ -1792,7 +1956,6 @@
     </div>
   </div>
 
-  <!-- Cleanup Modal -->
   <div id="cleanupModal" class="modal">
     <div class="modal-content">
       <h3 class="modal-title">Authorization Required</h3>
@@ -1811,7 +1974,6 @@
     </div>
   </div>
 
-  <!-- Notes Modal -->
   <div id="notesModal" class="modal">
     <div class="modal-content">
       <h3 class="modal-title" id="notesModalTitle">Add Note for Player</h3>
@@ -1841,25 +2003,25 @@
 
   <script>
     // =============================================
-    // NEW: PIN AUTHENTICATION SYSTEM
+    // PIN AUTHENTICATION SYSTEM
     // =============================================
     
-    // PIN Configuration - Using hashes for security
     const PIN_CONFIG = {
       ADMIN_HASH: "8f9c8b7a6d5e4f3a2b1c0d9e8f7a6b5c4d3e2f1a0b9c8d7e6f5a4b3c2d1e0f9a8b7c6d5e4f3a2b1c0d9e8f7a6b5c4d3e2f1a0b9c8d7e6f5a4b3c2d1e0f9a8b7c6d5e4f3a2b1",
       VIEWER_HASH: "1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7",
       
-      // Security settings
       MAX_ATTEMPTS: 3,
       LOCKOUT_MINUTES: 10,
       
-      // User roles
       ROLES: {
         ADMIN: 'admin',
         VIEWER: 'viewer',
         NONE: 'none'
       }
     };
+    
+    // Recovery PIN
+    const RECOVERY_REMOVAL_PIN = "8152";
     
     // Session state
     let userRole = PIN_CONFIG.ROLES.NONE;
@@ -1879,45 +2041,38 @@
     // Store original button states for UI reset
     let originalButtonStates = {};
     
-    // Simple hash function (for demo - in production use proper hashing)
+    // Simple hash function
     function simpleHash(str) {
       let hash = 0;
       for (let i = 0; i < str.length; i++) {
         const char = str.charCodeAt(i);
         hash = ((hash << 5) - hash) + char;
-        hash = hash & hash; // Convert to 32bit integer
+        hash = hash & hash;
       }
       return hash.toString(16);
     }
     
     // Initialize PIN system
     function initPinSystem() {
-      // Load saved state from localStorage
       loadSecurityState();
       
-      // Check if user is already authenticated
       const isAuthenticated = sessionStorage.getItem('pinAuthenticated') === 'true';
       const savedRole = sessionStorage.getItem('userRole');
       
       if (isAuthenticated && savedRole) {
-        // User is already logged in
         userRole = savedRole;
         showApplication();
         return;
       }
       
-      // Check if user is locked out
       checkLockoutStatus();
       
-      // Set up event listeners
       pinInput.addEventListener('keypress', handlePinKeyPress);
       pinSubmit.addEventListener('click', verifyPin);
       pinInput.addEventListener('input', clearPinError);
       
-      // Store original button states for UI reset
       storeOriginalButtonStates();
       
-      // Auto-focus on PIN input
       setTimeout(() => {
         if (pinInput && !pinInput.disabled) {
           pinInput.focus();
@@ -1938,9 +2093,8 @@
       });
     }
     
-    // Reset UI to default state before applying role-based styling
+    // Reset UI to default state
     function resetUI() {
-      // Reset control buttons to original state
       Object.keys(originalButtonStates).forEach(id => {
         const btn = document.getElementById(id);
         if (btn && originalButtonStates[id]) {
@@ -1951,7 +2105,6 @@
         }
       });
       
-      // Reset page title
       const pageTitle = document.getElementById('pageTitle');
       if (pageTitle && pageTitle.textContent.includes('View Only')) {
         pageTitle.textContent = pageTitle.textContent.replace(' <span style="font-size: 0.8rem; background: var(--info); color: white; padding: 0.2rem 0.5rem; border-radius: 12px;">View Only</span>', '');
@@ -1971,10 +2124,8 @@
         if (savedLockout) {
           lockoutUntil = new Date(savedLockout);
           if (lockoutUntil < new Date()) {
-            // Lockout has expired
             resetSecurityState();
           } else {
-            // User is still locked out - set a small delay to prevent recursion
             setTimeout(() => {
               if (lockoutUntil && lockoutUntil > new Date()) {
                 disablePinInput();
@@ -2019,28 +2170,25 @@
       updateAttemptsDisplay();
     }
     
-    // Check lockout status - FIXED to prevent recursion
+    // Check lockout status
     function checkLockoutStatus() {
       if (!lockoutUntil) return false;
       
       const now = new Date();
       if (lockoutUntil > now) {
-        // User is locked out
         startLockoutTimer();
         disablePinInput();
         return true;
       } else {
-        // Lockout has expired
         resetSecurityState();
         enablePinInput();
         return false;
       }
     }
     
-    // Start lockout timer - FIXED to prevent recursion
+    // Start lockout timer
     function startLockoutTimer() {
       if (!lockoutUntil || lockoutUntil <= new Date()) {
-        // Lockout expired or invalid
         if (lockoutInterval) {
           clearInterval(lockoutInterval);
           lockoutInterval = null;
@@ -2054,7 +2202,6 @@
       pinLockout.style.display = 'block';
       updateLockoutTimer();
       
-      // Clear any existing interval
       if (lockoutInterval) {
         clearInterval(lockoutInterval);
       }
@@ -2112,7 +2259,6 @@
         verifyPin();
       }
       
-      // Only allow numbers
       if (!/^\d$/.test(event.key) && event.key !== 'Backspace' && event.key !== 'Delete' && event.key !== 'Tab') {
         event.preventDefault();
       }
@@ -2147,30 +2293,22 @@
     function verifyPin() {
       const enteredPin = pinInput.value.trim();
       
-      // Validate PIN length
       if (enteredPin.length !== 5) {
         showPinStatus('PIN must be 5 digits', 'error');
         pinInput.classList.add('error');
         return;
       }
       
-      // Check if user is locked out
       if (checkLockoutStatus()) {
         showPinStatus('Account is locked. Please wait.', 'error');
         return;
       }
       
-      // Show loading state
       pinSubmit.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Verifying...';
       pinSubmit.disabled = true;
       
-      // Simulate API call delay
       setTimeout(() => {
-        // Check PIN against hashes
         const pinHash = simpleHash(enteredPin);
-        
-        // In a real app, you would compare with properly hashed PINs
-        // For now, we'll compare with the actual PINs (remove this in production)
         let role = PIN_CONFIG.ROLES.NONE;
         
         if (enteredPin === '37071') {
@@ -2180,7 +2318,6 @@
         }
         
         if (role !== PIN_CONFIG.ROLES.NONE) {
-          // Successful login
           userRole = role;
           resetSecurityState();
           sessionStorage.setItem('pinAuthenticated', 'true');
@@ -2190,34 +2327,28 @@
           showPinStatus('Access granted!', 'success');
           pinInput.classList.remove('error');
           
-          // Clear PIN input
           pinInput.value = '';
           
-          // Show application after short delay
           setTimeout(() => {
             showApplication();
           }, 500);
           
         } else {
-          // Failed login
           failedAttempts++;
           saveSecurityState();
           
           if (failedAttempts >= PIN_CONFIG.MAX_ATTEMPTS) {
-            // Lock user out
             lockoutUntil = new Date(Date.now() + (PIN_CONFIG.LOCKOUT_MINUTES * 60 * 1000));
             saveSecurityState();
-            disablePinInput(); // Disable first
-            pinLockout.style.display = 'block'; // Show lockout UI
-            updateLockoutTimer(); // Update timer display
+            disablePinInput();
+            pinLockout.style.display = 'block';
+            updateLockoutTimer();
             showPinStatus(`Too many failed attempts. Account locked for ${PIN_CONFIG.LOCKOUT_MINUTES} minutes.`, 'error');
             
-            // Start timer after UI is updated
             setTimeout(() => {
               startLockoutTimer();
             }, 100);
           } else {
-            // Show remaining attempts
             const attemptsLeft = PIN_CONFIG.MAX_ATTEMPTS - failedAttempts;
             showPinStatus(`Incorrect PIN. ${attemptsLeft} attempt${attemptsLeft > 1 ? 's' : ''} remaining.`, 'error');
             pinInput.classList.add('error');
@@ -2227,11 +2358,10 @@
           }
         }
         
-        // Reset button state
         pinSubmit.innerHTML = '<i class="fas fa-lock"></i> Access Dashboard';
         pinSubmit.disabled = false;
         
-      }, 800); // Simulated delay
+      }, 800);
     }
     
     // Setup logout button
@@ -2248,14 +2378,12 @@
       }
     }
     
-    // Show application (your existing code)
+    // Show application
     function showApplication() {
       pinScreen.style.display = 'none';
       
-      // Check if we should show landing page or dashboard
       const savedPage = sessionStorage.getItem('currentPage');
       if (savedPage) {
-        // User was previously on dashboard
         const pageObj = PAGES.find(p => p.name === savedPage);
         if (pageObj) {
           currentPageObj = pageObj;
@@ -2268,20 +2396,15 @@
         showLandingPage();
       }
       
-      // Apply role-based permissions
       applyRolePermissions();
-      
-      // Setup logout button
       setupLogoutButton();
     }
     
     // Apply role-based permissions
     function applyRolePermissions() {
-      // Reset UI first to remove any previous role styling
       resetUI();
       
       if (userRole === PIN_CONFIG.ROLES.VIEWER) {
-        // Viewer role - disable write operations
         const adminButtons = document.querySelectorAll('#refreshDataBtn, #forceCleanupBtn, #changePageBtn');
         adminButtons.forEach(btn => {
           btn.disabled = true;
@@ -2290,7 +2413,6 @@
           btn.classList.add('btn-secondary');
         });
         
-        // Update notes buttons to be view-only
         document.addEventListener('click', function(event) {
           if (event.target.closest('.notes-btn')) {
             const btn = event.target.closest('.notes-btn');
@@ -2303,13 +2425,11 @@
           }
         });
         
-        // Disable note saving
         const originalSaveNote = window.savePlayerNote;
         window.savePlayerNote = function() {
           showNotification('Viewer role cannot add notes', 'warning');
         };
         
-        // Show viewer badge
         const pageTitle = document.getElementById('pageTitle');
         if (pageTitle) {
           pageTitle.innerHTML += ' <span style="font-size: 0.8rem; background: var(--info); color: white; padding: 0.2rem 0.5rem; border-radius: 12px;">View Only</span>';
@@ -2317,9 +2437,8 @@
       }
     }
     
-    // Logout function (FIXED FOR BOTH LOCATIONS)
+    // Logout function
     function logout() {
-      // Clear all session data
       sessionStorage.removeItem('pinAuthenticated');
       sessionStorage.removeItem('userRole');
       sessionStorage.removeItem('loginTime');
@@ -2330,26 +2449,20 @@
       sessionStorage.removeItem('searchPlayerPages');
       sessionStorage.removeItem('currentSearchedPlayer');
       
-      // Reset user role
       userRole = PIN_CONFIG.ROLES.NONE;
       
-      // Show PIN screen, hide everything else
       pinScreen.style.display = 'flex';
       document.getElementById('landing').style.display = 'none';
       document.getElementById('dashboard').style.display = 'none';
       
-      // Reset PIN input
       pinInput.value = '';
       pinInput.focus();
       clearPinError();
       
-      // Reset UI to default state
       resetUI();
       
-      // Check lockout status
       checkLockoutStatus();
       
-      // Show logout notification
       showNotification('Successfully logged out', 'success');
     }
     
@@ -2365,15 +2478,16 @@
     // =============================================
     // CONSTANTS AND CONFIGURATION
     // =============================================
-    const DAYS_ACTIVE = 2.99; // 0-2 days 23h 59m
-    const INACTIVE_THRESHOLD = 15; // 15+ days
-    const HIGH_RISK_MAX_DAYS = 15; // 5-14 days 23h 59m
-    const RECENT_INACTIVE_MIN_DAYS = 3; // 3 days 0m
-    const RECENT_INACTIVE_MAX_DAYS = 5; // 4 days 23h 59m
+    const DAYS_ACTIVE = 2.99;
+    const INACTIVE_THRESHOLD = 15;
+    const HIGH_RISK_MAX_DAYS = 15;
+    const RECENT_INACTIVE_MIN_DAYS = 3;
+    const RECENT_INACTIVE_MAX_DAYS = 5;
     const PLAYERS_PER_PAGE = 50;
+    const RECOVERY_PLAYERS_PER_PAGE = 50;
     const AUTH_PIN = "8152";
 
-    // Page data with emojis - UPDATED WITH PROPER CASE NAMES
+    // Page data with emojis
     const PAGES = [
       { name: "Juwa Slots", emoji: "🎰" },
       { name: "Jackpot Casino", emoji: "💰" },
@@ -2477,26 +2591,30 @@
     };
 
     // =============================================
-    // FIXED: CORRECT STATUS CALCULATION LOGIC
+    // CLIENT RECOVERY STATE
     // =============================================
-    function calculatePlayerStatus(daysSince) {
-      if (daysSince <= DAYS_ACTIVE) {
-        return "Active"; // 0-2 days 23h 59m
-      } else if (daysSince >= INACTIVE_THRESHOLD) {
-        return "Inactive"; // 15+ days
-      } else if (daysSince >= RECENT_INACTIVE_MIN_DAYS && daysSince < RECENT_INACTIVE_MAX_DAYS) {
-        return "Inactive"; // 3-4 days 23h 59m (but will appear in Recent Inactive section)
-      } else if (daysSince >= 5 && daysSince < HIGH_RISK_MAX_DAYS) {
-        return "Inactive"; // 5-14 days 23h 59m (but will appear in High Risk section)
+    const recoveryState = {
+      current: {
+        tab: 'active',
+        page: 1,
+        search: '',
+        data: null,
+        stats: null
+      },
+      removed: {
+        page: 1,
+        search: '',
+        data: null
+      },
+      analytics: {
+        data: null
       }
-      return "Inactive"; // Default fallback
-    }
+    };
 
     // =============================================
-    // TIME CONVERSION UTILITIES - FIXED FOR PAKISTAN TIME
+    // TIME CONVERSION UTILITIES
     // =============================================
 
-    // Convert UTC to Pakistan Time (UTC+5) for display only
     function convertUTCToPKT(utcDateString) {
         if (!utcDateString) return 'N/A';
         
@@ -2507,7 +2625,6 @@
                 return 'Invalid Date';
             }
             
-            // Convert to Pakistan Time (UTC+5)
             const pktOffset = 5 * 60 * 60 * 1000;
             const pktDate = new Date(date.getTime() + pktOffset);
             
@@ -2531,7 +2648,6 @@
         }
     }
 
-    // Convert UTC to Pakistan Time date only (DD/MM/YYYY)
     function convertUTCToPKTDateOnly(utcDateString) {
         if (!utcDateString) return 'N/A';
         
@@ -2555,14 +2671,12 @@
         }
     }
 
-    // Get current time in Pakistan Time
     function getCurrentPKT() {
         const now = new Date();
         const pktOffset = 5 * 60 * 60 * 1000;
         return new Date(now.getTime() + pktOffset);
     }
 
-    // Format date as YYYY-MM-DD for grouping (using PKT timezone)
     function formatDateForGrouping(pktDate) {
         if (!pktDate) return '';
         const year = pktDate.getUTCFullYear();
@@ -2571,14 +2685,12 @@
         return `${year}-${month}-${day}`;
     }
 
-    // Get start of day in PKT (00:00:00)
     function getStartOfDayPKT(date) {
         const pktDate = new Date(date);
         pktDate.setUTCHours(0, 0, 0, 0);
         return pktDate;
     }
 
-    // Calculate time since last deposit in PKT - EXACT HOURS/DAYS
     function formatTimeSince(utcDateString) {
         if (!utcDateString) return 'N/A';
         
@@ -2622,59 +2734,53 @@
         }
     }
 
-    // FIXED VERSION: Calculate exact gap duration between two dates IN PKT TIME
-function calculateExactGapDuration(startDate, endDate) {
-    if (!startDate || !endDate) return '—';
-    
-    try {
-        // Both dates should already be in PKT
-        const start = new Date(startDate);
-        const end = new Date(endDate);
+    function calculateExactGapDuration(startDate, endDate) {
+        if (!startDate || !endDate) return '—';
         
-        if (isNaN(start.getTime()) || isNaN(end.getTime())) {
+        try {
+            const start = new Date(startDate);
+            const end = new Date(endDate);
+            
+            if (isNaN(start.getTime()) || isNaN(end.getTime())) {
+                return '—';
+            }
+            
+            const diffMs = end.getTime() - start.getTime();
+            
+            if (diffMs <= 0) return '—';
+            
+            const totalHours = Math.floor(diffMs / (1000 * 60 * 60));
+            const totalMinutes = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
+            const days = Math.floor(totalHours / 24);
+            const hours = totalHours % 24;
+            
+            if (days === 0 && hours === 0 && totalMinutes === 0) {
+                return '—';
+            }
+            
+            let gapString = '';
+            
+            if (days > 0) {
+                gapString += `${days} day${days > 1 ? 's' : ''}`;
+            }
+            
+            if (hours > 0) {
+                if (gapString) gapString += ' ';
+                gapString += `${hours} hour${hours > 1 ? 's' : ''}`;
+            }
+            
+            if (totalMinutes > 0 && days === 0 && hours < 2) {
+                if (gapString) gapString += ' ';
+                gapString += `${totalMinutes} minute${totalMinutes > 1 ? 's' : ''}`;
+            }
+            
+            return gapString || '—';
+        } catch (error) {
+            console.error('Error calculating gap duration:', error);
             return '—';
         }
-        
-        // Calculate EXACT difference in milliseconds IN PKT
-        const diffMs = end.getTime() - start.getTime();
-        
-        if (diffMs <= 0) return '—';
-        
-        // Convert to hours, minutes
-        const totalHours = Math.floor(diffMs / (1000 * 60 * 60));
-        const totalMinutes = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
-        const days = Math.floor(totalHours / 24);
-        const hours = totalHours % 24;
-        
-        // For active deposit days (same day), return dash
-        if (days === 0 && hours === 0 && totalMinutes === 0) {
-            return '—';
-        }
-        
-        // Build the gap string
-        let gapString = '';
-        
-        if (days > 0) {
-            gapString += `${days} day${days > 1 ? 's' : ''}`;
-        }
-        
-        if (hours > 0) {
-            if (gapString) gapString += ' ';
-            gapString += `${hours} hour${hours > 1 ? 's' : ''}`;
-        }
-        
-        // Only show minutes if there are no days and hours < 2
-        if (totalMinutes > 0 && days === 0 && hours < 2) {
-            if (gapString) gapString += ' ';
-            gapString += `${totalMinutes} minute${totalMinutes > 1 ? 's' : ''}`;
-        }
-        
-        return gapString || '—';
-    } catch (error) {
-        console.error('Error calculating gap duration:', error);
-        return '—';
     }
-}
+
     // =============================================
     // STATE MANAGEMENT
     // =============================================
@@ -2711,6 +2817,13 @@ function calculateExactGapDuration(startDate, endDate) {
     let navigationContext = 'landing';
     let currentPageObj = null;
 
+    // Recovery state
+    let recoveryPlayerName = null;
+    let recoveryPlayerPage = null;
+    let selectedRecoveryMethod = null;
+    let selectedRemovalReason = null;
+    let removalRecordId = null;
+
     // =============================================
     // DOM ELEMENTS
     // =============================================
@@ -2741,9 +2854,1676 @@ function calculateExactGapDuration(startDate, endDate) {
     const pageDepositsView = document.getElementById('pageDepositsView');
     const landingLogoutSection = document.getElementById('landingLogoutSection');
     const logoutBtnLanding = document.getElementById('logoutBtnLanding');
+    const clientRecoveryDashboard = document.getElementById('clientRecoveryDashboard');
+
+    // Recovery Modal Elements
+    const recoveryModal = document.getElementById('recoveryModal');
+    const recoveryModalTitle = document.getElementById('recoveryModalTitle');
+    const recoveryPlayerNameInput = document.getElementById('recoveryPlayerName');
+    const recoveryPlayerPageInput = document.getElementById('recoveryPlayerPage');
+    const recoveryNotesInput = document.getElementById('recoveryNotesInput');
+    const confirmRecoveryBtn = document.getElementById('confirmRecoveryBtn');
+
+    // Removal Modal Elements
+    const removalModal = document.getElementById('removalModal');
+    const removalPlayerName = document.getElementById('removalPlayerName');
+    const removalRecoveredDate = document.getElementById('removalRecoveredDate');
+    const removalMethod = document.getElementById('removalMethod');
+    const removalNotesInput = document.getElementById('removalNotesInput');
+    const removalPinInput = document.getElementById('removalPinInput');
+    const removalRecordIdInput = document.getElementById('removalRecordId');
+    const confirmRemovalBtn = document.getElementById('confirmRemovalBtn');
 
     // =============================================
-    // UTILITY FUNCTIONS
+    // CLIENT RECOVERY FUNCTIONS
+    // =============================================
+
+    // Show recovery modal
+    function showRecoveryModal(playerName, pageName) {
+      // Check if user has permission
+      if (userRole === PIN_CONFIG.ROLES.VIEWER) {
+        showNotification('Viewer role cannot mark recoveries', 'warning');
+        return;
+      }
+      
+      recoveryPlayerName = playerName;
+      recoveryPlayerPage = pageName || selectedPage;
+      
+      recoveryModalTitle.textContent = `Mark ${playerName} as Recovered`;
+      recoveryPlayerNameInput.value = playerName;
+      recoveryPlayerPageInput.value = recoveryPlayerPage;
+      recoveryNotesInput.value = '';
+      
+      // Reset method selection
+      selectedRecoveryMethod = null;
+      document.querySelectorAll('.recovery-method-btn').forEach(btn => {
+        btn.classList.remove('active');
+      });
+      
+      recoveryModal.style.display = 'block';
+      recoveryNotesInput.focus();
+    }
+
+    // Hide recovery modal
+    function hideRecoveryModal() {
+      recoveryModal.style.display = 'none';
+      recoveryPlayerName = null;
+      recoveryPlayerPage = null;
+      selectedRecoveryMethod = null;
+      recoveryNotesInput.value = '';
+    }
+
+    // Select recovery method
+    function selectRecoveryMethod(method) {
+      selectedRecoveryMethod = method;
+      
+      document.querySelectorAll('.recovery-method-btn').forEach(btn => {
+        if (btn.dataset.method === method) {
+          btn.classList.add('active');
+        } else {
+          btn.classList.remove('active');
+        }
+      });
+    }
+
+    // Confirm recovery
+    async function confirmRecovery() {
+      if (!selectedRecoveryMethod) {
+        showNotification('Please select a recovery method (Chat or Offer)', 'error');
+        return;
+      }
+      
+      const recoveryNotes = recoveryNotesInput.value.trim();
+      
+      confirmRecoveryBtn.disabled = true;
+      confirmRecoveryBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...';
+      
+      try {
+        const { data, error } = await supabase
+          .from('client_recoveries')
+          .insert([
+            {
+              page_name: recoveryPlayerPage,
+              player_name: recoveryPlayerName,
+              recovery_method: selectedRecoveryMethod,
+              recovery_notes: recoveryNotes || null,
+              added_by: userRole,
+              recovered_date: new Date().toISOString(),
+              is_active_in_list: true,
+              created_at: new Date().toISOString(),
+              updated_at: new Date().toISOString()
+            }
+          ])
+          .select();
+        
+        if (error) throw error;
+        
+        showNotification(`Player ${recoveryPlayerName} marked as recovered via ${selectedRecoveryMethod === 'chat' ? '💬 Chat' : '🎁 Offer'}`, 'success');
+        
+        hideRecoveryModal();
+        
+        // Update recovery button in all tables
+        updateRecoveryButtonInTables(recoveryPlayerName, true);
+        
+        // If we're in recovery dashboard, refresh it
+        if (currentView === 'clientRecovery') {
+          await loadRecoveryData();
+        }
+        
+        // Update recovery stats in dashboard
+        await updateRecoveryStats();
+        
+      } catch (error) {
+        console.error('Error marking player as recovered:', error);
+        showNotification('Error marking player as recovered: ' + error.message, 'error');
+      } finally {
+        confirmRecoveryBtn.disabled = false;
+        confirmRecoveryBtn.innerHTML = '<i class="fas fa-check"></i> Mark as Recovered';
+      }
+    }
+
+    // Update recovery button in all tables
+    function updateRecoveryButtonInTables(playerName, isRecovered) {
+      // Find all recovery buttons for this player and update them
+      const buttons = document.querySelectorAll('.recovery-btn');
+      buttons.forEach(btn => {
+        if (btn.textContent.includes(playerName) || btn.dataset.player === playerName) {
+          if (isRecovered) {
+            btn.innerHTML = '<i class="fas fa-check"></i> ✅ Recovered';
+            btn.className = 'recovery-btn recovered';
+            btn.disabled = true;
+          } else {
+            btn.innerHTML = '<i class="fas fa-redo"></i> 🔁 Mark as Recovered';
+            btn.className = 'recovery-btn mark';
+            btn.disabled = false;
+          }
+        }
+      });
+    }
+
+    // Show removal modal
+    function showRemovalModal(recordId, playerName, recoveredDate, method) {
+      removalRecordId = recordId;
+      
+      removalPlayerName.textContent = playerName;
+      removalRecoveredDate.textContent = convertUTCToPKTDateOnly(recoveredDate);
+      removalMethod.textContent = method === 'chat' ? '💬 Chat' : '🎁 Offer';
+      removalRecordIdInput.value = recordId;
+      removalNotesInput.value = '';
+      removalPinInput.value = '';
+      
+      // Reset reason selection
+      selectedRemovalReason = null;
+      document.querySelectorAll('.removal-reason-option').forEach(option => {
+        option.classList.remove('selected');
+      });
+      
+      removalModal.style.display = 'block';
+      removalPinInput.focus();
+    }
+
+    // Hide removal modal
+    function hideRemovalModal() {
+      removalModal.style.display = 'none';
+      removalRecordId = null;
+      selectedRemovalReason = null;
+      removalNotesInput.value = '';
+      removalPinInput.value = '';
+    }
+
+    // Select removal reason
+    function selectRemovalReason(reason) {
+      selectedRemovalReason = reason;
+      
+      document.querySelectorAll('.removal-reason-option').forEach(option => {
+        option.classList.remove('selected');
+        if (option.querySelector('input').id === `reason-${reason}`) {
+          option.classList.add('selected');
+        }
+      });
+    }
+
+    // Confirm removal
+    async function confirmRemoval() {
+      if (!selectedRemovalReason) {
+        showNotification('Please select a reason for removal', 'error');
+        return;
+      }
+      
+      const pin = removalPinInput.value.trim();
+      if (pin !== RECOVERY_REMOVAL_PIN) {
+        showNotification('Invalid PIN. Please enter 8152 to confirm removal.', 'error');
+        return;
+      }
+      
+      const removalNotes = removalNotesInput.value.trim();
+      
+      confirmRemovalBtn.disabled = true;
+      confirmRemovalBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Removing...';
+      
+      try {
+        const { data, error } = await supabase
+          .from('client_recoveries')
+          .update({
+            is_active_in_list: false,
+            removed_date: new Date().toISOString(),
+            removed_by: userRole,
+            removal_reason: selectedRemovalReason,
+            removal_notes: removalNotes || null,
+            removal_pin_used: '81**',
+            updated_at: new Date().toISOString()
+          })
+          .eq('id', removalRecordId)
+          .eq('is_active_in_list', true)
+          .select();
+        
+        if (error) throw error;
+        
+        if (data && data.length > 0) {
+          showNotification('Player removed from recovery list', 'success');
+          
+          hideRemovalModal();
+          
+          // Update recovery button in all tables
+          const playerName = removalPlayerName.textContent;
+          updateRecoveryButtonInTables(playerName, false);
+          
+          // Refresh recovery dashboard
+          if (currentView === 'clientRecovery') {
+            await loadRecoveryData();
+          }
+          
+          // Update recovery stats in dashboard
+          await updateRecoveryStats();
+          
+        } else {
+          showNotification('Record not found or already removed', 'warning');
+        }
+        
+      } catch (error) {
+        console.error('Error removing from recovery list:', error);
+        showNotification('Error removing player: ' + error.message, 'error');
+      } finally {
+        confirmRemovalBtn.disabled = false;
+        confirmRemovalBtn.innerHTML = '<i class="fas fa-trash"></i> Confirm Removal';
+      }
+    }
+
+    // Load recovery data
+    async function loadRecoveryData() {
+      try {
+        // Get active recoveries
+        const { data: activeData, error: activeError } = await supabase
+          .from('client_recoveries')
+          .select('*')
+          .eq('page_name', selectedPage)
+          .eq('is_active_in_list', true)
+          .order('recovered_date', { ascending: false });
+        
+        if (activeError) throw activeError;
+        
+        // Get player status for each recovery
+        const recoveriesWithStatus = await Promise.all(
+          (activeData || []).map(async (recovery) => {
+            const { data: playerData } = await supabase
+              .from('latest_status')
+              .select('last_deposit_date, status')
+              .eq('page_name', selectedPage)
+              .eq('player_name', recovery.player_name)
+              .single();
+            
+            return {
+              ...recovery,
+              current_status: playerData?.status || 'inactive',
+              last_deposit: playerData?.last_deposit_date,
+              last_deposit_display: formatTimeSince(playerData?.last_deposit_date)
+            };
+          })
+        );
+        
+        // Get removed recoveries
+        const { data: removedData, error: removedError } = await supabase
+          .from('client_recoveries')
+          .select('*')
+          .eq('page_name', selectedPage)
+          .eq('is_active_in_list', false)
+          .order('removed_date', { ascending: false });
+        
+        if (removedError) throw removedError;
+        
+        // Get analytics
+        const activeCount = recoveriesWithStatus.length;
+        const activeActiveCount = recoveriesWithStatus.filter(r => r.current_status === 'Active').length;
+        const chatRecoveries = recoveriesWithStatus.filter(r => r.recovery_method === 'chat');
+        const offerRecoveries = recoveriesWithStatus.filter(r => r.recovery_method === 'offer');
+        
+        const chatSuccessRate = chatRecoveries.length > 0 
+          ? Math.round((chatRecoveries.filter(r => r.current_status === 'Active').length / chatRecoveries.length) * 100)
+          : 0;
+        
+        const offerSuccessRate = offerRecoveries.length > 0
+          ? Math.round((offerRecoveries.filter(r => r.current_status === 'Active').length / offerRecoveries.length) * 100)
+          : 0;
+        
+        const overallSuccessRate = activeCount > 0
+          ? Math.round((activeActiveCount / activeCount) * 100)
+          : 0;
+        
+        recoveryState.current.data = recoveriesWithStatus;
+        recoveryState.removed.data = removedData || [];
+        recoveryState.analytics.data = {
+          total_recovered: activeCount,
+          currently_active: activeActiveCount,
+          currently_inactive: activeCount - activeActiveCount,
+          chat_success_rate: chatSuccessRate,
+          offer_success_rate: offerSuccessRate,
+          overall_success_rate: overallSuccessRate
+        };
+        
+        // Update recovery stats in dashboard
+        await updateRecoveryStats();
+        
+        // Render recovery dashboard
+        renderRecoveryDashboard();
+        
+      } catch (error) {
+        console.error('Error loading recovery data:', error);
+        showNotification('Error loading recovery data: ' + error.message, 'error');
+      }
+    }
+
+    // Update recovery stats in dashboard
+    async function updateRecoveryStats() {
+      try {
+        const { data, error } = await supabase
+          .from('client_recoveries')
+          .select('id')
+          .eq('page_name', selectedPage)
+          .eq('is_active_in_list', true);
+        
+        if (error) throw error;
+        
+        const count = data ? data.length : 0;
+        
+        // Update the recovery button in dashboard
+        const recoveryButton = document.querySelector('.stat-card.recovery .stat-value');
+        if (recoveryButton) {
+          recoveryButton.textContent = count;
+        }
+        
+        // Update recovery stats
+        if (recoveryState.current.data) {
+          const activeCount = recoveryState.current.data.length;
+          const activeActiveCount = recoveryState.current.data.filter(r => r.current_status === 'Active').length;
+          
+          recoveryState.current.stats = {
+            total: activeCount,
+            active: activeActiveCount,
+            inactive: activeCount - activeActiveCount
+          };
+        }
+        
+      } catch (error) {
+        console.error('Error updating recovery stats:', error);
+      }
+    }
+
+    // Render recovery dashboard
+    function renderRecoveryDashboard() {
+      const stats = recoveryState.current.stats || { total: 0, active: 0, inactive: 0 };
+      const analytics = recoveryState.analytics.data || {
+        total_recovered: 0,
+        currently_active: 0,
+        currently_inactive: 0,
+        chat_success_rate: 0,
+        offer_success_rate: 0,
+        overall_success_rate: 0
+      };
+      
+      let html = `
+        <div class="recovery-dashboard">
+          <div class="recovery-tabs">
+            <button class="recovery-tab ${recoveryState.current.tab === 'active' ? 'active' : ''}" onclick="switchRecoveryTab('active')">
+              Active Recoveries
+            </button>
+            <button class="recovery-tab ${recoveryState.current.tab === 'removed' ? 'active' : ''}" onclick="switchRecoveryTab('removed')">
+              Removed Clients
+            </button>
+            <button class="recovery-tab ${recoveryState.current.tab === 'analytics' ? 'active' : ''}" onclick="switchRecoveryTab('analytics')">
+              Analytics
+            </button>
+          </div>
+          
+          <div class="recovery-content">
+      `;
+      
+      if (recoveryState.current.tab === 'active') {
+        html += renderActiveRecoveries();
+      } else if (recoveryState.current.tab === 'removed') {
+        html += renderRemovedClients();
+      } else if (recoveryState.current.tab === 'analytics') {
+        html += renderAnalytics();
+      }
+      
+      html += `
+          </div>
+        </div>
+      `;
+      
+      clientRecoveryDashboard.innerHTML = html;
+      clientRecoveryDashboard.style.display = 'block';
+    }
+
+    // Render active recoveries
+    function renderActiveRecoveries() {
+      const recoveries = recoveryState.current.data || [];
+      const stats = recoveryState.current.stats || { total: 0, active: 0, inactive: 0 };
+      
+      // Apply search filter
+      let filteredRecoveries = recoveries;
+      if (recoveryState.current.search) {
+        const searchTerm = recoveryState.current.search.toLowerCase();
+        filteredRecoveries = recoveries.filter(r => 
+          r.player_name.toLowerCase().includes(searchTerm) ||
+          (r.recovery_notes && r.recovery_notes.toLowerCase().includes(searchTerm)) ||
+          r.recovery_method.toLowerCase().includes(searchTerm)
+        );
+      }
+      
+      // Pagination
+      const totalPages = Math.ceil(filteredRecoveries.length / RECOVERY_PLAYERS_PER_PAGE);
+      const currentPage = recoveryState.current.page;
+      const startIndex = (currentPage - 1) * RECOVERY_PLAYERS_PER_PAGE;
+      const endIndex = Math.min(startIndex + RECOVERY_PLAYERS_PER_PAGE, filteredRecoveries.length);
+      const paginatedRecoveries = filteredRecoveries.slice(startIndex, endIndex);
+      
+      let html = `
+        <div class="recovery-search-container">
+          <input 
+            type="text" 
+            class="search-input" 
+            placeholder="Search recovered players..." 
+            value="${recoveryState.current.search}"
+            oninput="searchRecoveries(this.value, 'active')"
+            style="width: 100%;"
+          >
+        </div>
+        
+        <div class="recovery-stats">
+          <div class="recovery-stat">
+            <div class="recovery-stat-value">${stats.total}</div>
+            <div class="recovery-stat-label">Total Recovered</div>
+          </div>
+          <div class="recovery-stat">
+            <div class="recovery-stat-value" style="color: var(--success);">${stats.active}</div>
+            <div class="recovery-stat-label">Currently Active</div>
+          </div>
+          <div class="recovery-stat">
+            <div class="recovery-stat-value" style="color: var(--danger);">${stats.inactive}</div>
+            <div class="recovery-stat-label">Became Inactive</div>
+          </div>
+          <div class="recovery-stat">
+            <div class="recovery-stat-value">${filteredRecoveries.length}</div>
+            <div class="recovery-stat-label">Showing</div>
+          </div>
+        </div>
+        
+        <div class="recovery-table-container">
+          <table class="recovery-table">
+            <thead>
+              <tr>
+                <th style="width: 30px;">#</th>
+                <th>Player Name</th>
+                <th>Recovery Date</th>
+                <th>Method</th>
+                <th>Current Status</th>
+                <th>Last Deposit</th>
+                <th>Recovery Notes</th>
+                <th style="width: 100px;">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+      `;
+      
+      if (paginatedRecoveries.length === 0) {
+        html += `
+          <tr>
+            <td colspan="8" style="text-align: center; padding: 2rem; color: var(--text-secondary);">
+              ${recoveryState.current.search ? 'No matching recovered players found' : 'No recovered players yet'}
+            </td>
+          </tr>
+        `;
+      } else {
+        paginatedRecoveries.forEach((recovery, index) => {
+          const serialNumber = startIndex + index + 1;
+          const methodClass = recovery.recovery_method === 'chat' ? 'method-chat' : 'method-offer';
+          const methodIcon = recovery.recovery_method === 'chat' ? '💬' : '🎁';
+          const statusClass = recovery.current_status === 'Active' ? 'status-active' : 'status-inactive';
+          const statusIcon = recovery.current_status === 'Active' ? '✅' : '❌';
+          
+          html += `
+            <tr>
+              <td style="text-align: center;">${serialNumber}</td>
+              <td><strong>${recovery.player_name}</strong></td>
+              <td>${convertUTCToPKTDateOnly(recovery.recovered_date)}</td>
+              <td class="${methodClass}">${methodIcon} ${recovery.recovery_method.charAt(0).toUpperCase() + recovery.recovery_method.slice(1)}</td>
+              <td class="${statusClass}">${statusIcon} ${recovery.current_status}</td>
+              <td>${recovery.last_deposit_display || 'N/A'}</td>
+              <td>${recovery.recovery_notes || '-'}</td>
+              <td>
+                <button class="removal-btn" onclick="showRemovalModal('${recovery.id}', '${recovery.player_name}', '${recovery.recovered_date}', '${recovery.recovery_method}')">
+                  <i class="fas fa-times"></i> Remove
+                </button>
+              </td>
+            </tr>
+          `;
+        });
+      }
+      
+      html += `
+            </tbody>
+          </table>
+        </div>
+      `;
+      
+      // Add pagination if needed
+      if (totalPages > 1) {
+        html += `
+          <div style="padding: 1rem; border-top: 1px solid var(--border-color); display: flex; justify-content: center; align-items: center; gap: 1rem;">
+            <button class="pagination-btn" ${currentPage === 1 ? 'disabled' : ''} onclick="changeRecoveryPage(${currentPage - 1})">
+              <i class="fas fa-chevron-left"></i> Previous
+            </button>
+            <span class="pagination-info">
+              Page ${currentPage} of ${totalPages} (${filteredRecoveries.length} players)
+            </span>
+            <button class="pagination-btn" ${currentPage === totalPages ? 'disabled' : ''} onclick="changeRecoveryPage(${currentPage + 1})">
+              Next <i class="fas fa-chevron-right"></i>
+            </button>
+          </div>
+        `;
+      }
+      
+      return html;
+    }
+
+    // Render removed clients
+    function renderRemovedClients() {
+      const removed = recoveryState.removed.data || [];
+      
+      // Apply search filter
+      let filteredRemoved = removed;
+      if (recoveryState.removed.search) {
+        const searchTerm = recoveryState.removed.search.toLowerCase();
+        filteredRemoved = removed.filter(r => 
+          r.player_name.toLowerCase().includes(searchTerm) ||
+          (r.removal_notes && r.removal_notes.toLowerCase().includes(searchTerm)) ||
+          r.removal_reason?.toLowerCase().includes(searchTerm)
+        );
+      }
+      
+      // Pagination
+      const totalPages = Math.ceil(filteredRemoved.length / RECOVERY_PLAYERS_PER_PAGE);
+      const currentPage = recoveryState.removed.page;
+      const startIndex = (currentPage - 1) * RECOVERY_PLAYERS_PER_PAGE;
+      const endIndex = Math.min(startIndex + RECOVERY_PLAYERS_PER_PAGE, filteredRemoved.length);
+      const paginatedRemoved = filteredRemoved.slice(startIndex, endIndex);
+      
+      let html = `
+        <div class="recovery-search-container">
+          <input 
+            type="text" 
+            class="search-input" 
+            placeholder="Search removed clients..." 
+            value="${recoveryState.removed.search}"
+            oninput="searchRecoveries(this.value, 'removed')"
+            style="width: 100%;"
+          >
+        </div>
+        
+        <div class="recovery-stats">
+          <div class="recovery-stat">
+            <div class="recovery-stat-value">${removed.length}</div>
+            <div class="recovery-stat-label">Total Removed</div>
+          </div>
+          <div class="recovery-stat">
+            <div class="recovery-stat-value">${filteredRemoved.length}</div>
+            <div class="recovery-stat-label">Showing</div>
+          </div>
+        </div>
+        
+        <div class="recovery-table-container">
+          <table class="recovery-table">
+            <thead>
+              <tr>
+                <th style="width: 30px;">#</th>
+                <th>Player Name</th>
+                <th>Added Date</th>
+                <th>Removed Date</th>
+                <th>Removal Reason</th>
+                <th>Removal Notes</th>
+              </tr>
+            </thead>
+            <tbody>
+      `;
+      
+      if (paginatedRemoved.length === 0) {
+        html += `
+          <tr>
+            <td colspan="6" style="text-align: center; padding: 2rem; color: var(--text-secondary);">
+              ${recoveryState.removed.search ? 'No matching removed clients found' : 'No removed clients yet'}
+            </td>
+          </tr>
+        `;
+      } else {
+        paginatedRemoved.forEach((record, index) => {
+          const serialNumber = startIndex + index + 1;
+          
+          html += `
+            <tr>
+              <td style="text-align: center;">${serialNumber}</td>
+              <td><strong>${record.player_name}</strong></td>
+              <td>${convertUTCToPKTDateOnly(record.recovered_date)}</td>
+              <td>${record.removed_date ? convertUTCToPKTDateOnly(record.removed_date) : '-'}</td>
+              <td>${record.removal_reason ? record.removal_reason.charAt(0).toUpperCase() + record.removal_reason.slice(1).replace('-', ' ') : '-'}</td>
+              <td>${record.removal_notes || '-'}</td>
+            </tr>
+          `;
+        });
+      }
+      
+      html += `
+            </tbody>
+          </table>
+        </div>
+      `;
+      
+      // Add pagination if needed
+      if (totalPages > 1) {
+        html += `
+          <div style="padding: 1rem; border-top: 1px solid var(--border-color); display: flex; justify-content: center; align-items: center; gap: 1rem;">
+            <button class="pagination-btn" ${currentPage === 1 ? 'disabled' : ''} onclick="changeRemovedPage(${currentPage - 1})">
+              <i class="fas fa-chevron-left"></i> Previous
+            </button>
+            <span class="pagination-info">
+              Page ${currentPage} of ${totalPages} (${filteredRemoved.length} players)
+            </span>
+            <button class="pagination-btn" ${currentPage === totalPages ? 'disabled' : ''} onclick="changeRemovedPage(${currentPage + 1})">
+              Next <i class="fas fa-chevron-right"></i>
+            </button>
+          </div>
+        `;
+      }
+      
+      return html;
+    }
+
+    // Render analytics
+    function renderAnalytics() {
+      const analytics = recoveryState.analytics.data || {
+        total_recovered: 0,
+        currently_active: 0,
+        currently_inactive: 0,
+        chat_success_rate: 0,
+        offer_success_rate: 0,
+        overall_success_rate: 0
+      };
+      
+      let html = `
+        <div class="analytics-panel">
+          <div class="analytics-stats">
+            <div class="analytic-card">
+              <div class="analytic-value">${analytics.overall_success_rate}%</div>
+              <div class="analytic-label">Overall Success Rate</div>
+            </div>
+            <div class="analytic-card">
+              <div class="analytic-value">${analytics.chat_success_rate}%</div>
+              <div class="analytic-label">💬 Chat Success</div>
+            </div>
+            <div class="analytic-card">
+              <div class="analytic-value">${analytics.offer_success_rate}%</div>
+              <div class="analytic-label">🎁 Offer Success</div>
+            </div>
+            <div class="analytic-card">
+              <div class="analytic-value">${analytics.total_recovered}</div>
+              <div class="analytic-label">Total Recovered</div>
+            </div>
+            <div class="analytic-card">
+              <div class="analytic-value" style="color: var(--success);">${analytics.currently_active}</div>
+              <div class="analytic-label">Currently Active</div>
+            </div>
+            <div class="analytic-card">
+              <div class="analytic-value" style="color: var(--danger);">${analytics.currently_inactive}</div>
+              <div class="analytic-label">Became Inactive</div>
+            </div>
+          </div>
+          
+          <div style="background: var(--bg-secondary); padding: 1.5rem; border-radius: 12px; margin-top: 2rem; border: 1px solid var(--border-color);">
+            <h4 style="color: var(--text-primary); margin-bottom: 1rem;">Recovery Analytics Summary</h4>
+            <div style="color: var(--text-secondary); line-height: 1.6;">
+              <p>• Out of <strong>${analytics.total_recovered}</strong> recovered players, <strong style="color: var(--success);">${analytics.currently_active}</strong> are still active and <strong style="color: var(--danger);">${analytics.currently_inactive}</strong> have become inactive again.</p>
+              <p>• <strong>💬 Chat recoveries</strong> have a <strong>${analytics.chat_success_rate}%</strong> success rate.</p>
+              <p>• <strong>🎁 Offer recoveries</strong> have a <strong>${analytics.offer_success_rate}%</strong> success rate.</p>
+              <p>• The overall recovery success rate is <strong>${analytics.overall_success_rate}%</strong>.</p>
+            </div>
+          </div>
+        </div>
+      `;
+      
+      return html;
+    }
+
+    // Switch recovery tab
+    function switchRecoveryTab(tab) {
+      recoveryState.current.tab = tab;
+      renderRecoveryDashboard();
+    }
+
+    // Search recoveries
+    function searchRecoveries(searchTerm, tab) {
+      if (tab === 'active') {
+        recoveryState.current.search = searchTerm;
+        recoveryState.current.page = 1;
+      } else if (tab === 'removed') {
+        recoveryState.removed.search = searchTerm;
+        recoveryState.removed.page = 1;
+      }
+      renderRecoveryDashboard();
+    }
+
+    // Change recovery page
+    function changeRecoveryPage(page) {
+      if (page < 1) return;
+      const totalPages = Math.ceil((recoveryState.current.data?.length || 0) / RECOVERY_PLAYERS_PER_PAGE);
+      if (page > totalPages) return;
+      
+      recoveryState.current.page = page;
+      renderRecoveryDashboard();
+    }
+
+    // Change removed page
+    function changeRemovedPage(page) {
+      if (page < 1) return;
+      const totalPages = Math.ceil((recoveryState.removed.data?.length || 0) / RECOVERY_PLAYERS_PER_PAGE);
+      if (page > totalPages) return;
+      
+      recoveryState.removed.page = page;
+      renderRecoveryDashboard();
+    }
+
+    // Check if player is already recovered
+    async function checkIfPlayerRecovered(playerName) {
+      try {
+        const { data, error } = await supabase
+          .from('client_recoveries')
+          .select('id')
+          .eq('page_name', selectedPage)
+          .eq('player_name', playerName)
+          .eq('is_active_in_list', true)
+          .single();
+        
+        if (error && error.code !== 'PGRST116') {
+          throw error;
+        }
+        
+        return !!data;
+      } catch (error) {
+        console.error('Error checking if player recovered:', error);
+        return false;
+      }
+    }
+
+    // Get recovery button HTML
+    async function getRecoveryButtonHTML(playerName) {
+      const isRecovered = await checkIfPlayerRecovered(playerName);
+      
+      if (isRecovered) {
+        return `<button class="recovery-btn recovered" disabled>
+                  <i class="fas fa-check"></i> ✅ Recovered
+                </button>`;
+      } else {
+        return `<button class="recovery-btn mark" onclick="showRecoveryModal('${playerName.replace(/'/g, "\\'")}')">
+                  <i class="fas fa-redo"></i> 🔁 Mark as Recovered
+                </button>`;
+      }
+    }
+
+    // =============================================
+    // EXISTING FUNCTIONS (Updated for Recovery System)
+    // =============================================
+
+    // Initialize on load
+    document.addEventListener('DOMContentLoaded', function() {
+      initializeApp();
+    });
+
+    function initializeApp() {
+      initPinSystem();
+      setupLogoutButton();
+    }
+
+    function showLandingPage() {
+      clearAllSearchInputs();
+      clearPlayerHistory();
+      
+      sessionStorage.removeItem('currentPage');
+      sessionStorage.removeItem('currentView');
+      
+      navigationContext = 'landing';
+      
+      document.getElementById('dashboard').style.display = 'none';
+      document.getElementById('landing').style.display = 'flex';
+      
+      const isAuthenticated = sessionStorage.getItem('pinAuthenticated') === 'true';
+      
+      if (landingLogoutSection) {
+        landingLogoutSection.style.display = isAuthenticated ? 'block' : 'none';
+      }
+      
+      if (logoutBtnLanding) {
+        logoutBtnLanding.disabled = false;
+      }
+      
+      currentView = 'landing';
+    }
+
+    async function loadDashboard(pageObj) {
+      selectedPage = pageObj.name;
+      currentPageObj = pageObj;
+      sessionStorage.setItem('currentPage', selectedPage);
+      sessionStorage.setItem('currentView', 'dashboard');
+      
+      navigationContext = 'dashboard';
+      
+      clearPlayerHistory();
+      
+      document.getElementById('landing').style.display = 'none';
+      document.getElementById('dashboard').style.display = 'block';
+      
+      if (logoutBtnDashboard) {
+        logoutBtnDashboard.style.display = 'inline-flex';
+      }
+      
+      updatePageTitle();
+      
+      showLoader();
+      disableControlButtons();
+      await loadDashboardData();
+    }
+
+    function updatePageTitle() {
+      if (currentPageObj) {
+        pageTitle.textContent = `${currentPageObj.name} ${currentPageObj.emoji} - Analytics Dashboard`;
+      } else if (selectedPage) {
+        const pageObj = PAGES.find(p => p.name === selectedPage);
+        if (pageObj) {
+          currentPageObj = pageObj;
+          pageTitle.textContent = `${pageObj.name} ${pageObj.emoji} - Analytics Dashboard`;
+        } else {
+          pageTitle.textContent = `${selectedPage} - Analytics Dashboard`;
+        }
+      }
+    }
+
+    async function loadDashboardData() {
+      if (!selectedPage) return;
+      
+      showLoader();
+      clearBackContainer();
+      disableControlButtons();
+      
+      try {
+        const data = await getPageActivity(selectedPage);
+        handleDashboardData(data);
+        
+        // Load recovery stats
+        await updateRecoveryStats();
+      } catch (error) {
+        handleDataError(error);
+      }
+    }
+
+    function handleDashboardData(data) {
+      hideLoader();
+      currentPageData = data;
+      renderDashboard(data);
+      currentView = 'dashboard';
+      sessionStorage.setItem('currentView', 'dashboard');
+      enableControlButtons();
+    }
+
+    function handleDataError(error) {
+      hideLoader();
+      showNotification('Error loading data: ' + error, 'error');
+      document.getElementById('dashboard').style.display = 'block';
+      enableControlButtons();
+    }
+
+    function showLoader() {
+      loader.style.display = 'block';
+      document.getElementById('dashboardBoxes').style.display = 'none';
+      document.getElementById('tableContainer').innerHTML = '';
+      document.getElementById('playerHistorySection').style.display = 'none';
+      document.getElementById('globalPlayerHistorySection').style.display = 'none';
+      document.getElementById('backContainer').innerHTML = '';
+      pageDepositsView.style.display = 'none';
+      clientRecoveryDashboard.style.display = 'none';
+    }
+
+    function hideLoader() {
+      loader.style.display = 'none';
+      if (progressInterval) {
+        clearInterval(progressInterval);
+        progressInterval = null;
+      }
+    }
+
+    function disableControlButtons() {
+      changePageBtn.disabled = true;
+      refreshBtn.disabled = true;
+      forceCleanupBtn.disabled = true;
+      if (logoutBtnDashboard) logoutBtnDashboard.disabled = true;
+      if (logoutBtnLanding) logoutBtnLanding.disabled = true;
+    }
+
+    function enableControlButtons() {
+      changePageBtn.disabled = false;
+      refreshBtn.disabled = false;
+      forceCleanupBtn.disabled = false;
+      if (logoutBtnDashboard) logoutBtnDashboard.disabled = false;
+      if (logoutBtnLanding) logoutBtnLanding.disabled = false;
+    }
+
+    function clearBackContainer() {
+      document.getElementById('backContainer').innerHTML = '';
+    }
+
+    function clearPlayerHistory() {
+      const playerSearchInput = document.getElementById('playerSearch');
+      const playerHistoryContainer = document.getElementById('playerHistoryContainer');
+      const globalPlayerHistoryContainer = document.getElementById('globalPlayerHistoryContainer');
+      
+      if (playerSearchInput) playerSearchInput.value = '';
+      if (playerHistoryContainer) playerHistoryContainer.innerHTML = '';
+      if (globalPlayerHistoryContainer) globalPlayerHistoryContainer.innerHTML = '';
+    }
+
+    function clearAllSearchInputs() {
+      const playerSearchInput = document.getElementById('playerSearch');
+      const playerSearchLanding = document.getElementById('playerSearchInput');
+      const pageSearchInput = document.getElementById('pageSelectSearch');
+      
+      if (playerSearchInput) playerSearchInput.value = '';
+      if (playerSearchLanding) playerSearchLanding.value = '';
+      if (pageSearchInput) pageSearchInput.value = '';
+      
+      const pageSuggestions = document.getElementById('pageSuggestions');
+      const playerSuggestions = document.getElementById('playerSuggestions');
+      
+      if (pageSuggestions) pageSuggestions.innerHTML = '';
+      if (playerSuggestions) playerSuggestions.innerHTML = '';
+      
+      const findBtn = document.getElementById('findBtn');
+      if (findBtn) findBtn.style.display = 'none';
+    }
+
+    // Page search functionality
+    searchInput.addEventListener('input', function() {
+      const val = this.value.toLowerCase().trim();
+      pageSuggestions.innerHTML = '';
+      findBtn.style.display = 'none';
+      
+      if (!val) return;
+      
+      const matches = PAGES.filter(p => p.name.toLowerCase().includes(val));
+      if (matches.length === 0) {
+        const div = document.createElement('div');
+        div.className = 'suggestion-item';
+        div.innerHTML = '<span class="page-emoji">😕</span> No results found';
+        pageSuggestions.appendChild(div);
+      } else {
+        matches.forEach(p => {
+          const div = document.createElement('div');
+          div.className = 'suggestion-item';
+          div.innerHTML = `
+            <span class="page-emoji">${p.emoji}</span>
+            <span>${p.name}</span>
+          `;
+          div.onclick = () => {
+            searchInput.value = p.name;
+            pageSuggestions.innerHTML = '';
+            findBtn.style.display = 'inline-flex';
+          };
+          pageSuggestions.appendChild(div);
+        });
+        if (matches.length === 1) {
+          findBtn.style.display = 'inline-flex';
+        }
+      }
+    });
+
+    // Player search functionality for LANDING PAGE
+    playerSearchInput.addEventListener('input', async function() {
+      const val = this.value.toLowerCase().trim();
+      playerSuggestions.innerHTML = '';
+      
+      if (!val || val.length < 2) return;
+      
+      const loadingDiv = document.createElement('div');
+      loadingDiv.className = 'suggestion-item';
+      loadingDiv.innerHTML = '<span class="page-emoji">⏳</span> Searching players across all pages...';
+      playerSuggestions.appendChild(loadingDiv);
+      
+      try {
+        const players = await searchPlayers(val);
+        playerSuggestions.innerHTML = '';
+        
+        if (!players || players.length === 0) {
+          const div = document.createElement('div');
+          div.className = 'suggestion-item';
+          div.innerHTML = '<span class="page-emoji">😕</span> No players found';
+          playerSuggestions.appendChild(div);
+          return;
+        }
+        
+        players.forEach(player => {
+          const div = document.createElement('div');
+          div.className = 'suggestion-item';
+          
+          const pageObj = PAGES.find(p => p.name === player.page);
+          const pageEmoji = pageObj ? pageObj.emoji : '📄';
+          
+          div.innerHTML = `
+            <span class="page-emoji">${pageEmoji}</span>
+            <div style="flex: 1; min-width: 0;">
+              <div style="font-weight: 500; margin-bottom: 0.25rem;">${player.name}</div>
+              <div style="font-size: 0.875rem; color: var(--text-secondary);">
+                <span class="page-indicator">${player.page}</span>
+              </div>
+            </div>
+          `;
+          
+          div.onclick = () => {
+            sessionStorage.setItem('searchPlayerName', player.name);
+            sessionStorage.setItem('searchPlayerPage', player.page);
+            tableState.history.page = 1;
+            showEnhancedGlobalPlayerHistory(player.name, player.page);
+          };
+          
+          playerSuggestions.appendChild(div);
+        });
+      } catch (error) {
+        playerSuggestions.innerHTML = '';
+        const div = document.createElement('div');
+        div.className = 'suggestion-item';
+        div.innerHTML = '<span class="page-emoji">❌</span> Error searching players';
+        playerSuggestions.appendChild(div);
+      }
+    });
+
+    async function showEnhancedGlobalPlayerHistory(playerName, pageName) {
+      document.getElementById('landing').style.display = 'none';
+      document.getElementById('dashboard').style.display = 'block';
+      
+      showLoader();
+      disableControlButtons();
+      
+      document.getElementById('dashboardBoxes').style.display = 'none';
+      document.getElementById('tableContainer').style.display = 'none';
+      document.getElementById('playerHistorySection').style.display = 'none';
+      document.getElementById('globalPlayerHistorySection').style.display = 'block';
+      document.getElementById('backContainer').innerHTML = '';
+      pageDepositsView.style.display = 'none';
+      clientRecoveryDashboard.style.display = 'none';
+      
+      pageTitle.textContent = `Enhanced Player History: ${playerName}`;
+      
+      showLoadingProgress();
+      
+      try {
+        const data = await getEnhancedPlayerHistory(playerName, pageName);
+        hideLoader();
+        const backDiv = document.getElementById('backContainer');
+        backDiv.innerHTML = '<button class="btn btn-secondary" onclick="backToLanding()"><i class="fas fa-arrow-left"></i> Back to Search</button>';
+        renderEnhancedPlayerHistory(data, playerName, pageName, true);
+      } catch (error) {
+        hideLoader();
+        showNotification('Error loading enhanced player history: ' + error, 'error');
+        document.getElementById('globalPlayerHistoryContainer').innerHTML = 
+          `<div style="text-align: center; padding: 2rem; color: var(--danger);">
+            <p>Error loading enhanced history for ${playerName}</p>
+            <p style="margin-top: 1rem; color: var(--text-secondary);">${error}</p>
+          </div>`;
+      }
+    }
+
+    async function findPlayerForCurrentPage() {
+      const playerName = document.getElementById('playerSearch').value.trim();
+      if (!playerName) {
+        showNotification('Please enter a player name', 'error');
+        return;
+      }
+      
+      sessionStorage.setItem('currentSearchedPlayer', playerName);
+      tableState.history.page = 1;
+      
+      document.getElementById('playerHistoryContainer').innerHTML = `
+        <div style="text-align: center; padding: 2rem;">
+          <div class="spinner"></div>
+          <p style="margin-top: 1rem; color: var(--text-secondary);">Loading enhanced player history for <strong>${playerName}</strong>...</p>
+        </div>
+      `;
+      
+      navigationContext = 'dashboard';
+      
+      try {
+        const players = await searchPlayers(playerName);
+        if (players && players.length > 0) {
+          const currentPagePlayers = players.filter(player => 
+            player.page === selectedPage && player.name === playerName
+          );
+          
+          if (currentPagePlayers.length > 0) {
+            const player = currentPagePlayers[0];
+            showEnhancedPlayerHistoryForCurrentPage(player.name, selectedPage);
+          } else {
+            document.getElementById('playerHistoryContainer').innerHTML = `
+              <div style="text-align: center; padding: 2rem; color: var(--danger);">
+                <p><strong>Player "${playerName}" not found on ${selectedPage}</strong></p>
+                <p style="margin-top: 1rem; color: var(--text-secondary);">Please try searching for a different player or check the spelling/capitalization.</p>
+                <p style="margin-top: 0.5rem; color: var(--text-secondary); font-size: 0.875rem;">
+                  Note: Player names are case-sensitive. "Gone Reed" and "GOne Reed" are different players.
+                </p>
+              </div>
+            `;
+          }
+        } else {
+          document.getElementById('playerHistoryContainer').innerHTML = `
+            <div style="text-align: center; padding: 2rem; color: var(--danger);">
+              <p><strong>Player "${playerName}" not found</strong></p>
+              <p style="margin-top: 1rem; color: var(--text-secondary);">Please try searching for a different player.</p>
+            </div>
+          `;
+        }
+      } catch (error) {
+        document.getElementById('playerHistoryContainer').innerHTML = `
+          <div style="text-align: center; padding: 2rem; color: var(--danger);">
+            <p><strong>Error searching player: ${error}</strong></p>
+            <p style="margin-top: 1rem; color: var(--text-secondary);">Please try again.</p>
+          </div>
+        `;
+      }
+    }
+
+    async function showEnhancedPlayerHistoryForCurrentPage(playerName, pageName) {
+      const searchedPlayerName = sessionStorage.getItem('currentSearchedPlayer') || playerName;
+      
+      document.getElementById('playerHistoryContainer').innerHTML = `
+        <div style="text-align: center; padding: 2rem;">
+          <div class="spinner"></div>
+          <p style="margin-top: 1rem; color: var(--text-secondary);">Loading enhanced player history for <strong>${searchedPlayerName}</strong>...</p>
+        </div>
+      `;
+      
+      try {
+        const data = await getEnhancedPlayerHistory(playerName, pageName);
+        renderEnhancedPlayerHistory(data, searchedPlayerName, pageName, false);
+      } catch (error) {
+        document.getElementById('playerHistoryContainer').innerHTML = 
+          `<div style="text-align: center; padding: 2rem; color: var(--danger);">
+            <p><strong>Error loading enhanced history for ${searchedPlayerName}</strong></p>
+            <p style="margin-top: 1rem; color: var(--text-secondary);">${error}</p>
+          </div>`;
+      }
+    }
+
+    function findData() {
+      const val = searchInput.value.trim();
+      const pageObj = PAGES.find(p => p.name.toLowerCase() === val.toLowerCase());
+      
+      if (!val || !pageObj) {
+        showNotification('Please select a valid page from the suggestions', 'error');
+        return;
+      }
+      
+      loadDashboard(pageObj);
+    }
+
+    function backToLanding() {
+      clearAllSearchInputs();
+      clearPlayerHistory();
+      
+      sessionStorage.removeItem('searchPlayerName');
+      sessionStorage.removeItem('searchPlayerPage');
+      sessionStorage.removeItem('searchPlayerPages');
+      sessionStorage.removeItem('currentSearchedPlayer');
+      
+      navigationContext = 'landing';
+      
+      showLandingPage();
+    }
+
+    function backToDashboard() {
+      resetAllTableStates();
+      clearPlayerHistory();
+      
+      sessionStorage.removeItem('searchPlayerName');
+      sessionStorage.removeItem('searchPlayerPage');
+      sessionStorage.removeItem('currentSearchedPlayer');
+      
+      navigationContext = 'dashboard';
+      
+      updatePageTitle();
+      disableControlButtons();
+      showLoader();
+      loadDashboardData();
+    }
+
+    function resetAllTableStates() {
+      tableState.current = { type: null, page: 1, data: null, title: null };
+      tableState.playerTables = {
+        'Total': { page: 1, data: null },
+        'Active': { page: 1, data: null },
+        'Inactive': { page: 1, data: null },
+        'RecentActive': { page: 1, data: null },
+        'RecentInactive': { page: 1, data: null }
+      };
+      tableState.highRisk = { page: 1, data: null };
+      tableState.history = { page: 1, data: null };
+      tableState.deposits = { month: 0, data: null };
+      
+      // Reset recovery state
+      recoveryState.current.tab = 'active';
+      recoveryState.current.page = 1;
+      recoveryState.current.search = '';
+      recoveryState.current.data = null;
+      recoveryState.current.stats = null;
+      recoveryState.removed.page = 1;
+      recoveryState.removed.search = '';
+      recoveryState.removed.data = null;
+      recoveryState.analytics.data = null;
+    }
+
+    function showLoadingProgress() {
+      const progressMessages = [
+        "Loading player data...",
+        "Calculating deposits...", 
+        "Analyzing activity...",
+        "Finalizing dashboard..."
+      ];
+      
+      let current = 0;
+      loadingProgress.textContent = progressMessages[0];
+      
+      progressInterval = setInterval(() => {
+        current++;
+        if (current < progressMessages.length) {
+          loadingProgress.textContent = progressMessages[current];
+        } else {
+          clearInterval(progressInterval);
+        }
+      }, 800);
+    }
+
+    async function renderDashboard(data) {
+      currentPageData = data;
+
+      const dash = document.getElementById('dashboardBoxes');
+      dash.style.display = 'block';
+      document.getElementById('tableContainer').style.display = 'block';
+
+      statsRow1.innerHTML = "";
+      statsRow2.innerHTML = "";
+      statsRow3.innerHTML = "";
+
+      document.getElementById('playerHistorySection').style.display = 'none';
+      document.getElementById('globalPlayerHistorySection').style.display = 'none';
+      clearPlayerHistory();
+      pageDepositsView.style.display = 'none';
+      clientRecoveryDashboard.style.display = 'none';
+
+      // Get recovery count
+      let recoveryCount = 0;
+      try {
+        const { data: recoveryData, error } = await supabase
+          .from('client_recoveries')
+          .select('id')
+          .eq('page_name', selectedPage)
+          .eq('is_active_in_list', true);
+        
+        if (!error && recoveryData) {
+          recoveryCount = recoveryData.length;
+        }
+      } catch (error) {
+        console.error('Error getting recovery count:', error);
+      }
+
+      const firstRowBoxes = [
+        { label: "Total Players", value: data.counts.Total || 0, type: "Total", icon: "fas fa-users", colorClass: "total" },
+        { label: "Active Players", value: data.counts.Active || 0, type: "Active", icon: "fas fa-user-check", colorClass: "active" },
+        { label: "Inactive Players", value: data.counts.Inactive || 0, type: "Inactive", icon: "fas fa-user-times", colorClass: "inactive" }
+      ];
+
+      const secondRowBoxes = [
+        { label: "Recent Active", value: data.counts.RecentActive || 0, type: "RecentActive", icon: "fas fa-bolt", colorClass: "recent-active" },
+        { label: "Recent Inactive", value: data.counts.RecentInactive || 0, type: "RecentInactive", icon: "fas fa-clock", colorClass: "recent-inactive" },
+        { label: "High Risk Players", value: data.counts.HighRisk || 0, type: "HighRisk", icon: "fas fa-exclamation-triangle", colorClass: "high-risk" }
+      ];
+
+      const thirdRowBoxes = [
+        { label: "Player History", value: "", type: "PlayerHistory", icon: "fas fa-history", colorClass: "history" },
+        { label: "Page Deposits", value: "", type: "PageDeposits", icon: "fas fa-money-bill-wave", colorClass: "deposits" },
+        { label: "Recovered Clients", value: recoveryCount, type: "ClientRecovery", icon: "fas fa-users-return", colorClass: "recovery" }
+      ];
+
+      firstRowBoxes.forEach(b => {
+        const div = document.createElement('div');
+        div.className = `stat-card ${b.colorClass}`;
+
+        let displayValue = (b.value === "" || b.value === undefined || b.value === null) ? 0 : b.value;
+
+        div.innerHTML = `
+          <div class="stat-icon">
+            <i class="${b.icon}"></i>
+          </div>
+          <div class="stat-value">${displayValue}</div>
+          <div class="stat-label">${b.label}</div>
+        `;
+
+        div.onclick = () => showBoxData(b.type);
+        statsRow1.appendChild(div);
+      });
+
+      secondRowBoxes.forEach(b => {
+        const div = document.createElement('div');
+        div.className = `stat-card ${b.colorClass}`;
+
+        let displayValue = (b.value === "" || b.value === undefined || b.value === null) ? 0 : b.value;
+
+        div.innerHTML = `
+          <div class="stat-icon">
+            <i class="${b.icon}"></i>
+          </div>
+          <div class="stat-value">${displayValue}</div>
+          <div class="stat-label">${b.label}</div>
+        `;
+
+        div.onclick = () => showBoxData(b.type);
+        statsRow2.appendChild(div);
+      });
+
+      thirdRowBoxes.forEach(b => {
+        const div = document.createElement('div');
+        div.className = `stat-card ${b.colorClass}`;
+
+        let displayValue = (b.type === "PlayerHistory" || b.type === "PageDeposits") ? "" : (b.value === "" || b.value === undefined || b.value === null) ? 0 : b.value;
+
+        div.innerHTML = `
+          <div class="stat-icon">
+            <i class="${b.icon}"></i>
+          </div>
+          <div class="stat-value">${displayValue}</div>
+          <div class="stat-label">
+            ${b.label}
+          </div>
+        `;
+
+        div.onclick = () => showBoxData(b.type);
+        statsRow3.appendChild(div);
+      });
+
+      document.getElementById('tableContainer').innerHTML = "";
+      clearBackContainer();
+      document.getElementById('playerHistorySection').style.display = 'none';
+      document.getElementById('globalPlayerHistorySection').style.display = 'none';
+      
+      document.getElementById('dashboard').style.display = 'block';
+      
+      sessionStorage.removeItem('searchPlayerName');
+      sessionStorage.removeItem('searchPlayerPage');
+      sessionStorage.removeItem('currentSearchedPlayer');
+    }
+
+    async function showBoxData(type) {
+      document.getElementById('dashboardBoxes').style.display = 'none';
+      const tbl = document.getElementById('tableContainer');
+      const backDiv = document.getElementById('backContainer');
+      tbl.innerHTML = "";
+      document.getElementById('playerHistorySection').style.display = 'none';
+      document.getElementById('globalPlayerHistorySection').style.display = 'none';
+      pageDepositsView.style.display = 'none';
+      clientRecoveryDashboard.style.display = 'none';
+
+      tableState.current.type = type;
+      tableState.current.title = getTableTitle(type);
+
+      backDiv.innerHTML = '<button class="btn btn-secondary" onclick="backToDashboard()"><i class="fas fa-arrow-left"></i> Back to Dashboard</button>';
+      
+      if (type === "PlayerHistory") {
+        document.getElementById('playerHistorySection').style.display = 'block';
+        currentView = 'playerHistory';
+        sessionStorage.setItem('currentView', 'playerHistory');
+        return;
+      }
+
+      if (type === "PageDeposits") {
+        showPageDeposits();
+        return;
+      }
+
+      if (type === "ClientRecovery") {
+        currentView = 'clientRecovery';
+        sessionStorage.setItem('currentView', 'clientRecovery');
+        
+        // Load and show recovery dashboard
+        showLoader();
+        try {
+          await loadRecoveryData();
+          hideLoader();
+          clientRecoveryDashboard.style.display = 'block';
+        } catch (error) {
+          hideLoader();
+          showNotification('Error loading recovery data: ' + error.message, 'error');
+        }
+        return;
+      }
+
+      let filtered = [];
+      let tableTitle = getTableTitle(type);
+      
+      switch(type) {
+        case "Total": 
+          filtered = currentPageData.players; 
+          break;
+        case "Active": 
+          filtered = currentPageData.players.filter(p => p.status === "Active"); 
+          break;
+        case "Inactive": 
+          filtered = currentPageData.players.filter(p => p.status === "Inactive" && p.daysSince >= INACTIVE_THRESHOLD); 
+          break;
+        case "RecentActive": 
+          filtered = currentPageData.recentActivePlayers || []; 
+          break;
+        case "RecentInactive": 
+          filtered = currentPageData.recentInactivePlayers || []; 
+          break;
+        case "HighRisk": 
+          if (currentPageData.highRiskPlayers && currentPageData.highRiskPlayers.length > 0) {
+            await renderHighRiskTable();
+            return;
+          } else {
+            tbl.innerHTML = "<div class='table-container' style='text-align: center; padding: 2rem;'><p>No high risk players found.</p></div>";
+          }
+          break;
+      }
+
+      if (!filtered.length) {
+        tbl.innerHTML = `<div class='table-container' style='text-align: center; padding: 2rem;'><p>No ${type.toLowerCase()} players found.</p></div>`;
+      } else {
+        await renderPlayerTable(filtered, tableTitle, type);
+      }
+
+      currentView = 'table';
+      sessionStorage.setItem('currentView', 'table');
+    }
+
+    function getTableTitle(type) {
+      switch(type) {
+        case "Total": return "All Players";
+        case "Active": return "Active Players (0-2 days)";
+        case "Inactive": return "Inactive Players (15+ days)";
+        case "RecentActive": return "Recent Active Players";
+        case "RecentInactive": return "Recent Inactive Players (3-4 days)";
+        case "HighRisk": return "High Risk Players Analysis";
+        default: return "Players";
+      }
+    }
+
+    async function renderPlayerTable(players, title, type) {
+      const totalPlayers = players.length;
+      const currentPage = tableState.playerTables[type].page;
+      const paginatedPlayers = getPaginatedPlayers(players, currentPage, PLAYERS_PER_PAGE);
+      
+      let html = `
+        <div class="table-container">
+          <div class="table-header">
+            <h3 class="table-title">${title} (${totalPlayers} total)</h3>
+            <div id="paginationContainer"></div>
+          </div>
+          <div class="table-scroll-container">
+            <table style="font-size: 0.875rem;">
+              <thead>
+                <tr>
+                  <th style="min-width: 50px; text-align: center;">S.No</th>
+                  <th style="min-width: 120px;">Player</th>
+                  <th style="min-width: 140px;">Last Deposit</th>
+                  <th style="min-width: 100px;">Time Since</th>
+                  <th style="min-width: 80px;">Status</th>
+                  <th style="min-width: 90px; text-align: center;">Total $</th>
+                  <th style="min-width: 90px; text-align: center;">Last 7d $</th>
+                  ${type === "RecentActive" ? '<th style="min-width: 80px;">Gap Days</th>' : ''}
+                  <th style="min-width: 90px; text-align: center;">Notes</th>
+                  <th style="min-width: 110px; text-align: center;">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+      `;
+      
+      for (let i = 0; i < paginatedPlayers.length; i++) {
+        const p = paginatedPlayers[i];
+        const cls = p.status === "Active" ? "status-active" : "status-inactive";
+        
+        const gapDisplay = formatTimeSince(p.originalTimestamp);
+        const gapDays = p.gapDays ? p.gapDays : 'N/A';
+        
+        const notesBtnClass = p.hasNotes ? 'notes-btn has-notes' : 'notes-btn';
+        const notesBtnIcon = p.hasNotes ? 'fa-sticky-note' : 'fa-plus';
+        const notesBtnText = p.hasNotes ? 'Notes' : 'Add';
+        
+        const serialNumber = (currentPage - 1) * PLAYERS_PER_PAGE + i + 1;
+        
+        // Get recovery button HTML
+        const recoveryButtonHTML = await getRecoveryButtonHTML(p.player);
+        
+        html += `
+          <tr>
+            <td style="text-align: center;">${serialNumber}</td>
+            <td>${p.player}</td>
+            <td>${p.lastDeposit}</td>
+            <td>${gapDisplay}</td>
+            <td><span class="status-badge ${cls}">${p.status}</span></td>
+            <td style="text-align: center;">${p.totalDeposit || 0}</td>
+            <td style="text-align: center;">${p.last7DaysDeposit || 0}</td>
+            ${type === "RecentActive" ? `<td style="text-align: center;">${gapDays}</td>` : ''}
+            <td style="text-align: center;">
+              <button class="${notesBtnClass}" onclick="showNotesModal('${p.player.replace(/'/g, "\\'")}', this)" title="${p.hasNotes ? 'View notes' : 'Add note'}">
+                <i class="fas ${notesBtnIcon}"></i> ${notesBtnText}
+              </button>
+            </td>
+            <td style="text-align: center;">
+              ${recoveryButtonHTML}
+            </td>
+          </tr>
+        `;
+      }
+      
+      html += `
+              </tbody>
+            </table>
+          </div>
+        </div>
+      `;
+      
+      document.getElementById('tableContainer').innerHTML = html;
+      
+      const paginationContainer = document.getElementById('paginationContainer');
+      renderPagination(totalPlayers, currentPage, PLAYERS_PER_PAGE, paginationContainer, `changePlayerPage_${type}`);
+    }
+
+    async function renderHighRiskTable() {
+      const highRiskPlayers = currentPageData.highRiskPlayers;
+      const totalPlayers = highRiskPlayers.length;
+      const currentPage = tableState.highRisk.page;
+      const paginatedPlayers = getPaginatedPlayers(highRiskPlayers, currentPage, PLAYERS_PER_PAGE);
+      
+      let html = `
+        <div class="table-container">
+          <div class="table-header">
+            <h3 class="table-title">High Risk Players Analysis (${totalPlayers} total)</h3>
+            <div id="paginationContainer"></div>
+          </div>
+          <div class="table-scroll-container">
+            <table style="font-size: 0.875rem;">
+              <thead>
+                <tr>
+                  <th style="text-align: center;">S.No</th>
+                  <th>Player</th>
+                  <th>Risk</th>
+                  <th>Gaps</th>
+                  <th>Gap Details</th>
+                  <th>Last Deposit</th>
+                  <th>Time Since</th>
+                  <th>Status</th>
+                  <th>Deposits</th>
+                  <th>Notes</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+      `;
+      
+      for (let i = 0; i < paginatedPlayers.length; i++) {
+        const p = paginatedPlayers[i];
+        const statusClass = p.currentStatus === "Active" ? "status-active" : "status-inactive";
+        
+        const lastDepositPKT = convertUTCToPKT(p.lastDeposit);
+        const gapDisplay = formatTimeSince(p.lastDeposit);
+        
+        let gapDetails = '';
+        p.gaps.forEach((gap, gapIndex) => {
+          gapDetails += `
+            <div style="font-size: 0.8rem; margin-bottom: 0.25rem; padding: 0.2rem 0.4rem; background: var(--bg-secondary); border-radius: 4px; border-left: 3px solid var(--primary);">
+              <strong>${gap.gapDays}d</strong>: ${gap.gapBetween}
+            </div>
+          `;
+        });
+        
+        let riskClass = '';
+        if (p.riskLevel === "Very High") riskClass = 'risk-very-high';
+        else if (p.riskLevel === "High") riskClass = 'risk-high';
+        else if (p.riskLevel === "Medium") riskClass = 'risk-medium';
+        else if (p.riskLevel === "Low") riskClass = 'risk-low';
+        
+        const notesBtnClass = p.hasNotes ? 'notes-btn has-notes' : 'notes-btn';
+        const notesBtnIcon = p.hasNotes ? 'fa-sticky-note' : 'fa-plus';
+        const notesBtnText = p.hasNotes ? 'Notes' : 'Add';
+        
+        const serialNumber = (currentPage - 1) * PLAYERS_PER_PAGE + i + 1;
+        
+        // Get recovery button HTML
+        const recoveryButtonHTML = await getRecoveryButtonHTML(p.player);
+        
+        html += `
+          <tr>
+            <td style="text-align: center;">${serialNumber}</td>
+            <td><strong>${p.player}</strong></td>
+            <td class="${riskClass}"><strong>${p.riskLevel}</strong></td>
+            <td style="text-align: center;">${p.totalQualifyingGaps}</td>
+            <td>
+              <div>
+                ${gapDetails}
+              </div>
+            </td>
+            <td>${lastDepositPKT}</td>
+            <td>${gapDisplay}</td>
+            <td><span class="status-badge ${statusClass}">${p.currentStatus}</span></td>
+            <td style="text-align: center;">${p.totalDeposits}</td>
+            <td>
+              <button class="${notesBtnClass}" onclick="showNotesModal('${p.player.replace(/'/g, "\\'")}', this)" title="${p.hasNotes ? 'View notes' : 'Add note'}">
+                <i class="fas ${notesBtnIcon}"></i> ${notesBtnText}
+              </button>
+            </td>
+            <td style="text-align: center;">
+              ${recoveryButtonHTML}
+            </td>
+          </tr>
+        `;
+      }
+      
+      html += `
+              </tbody>
+            </table>
+          </div>
+        </div>
+      `;
+      
+      document.getElementById('tableContainer').innerHTML = html;
+      
+      const paginationContainer = document.getElementById('paginationContainer');
+      renderPagination(totalPlayers, currentPage, PLAYERS_PER_PAGE, paginationContainer, 'changeHighRiskPage');
+    }
+
+    // =============================================
+    // EXISTING UTILITY FUNCTIONS (Keep as is)
     // =============================================
 
     function normalizePageName(pageName) {
@@ -2822,15 +4602,10 @@ function calculateExactGapDuration(startDate, endDate) {
       container.innerHTML = html;
     }
 
-    // =============================================
-    // PAGINATION HELPER FUNCTIONS (FIXED FOR ALL QUERIES)
-    // =============================================
-
-    // Helper function to fetch ALL rows from a table with pagination
     async function fetchAllRows(tableName, filters = {}, orderBy = null) {
       let allData = [];
       let currentPage = 0;
-      const pageSize = 1000; // Supabase max per request
+      const pageSize = 1000;
       let hasMore = true;
       
       console.log(`Fetching ALL rows from ${tableName} with filters:`, filters);
@@ -2841,14 +4616,12 @@ function calculateExactGapDuration(startDate, endDate) {
           .select('*')
           .range(currentPage * pageSize, (currentPage + 1) * pageSize - 1);
         
-        // Apply filters
         Object.keys(filters).forEach(key => {
           if (filters[key] !== undefined && filters[key] !== null) {
             query = query.eq(key, filters[key]);
           }
         });
         
-        // Apply ordering if specified
         if (orderBy) {
           query = query.order(orderBy.field, { ascending: orderBy.ascending });
         }
@@ -2864,7 +4637,6 @@ function calculateExactGapDuration(startDate, endDate) {
           allData = [...allData, ...data];
           console.log(`Fetched page ${currentPage + 1}: ${data.length} rows (Total: ${allData.length})`);
           
-          // Check if we got fewer than pageSize (means last page)
           if (data.length < pageSize) {
             hasMore = false;
             console.log(`Reached last page for ${tableName}. Total rows: ${allData.length}`);
@@ -2880,15 +4652,10 @@ function calculateExactGapDuration(startDate, endDate) {
       return allData;
     }
 
-    // =============================================
-    // SUPABASE DATA FUNCTIONS - ALL FIXED WITH PAGINATION
-    // =============================================
-
     async function searchPlayers(searchTerm) {
       if (!searchTerm || searchTerm.length < 2) return [];
       
       try {
-        // Fetch ALL players with pagination
         let allPlayers = [];
         let currentPage = 0;
         const pageSize = 1000;
@@ -2950,9 +4717,21 @@ function calculateExactGapDuration(startDate, endDate) {
       }
     }
 
+    function calculatePlayerStatus(daysSince) {
+      if (daysSince <= DAYS_ACTIVE) {
+        return "Active";
+      } else if (daysSince >= INACTIVE_THRESHOLD) {
+        return "Inactive";
+      } else if (daysSince >= RECENT_INACTIVE_MIN_DAYS && daysSince < RECENT_INACTIVE_MAX_DAYS) {
+        return "Inactive";
+      } else if (daysSince >= 5 && daysSince < HIGH_RISK_MAX_DAYS) {
+        return "Inactive";
+      }
+      return "Inactive";
+    }
+
     async function getPageActivity(pageName) {
       try {
-        // Get latest status for the page - this table might be pre-aggregated
         const { data: statusData, error: statusError } = await supabase
           .from('latest_status')
           .select('*')
@@ -2964,12 +4743,9 @@ function calculateExactGapDuration(startDate, endDate) {
           return getEmptyPageData(pageName);
         }
 
-        // Get deposit data for calculations - USING PAGINATION FIX
         const depositData = await computePlayerDeposits(pageName);
-
         const playersWithNotes = await getAllPlayersWithNotes(pageName);
         
-        // Get status changes for this page to show in activity notes
         const { data: changesData } = await supabase
           .from('status_changes')
           .select('*')
@@ -2977,7 +4753,6 @@ function calculateExactGapDuration(startDate, endDate) {
           .order('change_date', { ascending: false })
           .limit(100);
 
-        // Create a map of recent status changes per player
         const recentChanges = {};
         if (changesData) {
           changesData.forEach(change => {
@@ -2997,17 +4772,14 @@ function calculateExactGapDuration(startDate, endDate) {
           const originalTimestamp = player.last_deposit_date;
           const lastDepositDisplay = convertUTCToPKT(originalTimestamp);
           
-          // Calculate days since using UTC dates for consistency
           const nowUTC = new Date();
           const lastDepositUTC = new Date(originalTimestamp);
           const daysSince = Math.floor((nowUTC - lastDepositUTC) / (1000 * 60 * 60 * 24));
           
-          // FIXED: Calculate status correctly based on business logic
           const status = calculatePlayerStatus(daysSince);
           
           const playerDeposits = depositData[playerName] || { total: 0, last7Days: 0 };
           
-          // Enhanced activity notes with status change info
           let activityNotes = player.activity_notes || "";
           const recentChange = recentChanges[playerName];
           if (recentChange) {
@@ -3034,7 +4806,6 @@ function calculateExactGapDuration(startDate, endDate) {
             recentActivePlayers.push(playerData);
           }
           
-          // FIXED: Check for Recent Inactive players (3-4.99 days)
           if (status === "Inactive" && daysSince >= RECENT_INACTIVE_MIN_DAYS && daysSince < RECENT_INACTIVE_MAX_DAYS) {
             recentInactivePlayers.push(playerData);
           }
@@ -3047,13 +4818,11 @@ function calculateExactGapDuration(startDate, endDate) {
           player.hasNotes = playersWithNotes[player.player] || false;
         });
 
-        // Sort by original timestamp
         resultPlayers.sort((a, b) => new Date(b.originalTimestamp) - new Date(a.originalTimestamp));
         recentActivePlayers.sort((a, b) => new Date(b.originalTimestamp) - new Date(a.originalTimestamp));
         recentInactivePlayers.sort((a, b) => new Date(b.originalTimestamp) - new Date(a.originalTimestamp));
         highRiskPlayers.sort((a, b) => new Date(b.lastDeposit) - new Date(a.lastDeposit));
 
-        // FIXED: Count calculations based on correct business logic
         const counts = {
           Total: resultPlayers.length,
           Active: resultPlayers.filter(p => p.status === "Active").length,
@@ -3093,7 +4862,6 @@ function calculateExactGapDuration(startDate, endDate) {
       try {
         console.log(`Computing deposits for page: ${pageName}`);
         
-        // FIXED: Use pagination helper to get ALL deposits
         const allDeposits = await fetchAllRows('deposits', { page_name: pageName }, { field: 'deposit_date', ascending: true });
         
         console.log(`Total deposits fetched for ${pageName}: ${allDeposits.length}`);
@@ -3160,7 +4928,6 @@ function calculateExactGapDuration(startDate, endDate) {
 
     async function getAllPlayersWithNotes(pageName) {
       try {
-        // FIXED: Use pagination helper
         const allNotes = await fetchAllRows('player_notes', { page_name: pageName });
         
         const playersWithNotes = {};
@@ -3178,7 +4945,6 @@ function calculateExactGapDuration(startDate, endDate) {
 
     async function getPlayerNotes(pageName, playerName) {
       try {
-        // FIXED: Use pagination helper
         const allNotes = await fetchAllRows('player_notes', { 
           page_name: pageName, 
           player_name: playerName 
@@ -3199,7 +4965,6 @@ function calculateExactGapDuration(startDate, endDate) {
 
     async function addPlayerNote(pageName, playerName, noteText) {
       try {
-        // Check if user has permission to add notes
         if (userRole === PIN_CONFIG.ROLES.VIEWER) {
           return { 
             success: false, 
@@ -3277,7 +5042,6 @@ function calculateExactGapDuration(startDate, endDate) {
       try {
         console.log(`Getting high risk players for page: ${pageName}`);
         
-        // FIXED: Use pagination helper to get ALL deposits
         const allDeposits = await fetchAllRows('deposits', { page_name: pageName }, { field: 'deposit_date', ascending: true });
         
         console.log(`Total deposits for high risk analysis: ${allDeposits.length}`);
@@ -3419,298 +5183,281 @@ function calculateExactGapDuration(startDate, endDate) {
     }
 
     async function getEnhancedPlayerHistory(playerName, pageName) {
-  try {
-    console.log(`Getting enhanced history for player: ${playerName} on page: ${pageName}`);
-    
-    const allDeposits = await fetchAllRows('deposits', { 
-      player_name: playerName, 
-      page_name: pageName 
-    }, { field: 'deposit_date', ascending: true });
-    
-    console.log(`Total deposits found for ${playerName}: ${allDeposits.length}`);
-    
-    if (!allDeposits || allDeposits.length === 0) {
-      return { 
-        enhancedHistory: [], 
-        currentStatus: "Inactive",
-        message: "No data found for this player",
-        rawDeposits: 0,
-        timeSinceDisplay: "N/A"
-      };
-    }
-
-    // Convert ALL deposits to PKT with exact timestamps
-    const playerDeposits = allDeposits.map(deposit => {
-      const utcDate = new Date(deposit.deposit_date);
-      const pktDate = new Date(utcDate.getTime() + (5 * 60 * 60 * 1000));
-      
-      return {
-        utcDate: utcDate,
-        pktDate: pktDate,
-        displayDate: convertUTCToPKT(deposit.deposit_date),
-        displayDateOnly: convertUTCToPKTDateOnly(deposit.deposit_date),
-        amount: parseFloat(deposit.amount) || 0,
-        originalDate: deposit.deposit_date,
-        exactTimePKT: pktDate.getTime() // Exact timestamp in PKT
-      };
-    }).filter(deposit => !isNaN(deposit.utcDate.getTime()));
-
-    playerDeposits.sort((a, b) => a.pktDate - b.pktDate);
-    
-    const nowPKT = getCurrentPKT();
-    const mostRecentDeposit = playerDeposits[playerDeposits.length - 1];
-    
-    // Calculate time since last deposit (for display)
-    const timeSinceMs = nowPKT - mostRecentDeposit.pktDate;
-    const hoursSince = Math.floor(timeSinceMs / (1000 * 60 * 60));
-    const minutesSince = Math.floor((timeSinceMs % (1000 * 60 * 60)) / (1000 * 60));
-    const daysSince = hoursSince / 24;
-    const remainingHours = hoursSince % 24;
-    
-    const currentStatus = calculatePlayerStatus(daysSince);
-
-    let timeSinceDisplay = '';
-    if (daysSince < 1) {
-      if (hoursSince === 0) {
-        timeSinceDisplay = `${minutesSince} minutes ago`;
-      } else {
-        timeSinceDisplay = `${hoursSince} hours ${minutesSince} minutes ago`;
-      }
-    } else {
-      const fullDays = Math.floor(daysSince);
-      if (remainingHours === 0) {
-        timeSinceDisplay = `${fullDays} day${fullDays > 1 ? 's' : ''} ago`;
-      } else {
-        timeSinceDisplay = `${fullDays} day${fullDays > 1 ? 's' : ''} ${remainingHours} hour${remainingHours > 1 ? 's' : ''} ago`;
-      }
-    }
-
-    // Group deposits by day, but keep track of LATEST deposit time each day
-    const depositsByDay = {};
-    playerDeposits.forEach(deposit => {
-      const dateKey = deposit.displayDateOnly;
-      
-      if (!depositsByDay[dateKey]) {
-        depositsByDay[dateKey] = {
-          count: 0,
-          totalAmount: 0,
-          displayDate: dateKey,
-          deposits: [],
-          pktDate: deposit.pktDate,
-          latestDepositTime: deposit.pktDate, // Track latest deposit time of the day
-          exactTimePKT: deposit.exactTimePKT
-        };
-      }
-      depositsByDay[dateKey].count++;
-      depositsByDay[dateKey].totalAmount += deposit.amount;
-      depositsByDay[dateKey].deposits.push(deposit);
-      
-      // Update latest deposit time if this deposit is later
-      if (deposit.pktDate > depositsByDay[dateKey].latestDepositTime) {
-        depositsByDay[dateKey].latestDepositTime = deposit.pktDate;
-        depositsByDay[dateKey].exactTimePKT = deposit.exactTimePKT;
-      }
-    });
-
-    const enhancedHistory = [];
-    const depositDates = Object.keys(depositsByDay).sort((a, b) => {
-      return depositsByDay[a].pktDate - depositsByDay[b].pktDate;
-    });
-    
-    if (depositDates.length === 0) {
-      return {
-        enhancedHistory: [],
-        currentStatus: "Inactive",
-        message: "No deposit data available",
-        rawDeposits: 0,
-        timeSinceDisplay: "N/A"
-      };
-    }
-
-    // Build timeline with EXACT deposit times
-    const timeline = [];
-    const firstDepositDate = new Date(depositsByDay[depositDates[0]].pktDate);
-    const lastDepositDate = new Date(depositsByDay[depositDates[depositDates.length - 1]].pktDate);
-    
-    let currentDate = new Date(firstDepositDate);
-    currentDate.setUTCHours(0, 0, 0, 0);
-    
-    const todayPKT = getStartOfDayPKT(nowPKT);
-    
-    // Build day-by-day timeline
-    while (currentDate <= todayPKT) {
-      const dateKey = convertUTCToPKTDateOnly(currentDate.toISOString());
-      const dayData = depositsByDay[dateKey];
-      
-      if (dayData) {
-        // This is a deposit day
-        timeline.push({
-          date: new Date(currentDate),
-          dateKey: dateKey,
-          isDepositDay: true,
-          depositCount: dayData.count,
-          totalAmount: dayData.totalAmount,
-          displayDate: dateKey,
-          deposits: dayData.deposits,
-          pktDate: currentDate.getTime(),
-          latestDepositTime: dayData.latestDepositTime, // EXACT time of last deposit that day
-          exactTimePKT: dayData.exactTimePKT
-        });
-      } else {
-        // This is a non-deposit day
-        timeline.push({
-          date: new Date(currentDate),
-          dateKey: dateKey,
-          isDepositDay: false,
-          depositCount: 0,
-          totalAmount: 0,
-          displayDate: dateKey,
-          deposits: [],
-          pktDate: currentDate.getTime(),
-          latestDepositTime: null,
-          exactTimePKT: null
-        });
-      }
-      
-      currentDate.setDate(currentDate.getDate() + 1);
-      currentDate.setUTCHours(0, 0, 0, 0);
-    }
-
-    // Build enhanced history with EXACT gap calculations
-    let i = 0;
-    while (i < timeline.length) {
-      const currentDay = timeline[i];
-      
-      if (currentDay.isDepositDay) {
-        // Determine activity level
-        let activityLevel = "Normal";
-        if (currentDay.depositCount > 4 || currentDay.totalAmount > 50) {
-          activityLevel = "High";
+      try {
+        console.log(`Getting enhanced history for player: ${playerName} on page: ${pageName}`);
+        
+        const allDeposits = await fetchAllRows('deposits', { 
+          player_name: playerName, 
+          page_name: pageName 
+        }, { field: 'deposit_date', ascending: true });
+        
+        console.log(`Total deposits found for ${playerName}: ${allDeposits.length}`);
+        
+        if (!allDeposits || allDeposits.length === 0) {
+          return { 
+            enhancedHistory: [], 
+            currentStatus: "Inactive",
+            message: "No data found for this player",
+            rawDeposits: 0,
+            timeSinceDisplay: "N/A"
+          };
         }
+
+        const playerDeposits = allDeposits.map(deposit => {
+          const utcDate = new Date(deposit.deposit_date);
+          const pktDate = new Date(utcDate.getTime() + (5 * 60 * 60 * 1000));
+          
+          return {
+            utcDate: utcDate,
+            pktDate: pktDate,
+            displayDate: convertUTCToPKT(deposit.deposit_date),
+            displayDateOnly: convertUTCToPKTDateOnly(deposit.deposit_date),
+            amount: parseFloat(deposit.amount) || 0,
+            originalDate: deposit.deposit_date,
+            exactTimePKT: pktDate.getTime()
+          };
+        }).filter(deposit => !isNaN(deposit.utcDate.getTime()));
+
+        playerDeposits.sort((a, b) => a.pktDate - b.pktDate);
         
-        const depositText = currentDay.depositCount === 1 
-          ? "1 deposit" 
-          : `${currentDay.depositCount} deposits`;
+        const nowPKT = getCurrentPKT();
+        const mostRecentDeposit = playerDeposits[playerDeposits.length - 1];
         
-        const amountText = currentDay.totalAmount > 0 
-          ? ` ($${currentDay.totalAmount.toFixed(2)})` 
-          : "";
+        const timeSinceMs = nowPKT - mostRecentDeposit.pktDate;
+        const hoursSince = Math.floor(timeSinceMs / (1000 * 60 * 60));
+        const minutesSince = Math.floor((timeSinceMs % (1000 * 60 * 60)) / (1000 * 60));
+        const daysSince = hoursSince / 24;
+        const remainingHours = hoursSince % 24;
         
-        enhancedHistory.push({
-          dateRange: currentDay.displayDate,
-          activity: `${depositText}${amountText}`,
-          status: "Active",
-          inactiveGap: 0,
-          activityLevel: activityLevel,
-          depositCount: currentDay.depositCount,
-          totalAmount: currentDay.totalAmount,
-          isDepositDay: true,
-          timestamp: currentDay.pktDate,
-          exactDepositTime: currentDay.latestDepositTime, // Store exact time
-          gapDuration: "—"
-        });
-        i++;
-      } else {
-        let inactiveStart = i;
-        let inactiveCount = 0;
-        let startDay = timeline[inactiveStart];
-        
-        // Find previous deposit day for exact time reference
-        let previousDepositTime = null;
-        for (let j = inactiveStart - 1; j >= 0; j--) {
-          if (timeline[j].isDepositDay) {
-            previousDepositTime = timeline[j].latestDepositTime;
-            break;
+        const currentStatus = calculatePlayerStatus(daysSince);
+
+        let timeSinceDisplay = '';
+        if (daysSince < 1) {
+          if (hoursSince === 0) {
+            timeSinceDisplay = `${minutesSince} minutes ago`;
+          } else {
+            timeSinceDisplay = `${hoursSince} hours ${minutesSince} minutes ago`;
+          }
+        } else {
+          const fullDays = Math.floor(daysSince);
+          if (remainingHours === 0) {
+            timeSinceDisplay = `${fullDays} day${fullDays > 1 ? 's' : ''} ago`;
+          } else {
+            timeSinceDisplay = `${fullDays} day${fullDays > 1 ? 's' : ''} ${remainingHours} hour${remainingHours > 1 ? 's' : ''} ago`;
           }
         }
+
+        const depositsByDay = {};
+        playerDeposits.forEach(deposit => {
+          const dateKey = deposit.displayDateOnly;
+          
+          if (!depositsByDay[dateKey]) {
+            depositsByDay[dateKey] = {
+              count: 0,
+              totalAmount: 0,
+              displayDate: dateKey,
+              deposits: [],
+              pktDate: deposit.pktDate,
+              latestDepositTime: deposit.pktDate,
+              exactTimePKT: deposit.exactTimePKT
+            };
+          }
+          depositsByDay[dateKey].count++;
+          depositsByDay[dateKey].totalAmount += deposit.amount;
+          depositsByDay[dateKey].deposits.push(deposit);
+          
+          if (deposit.pktDate > depositsByDay[dateKey].latestDepositTime) {
+            depositsByDay[dateKey].latestDepositTime = deposit.pktDate;
+            depositsByDay[dateKey].exactTimePKT = deposit.exactTimePKT;
+          }
+        });
+
+        const enhancedHistory = [];
+        const depositDates = Object.keys(depositsByDay).sort((a, b) => {
+          return depositsByDay[a].pktDate - depositsByDay[b].pktDate;
+        });
         
-        // If no previous deposit found (shouldn't happen), use start of day
-        if (!previousDepositTime) {
-          previousDepositTime = new Date(startDay.date);
-          previousDepositTime.setUTCHours(0, 0, 0, 0);
-          previousDepositTime = new Date(previousDepositTime.getTime() + (5 * 60 * 60 * 1000));
+        if (depositDates.length === 0) {
+          return {
+            enhancedHistory: [],
+            currentStatus: "Inactive",
+            message: "No deposit data available",
+            rawDeposits: 0,
+            timeSinceDisplay: "N/A"
+          };
         }
+
+        const timeline = [];
+        const firstDepositDate = new Date(depositsByDay[depositDates[0]].pktDate);
+        const lastDepositDate = new Date(depositsByDay[depositDates[depositDates.length - 1]].pktDate);
         
-        while (i < timeline.length && !timeline[i].isDepositDay) {
-          inactiveCount++;
-          i++;
+        let currentDate = new Date(firstDepositDate);
+        currentDate.setUTCHours(0, 0, 0, 0);
+        
+        const todayPKT = getStartOfDayPKT(nowPKT);
+        
+        while (currentDate <= todayPKT) {
+          const dateKey = convertUTCToPKTDateOnly(currentDate.toISOString());
+          const dayData = depositsByDay[dateKey];
+          
+          if (dayData) {
+            timeline.push({
+              date: new Date(currentDate),
+              dateKey: dateKey,
+              isDepositDay: true,
+              depositCount: dayData.count,
+              totalAmount: dayData.totalAmount,
+              displayDate: dateKey,
+              deposits: dayData.deposits,
+              pktDate: currentDate.getTime(),
+              latestDepositTime: dayData.latestDepositTime,
+              exactTimePKT: dayData.exactTimePKT
+            });
+          } else {
+            timeline.push({
+              date: new Date(currentDate),
+              dateKey: dateKey,
+              isDepositDay: false,
+              depositCount: 0,
+              totalAmount: 0,
+              displayDate: dateKey,
+              deposits: [],
+              pktDate: currentDate.getTime(),
+              latestDepositTime: null,
+              exactTimePKT: null
+            });
+          }
+          
+          currentDate.setDate(currentDate.getDate() + 1);
+          currentDate.setUTCHours(0, 0, 0, 0);
         }
-        
-        // Calculate gap using EXACT TIMES
-        let endTimePKT;
-        if (i < timeline.length) {
-          // Next deposit day - use its exact deposit time
-          endTimePKT = timeline[i].latestDepositTime;
-        } else {
-          // Current PKT time
-          endTimePKT = nowPKT;
+
+        let i = 0;
+        while (i < timeline.length) {
+          const currentDay = timeline[i];
+          
+          if (currentDay.isDepositDay) {
+            let activityLevel = "Normal";
+            if (currentDay.depositCount > 4 || currentDay.totalAmount > 50) {
+              activityLevel = "High";
+            }
+            
+            const depositText = currentDay.depositCount === 1 
+              ? "1 deposit" 
+              : `${currentDay.depositCount} deposits`;
+            
+            const amountText = currentDay.totalAmount > 0 
+              ? ` ($${currentDay.totalAmount.toFixed(2)})` 
+              : "";
+            
+            enhancedHistory.push({
+              dateRange: currentDay.displayDate,
+              activity: `${depositText}${amountText}`,
+              status: "Active",
+              inactiveGap: 0,
+              activityLevel: activityLevel,
+              depositCount: currentDay.depositCount,
+              totalAmount: currentDay.totalAmount,
+              isDepositDay: true,
+              timestamp: currentDay.pktDate,
+              exactDepositTime: currentDay.latestDepositTime,
+              gapDuration: "—"
+            });
+            i++;
+          } else {
+            let inactiveStart = i;
+            let inactiveCount = 0;
+            let startDay = timeline[inactiveStart];
+            
+            let previousDepositTime = null;
+            for (let j = inactiveStart - 1; j >= 0; j--) {
+              if (timeline[j].isDepositDay) {
+                previousDepositTime = timeline[j].latestDepositTime;
+                break;
+              }
+            }
+            
+            if (!previousDepositTime) {
+              previousDepositTime = new Date(startDay.date);
+              previousDepositTime.setUTCHours(0, 0, 0, 0);
+              previousDepositTime = new Date(previousDepositTime.getTime() + (5 * 60 * 60 * 1000));
+            }
+            
+            while (i < timeline.length && !timeline[i].isDepositDay) {
+              inactiveCount++;
+              i++;
+            }
+            
+            let endTimePKT;
+            if (i < timeline.length) {
+              endTimePKT = timeline[i].latestDepositTime;
+            } else {
+              endTimePKT = nowPKT;
+            }
+            
+            const gapDuration = calculateExactGapDuration(previousDepositTime, endTimePKT);
+            
+            if (inactiveCount === 1) {
+              enhancedHistory.push({
+                dateRange: timeline[inactiveStart].displayDate,
+                activity: "No deposits",
+                status: "Inactive",
+                inactiveGap: inactiveCount,
+                activityLevel: "None",
+                depositCount: 0,
+                totalAmount: 0,
+                isDepositDay: false,
+                timestamp: timeline[inactiveStart].pktDate,
+                gapDuration: gapDuration
+              });
+            } else {
+              const startDateStr = timeline[inactiveStart].displayDate;
+              const endDateStr = timeline[i - 1].displayDate;
+              enhancedHistory.push({
+                dateRange: `${startDateStr} - ${endDateStr}`,
+                activity: "No deposits",
+                status: "Inactive",
+                inactiveGap: inactiveCount,
+                activityLevel: "None",
+                depositCount: 0,
+                totalAmount: 0,
+                isDepositDay: false,
+                timestamp: timeline[inactiveStart].pktDate,
+                gapDuration: gapDuration
+              });
+            }
+          }
         }
-        
-        // Calculate exact gap from last deposit to next deposit/now
-        const gapDuration = calculateExactGapDuration(previousDepositTime, endTimePKT);
-        
-        if (inactiveCount === 1) {
-          enhancedHistory.push({
-            dateRange: timeline[inactiveStart].displayDate,
-            activity: "No deposits",
-            status: "Inactive",
-            inactiveGap: inactiveCount,
-            activityLevel: "None",
-            depositCount: 0,
-            totalAmount: 0,
-            isDepositDay: false,
-            timestamp: timeline[inactiveStart].pktDate,
-            gapDuration: gapDuration
-          });
-        } else {
-          const startDateStr = timeline[inactiveStart].displayDate;
-          const endDateStr = timeline[i - 1].displayDate;
-          enhancedHistory.push({
-            dateRange: `${startDateStr} - ${endDateStr}`,
-            activity: "No deposits",
-            status: "Inactive",
-            inactiveGap: inactiveCount,
-            activityLevel: "None",
-            depositCount: 0,
-            totalAmount: 0,
-            isDepositDay: false,
-            timestamp: timeline[inactiveStart].pktDate,
-            gapDuration: gapDuration
-          });
-        }
+
+        const totalDepositDays = Object.keys(depositsByDay).length;
+        const totalDepositCount = playerDeposits.length;
+        const totalAmount = playerDeposits.reduce((sum, deposit) => sum + deposit.amount, 0);
+
+        return {
+          enhancedHistory: enhancedHistory,
+          currentStatus: currentStatus,
+          rawDeposits: totalDepositCount,
+          totalDepositDays: totalDepositDays,
+          totalAmount: totalAmount,
+          timeSinceDisplay: timeSinceDisplay,
+          message: `Found ${totalDepositCount} deposit(s) across ${totalDepositDays} day(s) from ${depositDates[0]} to ${depositDates[depositDates.length - 1]}`
+        };
+      } catch (error) {
+        console.error('Error getting enhanced player history:', error);
+        return { 
+          enhancedHistory: [], 
+          currentStatus: "Inactive",
+          message: "Error loading player history",
+          rawDeposits: 0,
+          timeSinceDisplay: "N/A"
+        };
       }
     }
-
-    const totalDepositDays = Object.keys(depositsByDay).length;
-    const totalDepositCount = playerDeposits.length;
-    const totalAmount = playerDeposits.reduce((sum, deposit) => sum + deposit.amount, 0);
-
-    return {
-      enhancedHistory: enhancedHistory,
-      currentStatus: currentStatus,
-      rawDeposits: totalDepositCount,
-      totalDepositDays: totalDepositDays,
-      totalAmount: totalAmount,
-      timeSinceDisplay: timeSinceDisplay,
-      message: `Found ${totalDepositCount} deposit(s) across ${totalDepositDays} day(s) from ${depositDates[0]} to ${depositDates[depositDates.length - 1]}`
-    };
-  } catch (error) {
-    console.error('Error getting enhanced player history:', error);
-    return { 
-      enhancedHistory: [], 
-      currentStatus: "Inactive",
-      message: "Error loading player history",
-      rawDeposits: 0,
-      timeSinceDisplay: "N/A"
-    };
-  }
-}
 
     async function getPageDailyDeposits(pageName, monthOffset = 0) {
       try {
         console.log(`Getting daily deposits for page: ${pageName}, month offset: ${monthOffset}`);
         
-        // FIXED: Use pagination helper to get ALL deposits
         const allDeposits = await fetchAllRows('deposits', { page_name: pageName }, { field: 'deposit_date', ascending: true });
         
         console.log(`Total deposits fetched for ${pageName}: ${allDeposits.length}`);
@@ -3989,840 +5736,11 @@ function calculateExactGapDuration(startDate, endDate) {
     }
 
     // =============================================
-    // UI FUNCTIONS
+    // EXISTING PAGE CHANGE FUNCTIONS
     // =============================================
 
-    // Initialize on load
-    document.addEventListener('DOMContentLoaded', function() {
-      initializeApp();
-    });
-
-    function initializeApp() {
-      // Start with PIN system
-      initPinSystem();
-      setupLogoutButton();
-    }
-
-    function showLandingPage() {
-      clearAllSearchInputs();
-      clearPlayerHistory();
-      
-      sessionStorage.removeItem('currentPage');
-      sessionStorage.removeItem('currentView');
-      
-      navigationContext = 'landing';
-      
-      document.getElementById('dashboard').style.display = 'none';
-      document.getElementById('landing').style.display = 'flex';
-      
-      // Show/hide logout button based on authentication
-      const isAuthenticated = sessionStorage.getItem('pinAuthenticated') === 'true';
-      
-      if (landingLogoutSection) {
-        landingLogoutSection.style.display = isAuthenticated ? 'block' : 'none';
-      }
-      
-      if (logoutBtnLanding) {
-        logoutBtnLanding.disabled = false; // Enable logout button on landing page
-      }
-      
-      currentView = 'landing';
-    }
-
-    function loadDashboard(pageObj) {
-      selectedPage = pageObj.name;
-      currentPageObj = pageObj;
-      sessionStorage.setItem('currentPage', selectedPage);
-      sessionStorage.setItem('currentView', 'dashboard');
-      
-      navigationContext = 'dashboard';
-      
-      clearPlayerHistory();
-      
-      document.getElementById('landing').style.display = 'none';
-      document.getElementById('dashboard').style.display = 'block';
-      
-      // Show logout button in dashboard
-      if (logoutBtnDashboard) {
-        logoutBtnDashboard.style.display = 'inline-flex';
-      }
-      
-      updatePageTitle();
-      
-      showLoader();
-      disableControlButtons();
-      loadDashboardData();
-    }
-
-    function updatePageTitle() {
-      if (currentPageObj) {
-        pageTitle.textContent = `${currentPageObj.name} ${currentPageObj.emoji} - Analytics Dashboard`;
-      } else if (selectedPage) {
-        const pageObj = PAGES.find(p => p.name === selectedPage);
-        if (pageObj) {
-          currentPageObj = pageObj;
-          pageTitle.textContent = `${pageObj.name} ${pageObj.emoji} - Analytics Dashboard`;
-        } else {
-          pageTitle.textContent = `${selectedPage} - Analytics Dashboard`;
-        }
-      }
-    }
-
-    async function loadDashboardData() {
-      if (!selectedPage) return;
-      
-      showLoader();
-      clearBackContainer();
-      disableControlButtons();
-      
-      try {
-        const data = await getPageActivity(selectedPage);
-        handleDashboardData(data);
-      } catch (error) {
-        handleDataError(error);
-      }
-    }
-
-    function handleDashboardData(data) {
-      hideLoader();
-      currentPageData = data;
-      renderDashboard(data);
-      currentView = 'dashboard';
-      sessionStorage.setItem('currentView', 'dashboard');
-      enableControlButtons();
-    }
-
-    function handleDataError(error) {
-      hideLoader();
-      showNotification('Error loading data: ' + error, 'error');
-      document.getElementById('dashboard').style.display = 'block';
-      enableControlButtons();
-    }
-
-    function showLoader() {
-      loader.style.display = 'block';
-      document.getElementById('dashboardBoxes').style.display = 'none';
-      document.getElementById('tableContainer').innerHTML = '';
-      document.getElementById('playerHistorySection').style.display = 'none';
-      document.getElementById('globalPlayerHistorySection').style.display = 'none';
-      document.getElementById('backContainer').innerHTML = '';
-      pageDepositsView.style.display = 'none';
-    }
-
-    function hideLoader() {
-      loader.style.display = 'none';
-      if (progressInterval) {
-        clearInterval(progressInterval);
-        progressInterval = null;
-      }
-    }
-
-    function disableControlButtons() {
-      changePageBtn.disabled = true;
-      refreshBtn.disabled = true;
-      forceCleanupBtn.disabled = true;
-      if (logoutBtnDashboard) logoutBtnDashboard.disabled = true;
-      if (logoutBtnLanding) logoutBtnLanding.disabled = true;
-    }
-
-    function enableControlButtons() {
-      changePageBtn.disabled = false;
-      refreshBtn.disabled = false;
-      forceCleanupBtn.disabled = false;
-      if (logoutBtnDashboard) logoutBtnDashboard.disabled = false;
-      if (logoutBtnLanding) logoutBtnLanding.disabled = false;
-    }
-
-    function clearBackContainer() {
-      document.getElementById('backContainer').innerHTML = '';
-    }
-
-    function clearPlayerHistory() {
-      const playerSearchInput = document.getElementById('playerSearch');
-      const playerHistoryContainer = document.getElementById('playerHistoryContainer');
-      const globalPlayerHistoryContainer = document.getElementById('globalPlayerHistoryContainer');
-      
-      if (playerSearchInput) playerSearchInput.value = '';
-      if (playerHistoryContainer) playerHistoryContainer.innerHTML = '';
-      if (globalPlayerHistoryContainer) globalPlayerHistoryContainer.innerHTML = '';
-    }
-
-    function clearAllSearchInputs() {
-      const playerSearchInput = document.getElementById('playerSearch');
-      const playerSearchLanding = document.getElementById('playerSearchInput');
-      const pageSearchInput = document.getElementById('pageSelectSearch');
-      
-      if (playerSearchInput) playerSearchInput.value = '';
-      if (playerSearchLanding) playerSearchLanding.value = '';
-      if (pageSearchInput) pageSearchInput.value = '';
-      
-      const pageSuggestions = document.getElementById('pageSuggestions');
-      const playerSuggestions = document.getElementById('playerSuggestions');
-      
-      if (pageSuggestions) pageSuggestions.innerHTML = '';
-      if (playerSuggestions) playerSuggestions.innerHTML = '';
-      
-      const findBtn = document.getElementById('findBtn');
-      if (findBtn) findBtn.style.display = 'none';
-    }
-
-    // Page search functionality
-    searchInput.addEventListener('input', function() {
-      const val = this.value.toLowerCase().trim();
-      pageSuggestions.innerHTML = '';
-      findBtn.style.display = 'none';
-      
-      if (!val) return;
-      
-      const matches = PAGES.filter(p => p.name.toLowerCase().includes(val));
-      if (matches.length === 0) {
-        const div = document.createElement('div');
-        div.className = 'suggestion-item';
-        div.innerHTML = '<span class="page-emoji">😕</span> No results found';
-        pageSuggestions.appendChild(div);
-      } else {
-        matches.forEach(p => {
-          const div = document.createElement('div');
-          div.className = 'suggestion-item';
-          div.innerHTML = `
-            <span class="page-emoji">${p.emoji}</span>
-            <span>${p.name}</span>
-          `;
-          div.onclick = () => {
-            searchInput.value = p.name;
-            pageSuggestions.innerHTML = '';
-            findBtn.style.display = 'inline-flex';
-          };
-          pageSuggestions.appendChild(div);
-        });
-        if (matches.length === 1) {
-          findBtn.style.display = 'inline-flex';
-        }
-      }
-    });
-
-    // Player search functionality for LANDING PAGE (All Pages)
-    playerSearchInput.addEventListener('input', async function() {
-      const val = this.value.toLowerCase().trim();
-      playerSuggestions.innerHTML = '';
-      
-      if (!val || val.length < 2) return;
-      
-      const loadingDiv = document.createElement('div');
-      loadingDiv.className = 'suggestion-item';
-      loadingDiv.innerHTML = '<span class="page-emoji">⏳</span> Searching players across all pages...';
-      playerSuggestions.appendChild(loadingDiv);
-      
-      try {
-        const players = await searchPlayers(val);
-        playerSuggestions.innerHTML = '';
-        
-        if (!players || players.length === 0) {
-          const div = document.createElement('div');
-          div.className = 'suggestion-item';
-          div.innerHTML = '<span class="page-emoji">😕</span> No players found';
-          playerSuggestions.appendChild(div);
-          return;
-        }
-        
-        players.forEach(player => {
-          const div = document.createElement('div');
-          div.className = 'suggestion-item';
-          
-          const pageObj = PAGES.find(p => p.name === player.page);
-          const pageEmoji = pageObj ? pageObj.emoji : '📄';
-          
-          div.innerHTML = `
-            <span class="page-emoji">${pageEmoji}</span>
-            <div style="flex: 1; min-width: 0;">
-              <div style="font-weight: 500; margin-bottom: 0.25rem;">${player.name}</div>
-              <div style="font-size: 0.875rem; color: var(--text-secondary);">
-                <span class="page-indicator">${player.page}</span>
-              </div>
-            </div>
-          `;
-          
-          div.onclick = () => {
-            sessionStorage.setItem('searchPlayerName', player.name);
-            sessionStorage.setItem('searchPlayerPage', player.page);
-            tableState.history.page = 1;
-            showEnhancedGlobalPlayerHistory(player.name, player.page);
-          };
-          
-          playerSuggestions.appendChild(div);
-        });
-      } catch (error) {
-        playerSuggestions.innerHTML = '';
-        const div = document.createElement('div');
-        div.className = 'suggestion-item';
-        div.innerHTML = '<span class="page-emoji">❌</span> Error searching players';
-        playerSuggestions.appendChild(div);
-      }
-    });
-
-    async function showEnhancedGlobalPlayerHistory(playerName, pageName) {
-      document.getElementById('landing').style.display = 'none';
-      document.getElementById('dashboard').style.display = 'block';
-      
-      showLoader();
-      disableControlButtons();
-      
-      document.getElementById('dashboardBoxes').style.display = 'none';
-      document.getElementById('tableContainer').style.display = 'none';
-      document.getElementById('playerHistorySection').style.display = 'none';
-      document.getElementById('globalPlayerHistorySection').style.display = 'block';
-      document.getElementById('backContainer').innerHTML = '';
-      pageDepositsView.style.display = 'none';
-      
-      pageTitle.textContent = `Enhanced Player History: ${playerName}`;
-      
-      showLoadingProgress();
-      
-      try {
-        const data = await getEnhancedPlayerHistory(playerName, pageName);
-        hideLoader();
-        const backDiv = document.getElementById('backContainer');
-        backDiv.innerHTML = '<button class="btn btn-secondary" onclick="backToLanding()"><i class="fas fa-arrow-left"></i> Back to Search</button>';
-        renderEnhancedPlayerHistory(data, playerName, pageName, true);
-      } catch (error) {
-        hideLoader();
-        showNotification('Error loading enhanced player history: ' + error, 'error');
-        document.getElementById('globalPlayerHistoryContainer').innerHTML = 
-          `<div style="text-align: center; padding: 2rem; color: var(--danger);">
-            <p>Error loading enhanced history for ${playerName}</p>
-            <p style="margin-top: 1rem; color: var(--text-secondary);">${error}</p>
-          </div>`;
-      }
-    }
-
-    async function findPlayerForCurrentPage() {
-      const playerName = document.getElementById('playerSearch').value.trim();
-      if (!playerName) {
-        showNotification('Please enter a player name', 'error');
-        return;
-      }
-      
-      sessionStorage.setItem('currentSearchedPlayer', playerName);
-      tableState.history.page = 1;
-      
-      document.getElementById('playerHistoryContainer').innerHTML = `
-        <div style="text-align: center; padding: 2rem;">
-          <div class="spinner"></div>
-          <p style="margin-top: 1rem; color: var(--text-secondary);">Loading enhanced player history for <strong>${playerName}</strong>...</p>
-        </div>
-      `;
-      
-      navigationContext = 'dashboard';
-      
-      try {
-        const players = await searchPlayers(playerName);
-        if (players && players.length > 0) {
-          const currentPagePlayers = players.filter(player => 
-            player.page === selectedPage && player.name === playerName
-          );
-          
-          if (currentPagePlayers.length > 0) {
-            const player = currentPagePlayers[0];
-            showEnhancedPlayerHistoryForCurrentPage(player.name, selectedPage);
-          } else {
-            document.getElementById('playerHistoryContainer').innerHTML = `
-              <div style="text-align: center; padding: 2rem; color: var(--danger);">
-                <p><strong>Player "${playerName}" not found on ${selectedPage}</strong></p>
-                <p style="margin-top: 1rem; color: var(--text-secondary);">Please try searching for a different player or check the spelling/capitalization.</p>
-                <p style="margin-top: 0.5rem; color: var(--text-secondary); font-size: 0.875rem;">
-                  Note: Player names are case-sensitive. "Gone Reed" and "GOne Reed" are different players.
-                </p>
-              </div>
-            `;
-          }
-        } else {
-          document.getElementById('playerHistoryContainer').innerHTML = `
-            <div style="text-align: center; padding: 2rem; color: var(--danger);">
-              <p><strong>Player "${playerName}" not found</strong></p>
-              <p style="margin-top: 1rem; color: var(--text-secondary);">Please try searching for a different player.</p>
-            </div>
-          `;
-        }
-      } catch (error) {
-        document.getElementById('playerHistoryContainer').innerHTML = `
-          <div style="text-align: center; padding: 2rem; color: var(--danger);">
-            <p><strong>Error searching player: ${error}</strong></p>
-            <p style="margin-top: 1rem; color: var(--text-secondary);">Please try again.</p>
-          </div>
-        `;
-      }
-    }
-
-    async function showEnhancedPlayerHistoryForCurrentPage(playerName, pageName) {
-      const searchedPlayerName = sessionStorage.getItem('currentSearchedPlayer') || playerName;
-      
-      document.getElementById('playerHistoryContainer').innerHTML = `
-        <div style="text-align: center; padding: 2rem;">
-          <div class="spinner"></div>
-          <p style="margin-top: 1rem; color: var(--text-secondary);">Loading enhanced player history for <strong>${searchedPlayerName}</strong>...</p>
-        </div>
-      `;
-      
-      try {
-        const data = await getEnhancedPlayerHistory(playerName, pageName);
-        renderEnhancedPlayerHistory(data, searchedPlayerName, pageName, false);
-      } catch (error) {
-        document.getElementById('playerHistoryContainer').innerHTML = 
-          `<div style="text-align: center; padding: 2rem; color: var(--danger);">
-            <p><strong>Error loading enhanced history for ${searchedPlayerName}</strong></p>
-            <p style="margin-top: 1rem; color: var(--text-secondary);">${error}</p>
-          </div>`;
-      }
-    }
-
-    function findData() {
-      const val = searchInput.value.trim();
-      const pageObj = PAGES.find(p => p.name.toLowerCase() === val.toLowerCase());
-      
-      if (!val || !pageObj) {
-        showNotification('Please select a valid page from the suggestions', 'error');
-        return;
-      }
-      
-      loadDashboard(pageObj);
-    }
-
-    function backToLanding() {
-      clearAllSearchInputs();
-      clearPlayerHistory();
-      
-      sessionStorage.removeItem('searchPlayerName');
-      sessionStorage.removeItem('searchPlayerPage');
-      sessionStorage.removeItem('searchPlayerPages');
-      sessionStorage.removeItem('currentSearchedPlayer');
-      
-      navigationContext = 'landing';
-      
-      showLandingPage();
-    }
-
-    function backToDashboard() {
-      resetAllTableStates();
-      clearPlayerHistory();
-      
-      sessionStorage.removeItem('searchPlayerName');
-      sessionStorage.removeItem('searchPlayerPage');
-      sessionStorage.removeItem('currentSearchedPlayer');
-      
-      navigationContext = 'dashboard';
-      
-      updatePageTitle();
-      disableControlButtons();
-      showLoader();
-      loadDashboardData();
-    }
-
-    function resetAllTableStates() {
-      tableState.current = { type: null, page: 1, data: null, title: null };
-      tableState.playerTables = {
-        'Total': { page: 1, data: null },
-        'Active': { page: 1, data: null },
-        'Inactive': { page: 1, data: null },
-        'RecentActive': { page: 1, data: null },
-        'RecentInactive': { page: 1, data: null }
-      };
-      tableState.highRisk = { page: 1, data: null };
-      tableState.history = { page: 1, data: null };
-      tableState.deposits = { month: 0, data: null };
-    }
-
-    function showLoadingProgress() {
-      const progressMessages = [
-        "Loading player data...",
-        "Calculating deposits...", 
-        "Analyzing activity...",
-        "Finalizing dashboard..."
-      ];
-      
-      let current = 0;
-      loadingProgress.textContent = progressMessages[0];
-      
-      progressInterval = setInterval(() => {
-        current++;
-        if (current < progressMessages.length) {
-          loadingProgress.textContent = progressMessages[current];
-        } else {
-          clearInterval(progressInterval);
-        }
-      }, 800);
-    }
-
-    function renderDashboard(data) {
-      currentPageData = data;
-
-      const dash = document.getElementById('dashboardBoxes');
-      dash.style.display = 'block';
-      document.getElementById('tableContainer').style.display = 'block';
-
-      statsRow1.innerHTML = "";
-      statsRow2.innerHTML = "";
-      statsRow3.innerHTML = "";
-
-      document.getElementById('playerHistorySection').style.display = 'none';
-      document.getElementById('globalPlayerHistorySection').style.display = 'none';
-      clearPlayerHistory();
-      pageDepositsView.style.display = 'none';
-
-      const firstRowBoxes = [
-        { label: "Total Players", value: data.counts.Total || 0, type: "Total", icon: "fas fa-users", colorClass: "total" },
-        { label: "Active Players", value: data.counts.Active || 0, type: "Active", icon: "fas fa-user-check", colorClass: "active" },
-        { label: "Inactive Players", value: data.counts.Inactive || 0, type: "Inactive", icon: "fas fa-user-times", colorClass: "inactive" }
-      ];
-
-      const secondRowBoxes = [
-        { label: "Recent Active", value: data.counts.RecentActive || 0, type: "RecentActive", icon: "fas fa-bolt", colorClass: "recent-active" },
-        { label: "Recent Inactive", value: data.counts.RecentInactive || 0, type: "RecentInactive", icon: "fas fa-clock", colorClass: "recent-inactive" },
-        { label: "High Risk Players", value: data.counts.HighRisk || 0, type: "HighRisk", icon: "fas fa-exclamation-triangle", colorClass: "high-risk" }
-      ];
-
-      const thirdRowBoxes = [
-        { label: "Player History", value: "", type: "PlayerHistory", icon: "fas fa-history", colorClass: "history" },
-        { label: "Page Deposits", value: "", type: "PageDeposits", icon: "fas fa-money-bill-wave", colorClass: "deposits" },
-        { label: "Coming Soon", value: "", type: "ComingSoon2", icon: "fas fa-cogs", colorClass: "coming-soon" }
-      ];
-
-      firstRowBoxes.forEach(b => {
-        const div = document.createElement('div');
-        div.className = `stat-card ${b.colorClass}`;
-
-        let displayValue = (b.value === "" || b.value === undefined || b.value === null) ? 0 : b.value;
-
-        div.innerHTML = `
-          <div class="stat-icon">
-            <i class="${b.icon}"></i>
-          </div>
-          <div class="stat-value">${displayValue}</div>
-          <div class="stat-label">${b.label}</div>
-        `;
-
-        div.onclick = () => showBoxData(b.type);
-        statsRow1.appendChild(div);
-      });
-
-      secondRowBoxes.forEach(b => {
-        const div = document.createElement('div');
-        div.className = `stat-card ${b.colorClass}`;
-
-        let displayValue = (b.value === "" || b.value === undefined || b.value === null) ? 0 : b.value;
-
-        div.innerHTML = `
-          <div class="stat-icon">
-            <i class="${b.icon}"></i>
-          </div>
-          <div class="stat-value">${displayValue}</div>
-          <div class="stat-label">${b.label}</div>
-        `;
-
-        div.onclick = () => showBoxData(b.type);
-        statsRow2.appendChild(div);
-      });
-
-      thirdRowBoxes.forEach(b => {
-        const div = document.createElement('div');
-        div.className = `stat-card ${b.colorClass}`;
-
-        let displayValue = (b.type === "PlayerHistory" || b.type === "PageDeposits" || b.type.startsWith("ComingSoon")) ? "" : (b.value === "" || b.value === undefined || b.value === null) ? 0 : b.value;
-
-        let comingSoonBadge = '';
-        if (b.type.startsWith("ComingSoon")) {
-          comingSoonBadge = '<div class="coming-soon-badge">Coming Soon</div>';
-        }
-
-        div.innerHTML = `
-          ${comingSoonBadge}
-          <div class="stat-icon">
-            <i class="${b.icon}"></i>
-          </div>
-          <div class="stat-value">${displayValue}</div>
-          <div class="stat-label">
-            ${b.label}
-          </div>
-        `;
-
-        if (b.type.startsWith("ComingSoon")) {
-          div.onclick = () => showNotification('This feature is coming soon!', 'warning');
-        } else {
-          div.onclick = () => showBoxData(b.type);
-        }
-        statsRow3.appendChild(div);
-      });
-
-      document.getElementById('tableContainer').innerHTML = "";
-      clearBackContainer();
-      document.getElementById('playerHistorySection').style.display = 'none';
-      document.getElementById('globalPlayerHistorySection').style.display = 'none';
-      
-      document.getElementById('dashboard').style.display = 'block';
-      
-      sessionStorage.removeItem('searchPlayerName');
-      sessionStorage.removeItem('searchPlayerPage');
-      sessionStorage.removeItem('currentSearchedPlayer');
-    }
-
-    function showBoxData(type) {
-      document.getElementById('dashboardBoxes').style.display = 'none';
-      const tbl = document.getElementById('tableContainer');
-      const backDiv = document.getElementById('backContainer');
-      tbl.innerHTML = "";
-      document.getElementById('playerHistorySection').style.display = 'none';
-      document.getElementById('globalPlayerHistorySection').style.display = 'none';
-      pageDepositsView.style.display = 'none';
-
-      tableState.current.type = type;
-      tableState.current.title = getTableTitle(type);
-
-      backDiv.innerHTML = '<button class="btn btn-secondary" onclick="backToDashboard()"><i class="fas fa-arrow-left"></i> Back to Dashboard</button>';
-      
-      if (type === "PlayerHistory") {
-        document.getElementById('playerHistorySection').style.display = 'block';
-        currentView = 'playerHistory';
-        sessionStorage.setItem('currentView', 'playerHistory');
-        return;
-      }
-
-      if (type === "PageDeposits") {
-        showPageDeposits();
-        return;
-      }
-
-      let filtered = [];
-      let tableTitle = getTableTitle(type);
-      
-      switch(type) {
-        case "Total": 
-          filtered = currentPageData.players; 
-          break;
-        case "Active": 
-          filtered = currentPageData.players.filter(p => p.status === "Active"); 
-          break;
-        case "Inactive": 
-          filtered = currentPageData.players.filter(p => p.status === "Inactive" && p.daysSince >= INACTIVE_THRESHOLD); 
-          break;
-        case "RecentActive": 
-          filtered = currentPageData.recentActivePlayers || []; 
-          break;
-        case "RecentInactive": 
-          filtered = currentPageData.recentInactivePlayers || []; 
-          break;
-        case "HighRisk": 
-          if (currentPageData.highRiskPlayers && currentPageData.highRiskPlayers.length > 0) {
-            renderHighRiskTable();
-            return;
-          } else {
-            tbl.innerHTML = "<div class='table-container' style='text-align: center; padding: 2rem;'><p>No high risk players found.</p></div>";
-          }
-          break;
-      }
-
-      if (!filtered.length) {
-        tbl.innerHTML = `<div class='table-container' style='text-align: center; padding: 2rem;'><p>No ${type.toLowerCase()} players found.</p></div>`;
-      } else {
-        renderPlayerTable(filtered, tableTitle, type);
-      }
-
-      currentView = 'table';
-      sessionStorage.setItem('currentView', 'table');
-    }
-
-    function getTableTitle(type) {
-      switch(type) {
-        case "Total": return "All Players";
-        case "Active": return "Active Players (0-2 days)";
-        case "Inactive": return "Inactive Players (15+ days)";
-        case "RecentActive": return "Recent Active Players";
-        case "RecentInactive": return "Recent Inactive Players (3-4 days)";
-        case "HighRisk": return "High Risk Players Analysis";
-        default: return "Players";
-      }
-    }
-
-    function renderPlayerTable(players, title, type) {
-      const totalPlayers = players.length;
-      const currentPage = tableState.playerTables[type].page;
-      const paginatedPlayers = getPaginatedPlayers(players, currentPage, PLAYERS_PER_PAGE);
-      
-      let html = `
-        <div class="table-container">
-          <div class="table-header">
-            <h3 class="table-title">${title} (${totalPlayers} total)</h3>
-            <div id="paginationContainer"></div>
-          </div>
-          <div class="table-scroll-container">
-            <table style="font-size: 0.875rem;">
-              <thead>
-                <tr>
-                  <th style="min-width: 50px; text-align: center;">S.No</th>
-                  <th style="min-width: 120px;">Player</th>
-                  <th style="min-width: 140px;">Last Deposit</th>
-                  <th style="min-width: 100px;">Time Since</th>
-                  <th style="min-width: 80px;">Status</th>
-                  <th style="min-width: 90px; text-align: center;">Total $</th>
-                  <th style="min-width: 90px; text-align: center;">Last 7d $</th>
-                  ${type === "RecentActive" ? '<th style="min-width: 80px;">Gap Days</th>' : ''}
-                  <th style="min-width: 90px; text-align: center;">Notes</th>
-                </tr>
-              </thead>
-              <tbody>
-      `;
-      
-      paginatedPlayers.forEach((p, index) => {
-        const cls = p.status === "Active" ? "status-active" : "status-inactive";
-        
-        const gapDisplay = formatTimeSince(p.originalTimestamp);
-        const gapDays = p.gapDays ? p.gapDays : 'N/A';
-        
-        const notesBtnClass = p.hasNotes ? 'notes-btn has-notes' : 'notes-btn';
-        const notesBtnIcon = p.hasNotes ? 'fa-sticky-note' : 'fa-plus';
-        const notesBtnText = p.hasNotes ? 'Notes' : 'Add';
-        
-        const serialNumber = (currentPage - 1) * PLAYERS_PER_PAGE + index + 1;
-        
-        html += `
-          <tr>
-            <td style="text-align: center;">${serialNumber}</td>
-            <td>${p.player}</td>
-            <td>${p.lastDeposit}</td>
-            <td>${gapDisplay}</td>
-            <td><span class="status-badge ${cls}">${p.status}</span></td>
-            <td style="text-align: center;">${p.totalDeposit || 0}</td>
-            <td style="text-align: center;">${p.last7DaysDeposit || 0}</td>
-            ${type === "RecentActive" ? `<td style="text-align: center;">${gapDays}</td>` : ''}
-            <td style="text-align: center;">
-              <button class="${notesBtnClass}" onclick="showNotesModal('${p.player.replace(/'/g, "\\'")}', this)" title="${p.hasNotes ? 'View notes' : 'Add note'}">
-                <i class="fas ${notesBtnIcon}"></i> ${notesBtnText}
-              </button>
-            </td>
-          </tr>
-        `;
-      });
-      
-      html += `
-              </tbody>
-            </table>
-          </div>
-        </div>
-      `;
-      
-      document.getElementById('tableContainer').innerHTML = html;
-      
-      const paginationContainer = document.getElementById('paginationContainer');
-      renderPagination(totalPlayers, currentPage, PLAYERS_PER_PAGE, paginationContainer, `changePlayerPage_${type}`);
-    }
-
-    function renderHighRiskTable() {
-      const highRiskPlayers = currentPageData.highRiskPlayers;
-      const totalPlayers = highRiskPlayers.length;
-      const currentPage = tableState.highRisk.page;
-      const paginatedPlayers = getPaginatedPlayers(highRiskPlayers, currentPage, PLAYERS_PER_PAGE);
-      
-      let html = `
-        <div class="table-container">
-          <div class="table-header">
-            <h3 class="table-title">High Risk Players Analysis (${totalPlayers} total)</h3>
-            <div id="paginationContainer"></div>
-          </div>
-          <div class="table-scroll-container">
-            <table class="high-risk-table">
-              <thead>
-                <tr>
-                  <th style="text-align: center;">S.No</th>
-                  <th>Player</th>
-                  <th>Risk</th>
-                  <th>Gaps</th>
-                  <th>Gap Details</th>
-                  <th>Last Deposit</th>
-                  <th>Time Since</th>
-                  <th>Status</th>
-                  <th>Deposits</th>
-                  <th>Notes</th>
-                </tr>
-              </thead>
-              <tbody>
-      `;
-      
-      paginatedPlayers.forEach((p, index) => {
-        const statusClass = p.currentStatus === "Active" ? "status-active" : "status-inactive";
-        
-        const lastDepositPKT = convertUTCToPKT(p.lastDeposit);
-        const gapDisplay = formatTimeSince(p.lastDeposit);
-        
-        let gapDetails = '';
-        p.gaps.forEach((gap, gapIndex) => {
-          gapDetails += `
-            <div class="gap-item">
-              <strong>${gap.gapDays}d</strong>: ${gap.gapBetween}
-            </div>
-          `;
-        });
-        
-        let riskClass = '';
-        if (p.riskLevel === "Very High") riskClass = 'risk-very-high';
-        else if (p.riskLevel === "High") riskClass = 'risk-high';
-        else if (p.riskLevel === "Medium") riskClass = 'risk-medium';
-        else if (p.riskLevel === "Low") riskClass = 'risk-low';
-        
-        const notesBtnClass = p.hasNotes ? 'notes-btn has-notes' : 'notes-btn';
-        const notesBtnIcon = p.hasNotes ? 'fa-sticky-note' : 'fa-plus';
-        const notesBtnText = p.hasNotes ? 'Notes' : 'Add';
-        
-        const serialNumber = (currentPage - 1) * PLAYERS_PER_PAGE + index + 1;
-        
-        html += `
-          <tr>
-            <td style="text-align: center;">${serialNumber}</td>
-            <td><strong>${p.player}</strong></td>
-            <td class="${riskClass}"><strong>${p.riskLevel}</strong></td>
-            <td style="text-align: center;">${p.totalQualifyingGaps}</td>
-            <td>
-              <div class="gap-details-compact">
-                ${gapDetails}
-              </div>
-            </td>
-            <td>${lastDepositPKT}</td>
-            <td>${gapDisplay}</td>
-            <td><span class="status-badge ${statusClass}">${p.currentStatus}</span></td>
-            <td style="text-align: center;">${p.totalDeposits}</td>
-            <td>
-              <button class="${notesBtnClass}" onclick="showNotesModal('${p.player.replace(/'/g, "\\'")}', this)" title="${p.hasNotes ? 'View notes' : 'Add note'}">
-                <i class="fas ${notesBtnIcon}"></i> ${notesBtnText}
-              </button>
-            </td>
-          </tr>
-        `;
-      });
-      
-      html += `
-              </tbody>
-            </table>
-          </div>
-        </div>
-        <div style="margin-top: 1.5rem; background: var(--bg-card); padding: 1.5rem; border-radius: 12px; box-shadow: var(--shadow); border: 1px solid var(--border-color);">
-          <h4 style="color: var(--text-primary); margin-bottom: 1rem;">Risk Level Explanation</h4>
-          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-top: 1rem;">
-            <div><span class="risk-very-high">🔴 Very High</span>: 3+ gaps OR 12+ day gap</div>
-            <div><span class="risk-high">🟠 High</span>: 2+ gaps OR 10+ day gap</div>
-            <div><span class="risk-medium">🟡 Medium</span>: 1 gap with 8+ days</div>
-            <div><span class="risk-low">🟢 Low</span>: Single smaller gaps</div>
-          </div>
-          <div style="margin-top: 1rem; padding: 1rem; background: var(--bg-secondary); border-radius: 8px; border: 1px solid var(--border-color);">
-            <p style="color: var(--text-primary); font-weight: 500; font-size: 0.9rem;">Note: High Risk players include those with gaps from 5 to 14 days 23 hours 59 minutes. Players with 15+ day gaps are moved to Inactive.</p>
-          </div>
-        </div>
-      `;
-      
-      document.getElementById('tableContainer').innerHTML = html;
-      
-      const paginationContainer = document.getElementById('paginationContainer');
-      renderPagination(totalPlayers, currentPage, PLAYERS_PER_PAGE, paginationContainer, 'changeHighRiskPage');
-    }
-
     function createPlayerPageChangeFunction(type) {
-      return function(page) {
+      return async function(page) {
         tableState.playerTables[type].page = page;
         let filtered = [];
         
@@ -4834,7 +5752,7 @@ function calculateExactGapDuration(startDate, endDate) {
           case "RecentInactive": filtered = currentPageData.recentInactivePlayers || []; break;
         }
         
-        renderPlayerTable(filtered, getTableTitle(type), type);
+        await renderPlayerTable(filtered, getTableTitle(type), type);
       };
     }
 
@@ -4856,6 +5774,7 @@ function calculateExactGapDuration(startDate, endDate) {
       document.getElementById('playerHistorySection').style.display = 'none';
       document.getElementById('globalPlayerHistorySection').style.display = 'none';
       document.getElementById('backContainer').innerHTML = '';
+      clientRecoveryDashboard.style.display = 'none';
       
       pageDepositsView.innerHTML = `
         <div style="text-align: center; padding: 2rem;">
@@ -5138,7 +6057,6 @@ function calculateExactGapDuration(startDate, endDate) {
           '<span class="status-badge status-active">Active</span>' : 
           '<span class="status-badge status-inactive">Inactive</span>';
         
-        // FIXED: Active days show dash, inactive days show exact gap
         const gapDisplay = period.gapDuration;
         let gapClass = '';
         
@@ -5154,7 +6072,6 @@ function calculateExactGapDuration(startDate, endDate) {
           activityDisplay = `${period.depositCount} deposit${period.depositCount > 1 ? 's' : ''}${amountText}`;
         }
 
-        // Determine activity level display with new logic
         let activityLevelDisplay = '';
         if (isActive) {
           if (period.activityLevel === 'High') {
@@ -5240,7 +6157,6 @@ function calculateExactGapDuration(startDate, endDate) {
       notesModal.style.display = 'block';
       noteTextInput.focus();
       
-      // If viewer role, disable note input
       if (userRole === PIN_CONFIG.ROLES.VIEWER) {
         noteTextInput.disabled = true;
         noteTextInput.placeholder = "Viewer role cannot add notes";
@@ -5295,7 +6211,6 @@ function calculateExactGapDuration(startDate, endDate) {
     }
 
     async function savePlayerNote() {
-      // Check if user has permission
       if (userRole === PIN_CONFIG.ROLES.VIEWER) {
         showNotification('Viewer role cannot add notes', 'warning');
         return;
@@ -5369,7 +6284,6 @@ function calculateExactGapDuration(startDate, endDate) {
 
     // Modal functions
     function showRefreshModal() {
-      // Check if user has permission
       if (userRole === PIN_CONFIG.ROLES.VIEWER) {
         showNotification('Viewer role cannot refresh data', 'warning');
         return;
@@ -5387,7 +6301,6 @@ function calculateExactGapDuration(startDate, endDate) {
     }
 
     function showCleanupModal() {
-      // Check if user has permission
       if (userRole === PIN_CONFIG.ROLES.VIEWER) {
         showNotification('Viewer role cannot perform cleanup', 'warning');
         return;
@@ -5503,6 +6416,12 @@ function calculateExactGapDuration(startDate, endDate) {
       if (event.target === notesModal) {
         hideNotesModal();
       }
+      if (event.target === recoveryModal) {
+        hideRecoveryModal();
+      }
+      if (event.target === removalModal) {
+        hideRemovalModal();
+      }
     });
 
     refreshPinInput.addEventListener('keypress', function(event) {
@@ -5520,6 +6439,12 @@ function calculateExactGapDuration(startDate, endDate) {
     noteTextInput.addEventListener('keypress', function(event) {
       if (event.key === 'Enter' && (event.ctrlKey || event.metaKey)) {
         savePlayerNote();
+      }
+    });
+
+    removalPinInput.addEventListener('keypress', function(event) {
+      if (event.key === 'Enter') {
+        confirmRemoval();
       }
     });
 
