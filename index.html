@@ -8,7 +8,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <style>
-    /* === COMPACT UI STYLES === */
+    /* === ALL YOUR EXISTING CSS STYLES === */
     :root {
       --primary: #4361ee;
       --primary-dark: #3a56d4;
@@ -21,8 +21,8 @@
       --light: #f8f9fa;
       --gray: #6c757d;
       --border: #e9ecef;
-      --shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.08), 0 1px 2px -1px rgba(0, 0, 0, 0.04);
-      --shadow-lg: 0 6px 10px -3px rgba(0, 0, 0, 0.08), 0 2px 4px -2px rgba(0, 0, 0, 0.03);
+      --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+      --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
       
       /* Theme variables */
       --bg-primary: #ffffff;
@@ -32,9 +32,6 @@
       --text-secondary: #6c757d;
       --border-color: #e9ecef;
       --shadow-color: rgba(0, 0, 0, 0.1);
-      
-      /* COMPACT: Reduced base font size */
-      font-size: 14px;
     }
 
     @media (prefers-color-scheme: dark) {
@@ -49,25 +46,6 @@
       }
     }
 
-    /* Reduced scaling */
-    @media (min-width: 1920px) {
-      :root {
-        font-size: 15px;
-      }
-    }
-
-    @media (max-width: 768px) {
-      :root {
-        font-size: 13px;
-      }
-    }
-
-    @media (max-width: 480px) {
-      :root {
-        font-size: 12px;
-      }
-    }
-
     * {
       margin: 0;
       padding: 0;
@@ -79,7 +57,7 @@
       background: var(--bg-primary);
       color: var(--text-primary);
       min-height: 100vh;
-      line-height: 1.5; /* Reduced from 1.6 */
+      line-height: 1.6;
       transition: all 0.3s ease;
     }
 
@@ -96,61 +74,61 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      padding: 1.5rem; /* Reduced */
+      padding: 2rem;
       background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
       z-index: 9999;
     }
 
     .pin-container {
       background: var(--bg-card);
-      border-radius: 16px; /* Reduced */
-      padding: 2rem; /* Reduced from 3rem */
+      border-radius: 20px;
+      padding: 3rem;
       box-shadow: var(--shadow-lg);
       text-align: center;
-      width: 95%;
-      max-width: 380px; /* Reduced from 400px */
+      max-width: 400px;
+      width: 100%;
       border: 1px solid var(--border-color);
       animation: fadeIn 0.5s ease;
     }
 
     @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(15px); }
+      from { opacity: 0; transform: translateY(20px); }
       to { opacity: 1; transform: translateY(0); }
     }
 
     .pin-logo {
-      font-size: 2rem; /* Reduced from 2.5rem */
+      font-size: 2.5rem;
       font-weight: 700;
       background: linear-gradient(135deg, var(--primary), var(--secondary));
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
-      margin-bottom: 0.4rem; /* Reduced */
+      margin-bottom: 0.5rem;
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 0.4rem; /* Reduced */
+      gap: 0.5rem;
     }
 
     .pin-subtitle {
       color: var(--text-secondary);
-      font-size: 0.9rem; /* Reduced */
-      margin-bottom: 1.5rem; /* Reduced from 2rem */
+      font-size: 1rem;
+      margin-bottom: 2rem;
       font-weight: 400;
     }
 
     .pin-input-container {
       position: relative;
-      margin-bottom: 1.2rem; /* Reduced */
+      margin-bottom: 1.5rem;
     }
 
     .pin-input {
       width: 100%;
-      padding: 1rem 1.2rem; /* Reduced */
+      padding: 1.2rem 1.5rem;
       border: 2px solid var(--border-color);
-      border-radius: 10px; /* Reduced */
-      font-size: 1.3rem; /* Reduced from 1.5rem */
+      border-radius: 12px;
+      font-size: 1.5rem;
       text-align: center;
-      letter-spacing: 0.4rem; /* Reduced */
+      letter-spacing: 0.5rem;
       background: var(--bg-card);
       color: var(--text-primary);
       font-weight: 600;
@@ -160,7 +138,7 @@
     .pin-input:focus {
       outline: none;
       border-color: var(--primary);
-      box-shadow: 0 0 0 2px rgba(67, 97, 238, 0.1);
+      box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.1);
     }
 
     .pin-input.error {
@@ -170,8 +148,8 @@
 
     @keyframes shake {
       0%, 100% { transform: translateX(0); }
-      10%, 30%, 50%, 70%, 90% { transform: translateX(-4px); }
-      20%, 40%, 60%, 80% { transform: translateX(4px); }
+      10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+      20%, 40%, 60%, 80% { transform: translateX(5px); }
     }
 
     .pin-input.locked {
@@ -182,9 +160,9 @@
     }
 
     .pin-status {
-      margin-top: 0.5rem; /* Reduced */
-      min-height: 1.2rem; /* Reduced */
-      font-size: 0.85rem; /* Reduced */
+      margin-top: 0.75rem;
+      min-height: 1.5rem;
+      font-size: 0.9rem;
       font-weight: 500;
     }
 
@@ -205,37 +183,37 @@
     }
 
     .pin-attempts {
-      margin-top: 0.4rem; /* Reduced */
-      font-size: 0.8rem; /* Reduced */
+      margin-top: 0.5rem;
+      font-size: 0.85rem;
       color: var(--text-secondary);
     }
 
     .pin-lockout {
-      margin-top: 0.8rem; /* Reduced */
-      padding: 0.8rem; /* Reduced */
+      margin-top: 1rem;
+      padding: 1rem;
       background: rgba(239, 71, 111, 0.1);
-      border-radius: 8px; /* Reduced */
+      border-radius: 10px;
       border: 1px solid var(--danger);
     }
 
     .lockout-timer {
-      font-size: 1rem; /* Reduced */
+      font-size: 1.2rem;
       font-weight: 700;
       color: var(--danger);
-      margin: 0.4rem 0; /* Reduced */
+      margin: 0.5rem 0;
     }
 
     .lockout-message {
-      font-size: 0.85rem; /* Reduced */
+      font-size: 0.9rem;
       color: var(--text-secondary);
     }
 
     .pin-btn {
       width: 100%;
-      padding: 0.9rem; /* Reduced from 1rem */
+      padding: 1rem;
       border: none;
-      border-radius: 10px; /* Reduced */
-      font-size: 0.95rem; /* Reduced */
+      border-radius: 12px;
+      font-size: 1rem;
       font-weight: 600;
       cursor: pointer;
       transition: all 0.3s ease;
@@ -262,7 +240,7 @@
     }
 
     .pin-btn:hover:not(:disabled) {
-      transform: translateY(-1px);
+      transform: translateY(-2px);
       box-shadow: var(--shadow-lg);
     }
 
@@ -278,15 +256,15 @@
     }
 
     .pin-footer {
-      margin-top: 1.5rem; /* Reduced from 2rem */
-      padding-top: 0.8rem; /* Reduced */
+      margin-top: 2rem;
+      padding-top: 1rem;
       border-top: 1px solid var(--border-color);
-      font-size: 0.8rem; /* Reduced */
+      font-size: 0.85rem;
       color: var(--text-secondary);
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 0.4rem; /* Reduced */
+      gap: 0.5rem;
     }
 
     /* Landing Page */
@@ -296,34 +274,34 @@
       align-items: center;
       justify-content: center;
       min-height: 100vh;
-      padding: 1.5rem; /* Reduced */
+      padding: 2rem;
       background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     }
 
     .landing-container {
       background: var(--bg-card);
-      border-radius: 16px; /* Reduced */
-      padding: 2rem; /* Reduced from 3rem */
+      border-radius: 20px;
+      padding: 3rem;
       box-shadow: var(--shadow-lg);
       text-align: center;
-      width: 95%;
-      max-width: 550px; /* Reduced from 600px */
+      max-width: 600px;
+      width: 100%;
       border: 1px solid var(--border-color);
     }
 
     .logo {
-      font-size: 2.5rem; /* Reduced from 3rem */
+      font-size: 3rem;
       font-weight: 700;
       background: linear-gradient(135deg, var(--primary), var(--secondary));
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
-      margin-bottom: 0.8rem; /* Reduced */
+      margin-bottom: 1rem;
     }
 
     .subtitle {
       color: var(--text-secondary);
-      font-size: 1rem; /* Reduced */
-      margin-bottom: 1.5rem; /* Reduced from 2rem */
+      font-size: 1.1rem;
+      margin-bottom: 2rem;
       font-weight: 400;
     }
 
@@ -333,15 +311,15 @@
       border: 2px solid var(--danger);
       transition: all 0.3s ease;
       width: auto !important;
-      padding: 0.6rem 1.2rem !important; /* Reduced */
-      margin-top: 0.8rem; /* Reduced */
+      padding: 0.75rem 1.5rem !important;
+      margin-top: 1rem;
     }
 
     #logoutBtnLanding:hover:not(:disabled) {
       background: var(--danger);
       color: white;
-      transform: translateY(-1px);
-      box-shadow: 0 2px 8px rgba(239, 68, 68, 0.3);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
     }
 
     #logoutBtnLanding:active:not(:disabled) {
@@ -356,31 +334,31 @@
     }
 
     .search-section {
-      margin-bottom: 1.5rem; /* Reduced from 2rem */
+      margin-bottom: 2rem;
       text-align: left;
     }
 
     .section-title {
-      font-size: 0.9rem; /* Reduced */
+      font-size: 1rem;
       font-weight: 600;
       color: var(--text-primary);
-      margin-bottom: 0.6rem; /* Reduced */
+      margin-bottom: 0.75rem;
       display: flex;
       align-items: center;
-      gap: 0.4rem; /* Reduced */
+      gap: 0.5rem;
     }
 
     .search-container {
       position: relative;
-      margin-bottom: 0.8rem; /* Reduced from 1rem */
+      margin-bottom: 1rem;
     }
 
     .search-input {
       width: 100%;
-      padding: 0.8rem 1.2rem; /* Reduced */
+      padding: 1rem 1.5rem;
       border: 2px solid var(--border-color);
-      border-radius: 10px; /* Reduced */
-      font-size: 0.9rem; /* Reduced */
+      border-radius: 12px;
+      font-size: 1rem;
       transition: all 0.3s ease;
       background: var(--bg-card);
       color: var(--text-primary);
@@ -389,7 +367,7 @@
     .search-input:focus {
       outline: none;
       border-color: var(--primary);
-      box-shadow: 0 0 0 2px rgba(67, 97, 238, 0.1);
+      box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.1);
     }
 
     .search-icon {
@@ -408,23 +386,23 @@
       right: 0;
       background: var(--bg-card);
       border: 1px solid var(--border-color);
-      border-radius: 10px; /* Reduced */
+      border-radius: 12px;
       box-shadow: var(--shadow-lg);
-      max-height: 180px; /* Reduced */
+      max-height: 200px;
       overflow-y: auto;
       z-index: 1000;
-      margin-top: 0.4rem; /* Reduced */
+      margin-top: 0.5rem;
     }
 
     .suggestion-item {
-      padding: 0.8rem 1.2rem; /* Reduced */
+      padding: 1rem 1.5rem;
       cursor: pointer;
       border-bottom: 1px solid var(--border-color);
       transition: background-color 0.2s ease;
       color: var(--text-primary);
       display: flex;
       align-items: flex-start;
-      gap: 0.6rem; /* Reduced */
+      gap: 0.75rem;
     }
 
     .suggestion-item:hover {
@@ -436,40 +414,40 @@
     }
 
     .page-emoji {
-      font-size: 1rem; /* Reduced */
-      width: 20px; /* Reduced */
+      font-size: 1.2rem;
+      width: 24px;
       text-align: center;
     }
 
     .player-pages {
       display: flex;
       flex-wrap: wrap;
-      gap: 0.2rem; /* Reduced */
-      margin-top: 0.2rem; /* Reduced */
+      gap: 0.25rem;
+      margin-top: 0.25rem;
     }
 
     .page-indicator {
       background: var(--primary);
       color: white;
-      padding: 0.15rem 0.4rem; /* Reduced */
-      border-radius: 10px; /* Reduced */
-      font-size: 0.65rem; /* Reduced */
+      padding: 0.2rem 0.5rem;
+      border-radius: 12px;
+      font-size: 0.7rem;
       font-weight: 500;
       white-space: nowrap;
     }
 
     .btn {
-      padding: 0.8rem 1.5rem; /* Reduced */
+      padding: 1rem 2rem;
       border: none;
-      border-radius: 10px; /* Reduced */
-      font-size: 0.9rem; /* Reduced */
+      border-radius: 12px;
+      font-size: 1rem;
       font-weight: 600;
       cursor: pointer;
       transition: all 0.3s ease;
       text-decoration: none;
       display: inline-flex;
       align-items: center;
-      gap: 0.4rem; /* Reduced */
+      gap: 0.5rem;
       position: relative;
       overflow: hidden;
     }
@@ -496,7 +474,7 @@
     }
 
     .btn-primary:hover:not(:disabled) {
-      transform: translateY(-2px);
+      transform: translateY(-3px);
       box-shadow: var(--shadow-lg);
     }
 
@@ -547,7 +525,7 @@
     .btn-secondary:hover:not(:disabled) {
       border-color: var(--primary);
       color: var(--primary);
-      transform: translateY(-1px);
+      transform: translateY(-2px);
       box-shadow: var(--shadow-lg);
     }
 
@@ -559,7 +537,7 @@
 
     .btn-success:hover:not(:disabled) {
       background: #05b58c;
-      transform: translateY(-1px);
+      transform: translateY(-2px);
       box-shadow: var(--shadow-lg);
     }
 
@@ -571,7 +549,7 @@
 
     .btn-warning:hover:not(:disabled) {
       background: #fbbf24;
-      transform: translateY(-1px);
+      transform: translateY(-2px);
       box-shadow: var(--shadow-lg);
     }
 
@@ -583,7 +561,7 @@
 
     .btn-danger:hover:not(:disabled) {
       background: #e53e3e;
-      transform: translateY(-1px);
+      transform: translateY(-2px);
       box-shadow: var(--shadow-lg);
     }
 
@@ -592,63 +570,69 @@
       display: none;
       min-height: 100vh;
       background: var(--bg-secondary);
-      width: 100%;
     }
 
     .dashboard-header {
       background: var(--bg-card);
       box-shadow: var(--shadow);
-      padding: 1rem 1.5rem; /* Reduced vertical padding */
+      padding: 1.5rem 2rem;
       position: sticky;
       top: 0;
       z-index: 100;
       border-bottom: 1px solid var(--border-color);
-      width: 100%;
     }
 
     .header-content {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      width: 95%;
+      max-width: 1400px;
       margin: 0 auto;
-      flex-wrap: wrap;
-      gap: 0.8rem; /* Reduced */
     }
 
     .page-title {
-      font-size: 1.3rem; /* Reduced from 1.5rem */
+      font-size: 1.5rem;
       font-weight: 600;
       color: var(--text-primary);
     }
 
     .control-buttons {
       display: flex;
-      gap: 0.8rem; /* Reduced from 1rem */
-      flex-wrap: wrap;
+      gap: 1rem;
     }
 
     .dashboard-content {
-      width: 95%;
+      max-width: 1400px;
       margin: 0 auto;
-      padding: 1.5rem; /* Reduced from 2rem */
+      padding: 2rem;
     }
 
-    /* Stats Grid - COMPACT */
-    .stats-grid,
-    .stats-grid-row-2,
+    /* Stats Grid */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .stats-grid-row-2 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+
     .stats-grid-row-3 {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); /* Reduced from 280px */
-      gap: 1.5rem; /* Reduced from 2rem */
-      margin-bottom: 1.5rem; /* Reduced */
-      width: 100%;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+      margin-bottom: 2rem;
     }
 
     .stat-card {
       background: var(--bg-card);
-      border-radius: 12px; /* Reduced from 16px */
-      padding: 1.5rem; /* Reduced from 2rem */
+      border-radius: 16px;
+      padding: 2rem;
       box-shadow: var(--shadow);
       transition: all 0.3s ease;
       cursor: pointer;
@@ -661,7 +645,6 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      width: 100%;
     }
 
     .stat-card::before {
@@ -670,7 +653,7 @@
       top: 0;
       left: 0;
       right: 0;
-      height: 3px; /* Reduced */
+      height: 4px;
       background: linear-gradient(90deg, var(--primary), var(--secondary));
       transform: scaleX(0);
       transform-origin: left;
@@ -678,7 +661,7 @@
     }
 
     .stat-card:hover {
-      transform: translateY(-3px);
+      transform: translateY(-5px);
       box-shadow: var(--shadow-lg);
     }
 
@@ -697,11 +680,11 @@
     .stat-card.recovery { border-left-color: var(--success); }
 
     .stat-value {
-      font-size: 2rem; /* Reduced from 2.5rem */
+      font-size: 2.5rem;
       font-weight: 700;
-      margin-bottom: 0.4rem; /* Reduced */
+      margin-bottom: 0.5rem;
       color: var(--text-primary);
-      min-height: 50px; /* Reduced from 60px */
+      min-height: 60px;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -713,32 +696,29 @@
       text-align: center;
       display: flex;
       align-items: center;
-      gap: 0.4rem; /* Reduced */
+      gap: 0.5rem;
       justify-content: center;
-      font-size: 1rem; /* Reduced */
     }
 
     .stat-icon {
-      font-size: 1.5rem; /* Reduced from 2rem */
-      margin-bottom: 0.8rem; /* Reduced from 1rem */
+      font-size: 2rem;
+      margin-bottom: 1rem;
       opacity: 0.8;
       text-align: center;
     }
 
-    /* CLIENT RECOVERY BUTTON STYLES - OPTIMIZED */
+    /* CLIENT RECOVERY BUTTON STYLES */
     .recovery-btn {
-      padding: 0.3rem 0.6rem; /* Reduced */
+      padding: 0.5rem 1rem;
       border: none;
-      border-radius: 5px; /* Reduced from 6px */
-      font-size: 0.8rem; /* Reduced */
+      border-radius: 6px;
+      font-size: 0.875rem;
       font-weight: 500;
       cursor: pointer;
       transition: all 0.2s ease;
       display: inline-flex;
       align-items: center;
-      gap: 0.2rem; /* Reduced */
-      min-width: 60px; /* Reduced from 70px */
-      justify-content: center;
+      gap: 0.5rem;
     }
 
     .recovery-btn.mark {
@@ -756,7 +736,6 @@
       color: #6b7280;
       border: 1px solid #d1d5db;
       cursor: not-allowed;
-      min-width: 45px; /* Reduced from 50px */
     }
 
     .recovery-btn:disabled {
@@ -784,34 +763,33 @@
       left: 50%;
       transform: translate(-50%, -50%);
       background: var(--bg-card);
-      border-radius: 14px; /* Reduced */
-      padding: 1.5rem; /* Reduced from 2rem */
+      border-radius: 16px;
+      padding: 2rem;
       box-shadow: var(--shadow-lg);
-      width: 95%;
-      max-width: 450px; /* Reduced from 500px */
+      max-width: 500px;
+      width: 90%;
       border: 1px solid var(--border-color);
     }
 
     .recovery-modal-title {
-      font-size: 1.1rem; /* Reduced */
+      font-size: 1.25rem;
       font-weight: 600;
-      margin-bottom: 1.2rem; /* Reduced */
+      margin-bottom: 1.5rem;
       text-align: center;
       color: var(--text-primary);
     }
 
     .recovery-method-selector {
       display: flex;
-      gap: 0.8rem; /* Reduced */
-      margin-bottom: 1.2rem; /* Reduced */
+      gap: 1rem;
+      margin-bottom: 1.5rem;
       justify-content: center;
-      flex-wrap: wrap;
     }
 
     .recovery-method-btn {
-      padding: 0.8rem 1.2rem; /* Reduced */
+      padding: 1rem 1.5rem;
       border: 2px solid var(--border-color);
-      border-radius: 8px; /* Reduced */
+      border-radius: 10px;
       background: var(--bg-card);
       color: var(--text-primary);
       font-weight: 500;
@@ -820,10 +798,9 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 0.4rem; /* Reduced */
+      gap: 0.5rem;
       flex: 1;
       text-align: center;
-      min-width: 100px; /* Reduced */
     }
 
     .recovery-method-btn:hover {
@@ -837,21 +814,21 @@
     }
 
     .recovery-method-icon {
-      font-size: 1.3rem; /* Reduced */
+      font-size: 1.5rem;
     }
 
     .recovery-notes-input {
       width: 100%;
-      padding: 0.8rem; /* Reduced */
+      padding: 1rem;
       border: 2px solid var(--border-color);
-      border-radius: 8px; /* Reduced */
-      font-size: 0.9rem; /* Reduced */
+      border-radius: 10px;
+      font-size: 0.95rem;
       background: var(--bg-card);
       color: var(--text-primary);
       resize: vertical;
-      min-height: 70px; /* Reduced from 80px */
+      min-height: 80px;
       font-family: inherit;
-      margin-bottom: 1.2rem; /* Reduced */
+      margin-bottom: 1.5rem;
     }
 
     .recovery-notes-input:focus {
@@ -863,17 +840,17 @@
     .removal-reason-selector {
       display: flex;
       flex-direction: column;
-      gap: 0.6rem; /* Reduced */
-      margin: 1.2rem 0; /* Reduced */
+      gap: 0.75rem;
+      margin: 1.5rem 0;
     }
 
     .removal-reason-option {
       display: flex;
       align-items: center;
-      gap: 0.6rem; /* Reduced */
-      padding: 0.6rem; /* Reduced */
+      gap: 0.75rem;
+      padding: 0.75rem;
       border: 1px solid var(--border-color);
-      border-radius: 6px; /* Reduced */
+      border-radius: 8px;
       cursor: pointer;
       transition: all 0.2s ease;
     }
@@ -889,15 +866,15 @@
 
     .removal-pin-input {
       width: 100%;
-      padding: 0.8rem; /* Reduced */
+      padding: 1rem;
       border: 2px solid var(--border-color);
-      border-radius: 8px; /* Reduced */
-      font-size: 1rem; /* Reduced */
+      border-radius: 10px;
+      font-size: 1.2rem;
       text-align: center;
-      letter-spacing: 0.2rem; /* Reduced */
+      letter-spacing: 0.3rem;
       background: var(--bg-card);
       color: var(--text-primary);
-      margin: 1.2rem 0; /* Reduced */
+      margin: 1.5rem 0;
     }
 
     .removal-pin-input:focus {
@@ -905,114 +882,32 @@
       border-color: var(--primary);
     }
 
-    /* ==================== */
-    /* RECOVERY DASHBOARD REDESIGN - FIXED */
-    /* ==================== */
+    /* RECOVERY DASHBOARD STYLES */
     .recovery-dashboard {
       background: var(--bg-card);
-      border-radius: 14px; /* Reduced */
+      border-radius: 16px;
       box-shadow: var(--shadow);
       overflow: hidden;
-      margin-bottom: 1.5rem; /* Reduced */
+      margin-bottom: 2rem;
       border: 1px solid var(--border-color);
-      width: 100%;
     }
 
-    /* Recovery Header */
-    .recovery-header {
-      padding: 1.2rem 1.5rem; /* Reduced */
-      background: var(--bg-secondary);
-      border-bottom: 1px solid var(--border-color);
-      display: flex;
-      flex-direction: column;
-      gap: 1.2rem; /* Reduced */
-    }
-
-    .recovery-header-top {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      flex-wrap: wrap;
-      gap: 1rem;
-    }
-
-    .recovery-title-section {
-      display: flex;
-      align-items: flex-start;
-      gap: 0.8rem; /* Reduced */
-      flex-wrap: wrap;
-    }
-
-    .recovery-page-title {
-      font-size: 1.3rem; /* Reduced */
-      font-weight: 600;
-      color: var(--text-primary);
-      display: flex;
-      align-items: center;
-      gap: 0.4rem; /* Reduced */
-      flex: 1;
-    }
-
-    /* Single search bar container */
-    .recovery-search-container {
-      flex: 1;
-      min-width: 250px;
-      max-width: 400px;
-      margin-bottom: 0;
-    }
-
-    /* Recovery Stats Cards - COMPACT */
-    .recovery-stats-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); /* Reduced */
-      gap: 1rem; /* Reduced */
-      margin-top: 0.8rem; /* Reduced */
-    }
-
-    .recovery-stat-card {
-      background: var(--bg-card);
-      border-radius: 10px; /* Reduced */
-      padding: 1.2rem; /* Reduced */
-      text-align: center;
-      border: 1px solid var(--border-color);
-      display: flex;
-      flex-direction: column;
-      gap: 0.4rem; /* Reduced */
-    }
-
-    .recovery-stat-value {
-      font-size: 2rem; /* Reduced */
-      font-weight: 700;
-      color: var(--text-primary);
-      line-height: 1;
-    }
-
-    .recovery-stat-label {
-      font-size: 0.85rem; /* Reduced */
-      color: var(--text-secondary);
-      font-weight: 500;
-    }
-
-    /* Recovery Tabs - FIXED SPACING */
     .recovery-tabs {
       display: flex;
       border-bottom: 1px solid var(--border-color);
       background: var(--bg-secondary);
-      flex-wrap: wrap;
-      padding: 0 1.5rem; /* Add padding to separate from edges */
     }
 
     .recovery-tab {
-      padding: 0.8rem 1.2rem; /* Reduced */
+      padding: 1rem 1.5rem;
       background: none;
       border: none;
-      font-size: 0.9rem; /* Reduced */
+      font-size: 1rem;
       font-weight: 500;
       color: var(--text-secondary);
       cursor: pointer;
       transition: all 0.2s ease;
       position: relative;
-      white-space: nowrap;
     }
 
     .recovery-tab:hover {
@@ -1031,7 +926,7 @@
       bottom: 0;
       left: 0;
       right: 0;
-      height: 2px; /* Reduced */
+      height: 3px;
       background: var(--primary);
     }
 
@@ -1039,213 +934,154 @@
       padding: 0;
     }
 
-    /* Optimized Recovery Table - FIXED COLUMN ORDER */
+    .recovery-search-container {
+      padding: 1.5rem 1.5rem 0;
+    }
+
+    .recovery-stats {
+      display: flex;
+      gap: 1rem;
+      padding: 1rem 1.5rem;
+      background: var(--bg-secondary);
+      border-bottom: 1px solid var(--border-color);
+      flex-wrap: wrap;
+    }
+
+    .recovery-stat {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+
+    .recovery-stat-value {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    .recovery-stat-label {
+      font-size: 0.875rem;
+      color: var(--text-secondary);
+    }
+
     .recovery-table-container {
       overflow-x: auto;
-      width: 100%;
     }
 
     .recovery-table {
       width: 100%;
       border-collapse: collapse;
-      min-width: 100%;
-      font-size: 0.9rem; /* Reduced */
     }
-
-    /* FIXED: Correct column order and widths */
-    .recovery-table th:nth-child(1) { width: 40px; } /* # */
-    .recovery-table th:nth-child(2) { width: 100px; } /* Date */
-    .recovery-table th:nth-child(3) { width: 180px; } /* Client Name */
-    .recovery-table th:nth-child(4) { width: 80px; } /* Method */
-    .recovery-table th:nth-child(5) { width: 160px; } /* Current Status */
-    .recovery-table th:nth-child(6) { width: 60px; } /* Actions */
 
     .recovery-table th {
       background: var(--bg-secondary);
-      padding: 0.9rem 1rem; /* Reduced */
+      padding: 1rem;
       text-align: left;
       font-weight: 600;
       color: var(--text-secondary);
       border-bottom: 2px solid var(--border-color);
       white-space: nowrap;
-      font-size: 0.9rem; /* Reduced */
     }
 
     .recovery-table td {
-      padding: 0.9rem 1rem; /* Reduced */
+      padding: 1rem;
       border-bottom: 1px solid var(--border-color);
       color: var(--text-primary);
-      vertical-align: middle; /* Changed from top to middle */
-      font-size: 0.9rem; /* Reduced */
     }
 
     .recovery-table tr:hover {
       background: var(--bg-secondary);
     }
 
-    /* Date Cell - Clean */
-    .date-cell {
-      white-space: nowrap;
-      font-weight: 500;
-    }
-
-    /* Client Name Cell - Clean */
-    .client-name-cell {
+    .recovery-table .status-active {
+      color: var(--success);
       font-weight: 600;
     }
 
-    /* Method Cell - Clean (no emoji) */
-    .method-cell {
-      text-transform: capitalize;
+    .recovery-table .status-inactive {
+      color: var(--danger);
+      font-weight: 600;
+    }
+
+    .method-chat {
+      color: var(--info);
+    }
+
+    .method-offer {
+      color: #f59e0b;
+    }
+
+    .removal-btn {
+      padding: 0.5rem 1rem;
+      border: 1px solid var(--danger);
+      background: rgba(239, 68, 68, 0.1);
+      color: var(--danger);
+      border-radius: 6px;
+      font-size: 0.875rem;
       font-weight: 500;
-    }
-
-    .method-chat { color: var(--info); }
-    .method-offer { color: #f59e0b; }
-
-    /* Status Cell - Clean single line */
-    .status-cell-single {
-      display: flex;
-      flex-direction: column;
-      gap: 0.2rem; /* Reduced */
-    }
-
-    .status-line {
-      display: flex;
-      align-items: center;
-      gap: 0.4rem; /* Reduced */
-      font-weight: 500;
-    }
-
-    .status-active { color: var(--success); }
-    .status-inactive { color: var(--danger); }
-
-    .time-ago {
-      font-size: 0.8rem; /* Reduced */
-      color: var(--text-secondary);
-      font-weight: normal;
-    }
-
-    /* Action Buttons - Compact */
-    .action-buttons {
-      display: flex;
-      gap: 0.3rem; /* Reduced */
-      justify-content: center;
-    }
-
-    .action-btn {
-      padding: 0.4rem; /* Reduced */
-      border-radius: 5px; /* Reduced */
-      border: none;
       cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 0.9rem; /* Reduced */
       transition: all 0.2s ease;
     }
 
-    .remove-btn {
-      background: rgba(239, 68, 68, 0.1);
-      color: var(--danger);
-      border: 1px solid var(--danger);
-    }
-
-    .remove-btn:hover {
+    .removal-btn:hover {
       background: var(--danger);
       color: white;
     }
 
-    /* Close Button (X) for ALL sections */
-    .close-section-btn {
-      position: absolute;
-      top: 1rem; /* Reduced from 1.5rem */
-      right: 1rem; /* Reduced from 1.5rem */
-      background: none;
-      border: none;
-      font-size: 1.3rem; /* Reduced from 1.5rem */
-      color: var(--text-secondary);
-      cursor: pointer;
-      width: 32px; /* Reduced */
-      height: 32px; /* Reduced */
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border-radius: 6px; /* Reduced */
-      transition: all 0.2s ease;
-      z-index: 10;
-    }
-
-    .close-section-btn:hover {
-      background: var(--bg-secondary);
-      color: var(--text-primary);
-    }
-
-    /* Section containers need relative positioning for X button */
-    .section-with-close {
-      position: relative;
-      padding-top: 2.5rem !important; /* Make room for X button */
-    }
-
-    /* ANALYTICS PANEL - OPTIMIZED */
+    /* ANALYTICS PANEL */
     .analytics-panel {
-      padding: 1.5rem; /* Reduced */
+      padding: 2rem;
     }
 
     .analytics-stats {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); /* Reduced */
-      gap: 1rem; /* Reduced */
-      margin-bottom: 1.5rem; /* Reduced */
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 2rem;
     }
 
     .analytic-card {
       background: var(--bg-secondary);
-      padding: 1.2rem; /* Reduced */
-      border-radius: 10px; /* Reduced */
+      padding: 1.5rem;
+      border-radius: 12px;
       text-align: center;
       border: 1px solid var(--border-color);
     }
 
     .analytic-value {
-      font-size: 1.8rem; /* Reduced from 2rem */
+      font-size: 2rem;
       font-weight: 700;
-      margin-bottom: 0.4rem; /* Reduced */
+      margin-bottom: 0.5rem;
       color: var(--text-primary);
     }
 
     .analytic-label {
       color: var(--text-secondary);
-      font-size: 0.85rem; /* Reduced */
+      font-size: 0.9rem;
       font-weight: 500;
     }
 
-    /* Tables - OPTIMIZED FOR SCREEN WIDTH - COMPACT */
+    /* Tables */
     .table-container {
       background: var(--bg-card);
-      border-radius: 14px; /* Reduced */
+      border-radius: 16px;
       box-shadow: var(--shadow);
       overflow: hidden;
-      margin-bottom: 1.5rem; /* Reduced */
+      margin-bottom: 2rem;
       border: 1px solid var(--border-color);
-      width: 100%;
-      position: relative; /* For X button */
-      padding-top: 2.5rem; /* Room for X button */
     }
 
     .table-header {
-      padding: 1rem 1.5rem; /* Reduced */
+      padding: 1.5rem 2rem;
       background: var(--bg-secondary);
       border-bottom: 1px solid var(--border-color);
       display: flex;
       justify-content: space-between;
       align-items: center;
-      flex-wrap: wrap;
-      gap: 0.8rem; /* Reduced */
     }
 
     .table-title {
-      font-size: 1.1rem; /* Reduced */
+      font-size: 1.25rem;
       font-weight: 600;
       color: var(--text-primary);
     }
@@ -1253,32 +1089,27 @@
     .pagination-controls {
       display: flex;
       align-items: center;
-      gap: 0.8rem; /* Reduced */
-      flex-wrap: wrap;
+      gap: 1rem;
     }
 
     .pagination-info {
       color: var(--text-secondary);
-      font-size: 0.8rem; /* Reduced */
-      white-space: nowrap;
+      font-size: 0.875rem;
     }
 
     .pagination-buttons {
       display: flex;
-      gap: 0.3rem; /* Reduced */
-      flex-wrap: wrap;
+      gap: 0.5rem;
     }
 
     .pagination-btn {
-      padding: 0.4rem 0.8rem; /* Reduced */
+      padding: 0.5rem 1rem;
       border: 1px solid var(--border-color);
       background: var(--bg-card);
       color: var(--text-primary);
-      border-radius: 5px; /* Reduced */
+      border-radius: 6px;
       cursor: pointer;
       transition: all 0.2s ease;
-      white-space: nowrap;
-      font-size: 0.85rem; /* Reduced */
     }
 
     .pagination-btn:hover:not(:disabled) {
@@ -1298,31 +1129,24 @@
       border-color: var(--primary);
     }
 
-    /* OPTIMIZED MAIN TABLES - COMPACT */
     table {
       width: 100%;
       border-collapse: collapse;
-      min-width: 100%;
-      font-size: 0.9rem; /* Reduced */
     }
 
     th {
       background: var(--bg-secondary);
-      padding: 0.9rem 1rem; /* Reduced */
+      padding: 1rem 1.5rem;
       text-align: left;
       font-weight: 600;
       color: var(--text-secondary);
       border-bottom: 1px solid var(--border-color);
-      white-space: nowrap;
-      font-size: 0.9rem; /* Reduced */
     }
 
     td {
-      padding: 0.8rem 1rem; /* Reduced */
+      padding: 1rem 1.5rem;
       border-bottom: 1px solid var(--border-color);
       color: var(--text-primary);
-      font-size: 0.9rem; /* Reduced */
-      vertical-align: middle;
     }
 
     tr:last-child td {
@@ -1333,14 +1157,11 @@
       background: var(--bg-secondary);
     }
 
-    /* COMPACT STATUS BADGES */
     .status-badge {
-      padding: 0.3rem 0.6rem; /* Reduced */
-      border-radius: 12px; /* Reduced from 20px */
-      font-size: 0.8rem; /* Reduced */
+      padding: 0.25rem 0.75rem;
+      border-radius: 20px;
+      font-size: 0.875rem;
       font-weight: 500;
-      white-space: nowrap;
-      display: inline-block;
     }
 
     .status-active {
@@ -1353,21 +1174,19 @@
       color: #991b1b;
     }
 
-    /* COMPACT NOTES BUTTON */
+    /* Notes Button */
     .notes-btn {
-      padding: 0.4rem; /* Reduced */
+      padding: 0.5rem 1rem;
       border: 1px solid var(--border-color);
       background: var(--bg-card);
       color: var(--text-primary);
-      border-radius: 5px; /* Reduced */
+      border-radius: 6px;
       cursor: pointer;
       transition: all 0.2s ease;
-      font-size: 0.8rem; /* Reduced */
+      font-size: 0.875rem;
       display: inline-flex;
       align-items: center;
-      justify-content: center;
-      gap: 0.2rem; /* Reduced */
-      min-width: 35px; /* Reduced from 40px */
+      gap: 0.5rem;
     }
 
     .notes-btn:hover {
@@ -1390,52 +1209,45 @@
     /* Player History */
     .player-history {
       background: var(--bg-card);
-      border-radius: 14px; /* Reduced */
+      border-radius: 16px;
       box-shadow: var(--shadow);
-      padding: 1.5rem; /* Reduced */
-      margin-bottom: 1.5rem; /* Reduced */
+      padding: 2rem;
+      margin-bottom: 2rem;
       border: 1px solid var(--border-color);
-      position: relative; /* For X button */
-      padding-top: 2.5rem; /* Room for X button */
     }
 
     /* Enhanced Player History Table */
     .enhanced-history-table {
       width: 100%;
       border-collapse: collapse;
-      margin-top: 0.8rem; /* Reduced */
-      min-width: 100%;
-      font-size: 0.9rem; /* Reduced */
+      margin-top: 1rem;
     }
 
     .enhanced-history-table th {
       background: var(--bg-secondary);
-      padding: 0.8rem; /* Reduced */
+      padding: 1rem;
       text-align: left;
       font-weight: 600;
       color: var(--text-secondary);
       border-bottom: 2px solid var(--border-color);
-      white-space: nowrap;
     }
 
     .enhanced-history-table td {
-      padding: 0.8rem; /* Reduced */
+      padding: 1rem;
       border-bottom: 1px solid var(--border-color);
-      white-space: nowrap;
     }
 
-    /* Daily Deposits Table - FIXED LAYOUT */
+    /* Daily Deposits Table */
     .daily-deposits-table {
       width: 100%;
       border-collapse: collapse;
-      margin-top: 0.8rem; /* Reduced */
-      font-size: 0.85rem; /* Reduced */
-      min-width: 100%;
+      margin-top: 1rem;
+      font-size: 0.9rem;
     }
 
     .daily-deposits-table th {
       background: var(--bg-secondary);
-      padding: 0.7rem 0.8rem; /* Reduced */
+      padding: 0.75rem 1rem;
       font-weight: 600;
       color: var(--text-secondary);
       border-bottom: 2px solid var(--border-color);
@@ -1443,7 +1255,7 @@
     }
 
     .daily-deposits-table td {
-      padding: 0.7rem 0.8rem; /* Reduced */
+      padding: 0.75rem 1rem;
       border-bottom: 1px solid var(--border-color);
       white-space: nowrap;
     }
@@ -1461,113 +1273,11 @@
       color: var(--text-secondary);
     }
 
-    /* Page Deposits View - FIXED LAYOUT */
-    .page-deposits-view {
-      background: var(--bg-card);
-      border-radius: 14px; /* Reduced */
-      box-shadow: var(--shadow);
-      padding: 1.5rem; /* Reduced */
-      margin-bottom: 1.5rem; /* Reduced */
-      border: 1px solid var(--border-color);
-      position: relative;
-      width: 100%;
-      padding-top: 2.5rem; /* Room for X button */
-    }
-
-    .deposits-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      margin-bottom: 1.2rem; /* Reduced */
-      padding-bottom: 0.8rem; /* Reduced */
-      border-bottom: 1px solid var(--border-color);
-      flex-wrap: wrap;
-      gap: 0.8rem; /* Reduced */
-    }
-
-    .deposits-title {
-      font-size: 1.3rem; /* Reduced */
-      font-weight: 600;
-      color: var(--text-primary);
-      flex: 1;
-    }
-
-    /* FIXED: Page Deposits Summary Cards */
-    .monthly-summary {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-      gap: 1rem;
-      margin: 1.5rem 0;
-    }
-
-    .summary-card {
-      background: var(--bg-secondary);
-      padding: 1rem;
-      border-radius: 8px;
-      text-align: center;
-      border: 1px solid var(--border-color);
-    }
-
-    .summary-value {
-      font-size: 1.5rem;
-      font-weight: 700;
-      color: var(--text-primary);
-      margin-bottom: 0.3rem;
-    }
-
-    .summary-label {
-      font-size: 0.8rem;
-      color: var(--text-secondary);
-      font-weight: 500;
-    }
-
-    /* FIXED: Monthly comparison styling */
-    .monthly-comparison {
-      padding: 0.8rem;
-      border-radius: 8px;
-      text-align: center;
-      font-weight: 600;
-      margin-bottom: 1rem;
-      border: 1px solid var(--border-color);
-    }
-
-    .monthly-comparison.up {
-      background: rgba(6, 214, 160, 0.1);
-      color: var(--success);
-      border-color: var(--success);
-    }
-
-    .monthly-comparison.down {
-      background: rgba(239, 71, 111, 0.1);
-      color: var(--danger);
-      border-color: var(--danger);
-    }
-
-    .monthly-comparison.same {
-      background: var(--bg-secondary);
-      color: var(--text-secondary);
-    }
-
-    /* Trend styling */
-    .trend-up {
-      color: var(--success);
-      font-weight: 500;
-    }
-
-    .trend-down {
-      color: var(--danger);
-      font-weight: 500;
-    }
-
-    .trend-same {
-      color: var(--text-secondary);
-    }
-
     /* Enhanced Loader Styles */
     #loader {
       display: none;
       text-align: center;
-      padding: 3rem 1.5rem; /* Reduced */
+      padding: 4rem 2rem;
     }
 
     .loading-screen {
@@ -1575,18 +1285,18 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      min-height: 40vh; /* Reduced */
-      padding: 1.5rem; /* Reduced */
+      min-height: 50vh;
+      padding: 2rem;
     }
 
     .spinner {
-      width: 40px; /* Reduced from 50px */
-      height: 40px; /* Reduced from 50px */
-      border: 3px solid var(--border-color); /* Reduced from 4px */
-      border-left: 3px solid var(--primary); /* Reduced from 4px */
+      width: 50px;
+      height: 50px;
+      border: 4px solid var(--border-color);
+      border-left: 4px solid var(--primary);
       border-radius: 50%;
       animation: spin 1s linear infinite;
-      margin: 0 auto 0.8rem; /* Reduced */
+      margin: 0 auto 1rem;
     }
 
     @keyframes spin {
@@ -1595,9 +1305,9 @@
     }
 
     .loading-progress {
-      margin-top: 0.8rem; /* Reduced */
+      margin-top: 1rem;
       color: var(--text-secondary);
-      font-size: 0.85rem; /* Reduced */
+      font-size: 0.9rem;
     }
 
     /* Modal */
@@ -1619,47 +1329,47 @@
       left: 50%;
       transform: translate(-50%, -50%);
       background: var(--bg-card);
-      border-radius: 16px; /* Reduced */
-      padding: 1.5rem; /* Reduced from 2rem */
+      border-radius: 20px;
+      padding: 2rem;
       box-shadow: var(--shadow-lg);
-      width: 95%;
-      max-width: 700px; /* Reduced from 800px */
+      max-width: 800px;
+      width: 90%;
       border: 1px solid var(--border-color);
-      max-height: 70vh; /* Reduced from 80vh */
+      max-height: 80vh;
       overflow-y: auto;
     }
 
     .modal-title {
-      font-size: 1.1rem; /* Reduced */
+      font-size: 1.25rem;
       font-weight: 600;
-      margin-bottom: 0.8rem; /* Reduced */
+      margin-bottom: 1rem;
       text-align: center;
       color: var(--text-primary);
     }
 
     .modal-input {
       width: 100%;
-      padding: 0.8rem; /* Reduced */
+      padding: 1rem;
       border: 2px solid var(--border-color);
-      border-radius: 10px; /* Reduced */
-      font-size: 0.9rem; /* Reduced */
+      border-radius: 12px;
+      font-size: 1rem;
       text-align: center;
-      letter-spacing: 0.3rem; /* Reduced */
-      margin-bottom: 1.2rem; /* Reduced */
+      letter-spacing: 0.5rem;
+      margin-bottom: 1.5rem;
       background: var(--bg-card);
       color: var(--text-primary);
     }
 
     .modal-textarea {
       width: 100%;
-      padding: 0.8rem; /* Reduced */
+      padding: 1rem;
       border: 2px solid var(--border-color);
-      border-radius: 10px; /* Reduced */
-      font-size: 0.9rem; /* Reduced */
+      border-radius: 12px;
+      font-size: 1rem;
       background: var(--bg-card);
       color: var(--text-primary);
       resize: vertical;
-      min-height: 100px; /* Reduced from 120px */
+      min-height: 120px;
       font-family: inherit;
     }
 
@@ -1675,8 +1385,8 @@
 
     .modal-buttons {
       display: flex;
-      gap: 0.8rem; /* Reduced */
-      margin-top: 1.2rem; /* Reduced */
+      gap: 1rem;
+      margin-top: 1.5rem;
     }
 
     .modal-buttons .btn {
@@ -1686,63 +1396,58 @@
 
     /* Notes History */
     .notes-history {
-      margin-top: 1.2rem; /* Reduced */
-      max-height: 250px; /* Reduced from 300px */
+      margin-top: 1.5rem;
+      max-height: 300px;
       overflow-y: auto;
     }
 
     .notes-history-title {
-      font-size: 0.9rem; /* Reduced */
+      font-size: 1rem;
       font-weight: 600;
-      margin-bottom: 0.8rem; /* Reduced */
+      margin-bottom: 1rem;
       color: var(--text-primary);
       border-bottom: 1px solid var(--border-color);
-      padding-bottom: 0.4rem; /* Reduced */
+      padding-bottom: 0.5rem;
     }
 
     .note-item {
-      padding: 0.8rem; /* Reduced */
+      padding: 1rem;
       border: 1px solid var(--border-color);
-      border-radius: 6px; /* Reduced */
-      margin-bottom: 0.6rem; /* Reduced */
+      border-radius: 8px;
+      margin-bottom: 0.75rem;
       background: var(--bg-secondary);
     }
 
     .note-timestamp {
-      font-size: 0.7rem; /* Reduced */
+      font-size: 0.75rem;
       color: var(--text-secondary);
-      margin-bottom: 0.4rem; /* Reduced */
+      margin-bottom: 0.5rem;
     }
 
     .note-text {
       color: var(--text-primary);
       line-height: 1.4;
-      font-size: 0.9rem; /* Reduced */
     }
 
     .no-notes {
       text-align: center;
       color: var(--text-secondary);
       font-style: italic;
-      padding: 0.8rem; /* Reduced */
-      font-size: 0.9rem; /* Reduced */
+      padding: 1rem;
     }
 
     /* Notifications */
     .notification {
       position: fixed;
-      top: 1.5rem; /* Reduced from 2rem */
-      right: 1.5rem; /* Reduced from 2rem */
-      padding: 0.8rem 1.2rem; /* Reduced */
-      border-radius: 10px; /* Reduced */
+      top: 2rem;
+      right: 2rem;
+      padding: 1rem 1.5rem;
+      border-radius: 12px;
       color: white;
       font-weight: 500;
       box-shadow: var(--shadow-lg);
       z-index: 3000;
       animation: slideIn 0.3s ease;
-      max-width: 350px; /* Reduced from 400px */
-      word-wrap: break-word;
-      font-size: 0.9rem; /* Reduced */
     }
 
     .notification.success { background: var(--success); }
@@ -1754,14 +1459,49 @@
       to { transform: translateX(0); opacity: 1; }
     }
 
-    /* Player History Search in Dashboard */
-    #playerHistorySection,
-    #globalPlayerHistorySection {
+    /* Page Deposits View */
+    .page-deposits-view {
+      background: var(--bg-card);
+      border-radius: 16px;
+      box-shadow: var(--shadow);
+      padding: 2rem;
+      margin-bottom: 2rem;
+      border: 1px solid var(--border-color);
       position: relative;
-      padding-top: 2.5rem !important; /* For X button */
     }
 
-    /* MOBILE OPTIMIZATION */
+    .deposits-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .deposits-title {
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    .close-deposits-btn {
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      color: var(--text-secondary);
+      cursor: pointer;
+      padding: 0.5rem;
+      border-radius: 8px;
+      transition: all 0.2s ease;
+    }
+
+    .close-deposits-btn:hover {
+      background: var(--bg-secondary);
+      color: var(--text-primary);
+    }
+
+    /* Responsive */
     @media (max-width: 1024px) {
       .stats-grid,
       .stats-grid-row-2,
@@ -1770,42 +1510,28 @@
       }
       
       .pin-container {
-        padding: 1.5rem;
-        max-width: 350px;
+        padding: 2rem;
+        max-width: 380px;
       }
-      
-      .table-header {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 0.8rem;
-      }
-      
-      .pagination-controls {
-        width: 100%;
-        justify-content: space-between;
-      }
-      
-      .recovery-table th:nth-child(3) { width: 150px; } /* Client Name */
-      .recovery-table th:nth-child(5) { width: 140px; } /* Current Status */
     }
 
     @media (max-width: 768px) {
       .pin-container {
-        padding: 1.2rem;
-        max-width: 320px;
+        padding: 1.5rem;
+        max-width: 350px;
       }
       
       .pin-logo {
-        font-size: 1.7rem;
+        font-size: 2rem;
       }
       
       .pin-input {
-        font-size: 1.1rem;
-        padding: 0.8rem;
+        font-size: 1.2rem;
+        padding: 1rem;
       }
       
       .landing-container {
-        padding: 1.5rem;
+        padding: 2rem 1.5rem;
       }
       
       .dashboard-content {
@@ -1820,7 +1546,7 @@
       
       .header-content {
         flex-direction: column;
-        gap: 0.8rem;
+        gap: 1rem;
         text-align: center;
       }
       
@@ -1829,137 +1555,56 @@
         justify-content: center;
       }
       
+      .table-header {
+        flex-direction: column;
+        gap: 1rem;
+        align-items: flex-start;
+      }
+      
+      .pagination-controls {
+        width: 100%;
+        justify-content: space-between;
+      }
+      
       table {
-        font-size: 0.85rem;
+        font-size: 0.875rem;
       }
       
       th, td {
-        padding: 0.6rem 0.8rem;
+        padding: 0.75rem 1rem;
       }
       
       .modal-content {
-        padding: 1.2rem;
+        padding: 1.5rem;
         max-width: 95%;
       }
 
       .daily-deposits-table {
-        font-size: 0.75rem;
+        font-size: 0.8rem;
       }
       
       .daily-deposits-table th,
       .daily-deposits-table td {
-        padding: 0.4rem 0.5rem;
+        padding: 0.5rem 0.5rem;
       }
 
       .recovery-method-selector {
         flex-direction: column;
       }
-      
-      .recovery-header-top {
-        flex-direction: column;
-        align-items: stretch;
-      }
-      
-      .recovery-search-container {
-        max-width: 100%;
-      }
-      
-      .recovery-table th,
-      .recovery-table td {
-        padding: 0.6rem 0.8rem;
-        font-size: 0.85rem;
-      }
-      
-      .recovery-table th:nth-child(2) { width: 80px; } /* Date */
-      .recovery-table th:nth-child(3) { width: 120px; } /* Client Name */
-      .recovery-table th:nth-child(5) { width: 120px; } /* Current Status */
-      
-      .close-section-btn {
-        top: 0.8rem;
-        right: 0.8rem;
-        width: 28px;
-        height: 28px;
-        font-size: 1.2rem;
-      }
-      
-      .section-with-close,
-      .table-container,
-      .player-history,
-      .page-deposits-view {
-        padding-top: 2.2rem !important;
-      }
     }
     
     @media (max-width: 480px) {
       .pin-container {
-        padding: 1rem;
-        max-width: 280px;
+        padding: 1.5rem;
+        max-width: 320px;
       }
       
       .pin-logo {
-        font-size: 1.5rem;
+        font-size: 1.75rem;
       }
       
       .pin-subtitle {
-        font-size: 0.8rem;
-      }
-      
-      .recovery-tabs {
-        overflow-x: auto;
-        flex-wrap: nowrap;
-        padding: 0 1rem;
-      }
-      
-      .recovery-tab {
-        padding: 0.6rem 0.8rem;
-        font-size: 0.85rem;
-      }
-      
-      .monthly-summary {
-        grid-template-columns: repeat(2, 1fr);
-      }
-      
-      .recovery-stats-grid {
-        grid-template-columns: repeat(2, 1fr);
-      }
-      
-      .recovery-table {
-        font-size: 0.8rem;
-      }
-      
-      .recovery-table th,
-      .recovery-table td {
-        padding: 0.5rem 0.6rem;
-      }
-      
-      .recovery-table th:nth-child(1) { width: 30px; }
-      .recovery-table th:nth-child(2) { width: 70px; }
-      .recovery-table th:nth-child(3) { width: 100px; }
-      .recovery-table th:nth-child(4) { width: 70px; }
-      .recovery-table th:nth-child(5) { width: 100px; }
-      .recovery-table th:nth-child(6) { width: 50px; }
-    }
-
-    /* CARD VIEW FOR MOBILE TABLES */
-    @media (max-width: 768px) {
-      .table-container table {
-        display: block;
-        overflow-x: auto;
-        -webkit-overflow-scrolling: touch;
-      }
-      
-      .table-container th,
-      .table-container td {
-        min-width: 80px; /* Reduced from 100px */
-      }
-      
-      .enhanced-history-table {
-        display: block;
-        overflow-x: auto;
-      }
-      
-      .recovery-table-container {
-        -webkit-overflow-scrolling: touch;
+        font-size: 0.9rem;
       }
     }
   </style>
@@ -2010,11 +1655,11 @@
       <div class="recovery-method-selector">
         <button class="recovery-method-btn" data-method="chat" onclick="selectRecoveryMethod('chat')">
           <i class="fas fa-comment-dots recovery-method-icon"></i>
-          <span>Chat</span>
+          <span>💬 Chat</span>
         </button>
         <button class="recovery-method-btn" data-method="offer" onclick="selectRecoveryMethod('offer')">
           <i class="fas fa-gift recovery-method-icon"></i>
-          <span>Offer</span>
+          <span>🎁 Offer</span>
         </button>
       </div>
       
@@ -2022,13 +1667,13 @@
       <input type="hidden" id="recoveryPlayerPage">
       
       <div>
-        <label style="display: block; margin-bottom: 0.4rem; color: var(--text-primary); font-weight: 500;">
+        <label style="display: block; margin-bottom: 0.5rem; color: var(--text-primary); font-weight: 500;">
           Recovery Notes (Optional):
         </label>
         <textarea 
           id="recoveryNotesInput" 
           class="recovery-notes-input" 
-          placeholder="Enter recovery notes."
+          placeholder="Enter recovery notes... (e.g., WhatsApp, 20% bonus)"
         ></textarea>
       </div>
       
@@ -2048,17 +1693,17 @@
     <div class="recovery-modal-content">
       <h3 class="recovery-modal-title">Remove from Recovery List</h3>
       
-      <div style="margin-bottom: 1.2rem;">
-        <p style="color: var(--text-primary); margin-bottom: 0.4rem;">
+      <div style="margin-bottom: 1.5rem;">
+        <p style="color: var(--text-primary); margin-bottom: 0.5rem;">
           Player: <strong id="removalPlayerName"></strong>
         </p>
-        <p style="color: var(--text-secondary); font-size: 0.85rem;">
+        <p style="color: var(--text-secondary); font-size: 0.9rem;">
           Recovered: <span id="removalRecoveredDate"></span> via <span id="removalMethod"></span>
         </p>
       </div>
       
       <div>
-        <label style="display: block; margin-bottom: 0.6rem; color: var(--text-primary); font-weight: 500;">
+        <label style="display: block; margin-bottom: 0.75rem; color: var(--text-primary); font-weight: 500;">
           Reason for Removal:
         </label>
         <div class="removal-reason-selector">
@@ -2066,7 +1711,7 @@
             <input type="radio" id="reason-mistake" name="removal-reason" hidden>
             <label for="reason-mistake" style="cursor: pointer; flex: 1;">
               <strong>Added by mistake</strong>
-              <div style="font-size: 0.8rem; color: var(--text-secondary); margin-top: 0.2rem;">
+              <div style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 0.25rem;">
                 Wrong player or accidental click
               </div>
             </label>
@@ -2076,7 +1721,7 @@
             <input type="radio" id="reason-not-recovered" name="removal-reason" hidden>
             <label for="reason-not-recovered" style="cursor: pointer; flex: 1;">
               <strong>Not actually recovered</strong>
-              <div style="font-size: 0.8rem; color: var(--text-secondary); margin-top: 0.2rem;">
+              <div style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 0.25rem;">
                 Player never became active after marking
               </div>
             </label>
@@ -2086,7 +1731,7 @@
             <input type="radio" id="reason-duplicate" name="removal-reason" hidden>
             <label for="reason-duplicate" style="cursor: pointer; flex: 1;">
               <strong>Duplicate entry</strong>
-              <div style="font-size: 0.8rem; color: var(--text-secondary); margin-top: 0.2rem;">
+              <div style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 0.25rem;">
                 Player already in recovery list
               </div>
             </label>
@@ -2096,7 +1741,7 @@
             <input type="radio" id="reason-other" name="removal-reason" hidden>
             <label for="reason-other" style="cursor: pointer; flex: 1;">
               <strong>Other reason</strong>
-              <div style="font-size: 0.8rem; color: var(--text-secondary); margin-top: 0.2rem;">
+              <div style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 0.25rem;">
                 Specify in notes below
               </div>
             </label>
@@ -2104,8 +1749,8 @@
         </div>
       </div>
       
-      <div style="margin-top: 1.2rem;">
-        <label style="display: block; margin-bottom: 0.4rem; color: var(--text-primary); font-weight: 500;">
+      <div style="margin-top: 1.5rem;">
+        <label style="display: block; margin-bottom: 0.5rem; color: var(--text-primary); font-weight: 500;">
           Additional Notes (Optional):
         </label>
         <textarea 
@@ -2116,8 +1761,8 @@
         ></textarea>
       </div>
       
-      <div style="margin-top: 1.2rem;">
-        <label style="display: block; margin-bottom: 0.4rem; color: var(--text-primary); font-weight: 500;">
+      <div style="margin-top: 1.5rem;">
+        <label style="display: block; margin-bottom: 0.5rem; color: var(--text-primary); font-weight: 500;">
           Enter PIN to Confirm (8152):
         </label>
         <input 
@@ -2198,11 +1843,11 @@
       </button>
       
       <!-- Logout Button on Landing Page -->
-      <div id="landingLogoutSection" style="margin-top: 1.5rem; padding-top: 1.2rem; border-top: 1px solid var(--border-color); text-align: center; display: none;">
-        <button id="logoutBtnLanding" class="btn btn-secondary" style="width: auto; padding: 0.6rem 1.2rem;" disabled>
+      <div id="landingLogoutSection" style="margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid var(--border-color); text-align: center; display: none;">
+        <button id="logoutBtnLanding" class="btn btn-secondary" style="width: auto; padding: 0.75rem 1.5rem;" disabled>
           <i class="fas fa-sign-out-alt"></i> Logout
         </button>
-        <div style="margin-top: 0.4rem; font-size: 0.8rem; color: var(--text-secondary);">
+        <div style="margin-top: 0.5rem; font-size: 0.85rem; color: var(--text-secondary);">
           <i class="fas fa-user-shield"></i> Secure Session Active
         </div>
       </div>
@@ -2259,16 +1904,12 @@
       <!-- Player History Section for Dashboard -->
       <div id="playerHistorySection" style="display: none;">
         <div class="player-history">
-          <button class="close-section-btn" onclick="backToDashboard()" title="Close">
-            <i class="fas fa-times"></i>
-          </button>
           <h3>Player History Search - Current Page Only</h3>
-          <div style="display: flex; gap: 0.8rem; margin: 1.2rem 0; flex-wrap: wrap;">
+          <div style="display: flex; gap: 1rem; margin: 1.5rem 0;">
             <input 
               type="text" 
               id="playerSearch" 
               class="search-input" 
-              style="flex: 1; min-width: 200px;"
               placeholder="Enter player name for current page..."
               autocomplete="off"
               autocorrect="off"
@@ -2286,9 +1927,6 @@
       <!-- Global Player History Section -->
       <div id="globalPlayerHistorySection" style="display: none;">
         <div class="player-history">
-          <button class="close-section-btn" onclick="backToLanding()" title="Close">
-            <i class="fas fa-times"></i>
-          </button>
           <h3>Player History - All Pages</h3>
           <div id="globalPlayerHistoryContainer"></div>
         </div>
@@ -2303,7 +1941,7 @@
   <div id="refreshModal" class="modal">
     <div class="modal-content">
       <h3 class="modal-title">Authorization Required</h3>
-      <p style="text-align: center; color: var(--text-secondary); margin-bottom: 1.2rem;">
+      <p style="text-align: center; color: var(--text-secondary); margin-bottom: 1.5rem;">
         Enter PIN to refresh data
       </p>
       <input type="password" id="refreshPinInput" class="modal-input" placeholder="****" maxlength="4">
@@ -2321,7 +1959,7 @@
   <div id="cleanupModal" class="modal">
     <div class="modal-content">
       <h3 class="modal-title">Authorization Required</h3>
-      <p style="text-align: center; color: var(--text-secondary); margin-bottom: 1.2rem;">
+      <p style="text-align: center; color: var(--text-secondary); margin-bottom: 1.5rem;">
         Enter PIN to perform force cleanup
       </p>
       <input type="password" id="cleanupPinInput" class="modal-input" placeholder="****" maxlength="4">
@@ -2341,7 +1979,7 @@
       <h3 class="modal-title" id="notesModalTitle">Add Note for Player</h3>
       
       <div>
-        <label style="display: block; margin-bottom: 0.4rem; color: var(--text-primary); font-weight: 500;">
+        <label style="display: block; margin-bottom: 0.5rem; color: var(--text-primary); font-weight: 500;">
           New Note:
         </label>
         <textarea id="noteTextInput" class="modal-textarea" placeholder="Enter your note here..."></textarea>
@@ -3186,16 +2824,6 @@
     let selectedRemovalReason = null;
     let removalRecordId = null;
 
-    // Performance optimization: Cache recovery statuses
-    let recoveryStatusCache = {
-        data: new Map(),
-        timestamp: null,
-        expiresIn: 5 * 60 * 1000 // 5 minutes
-    };
-
-    // Performance optimization: Search debouncing
-    let searchTimeout = null;
-
     // =============================================
     // DOM ELEMENTS
     // =============================================
@@ -3247,79 +2875,8 @@
     const confirmRemovalBtn = document.getElementById('confirmRemovalBtn');
 
     // =============================================
-    // CLIENT RECOVERY FUNCTIONS - OPTIMIZED
+    // CLIENT RECOVERY FUNCTIONS
     // =============================================
-
-    // Cache recovery statuses for performance
-    async function cacheRecoveryStatuses(pageName) {
-        const now = Date.now();
-        if (recoveryStatusCache.data.has(pageName) && 
-            recoveryStatusCache.timestamp && 
-            (now - recoveryStatusCache.timestamp) < recoveryStatusCache.expiresIn) {
-            return recoveryStatusCache.data.get(pageName);
-        }
-
-        try {
-            const { data, error } = await supabase
-                .from('client_recoveries')
-                .select('player_name')
-                .eq('page_name', pageName)
-                .eq('is_active_in_list', true);
-            
-            if (error) throw error;
-            
-            const recoveredPlayers = new Set(data.map(item => item.player_name));
-            recoveryStatusCache.data.set(pageName, recoveredPlayers);
-            recoveryStatusCache.timestamp = now;
-            
-            return recoveredPlayers;
-        } catch (error) {
-            console.error('Error caching recovery statuses:', error);
-            return new Set();
-        }
-    }
-
-    // Get recovery button HTML - OPTIMIZED (NO EMOJI)
-    async function getRecoveryButtonHTML(playerName) {
-        if (!selectedPage) return '';
-        
-        const recoveredPlayers = await cacheRecoveryStatuses(selectedPage);
-        const isRecovered = recoveredPlayers.has(playerName);
-        
-        if (isRecovered) {
-            return `<button class="recovery-btn recovered" disabled title="Already recovered">
-                      <i class="fas fa-check"></i> Recovered
-                    </button>`;
-        } else {
-            return `<button class="recovery-btn mark" onclick="showRecoveryModal('${playerName.replace(/'/g, "\\'")}')" title="Mark as recovered">
-                      <i class="fas fa-redo"></i> Mark
-                    </button>`;
-        }
-    }
-
-    // Batch get recovery buttons HTML - OPTIMIZED (NO EMOJI)
-    async function getBatchRecoveryButtonsHTML(playerNames) {
-        if (!selectedPage) return new Map();
-        
-        const recoveredPlayers = await cacheRecoveryStatuses(selectedPage);
-        const buttonMap = new Map();
-        
-        playerNames.forEach(playerName => {
-            const isRecovered = recoveredPlayers.has(playerName);
-            
-            if (isRecovered) {
-                buttonMap.set(playerName, `<button class="recovery-btn recovered" disabled title="Already recovered">
-                    <i class="fas fa-check"></i> Recovered
-                </button>`);
-            } else {
-                buttonMap.set(playerName, `<button class="recovery-btn mark" onclick="showRecoveryModal('${playerName.replace(/'/g, "\\'")}')" title="Mark as recovered">
-                    <i class="fas fa-redo"></i> Mark
-                </button>`);
-            }
-        });
-        
-        return buttonMap;
-    }
 
     // Show recovery modal
     function showRecoveryModal(playerName, pageName) {
@@ -3401,12 +2958,9 @@
         
         if (error) throw error;
         
-        showNotification(`Player ${recoveryPlayerName} marked as recovered via ${selectedRecoveryMethod === 'chat' ? 'Chat' : 'Offer'}`, 'success');
+        showNotification(`Player ${recoveryPlayerName} marked as recovered via ${selectedRecoveryMethod === 'chat' ? '💬 Chat' : '🎁 Offer'}`, 'success');
         
         hideRecoveryModal();
-        
-        // Clear cache to force refresh
-        recoveryStatusCache.data.delete(recoveryPlayerPage);
         
         // Update recovery button in all tables
         updateRecoveryButtonInTables(recoveryPlayerName, true);
@@ -3435,15 +2989,13 @@
       buttons.forEach(btn => {
         if (btn.textContent.includes(playerName) || btn.dataset.player === playerName) {
           if (isRecovered) {
-            btn.innerHTML = '<i class="fas fa-check"></i> Recovered';
+            btn.innerHTML = '<i class="fas fa-check"></i> ✅ Recovered';
             btn.className = 'recovery-btn recovered';
             btn.disabled = true;
-            btn.title = 'Already recovered';
           } else {
-            btn.innerHTML = '<i class="fas fa-redo"></i> Mark';
+            btn.innerHTML = '<i class="fas fa-redo"></i> 🔁 Mark as Recovered';
             btn.className = 'recovery-btn mark';
             btn.disabled = false;
-            btn.title = 'Mark as recovered';
           }
         }
       });
@@ -3455,7 +3007,7 @@
       
       removalPlayerName.textContent = playerName;
       removalRecoveredDate.textContent = convertUTCToPKTDateOnly(recoveredDate);
-      removalMethod.textContent = method === 'chat' ? 'Chat' : 'Offer';
+      removalMethod.textContent = method === 'chat' ? '💬 Chat' : '🎁 Offer';
       removalRecordIdInput.value = recordId;
       removalNotesInput.value = '';
       removalPinInput.value = '';
@@ -3532,9 +3084,6 @@
           
           hideRemovalModal();
           
-          // Clear cache to force refresh
-          recoveryStatusCache.data.delete(selectedPage);
-          
           // Update recovery button in all tables
           const playerName = removalPlayerName.textContent;
           updateRecoveryButtonInTables(playerName, false);
@@ -3560,7 +3109,7 @@
       }
     }
 
-    // Load recovery data - OPTIMIZED
+    // Load recovery data
     async function loadRecoveryData() {
       try {
         // Get active recoveries
@@ -3573,19 +3122,24 @@
         
         if (activeError) throw activeError;
         
-        // Get player status for each recovery in batch
-        const playerNames = activeData.map(r => r.player_name);
-        const playerStatuses = await getBatchPlayerStatuses(playerNames);
-        
-        const recoveriesWithStatus = (activeData || []).map((recovery) => {
-          const status = playerStatuses.get(recovery.player_name);
-          return {
-            ...recovery,
-            current_status: status?.status || 'inactive',
-            last_deposit: status?.last_deposit_date,
-            last_deposit_display: formatTimeSince(status?.last_deposit_date)
-          };
-        });
+        // Get player status for each recovery
+        const recoveriesWithStatus = await Promise.all(
+          (activeData || []).map(async (recovery) => {
+            const { data: playerData } = await supabase
+              .from('latest_status')
+              .select('last_deposit_date, status')
+              .eq('page_name', selectedPage)
+              .eq('player_name', recovery.player_name)
+              .single();
+            
+            return {
+              ...recovery,
+              current_status: playerData?.status || 'inactive',
+              last_deposit: playerData?.last_deposit_date,
+              last_deposit_display: formatTimeSince(playerData?.last_deposit_date)
+            };
+          })
+        );
         
         // Get removed recoveries
         const { data: removedData, error: removedError } = await supabase
@@ -3638,34 +3192,6 @@
       }
     }
 
-    // Batch get player statuses - OPTIMIZED
-    async function getBatchPlayerStatuses(playerNames) {
-      if (!playerNames.length) return new Map();
-      
-      try {
-        const { data, error } = await supabase
-          .from('latest_status')
-          .select('player_name, last_deposit_date, status')
-          .in('player_name', playerNames)
-          .eq('page_name', selectedPage);
-        
-        if (error) throw error;
-        
-        const statusMap = new Map();
-        data.forEach(player => {
-          statusMap.set(player.player_name, {
-            last_deposit_date: player.last_deposit_date,
-            status: player.status
-          });
-        });
-        
-        return statusMap;
-      } catch (error) {
-        console.error('Error getting batch player statuses:', error);
-        return new Map();
-      }
-    }
-
     // Update recovery stats in dashboard
     async function updateRecoveryStats() {
       try {
@@ -3702,7 +3228,7 @@
       }
     }
 
-    // Render recovery dashboard - OPTIMIZED WITH FIXED TABLE
+    // Render recovery dashboard
     function renderRecoveryDashboard() {
       const stats = recoveryState.current.stats || { total: 0, active: 0, inactive: 0 };
       const analytics = recoveryState.analytics.data || {
@@ -3714,74 +3240,8 @@
         overall_success_rate: 0
       };
       
-      // Add close button
       let html = `
         <div class="recovery-dashboard">
-          <button class="close-section-btn" onclick="backToDashboard()" title="Close">
-            <i class="fas fa-times"></i>
-          </button>
-          <div class="recovery-header">
-            <div class="recovery-header-top">
-              <div class="recovery-title-section">
-                <h2 class="recovery-page-title">
-                  <i class="fas fa-users-return"></i> Client Recovery - ${selectedPage}
-                </h2>
-              </div>
-      `;
-      
-      // Add search bar only for active and removed tabs, not analytics
-      if (recoveryState.current.tab !== 'analytics') {
-        const placeholder = recoveryState.current.tab === 'active' 
-          ? 'Search recovered players...' 
-          : 'Search removed clients...';
-        
-        html += `
-              <div class="recovery-search-container">
-                <input 
-                  type="text" 
-                  class="search-input" 
-                  placeholder="${placeholder}" 
-                  value="${recoveryState.current.tab === 'active' ? recoveryState.current.search : recoveryState.removed.search}"
-                  oninput="searchRecoveries(this.value, '${recoveryState.current.tab}')"
-                >
-                <i class="fas fa-search search-icon"></i>
-              </div>
-        `;
-      }
-      
-      html += `
-            </div>
-            
-            <div class="recovery-stats-grid">
-              <div class="recovery-stat-card">
-                <div class="recovery-stat-value">${stats.total}</div>
-                <div class="recovery-stat-label">Total Recovered</div>
-              </div>
-              <div class="recovery-stat-card">
-                <div class="recovery-stat-value" style="color: var(--success);">${stats.active}</div>
-                <div class="recovery-stat-label">Active Now</div>
-              </div>
-              <div class="recovery-stat-card">
-                <div class="recovery-stat-value" style="color: var(--danger);">${stats.inactive}</div>
-                <div class="recovery-stat-label">Inactive Again</div>
-              </div>
-              <div class="recovery-stat-card">
-                <div class="recovery-stat-value">${recoveryState.current.tab === 'active' ? 
-                  (recoveryState.current.data?.filter(r => 
-                    !recoveryState.current.search || 
-                    r.player_name.toLowerCase().includes(recoveryState.current.search.toLowerCase()) ||
-                    (r.recovery_notes && r.recovery_notes.toLowerCase().includes(recoveryState.current.search.toLowerCase()))
-                  ).length || 0) : 
-                  (recoveryState.removed.data?.filter(r => 
-                    !recoveryState.removed.search || 
-                    r.player_name.toLowerCase().includes(recoveryState.removed.search.toLowerCase()) ||
-                    (r.removal_notes && r.removal_notes.toLowerCase().includes(recoveryState.removed.search.toLowerCase()))
-                  ).length || 0)}</div>
-                <div class="recovery-stat-label">Showing</div>
-              </div>
-            </div>
-          </div>
-          
           <div class="recovery-tabs">
             <button class="recovery-tab ${recoveryState.current.tab === 'active' ? 'active' : ''}" onclick="switchRecoveryTab('active')">
               Active Recoveries
@@ -3814,9 +3274,10 @@
       clientRecoveryDashboard.style.display = 'block';
     }
 
-    // Render active recoveries - FIXED TABLE STRUCTURE
+    // Render active recoveries
     function renderActiveRecoveries() {
       const recoveries = recoveryState.current.data || [];
+      const stats = recoveryState.current.stats || { total: 0, active: 0, inactive: 0 };
       
       // Apply search filter
       let filteredRecoveries = recoveries;
@@ -3836,82 +3297,99 @@
       const endIndex = Math.min(startIndex + RECOVERY_PLAYERS_PER_PAGE, filteredRecoveries.length);
       const paginatedRecoveries = filteredRecoveries.slice(startIndex, endIndex);
       
-      let html = '';
+      let html = `
+        <div class="recovery-search-container">
+          <input 
+            type="text" 
+            class="search-input" 
+            placeholder="Search recovered players..." 
+            value="${recoveryState.current.search}"
+            oninput="searchRecoveries(this.value, 'active')"
+            style="width: 100%;"
+          >
+        </div>
+        
+        <div class="recovery-stats">
+          <div class="recovery-stat">
+            <div class="recovery-stat-value">${stats.total}</div>
+            <div class="recovery-stat-label">Total Recovered</div>
+          </div>
+          <div class="recovery-stat">
+            <div class="recovery-stat-value" style="color: var(--success);">${stats.active}</div>
+            <div class="recovery-stat-label">Currently Active</div>
+          </div>
+          <div class="recovery-stat">
+            <div class="recovery-stat-value" style="color: var(--danger);">${stats.inactive}</div>
+            <div class="recovery-stat-label">Became Inactive</div>
+          </div>
+          <div class="recovery-stat">
+            <div class="recovery-stat-value">${filteredRecoveries.length}</div>
+            <div class="recovery-stat-label">Showing</div>
+          </div>
+        </div>
+        
+        <div class="recovery-table-container">
+          <table class="recovery-table">
+            <thead>
+              <tr>
+                <th style="width: 30px;">#</th>
+                <th>Player Name</th>
+                <th>Recovery Date</th>
+                <th>Method</th>
+                <th>Current Status</th>
+                <th>Last Deposit</th>
+                <th>Recovery Notes</th>
+                <th style="width: 100px;">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+      `;
       
       if (paginatedRecoveries.length === 0) {
-        html = `
-          <div style="text-align: center; padding: 2rem; color: var(--text-secondary);">
-            <i class="fas fa-users-slash" style="font-size: 2.5rem; margin-bottom: 0.8rem; opacity: 0.5;"></i>
-            <h3 style="margin-bottom: 0.4rem; font-size: 1.1rem;">${recoveryState.current.search ? 'No matching recovered players found' : 'No recovered players yet'}</h3>
-            <p style="font-size: 0.9rem;">${recoveryState.current.search ? 'Try a different search term' : 'Mark players as recovered to see them here'}</p>
-          </div>
+        html += `
+          <tr>
+            <td colspan="8" style="text-align: center; padding: 2rem; color: var(--text-secondary);">
+              ${recoveryState.current.search ? 'No matching recovered players found' : 'No recovered players yet'}
+            </td>
+          </tr>
         `;
       } else {
-        html = `
-          <div class="recovery-table-container">
-            <table class="recovery-table">
-              <thead>
-                <tr>
-                  <th style="text-align: center;">#</th>
-                  <th>Date</th>
-                  <th>Client Name</th>
-                  <th>Method</th>
-                  <th>Current Status</th>
-                  <th style="text-align: center;">Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-        `;
-        
         paginatedRecoveries.forEach((recovery, index) => {
           const serialNumber = startIndex + index + 1;
           const methodClass = recovery.recovery_method === 'chat' ? 'method-chat' : 'method-offer';
+          const methodIcon = recovery.recovery_method === 'chat' ? '💬' : '🎁';
           const statusClass = recovery.current_status === 'Active' ? 'status-active' : 'status-inactive';
-          const statusText = recovery.current_status === 'Active' ? 'Active' : 'Inactive';
-          
-          // Format status with time
-          let statusDisplay = statusText;
-          if (recovery.last_deposit_display && recovery.last_deposit_display !== 'N/A') {
-            statusDisplay += ` - ${recovery.last_deposit_display}`;
-          }
+          const statusIcon = recovery.current_status === 'Active' ? '✅' : '❌';
           
           html += `
             <tr>
-              <td style="text-align: center; font-weight: 600;">${serialNumber}</td>
-              <td class="date-cell">${convertUTCToPKTDateOnly(recovery.recovered_date)}</td>
-              <td class="client-name-cell">${recovery.player_name}</td>
-              <td class="method-cell ${methodClass}">${recovery.recovery_method.charAt(0).toUpperCase() + recovery.recovery_method.slice(1)}</td>
+              <td style="text-align: center;">${serialNumber}</td>
+              <td><strong>${recovery.player_name}</strong></td>
+              <td>${convertUTCToPKTDateOnly(recovery.recovered_date)}</td>
+              <td class="${methodClass}">${methodIcon} ${recovery.recovery_method.charAt(0).toUpperCase() + recovery.recovery_method.slice(1)}</td>
+              <td class="${statusClass}">${statusIcon} ${recovery.current_status}</td>
+              <td>${recovery.last_deposit_display || 'N/A'}</td>
+              <td>${recovery.recovery_notes || '-'}</td>
               <td>
-                <div class="status-cell-single">
-                  <div class="status-line">
-                    <span class="${statusClass}">${statusText}</span>
-                  </div>
-                  ${recovery.last_deposit_display && recovery.last_deposit_display !== 'N/A' ? 
-                    `<div class="time-ago">${recovery.last_deposit_display}</div>` : ''}
-                </div>
-              </td>
-              <td style="text-align: center;">
-                <div class="action-buttons">
-                  <button class="action-btn remove-btn" onclick="showRemovalModal('${recovery.id}', '${recovery.player_name}', '${recovery.recovered_date}', '${recovery.recovery_method}')" title="Remove from list">
-                    <i class="fas fa-times"></i>
-                  </button>
-                </div>
+                <button class="removal-btn" onclick="showRemovalModal('${recovery.id}', '${recovery.player_name}', '${recovery.recovered_date}', '${recovery.recovery_method}')">
+                  <i class="fas fa-times"></i> Remove
+                </button>
               </td>
             </tr>
           `;
         });
-        
-        html += `
-              </tbody>
-            </table>
-          </div>
-        `;
       }
+      
+      html += `
+            </tbody>
+          </table>
+        </div>
+      `;
       
       // Add pagination if needed
       if (totalPages > 1) {
         html += `
-          <div style="padding: 0.8rem; border-top: 1px solid var(--border-color); display: flex; justify-content: center; align-items: center; gap: 0.8rem; flex-wrap: wrap;">
+          <div style="padding: 1rem; border-top: 1px solid var(--border-color); display: flex; justify-content: center; align-items: center; gap: 1rem;">
             <button class="pagination-btn" ${currentPage === 1 ? 'disabled' : ''} onclick="changeRecoveryPage(${currentPage - 1})">
               <i class="fas fa-chevron-left"></i> Previous
             </button>
@@ -3928,7 +3406,7 @@
       return html;
     }
 
-    // Render removed clients - OPTIMIZED
+    // Render removed clients
     function renderRemovedClients() {
       const removed = recoveryState.removed.data || [];
       
@@ -3951,40 +3429,58 @@
       const paginatedRemoved = filteredRemoved.slice(startIndex, endIndex);
       
       let html = `
-        <div style="padding: 1.2rem;">
+        <div class="recovery-search-container">
+          <input 
+            type="text" 
+            class="search-input" 
+            placeholder="Search removed clients..." 
+            value="${recoveryState.removed.search}"
+            oninput="searchRecoveries(this.value, 'removed')"
+            style="width: 100%;"
+          >
+        </div>
+        
+        <div class="recovery-stats">
+          <div class="recovery-stat">
+            <div class="recovery-stat-value">${removed.length}</div>
+            <div class="recovery-stat-label">Total Removed</div>
+          </div>
+          <div class="recovery-stat">
+            <div class="recovery-stat-value">${filteredRemoved.length}</div>
+            <div class="recovery-stat-label">Showing</div>
+          </div>
+        </div>
+        
+        <div class="recovery-table-container">
+          <table class="recovery-table">
+            <thead>
+              <tr>
+                <th style="width: 30px;">#</th>
+                <th>Player Name</th>
+                <th>Added Date</th>
+                <th>Removed Date</th>
+                <th>Removal Reason</th>
+                <th>Removal Notes</th>
+              </tr>
+            </thead>
+            <tbody>
       `;
       
       if (paginatedRemoved.length === 0) {
         html += `
-          <div style="text-align: center; padding: 2rem; color: var(--text-secondary);">
-            <i class="fas fa-trash-restore" style="font-size: 2.5rem; margin-bottom: 0.8rem; opacity: 0.5;"></i>
-            <h3 style="margin-bottom: 0.4rem; font-size: 1.1rem;">${recoveryState.removed.search ? 'No matching removed clients found' : 'No removed clients yet'}</h3>
-            <p style="font-size: 0.9rem;">${recoveryState.removed.search ? 'Try a different search term' : 'Removed clients will appear here'}</p>
-          </div>
+          <tr>
+            <td colspan="6" style="text-align: center; padding: 2rem; color: var(--text-secondary);">
+              ${recoveryState.removed.search ? 'No matching removed clients found' : 'No removed clients yet'}
+            </td>
+          </tr>
         `;
       } else {
-        html += `
-          <div class="recovery-table-container">
-            <table class="recovery-table">
-              <thead>
-                <tr>
-                  <th style="text-align: center;">#</th>
-                  <th>Player Name</th>
-                  <th>Added Date</th>
-                  <th>Removed Date</th>
-                  <th>Removal Reason</th>
-                  <th>Removal Notes</th>
-                </tr>
-              </thead>
-              <tbody>
-        `;
-        
         paginatedRemoved.forEach((record, index) => {
           const serialNumber = startIndex + index + 1;
           
           html += `
             <tr>
-              <td style="text-align: center; font-weight: 600;">${serialNumber}</td>
+              <td style="text-align: center;">${serialNumber}</td>
               <td><strong>${record.player_name}</strong></td>
               <td>${convertUTCToPKTDateOnly(record.recovered_date)}</td>
               <td>${record.removed_date ? convertUTCToPKTDateOnly(record.removed_date) : '-'}</td>
@@ -3993,23 +3489,23 @@
             </tr>
           `;
         });
-        
-        html += `
-              </tbody>
-            </table>
-          </div>
-        `;
       }
+      
+      html += `
+            </tbody>
+          </table>
+        </div>
+      `;
       
       // Add pagination if needed
       if (totalPages > 1) {
         html += `
-          <div style="padding: 0.8rem; border-top: 1px solid var(--border-color); display: flex; justify-content: center; align-items: center; gap: 0.8rem; flex-wrap: wrap; margin-top: 0.8rem;">
+          <div style="padding: 1rem; border-top: 1px solid var(--border-color); display: flex; justify-content: center; align-items: center; gap: 1rem;">
             <button class="pagination-btn" ${currentPage === 1 ? 'disabled' : ''} onclick="changeRemovedPage(${currentPage - 1})">
               <i class="fas fa-chevron-left"></i> Previous
             </button>
             <span class="pagination-info">
-              Page ${currentPage} of ${totalPages} (${filteredRemoved.length} clients)
+              Page ${currentPage} of ${totalPages} (${filteredRemoved.length} players)
             </span>
             <button class="pagination-btn" ${currentPage === totalPages ? 'disabled' : ''} onclick="changeRemovedPage(${currentPage + 1})">
               Next <i class="fas fa-chevron-right"></i>
@@ -4018,11 +3514,10 @@
         `;
       }
       
-      html += `</div>`;
       return html;
     }
 
-    // Render analytics - OPTIMIZED
+    // Render analytics
     function renderAnalytics() {
       const analytics = recoveryState.analytics.data || {
         total_recovered: 0,
@@ -4042,11 +3537,11 @@
             </div>
             <div class="analytic-card">
               <div class="analytic-value">${analytics.chat_success_rate}%</div>
-              <div class="analytic-label">Chat Success</div>
+              <div class="analytic-label">💬 Chat Success</div>
             </div>
             <div class="analytic-card">
               <div class="analytic-value">${analytics.offer_success_rate}%</div>
-              <div class="analytic-label">Offer Success</div>
+              <div class="analytic-label">🎁 Offer Success</div>
             </div>
             <div class="analytic-card">
               <div class="analytic-value">${analytics.total_recovered}</div>
@@ -4062,12 +3557,12 @@
             </div>
           </div>
           
-          <div style="background: var(--bg-secondary); padding: 1.2rem; border-radius: 10px; margin-top: 1.5rem; border: 1px solid var(--border-color);">
-            <h4 style="color: var(--text-primary); margin-bottom: 0.8rem; font-size: 1rem;">Recovery Analytics Summary</h4>
-            <div style="color: var(--text-secondary); line-height: 1.5; font-size: 0.9rem;">
-              <p style="margin-bottom: 0.5rem;">• Out of <strong>${analytics.total_recovered}</strong> recovered players, <strong style="color: var(--success);">${analytics.currently_active}</strong> are still active and <strong style="color: var(--danger);">${analytics.currently_inactive}</strong> have become inactive again.</p>
-              <p style="margin-bottom: 0.5rem;">• <strong>Chat recoveries</strong> have a <strong>${analytics.chat_success_rate}%</strong> success rate.</p>
-              <p style="margin-bottom: 0.5rem;">• <strong>Offer recoveries</strong> have a <strong>${analytics.offer_success_rate}%</strong> success rate.</p>
+          <div style="background: var(--bg-secondary); padding: 1.5rem; border-radius: 12px; margin-top: 2rem; border: 1px solid var(--border-color);">
+            <h4 style="color: var(--text-primary); margin-bottom: 1rem;">Recovery Analytics Summary</h4>
+            <div style="color: var(--text-secondary); line-height: 1.6;">
+              <p>• Out of <strong>${analytics.total_recovered}</strong> recovered players, <strong style="color: var(--success);">${analytics.currently_active}</strong> are still active and <strong style="color: var(--danger);">${analytics.currently_inactive}</strong> have become inactive again.</p>
+              <p>• <strong>💬 Chat recoveries</strong> have a <strong>${analytics.chat_success_rate}%</strong> success rate.</p>
+              <p>• <strong>🎁 Offer recoveries</strong> have a <strong>${analytics.offer_success_rate}%</strong> success rate.</p>
               <p>• The overall recovery success rate is <strong>${analytics.overall_success_rate}%</strong>.</p>
             </div>
           </div>
@@ -4080,24 +3575,19 @@
     // Switch recovery tab
     function switchRecoveryTab(tab) {
       recoveryState.current.tab = tab;
-      recoveryState.current.page = 1;
-      recoveryState.removed.page = 1;
       renderRecoveryDashboard();
     }
 
-    // Search recoveries with debouncing - FIXED
+    // Search recoveries
     function searchRecoveries(searchTerm, tab) {
-      clearTimeout(searchTimeout);
-      searchTimeout = setTimeout(() => {
-        if (tab === 'active') {
-          recoveryState.current.search = searchTerm;
-          recoveryState.current.page = 1;
-        } else if (tab === 'removed') {
-          recoveryState.removed.search = searchTerm;
-          recoveryState.removed.page = 1;
-        }
-        renderRecoveryDashboard();
-      }, 300);
+      if (tab === 'active') {
+        recoveryState.current.search = searchTerm;
+        recoveryState.current.page = 1;
+      } else if (tab === 'removed') {
+        recoveryState.removed.search = searchTerm;
+        recoveryState.removed.page = 1;
+      }
+      renderRecoveryDashboard();
     }
 
     // Change recovery page
@@ -4120,8 +3610,45 @@
       renderRecoveryDashboard();
     }
 
+    // Check if player is already recovered
+    async function checkIfPlayerRecovered(playerName) {
+      try {
+        const { data, error } = await supabase
+          .from('client_recoveries')
+          .select('id')
+          .eq('page_name', selectedPage)
+          .eq('player_name', playerName)
+          .eq('is_active_in_list', true)
+          .single();
+        
+        if (error && error.code !== 'PGRST116') {
+          throw error;
+        }
+        
+        return !!data;
+      } catch (error) {
+        console.error('Error checking if player recovered:', error);
+        return false;
+      }
+    }
+
+    // Get recovery button HTML
+    async function getRecoveryButtonHTML(playerName) {
+      const isRecovered = await checkIfPlayerRecovered(playerName);
+      
+      if (isRecovered) {
+        return `<button class="recovery-btn recovered" disabled>
+                  <i class="fas fa-check"></i> ✅ Recovered
+                </button>`;
+      } else {
+        return `<button class="recovery-btn mark" onclick="showRecoveryModal('${playerName.replace(/'/g, "\\'")}')">
+                  <i class="fas fa-redo"></i> 🔁 Mark as Recovered
+                </button>`;
+      }
+    }
+
     // =============================================
-    // EXISTING FUNCTIONS (Updated for Optimization)
+    // EXISTING FUNCTIONS (Updated for Recovery System)
     // =============================================
 
     // Initialize on load
@@ -4132,126 +3659,6 @@
     function initializeApp() {
       initPinSystem();
       setupLogoutButton();
-      setupSearchDebouncing();
-    }
-
-    // Setup search debouncing for all search inputs
-    function setupSearchDebouncing() {
-      const searchInputs = [
-        document.getElementById('pageSelectSearch'),
-        document.getElementById('playerSearchInput'),
-        document.getElementById('playerSearch')
-      ];
-      
-      searchInputs.forEach(input => {
-        if (input) {
-          input.addEventListener('input', function() {
-            clearTimeout(searchTimeout);
-            searchTimeout = setTimeout(() => {
-              // Trigger the appropriate search handler
-              if (this.id === 'pageSelectSearch') {
-                handlePageSearch(this.value);
-              } else if (this.id === 'playerSearchInput') {
-                handlePlayerSearch(this.value);
-              } else if (this.id === 'playerSearch') {
-                // This will be handled by the search button
-              }
-            }, 300);
-          });
-        }
-      });
-    }
-
-    function handlePageSearch(val) {
-      val = val.toLowerCase().trim();
-      pageSuggestions.innerHTML = '';
-      findBtn.style.display = 'none';
-      
-      if (!val) return;
-      
-      const matches = PAGES.filter(p => p.name.toLowerCase().includes(val));
-      if (matches.length === 0) {
-        const div = document.createElement('div');
-        div.className = 'suggestion-item';
-        div.innerHTML = '<span class="page-emoji">😕</span> No results found';
-        pageSuggestions.appendChild(div);
-      } else {
-        matches.forEach(p => {
-          const div = document.createElement('div');
-          div.className = 'suggestion-item';
-          div.innerHTML = `
-            <span class="page-emoji">${p.emoji}</span>
-            <span>${p.name}</span>
-          `;
-          div.onclick = () => {
-            searchInput.value = p.name;
-            pageSuggestions.innerHTML = '';
-            findBtn.style.display = 'inline-flex';
-          };
-          pageSuggestions.appendChild(div);
-        });
-        if (matches.length === 1) {
-          findBtn.style.display = 'inline-flex';
-        }
-      }
-    }
-
-    async function handlePlayerSearch(val) {
-      val = val.toLowerCase().trim();
-      playerSuggestions.innerHTML = '';
-      
-      if (!val || val.length < 2) return;
-      
-      const loadingDiv = document.createElement('div');
-      loadingDiv.className = 'suggestion-item';
-      loadingDiv.innerHTML = '<span class="page-emoji">⏳</span> Searching players across all pages...';
-      playerSuggestions.appendChild(loadingDiv);
-      
-      try {
-        const players = await searchPlayers(val);
-        playerSuggestions.innerHTML = '';
-        
-        if (!players || players.length === 0) {
-          const div = document.createElement('div');
-          div.className = 'suggestion-item';
-          div.innerHTML = '<span class="page-emoji">😕</span> No players found';
-          playerSuggestions.appendChild(div);
-          return;
-        }
-        
-        players.forEach(player => {
-          const div = document.createElement('div');
-          div.className = 'suggestion-item';
-          
-          const pageObj = PAGES.find(p => p.name === player.page);
-          const pageEmoji = pageObj ? pageObj.emoji : '📄';
-          
-          div.innerHTML = `
-            <span class="page-emoji">${pageEmoji}</span>
-            <div style="flex: 1; min-width: 0;">
-              <div style="font-weight: 500; margin-bottom: 0.2rem;">${player.name}</div>
-              <div style="font-size: 0.8rem; color: var(--text-secondary);">
-                <span class="page-indicator">${player.page}</span>
-              </div>
-            </div>
-          `;
-          
-          div.onclick = () => {
-            sessionStorage.setItem('searchPlayerName', player.name);
-            sessionStorage.setItem('searchPlayerPage', player.page);
-            tableState.history.page = 1;
-            showEnhancedGlobalPlayerHistory(player.name, player.page);
-          };
-          
-          playerSuggestions.appendChild(div);
-        });
-      } catch (error) {
-        playerSuggestions.innerHTML = '';
-        const div = document.createElement('div');
-        div.className = 'suggestion-item';
-        div.innerHTML = '<span class="page-emoji">❌</span> Error searching players';
-        playerSuggestions.appendChild(div);
-      }
     }
 
     function showLandingPage() {
@@ -4305,12 +3712,12 @@
 
     function updatePageTitle() {
       if (currentPageObj) {
-        pageTitle.textContent = `${currentPageObj.name} - Analytics Dashboard`;
+        pageTitle.textContent = `${currentPageObj.name} ${currentPageObj.emoji} - Analytics Dashboard`;
       } else if (selectedPage) {
         const pageObj = PAGES.find(p => p.name === selectedPage);
         if (pageObj) {
           currentPageObj = pageObj;
-          pageTitle.textContent = `${pageObj.name} - Analytics Dashboard`;
+          pageTitle.textContent = `${pageObj.name} ${pageObj.emoji} - Analytics Dashboard`;
         } else {
           pageTitle.textContent = `${selectedPage} - Analytics Dashboard`;
         }
@@ -4325,9 +3732,6 @@
       disableControlButtons();
       
       try {
-        // Clear cache when loading new page data
-        recoveryStatusCache.data.delete(selectedPage);
-        
         const data = await getPageActivity(selectedPage);
         handleDashboardData(data);
         
@@ -4424,18 +3828,96 @@
 
     // Page search functionality
     searchInput.addEventListener('input', function() {
-      clearTimeout(searchTimeout);
-      searchTimeout = setTimeout(() => {
-        handlePageSearch(this.value);
-      }, 300);
+      const val = this.value.toLowerCase().trim();
+      pageSuggestions.innerHTML = '';
+      findBtn.style.display = 'none';
+      
+      if (!val) return;
+      
+      const matches = PAGES.filter(p => p.name.toLowerCase().includes(val));
+      if (matches.length === 0) {
+        const div = document.createElement('div');
+        div.className = 'suggestion-item';
+        div.innerHTML = '<span class="page-emoji">😕</span> No results found';
+        pageSuggestions.appendChild(div);
+      } else {
+        matches.forEach(p => {
+          const div = document.createElement('div');
+          div.className = 'suggestion-item';
+          div.innerHTML = `
+            <span class="page-emoji">${p.emoji}</span>
+            <span>${p.name}</span>
+          `;
+          div.onclick = () => {
+            searchInput.value = p.name;
+            pageSuggestions.innerHTML = '';
+            findBtn.style.display = 'inline-flex';
+          };
+          pageSuggestions.appendChild(div);
+        });
+        if (matches.length === 1) {
+          findBtn.style.display = 'inline-flex';
+        }
+      }
     });
 
     // Player search functionality for LANDING PAGE
-    playerSearchInput.addEventListener('input', function() {
-      clearTimeout(searchTimeout);
-      searchTimeout = setTimeout(() => {
-        handlePlayerSearch(this.value);
-      }, 300);
+    playerSearchInput.addEventListener('input', async function() {
+      const val = this.value.toLowerCase().trim();
+      playerSuggestions.innerHTML = '';
+      
+      if (!val || val.length < 2) return;
+      
+      const loadingDiv = document.createElement('div');
+      loadingDiv.className = 'suggestion-item';
+      loadingDiv.innerHTML = '<span class="page-emoji">⏳</span> Searching players across all pages...';
+      playerSuggestions.appendChild(loadingDiv);
+      
+      try {
+        const players = await searchPlayers(val);
+        playerSuggestions.innerHTML = '';
+        
+        if (!players || players.length === 0) {
+          const div = document.createElement('div');
+          div.className = 'suggestion-item';
+          div.innerHTML = '<span class="page-emoji">😕</span> No players found';
+          playerSuggestions.appendChild(div);
+          return;
+        }
+        
+        players.forEach(player => {
+          const div = document.createElement('div');
+          div.className = 'suggestion-item';
+          
+          const pageObj = PAGES.find(p => p.name === player.page);
+          const pageEmoji = pageObj ? pageObj.emoji : '📄';
+          
+          div.innerHTML = `
+            <span class="page-emoji">${pageEmoji}</span>
+            <div style="flex: 1; min-width: 0;">
+              <div style="font-weight: 500; margin-bottom: 0.25rem;">${player.name}</div>
+              <div style="font-size: 0.875rem; color: var(--text-secondary);">
+                <span class="page-indicator">${player.page}</span>
+              </div>
+            </div>
+          `;
+          
+          div.onclick = () => {
+            sessionStorage.setItem('searchPlayerName', player.name);
+            sessionStorage.setItem('searchPlayerPage', player.page);
+            tableState.history.page = 1;
+            showEnhancedGlobalPlayerHistory(player.name, player.page);
+          };
+          
+          playerSuggestions.appendChild(div);
+        });
+      } catch (error) {
+        playerSuggestions.innerHTML = '';
+        const div = document.createElement('div');
+        div.className = 'suggestion-item';
+        div.innerHTML = '<span class="page-emoji">❌</span> Error searching players';
+        playerSuggestions.appendChild(div);
+      }
     });
 
     async function showEnhancedGlobalPlayerHistory(playerName, pageName) {
@@ -4460,14 +3942,16 @@
       try {
         const data = await getEnhancedPlayerHistory(playerName, pageName);
         hideLoader();
+        const backDiv = document.getElementById('backContainer');
+        backDiv.innerHTML = '<button class="btn btn-secondary" onclick="backToLanding()"><i class="fas fa-arrow-left"></i> Back to Search</button>';
         renderEnhancedPlayerHistory(data, playerName, pageName, true);
       } catch (error) {
         hideLoader();
         showNotification('Error loading enhanced player history: ' + error, 'error');
         document.getElementById('globalPlayerHistoryContainer').innerHTML = 
-          `<div style="text-align: center; padding: 1.5rem; color: var(--danger);">
+          `<div style="text-align: center; padding: 2rem; color: var(--danger);">
             <p>Error loading enhanced history for ${playerName}</p>
-            <p style="margin-top: 0.8rem; color: var(--text-secondary);">${error}</p>
+            <p style="margin-top: 1rem; color: var(--text-secondary);">${error}</p>
           </div>`;
       }
     }
@@ -4483,9 +3967,9 @@
       tableState.history.page = 1;
       
       document.getElementById('playerHistoryContainer').innerHTML = `
-        <div style="text-align: center; padding: 1.5rem;">
+        <div style="text-align: center; padding: 2rem;">
           <div class="spinner"></div>
-          <p style="margin-top: 0.8rem; color: var(--text-secondary);">Loading enhanced player history for <strong>${playerName}</strong>...</p>
+          <p style="margin-top: 1rem; color: var(--text-secondary);">Loading enhanced player history for <strong>${playerName}</strong>...</p>
         </div>
       `;
       
@@ -4503,10 +3987,10 @@
             showEnhancedPlayerHistoryForCurrentPage(player.name, selectedPage);
           } else {
             document.getElementById('playerHistoryContainer').innerHTML = `
-              <div style="text-align: center; padding: 1.5rem; color: var(--danger);">
+              <div style="text-align: center; padding: 2rem; color: var(--danger);">
                 <p><strong>Player "${playerName}" not found on ${selectedPage}</strong></p>
-                <p style="margin-top: 0.8rem; color: var(--text-secondary);">Please try searching for a different player or check the spelling/capitalization.</p>
-                <p style="margin-top: 0.4rem; color: var(--text-secondary); font-size: 0.8rem;">
+                <p style="margin-top: 1rem; color: var(--text-secondary);">Please try searching for a different player or check the spelling/capitalization.</p>
+                <p style="margin-top: 0.5rem; color: var(--text-secondary); font-size: 0.875rem;">
                   Note: Player names are case-sensitive. "Gone Reed" and "GOne Reed" are different players.
                 </p>
               </div>
@@ -4514,17 +3998,17 @@
           }
         } else {
           document.getElementById('playerHistoryContainer').innerHTML = `
-            <div style="text-align: center; padding: 1.5rem; color: var(--danger);">
+            <div style="text-align: center; padding: 2rem; color: var(--danger);">
               <p><strong>Player "${playerName}" not found</strong></p>
-              <p style="margin-top: 0.8rem; color: var(--text-secondary);">Please try searching for a different player.</p>
+              <p style="margin-top: 1rem; color: var(--text-secondary);">Please try searching for a different player.</p>
             </div>
           `;
         }
       } catch (error) {
         document.getElementById('playerHistoryContainer').innerHTML = `
-          <div style="text-align: center; padding: 1.5rem; color: var(--danger);">
+          <div style="text-align: center; padding: 2rem; color: var(--danger);">
             <p><strong>Error searching player: ${error}</strong></p>
-            <p style="margin-top: 0.8rem; color: var(--text-secondary);">Please try again.</p>
+            <p style="margin-top: 1rem; color: var(--text-secondary);">Please try again.</p>
           </div>
         `;
       }
@@ -4534,9 +4018,9 @@
       const searchedPlayerName = sessionStorage.getItem('currentSearchedPlayer') || playerName;
       
       document.getElementById('playerHistoryContainer').innerHTML = `
-        <div style="text-align: center; padding: 1.5rem;">
+        <div style="text-align: center; padding: 2rem;">
           <div class="spinner"></div>
-          <p style="margin-top: 0.8rem; color: var(--text-secondary);">Loading enhanced player history for <strong>${searchedPlayerName}</strong>...</p>
+          <p style="margin-top: 1rem; color: var(--text-secondary);">Loading enhanced player history for <strong>${searchedPlayerName}</strong>...</p>
         </div>
       `;
       
@@ -4545,9 +4029,9 @@
         renderEnhancedPlayerHistory(data, searchedPlayerName, pageName, false);
       } catch (error) {
         document.getElementById('playerHistoryContainer').innerHTML = 
-          `<div style="text-align: center; padding: 1.5rem; color: var(--danger);">
+          `<div style="text-align: center; padding: 2rem; color: var(--danger);">
             <p><strong>Error loading enhanced history for ${searchedPlayerName}</strong></p>
-            <p style="margin-top: 0.8rem; color: var(--text-secondary);">${error}</p>
+            <p style="margin-top: 1rem; color: var(--text-secondary);">${error}</p>
           </div>`;
       }
     }
@@ -4660,8 +4144,15 @@
       // Get recovery count
       let recoveryCount = 0;
       try {
-        const recoveredPlayers = await cacheRecoveryStatuses(selectedPage);
-        recoveryCount = recoveredPlayers.size;
+        const { data: recoveryData, error } = await supabase
+          .from('client_recoveries')
+          .select('id')
+          .eq('page_name', selectedPage)
+          .eq('is_active_in_list', true);
+        
+        if (!error && recoveryData) {
+          recoveryCount = recoveryData.length;
+        }
       } catch (error) {
         console.error('Error getting recovery count:', error);
       }
@@ -4726,15 +4217,9 @@
 
         let displayValue = (b.type === "PlayerHistory" || b.type === "PageDeposits") ? "" : (b.value === "" || b.value === undefined || b.value === null) ? 0 : b.value;
 
-        // Add emoji for recovery card
-        let iconHTML = `<i class="${b.icon}"></i>`;
-        if (b.type === "ClientRecovery") {
-          iconHTML = `<span style="font-size: 1.3rem;">👥</span>`;
-        }
-
         div.innerHTML = `
           <div class="stat-icon">
-            ${iconHTML}
+            <i class="${b.icon}"></i>
           </div>
           <div class="stat-value">${displayValue}</div>
           <div class="stat-label">
@@ -4771,12 +4256,7 @@
       tableState.current.type = type;
       tableState.current.title = getTableTitle(type);
 
-      // Add close button to table container
-      if (type !== "PlayerHistory" && type !== "PageDeposits" && type !== "ClientRecovery") {
-        tbl.innerHTML = `<button class="close-section-btn" onclick="backToDashboard()" title="Close">
-                          <i class="fas fa-times"></i>
-                        </button>`;
-      }
+      backDiv.innerHTML = '<button class="btn btn-secondary" onclick="backToDashboard()"><i class="fas fa-arrow-left"></i> Back to Dashboard</button>';
       
       if (type === "PlayerHistory") {
         document.getElementById('playerHistorySection').style.display = 'block';
@@ -4831,13 +4311,13 @@
             await renderHighRiskTable();
             return;
           } else {
-            tbl.innerHTML += "<div class='table-container' style='text-align: center; padding: 1.5rem;'><p>No high risk players found.</p></div>";
+            tbl.innerHTML = "<div class='table-container' style='text-align: center; padding: 2rem;'><p>No high risk players found.</p></div>";
           }
           break;
       }
 
       if (!filtered.length) {
-        tbl.innerHTML += `<div class='table-container' style='text-align: center; padding: 1.5rem;'><p>No ${type.toLowerCase()} players found.</p></div>`;
+        tbl.innerHTML = `<div class='table-container' style='text-align: center; padding: 2rem;'><p>No ${type.toLowerCase()} players found.</p></div>`;
       } else {
         await renderPlayerTable(filtered, tableTitle, type);
       }
@@ -4858,15 +4338,10 @@
       }
     }
 
-    // OPTIMIZED: Batch render player table with cached recovery buttons
     async function renderPlayerTable(players, title, type) {
       const totalPlayers = players.length;
       const currentPage = tableState.playerTables[type].page;
       const paginatedPlayers = getPaginatedPlayers(players, currentPage, PLAYERS_PER_PAGE);
-      
-      // Batch get recovery buttons for all players on this page
-      const playerNames = paginatedPlayers.map(p => p.player);
-      const recoveryButtonsMap = await getBatchRecoveryButtonsHTML(playerNames);
       
       let html = `
         <div class="table-container">
@@ -4875,27 +4350,23 @@
             <div id="paginationContainer"></div>
           </div>
           <div class="table-scroll-container">
-            <table style="width: 100%;">
+            <table style="font-size: 0.875rem;">
               <thead>
                 <tr>
-                  <th style="min-width: 40px; text-align: center;">#</th>
-                  <th style="min-width: 100px;">Name</th>
-                  <th style="min-width: 120px;">Last</th>
-                  <th style="min-width: 80px;">Since</th>
-                  <th style="min-width: 70px;">Status</th>
-                  <th style="min-width: 70px; text-align: center;">Total</th>
-                  <th style="min-width: 70px; text-align: center;">7d</th>
-                  ${type === "RecentActive" ? '<th style="min-width: 70px;">Gap</th>' : ''}
-                  <th style="min-width: 40px; text-align: center;">Notes</th>
-                  <th style="min-width: 70px; text-align: center;">Action</th>
+                  <th style="min-width: 50px; text-align: center;">S.No</th>
+                  <th style="min-width: 120px;">Player</th>
+                  <th style="min-width: 140px;">Last Deposit</th>
+                  <th style="min-width: 100px;">Time Since</th>
+                  <th style="min-width: 80px;">Status</th>
+                  <th style="min-width: 90px; text-align: center;">Total $</th>
+                  <th style="min-width: 90px; text-align: center;">Last 7d $</th>
+                  ${type === "RecentActive" ? '<th style="min-width: 80px;">Gap Days</th>' : ''}
+                  <th style="min-width: 90px; text-align: center;">Notes</th>
+                  <th style="min-width: 110px; text-align: center;">Action</th>
                 </tr>
               </thead>
               <tbody>
       `;
-      
-      // Use document fragment for better performance
-      const fragment = document.createDocumentFragment();
-      const tbody = document.createElement('tbody');
       
       for (let i = 0; i < paginatedPlayers.length; i++) {
         const p = paginatedPlayers[i];
@@ -4906,39 +4377,34 @@
         
         const notesBtnClass = p.hasNotes ? 'notes-btn has-notes' : 'notes-btn';
         const notesBtnIcon = p.hasNotes ? 'fa-sticky-note' : 'fa-plus';
-        const notesBtnText = p.hasNotes ? '' : '';
+        const notesBtnText = p.hasNotes ? 'Notes' : 'Add';
         
         const serialNumber = (currentPage - 1) * PLAYERS_PER_PAGE + i + 1;
         
-        // Get recovery button from cache
-        const recoveryButtonHTML = recoveryButtonsMap.get(p.player) || '';
+        // Get recovery button HTML
+        const recoveryButtonHTML = await getRecoveryButtonHTML(p.player);
         
-        const row = document.createElement('tr');
-        row.innerHTML = `
-          <td style="text-align: center;">${serialNumber}</td>
-          <td>${p.player}</td>
-          <td>${p.lastDeposit}</td>
-          <td>${gapDisplay}</td>
-          <td><span class="status-badge ${cls}">${p.status}</span></td>
-          <td style="text-align: center;">${p.totalDeposit || 0}</td>
-          <td style="text-align: center;">${p.last7DaysDeposit || 0}</td>
-          ${type === "RecentActive" ? `<td style="text-align: center;">${gapDays}</td>` : ''}
-          <td style="text-align: center;">
-            <button class="${notesBtnClass}" onclick="showNotesModal('${p.player.replace(/'/g, "\\'")}', this)" title="${p.hasNotes ? 'View notes' : 'Add note'}">
-              <i class="fas ${notesBtnIcon}"></i> ${notesBtnText}
-            </button>
-          </td>
-          <td style="text-align: center;">
-            ${recoveryButtonHTML}
-          </td>
+        html += `
+          <tr>
+            <td style="text-align: center;">${serialNumber}</td>
+            <td>${p.player}</td>
+            <td>${p.lastDeposit}</td>
+            <td>${gapDisplay}</td>
+            <td><span class="status-badge ${cls}">${p.status}</span></td>
+            <td style="text-align: center;">${p.totalDeposit || 0}</td>
+            <td style="text-align: center;">${p.last7DaysDeposit || 0}</td>
+            ${type === "RecentActive" ? `<td style="text-align: center;">${gapDays}</td>` : ''}
+            <td style="text-align: center;">
+              <button class="${notesBtnClass}" onclick="showNotesModal('${p.player.replace(/'/g, "\\'")}', this)" title="${p.hasNotes ? 'View notes' : 'Add note'}">
+                <i class="fas ${notesBtnIcon}"></i> ${notesBtnText}
+              </button>
+            </td>
+            <td style="text-align: center;">
+              ${recoveryButtonHTML}
+            </td>
+          </tr>
         `;
-        tbody.appendChild(row);
       }
-      
-      // Append the fragment to the HTML string
-      const tempDiv = document.createElement('div');
-      tempDiv.appendChild(tbody);
-      html += tempDiv.innerHTML;
       
       html += `
               </tbody>
@@ -4947,22 +4413,17 @@
         </div>
       `;
       
-      document.getElementById('tableContainer').innerHTML += html;
+      document.getElementById('tableContainer').innerHTML = html;
       
       const paginationContainer = document.getElementById('paginationContainer');
       renderPagination(totalPlayers, currentPage, PLAYERS_PER_PAGE, paginationContainer, `changePlayerPage_${type}`);
     }
 
-    // OPTIMIZED: High risk table with batch recovery buttons
     async function renderHighRiskTable() {
       const highRiskPlayers = currentPageData.highRiskPlayers;
       const totalPlayers = highRiskPlayers.length;
       const currentPage = tableState.highRisk.page;
       const paginatedPlayers = getPaginatedPlayers(highRiskPlayers, currentPage, PLAYERS_PER_PAGE);
-      
-      // Batch get recovery buttons for all players on this page
-      const playerNames = paginatedPlayers.map(p => p.player);
-      const recoveryButtonsMap = await getBatchRecoveryButtonsHTML(playerNames);
       
       let html = `
         <div class="table-container">
@@ -4971,16 +4432,16 @@
             <div id="paginationContainer"></div>
           </div>
           <div class="table-scroll-container">
-            <table style="width: 100%;">
+            <table style="font-size: 0.875rem;">
               <thead>
                 <tr>
-                  <th style="text-align: center;">#</th>
+                  <th style="text-align: center;">S.No</th>
                   <th>Player</th>
                   <th>Risk</th>
                   <th>Gaps</th>
                   <th>Gap Details</th>
-                  <th>Last</th>
-                  <th>Since</th>
+                  <th>Last Deposit</th>
+                  <th>Time Since</th>
                   <th>Status</th>
                   <th>Deposits</th>
                   <th>Notes</th>
@@ -4989,10 +4450,6 @@
               </thead>
               <tbody>
       `;
-      
-      // Use document fragment for better performance
-      const fragment = document.createDocumentFragment();
-      const tbody = document.createElement('tbody');
       
       for (let i = 0; i < paginatedPlayers.length; i++) {
         const p = paginatedPlayers[i];
@@ -5004,7 +4461,7 @@
         let gapDetails = '';
         p.gaps.forEach((gap, gapIndex) => {
           gapDetails += `
-            <div style="font-size: 0.75rem; margin-bottom: 0.2rem; padding: 0.15rem 0.3rem; background: var(--bg-secondary); border-radius: 3px; border-left: 2px solid var(--primary);">
+            <div style="font-size: 0.8rem; margin-bottom: 0.25rem; padding: 0.2rem 0.4rem; background: var(--bg-secondary); border-radius: 4px; border-left: 3px solid var(--primary);">
               <strong>${gap.gapDays}d</strong>: ${gap.gapBetween}
             </div>
           `;
@@ -5018,44 +4475,39 @@
         
         const notesBtnClass = p.hasNotes ? 'notes-btn has-notes' : 'notes-btn';
         const notesBtnIcon = p.hasNotes ? 'fa-sticky-note' : 'fa-plus';
-        const notesBtnText = p.hasNotes ? '' : '';
+        const notesBtnText = p.hasNotes ? 'Notes' : 'Add';
         
         const serialNumber = (currentPage - 1) * PLAYERS_PER_PAGE + i + 1;
         
-        // Get recovery button from cache
-        const recoveryButtonHTML = recoveryButtonsMap.get(p.player) || '';
+        // Get recovery button HTML
+        const recoveryButtonHTML = await getRecoveryButtonHTML(p.player);
         
-        const row = document.createElement('tr');
-        row.innerHTML = `
-          <td style="text-align: center;">${serialNumber}</td>
-          <td><strong>${p.player}</strong></td>
-          <td class="${riskClass}"><strong>${p.riskLevel}</strong></td>
-          <td style="text-align: center;">${p.totalQualifyingGaps}</td>
-          <td>
-            <div>
-              ${gapDetails}
-            </div>
-          </td>
-          <td>${lastDepositPKT}</td>
-          <td>${gapDisplay}</td>
-          <td><span class="status-badge ${statusClass}">${p.currentStatus}</span></td>
-          <td style="text-align: center;">${p.totalDeposits}</td>
-          <td>
-            <button class="${notesBtnClass}" onclick="showNotesModal('${p.player.replace(/'/g, "\\'")}', this)" title="${p.hasNotes ? 'View notes' : 'Add note'}">
-              <i class="fas ${notesBtnIcon}"></i> ${notesBtnText}
-            </button>
-          </td>
-          <td style="text-align: center;">
-            ${recoveryButtonHTML}
-          </td>
+        html += `
+          <tr>
+            <td style="text-align: center;">${serialNumber}</td>
+            <td><strong>${p.player}</strong></td>
+            <td class="${riskClass}"><strong>${p.riskLevel}</strong></td>
+            <td style="text-align: center;">${p.totalQualifyingGaps}</td>
+            <td>
+              <div>
+                ${gapDetails}
+              </div>
+            </td>
+            <td>${lastDepositPKT}</td>
+            <td>${gapDisplay}</td>
+            <td><span class="status-badge ${statusClass}">${p.currentStatus}</span></td>
+            <td style="text-align: center;">${p.totalDeposits}</td>
+            <td>
+              <button class="${notesBtnClass}" onclick="showNotesModal('${p.player.replace(/'/g, "\\'")}', this)" title="${p.hasNotes ? 'View notes' : 'Add note'}">
+                <i class="fas ${notesBtnIcon}"></i> ${notesBtnText}
+              </button>
+            </td>
+            <td style="text-align: center;">
+              ${recoveryButtonHTML}
+            </td>
+          </tr>
         `;
-        tbody.appendChild(row);
       }
-      
-      // Append the fragment to the HTML string
-      const tempDiv = document.createElement('div');
-      tempDiv.appendChild(tbody);
-      html += tempDiv.innerHTML;
       
       html += `
               </tbody>
@@ -5064,7 +4516,7 @@
         </div>
       `;
       
-      document.getElementById('tableContainer').innerHTML += html;
+      document.getElementById('tableContainer').innerHTML = html;
       
       const paginationContainer = document.getElementById('paginationContainer');
       renderPagination(totalPlayers, currentPage, PLAYERS_PER_PAGE, paginationContainer, 'changeHighRiskPage');
@@ -6325,9 +5777,9 @@
       clientRecoveryDashboard.style.display = 'none';
       
       pageDepositsView.innerHTML = `
-        <div style="text-align: center; padding: 1.5rem;">
+        <div style="text-align: center; padding: 2rem;">
           <div class="spinner"></div>
-          <p style="margin-top: 0.8rem; color: var(--text-secondary);">Loading daily deposits data...</p>
+          <p style="margin-top: 1rem; color: var(--text-secondary);">Loading daily deposits data...</p>
         </div>
       `;
       pageDepositsView.style.display = 'block';
@@ -6341,9 +5793,9 @@
         renderPageDeposits(data);
       } catch (error) {
         pageDepositsView.innerHTML = `
-          <div style="text-align: center; padding: 1.5rem; color: var(--danger);">
+          <div style="text-align: center; padding: 2rem; color: var(--danger);">
             <p><strong>Error loading daily deposits:</strong></p>
-            <p style="margin-top: 0.8rem; color: var(--text-secondary);">${error}</p>
+            <p style="margin-top: 1rem; color: var(--text-secondary);">${error}</p>
           </div>
         `;
       }
@@ -6352,9 +5804,9 @@
     async function changePageDepositsMonth(page) {
       tableState.deposits.month = page - 1;
       pageDepositsView.innerHTML = `
-        <div style="text-align: center; padding: 1.5rem;">
+        <div style="text-align: center; padding: 2rem;">
           <div class="spinner"></div>
-          <p style="margin-top: 0.8rem; color: var(--text-secondary);">Loading monthly data...</p>
+          <p style="margin-top: 1rem; color: var(--text-secondary);">Loading monthly data...</p>
         </div>
       `;
       await loadPageDepositsData();
@@ -6366,18 +5818,17 @@
       backToDashboard();
     }
 
-    // FIXED: Page Deposits Layout
     function renderPageDeposits(data) {
       if (!data.success || !data.dailyDeposits || data.dailyDeposits.length === 0) {
         pageDepositsView.innerHTML = `
           <div class="page-deposits-view">
-            <button class="close-section-btn" onclick="closePageDeposits()" title="Close">
-              <i class="fas fa-times"></i>
-            </button>
             <div class="deposits-header">
               <h2 class="deposits-title">Daily Deposits - ${selectedPage}</h2>
+              <button class="close-deposits-btn" onclick="closePageDeposits()" title="Close">
+                <i class="fas fa-times"></i>
+              </button>
             </div>
-            <div style="text-align: center; padding: 1.5rem; color: var(--text-secondary);">
+            <div style="text-align: center; padding: 2rem; color: var(--text-secondary);">
               <p>${data.message || "No daily deposit data available."}</p>
             </div>
           </div>
@@ -6390,15 +5841,15 @@
 
       let html = `
         <div class="page-deposits-view">
-          <button class="close-section-btn" onclick="closePageDeposits()" title="Close">
-            <i class="fas fa-times"></i>
-          </button>
           <div class="deposits-header">
             <h2 class="deposits-title">Daily Deposits - ${selectedPage}</h2>
+            <button class="close-deposits-btn" onclick="closePageDeposits()" title="Close">
+              <i class="fas fa-times"></i>
+            </button>
           </div>
           
-          <div style="margin-bottom: 1.2rem;">
-            <h4 style="color: var(--text-primary); margin-bottom: 0.8rem; text-align: center;">${data.currentMonth}</h4>
+          <div style="margin-bottom: 1.5rem;">
+            <h4 style="color: var(--text-primary); margin-bottom: 1rem; text-align: center;">${data.currentMonth}</h4>
       `;
 
       if (data.monthlyComparison) {
@@ -6448,10 +5899,10 @@
             <table class="daily-deposits-table">
               <thead>
                 <tr>
-                  <th style="text-align: left; min-width: 100px;">Date</th>
-                  <th style="text-align: right; min-width: 80px;">Amount</th>
-                  <th style="text-align: center; min-width: 80px;">Transactions</th>
-                  <th style="text-align: center; min-width: 120px;">Daily Trend</th>
+                  <th style="text-align: left; min-width: 120px;">Date</th>
+                  <th style="text-align: right; min-width: 100px;">Amount</th>
+                  <th style="text-align: center; min-width: 100px;">Transactions</th>
+                  <th style="text-align: center; min-width: 140px;">Daily Trend</th>
                 </tr>
               </thead>
               <tbody>
@@ -6496,8 +5947,8 @@
       </div>
     </div>
     
-    <div style="margin-top: 1.2rem; background: var(--bg-secondary); padding: 0.8rem; border-radius: 6px; border: 1px solid var(--border-color);">
-      <p style="color: var(--text-primary); font-size: 0.85rem; text-align: center;">
+    <div style="margin-top: 1.5rem; background: var(--bg-secondary); padding: 1rem; border-radius: 8px; border: 1px solid var(--border-color);">
+      <p style="color: var(--text-primary); font-size: 0.9rem; text-align: center;">
         <i class="fas fa-info-circle"></i> Showing ${data.dailyDeposits.length} day(s) for ${data.currentMonth}
         ${data.monthlyComparison ? ` | Compared to ${data.monthlyComparison.previousMonth}` : ''}
       </p>
@@ -6519,7 +5970,7 @@
       
       if (!data.enhancedHistory || data.enhancedHistory.length === 0) {
         container.innerHTML = `
-          <div style="text-align: center; padding: 1.5rem; color: var(--text-secondary);">
+          <div style="text-align: center; padding: 2rem; color: var(--text-secondary);">
             <p>${data.message || "No enhanced history available for this player."}</p>
           </div>
         `;
@@ -6538,43 +5989,40 @@
       const paginatedHistory = reversedHistory.slice(startIndex, endIndex);
 
       let html = `
-        <div style="background: var(--bg-secondary); padding: 0.8rem; border-radius: 6px; margin-bottom: 1.2rem; border: 1px solid var(--border-color);">
-          <div style="font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 0.4rem; font-weight: 500;">
+        <div style="background: var(--bg-secondary); padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem; border: 1px solid var(--border-color);">
+          <div style="font-size: 0.875rem; color: var(--text-secondary); margin-bottom: 0.5rem; font-weight: 500;">
             <i class="fas fa-layer-group"></i> Player on ${isGlobal ? 'Page' : 'Current Page'}:
           </div>
-          <div style="display: flex; align-items: center; gap: 0.4rem;">
-            <span style="font-size: 1rem;">${pageEmoji}</span>
+          <div style="display: flex; align-items: center; gap: 0.5rem;">
+            <span style="font-size: 1.2rem;">${pageEmoji}</span>
             <span style="font-weight: 600; color: var(--text-primary);">${pageName}</span>
           </div>
-          <div style="margin-top: 0.4rem; font-size: 0.8rem; color: var(--text-primary);">
+          <div style="margin-top: 0.5rem; font-size: 0.875rem; color: var(--text-primary);">
             <i class="fas fa-user"></i> Player: <strong>${playerName}</strong>
           </div>
         </div>
         
-        <div style="background: ${isCurrentlyActive ? 'rgba(6, 214, 160, 0.1)' : 'rgba(239, 71, 111, 0.1)'}; 
-                   color: ${isCurrentlyActive ? 'var(--success)' : 'var(--danger)'}; 
-                   padding: 0.8rem; border-radius: 6px; margin-bottom: 1.2rem; border: 1px solid ${isCurrentlyActive ? 'var(--success)' : 'var(--danger)'}; 
-                   display: flex; align-items: center; gap: 0.5rem;">
+        <div class="current-status ${isCurrentlyActive ? 'status-active-bg' : 'status-inactive-bg'}">
           <i class="fas ${isCurrentlyActive ? 'fa-check-circle' : 'fa-times-circle'}"></i>
           Player is currently ${currentStatus} on ${pageName}
         </div>
         
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 0.8rem; margin-bottom: 1.5rem;">
-          <div style="background: var(--bg-secondary); padding: 0.8rem; border-radius: 6px; text-align: center; border: 1px solid var(--border-color);">
-            <div style="font-size: 0.8rem; color: var(--text-secondary);">Total Deposits</div>
-            <div style="font-size: 1.3rem; font-weight: 600; color: var(--text-primary);">${data.rawDeposits || 0}</div>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 2rem;">
+          <div style="background: var(--bg-secondary); padding: 1rem; border-radius: 8px; text-align: center; border: 1px solid var(--border-color);">
+            <div style="font-size: 0.875rem; color: var(--text-secondary);">Total Deposits</div>
+            <div style="font-size: 1.5rem; font-weight: 600; color: var(--text-primary);">${data.rawDeposits || 0}</div>
           </div>
-          <div style="background: var(--bg-secondary); padding: 0.8rem; border-radius: 6px; text-align: center; border: 1px solid var(--border-color);">
-            <div style="font-size: 0.8rem; color: var(--text-secondary);">Deposit Days</div>
-            <div style="font-size: 1.3rem; font-weight: 600; color: var(--text-primary);">${data.totalDepositDays || 0}</div>
+          <div style="background: var(--bg-secondary); padding: 1rem; border-radius: 8px; text-align: center; border: 1px solid var(--border-color);">
+            <div style="font-size: 0.875rem; color: var(--text-secondary);">Deposit Days</div>
+            <div style="font-size: 1.5rem; font-weight: 600; color: var(--text-primary);">${data.totalDepositDays || 0}</div>
           </div>
-          <div style="background: var(--bg-secondary); padding: 0.8rem; border-radius: 6px; text-align: center; border: 1px solid var(--border-color);">
-            <div style="font-size: 0.8rem; color: var(--text-secondary);">Last Deposit</div>
-            <div style="font-size: 0.9rem; font-weight: 600; color: var(--text-primary);">${data.timeSinceDisplay || 'N/A'}</div>
+          <div style="background: var(--bg-secondary); padding: 1rem; border-radius: 8px; text-align: center; border: 1px solid var(--border-color);">
+            <div style="font-size: 0.875rem; color: var(--text-secondary);">Last Deposit</div>
+            <div style="font-size: 1rem; font-weight: 600; color: var(--text-primary);">${data.timeSinceDisplay || 'N/A'}</div>
           </div>
-          <div style="background: var(--bg-secondary); padding: 0.8rem; border-radius: 6px; text-align: center; border: 1px solid var(--border-color);">
-            <div style="font-size: 0.8rem; color: var(--text-secondary);">Total Amount</div>
-            <div style="font-size: 0.9rem; font-weight: 600; color: var(--text-primary);">$${(data.totalAmount || 0).toFixed(2)}</div>
+          <div style="background: var(--bg-secondary); padding: 1rem; border-radius: 8px; text-align: center; border: 1px solid var(--border-color);">
+            <div style="font-size: 0.875rem; color: var(--text-secondary);">Total Amount</div>
+            <div style="font-size: 1rem; font-weight: 600; color: var(--text-primary);">$${(data.totalAmount || 0).toFixed(2)}</div>
           </div>
         </div>
         
@@ -6641,7 +6089,7 @@
             <td style="text-align: left;">
               <div style="font-weight: 500;">${activityDisplay}</div>
               ${isActive && period.depositCount > 1 ? 
-                `<div style="font-size: 0.75rem; color: var(--text-secondary); margin-top: 0.2rem;">
+                `<div style="font-size: 0.8rem; color: var(--text-secondary); margin-top: 0.25rem;">
                   <i class="fas fa-coins"></i> Multiple transactions this day
                 </div>` : ''
               }
@@ -6666,9 +6114,9 @@
       </div>
     </div>
     
-    <div style="margin-top: 1.2rem; background: var(--bg-secondary); padding: 0.8rem; border-radius: 6px; border: 1px solid var(--border-color);">
-      <h5 style="color: var(--text-primary); margin-bottom: 0.4rem; font-size: 0.9rem;">Activity Level Legend:</h5>
-      <div style="display: flex; flex-wrap: wrap; gap: 0.8rem; font-size: 0.8rem;">
+    <div style="margin-top: 1.5rem; background: var(--bg-secondary); padding: 1rem; border-radius: 8px; border: 1px solid var(--border-color);">
+      <h5 style="color: var(--text-primary); margin-bottom: 0.5rem;">Activity Level Legend:</h5>
+      <div style="display: flex; flex-wrap: wrap; gap: 1rem; font-size: 0.875rem;">
         <div><span style="color: var(--success);"><i class="fas fa-bolt"></i> High Activity</span>: >4 deposits OR >$50 in one day</div>
         <div><span style="color: var(--info);"><i class="fas fa-check"></i> Normal Activity</span>: ≤4 deposits AND ≤$50 in one day</div>
         <div><span style="color: var(--text-secondary);"><i class="fas fa-moon"></i> No Activity</span>: No deposits</div>
@@ -6786,7 +6234,7 @@
           await loadPlayerNotes(currentNotesPlayer);
           
           if (currentNotesButton) {
-            currentNotesButton.innerHTML = '<i class="fas fa-sticky-note"></i>';
+            currentNotesButton.innerHTML = '<i class="fas fa-sticky-note"></i> Notes';
             currentNotesButton.className = 'notes-btn has-notes';
           }
           
