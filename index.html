@@ -837,32 +837,12 @@
       border-color: var(--primary);
     }
 
-    /* REMOVAL MODAL STYLES */
+    /* REMOVAL MODAL STYLES - UPDATED */
     .removal-reason-selector {
       display: flex;
       flex-direction: column;
       gap: 0.75rem;
       margin: 1.5rem 0;
-    }
-
-    .removal-reason-option {
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-      padding: 0.75rem;
-      border: 1px solid var(--border-color);
-      border-radius: 8px;
-      cursor: pointer;
-      transition: all 0.2s ease;
-    }
-
-    .removal-reason-option:hover {
-      background: var(--bg-secondary);
-    }
-
-    .removal-reason-option.selected {
-      border-color: var(--primary);
-      background: rgba(67, 97, 238, 0.1);
     }
 
     .removal-pin-input {
@@ -981,16 +961,17 @@
       overflow-x: auto;
     }
 
-    /* FIXED: Recovery table alignment */
+    /* FIXED: Recovery table alignment - UPDATED */
     .recovery-table {
       width: 100%;
       border-collapse: collapse;
       table-layout: fixed;
+      font-size: 0.8rem; /* Smaller font size */
     }
 
     .recovery-table th {
       background: var(--bg-secondary);
-      padding: 1rem;
+      padding: 0.75rem 0.5rem; /* Reduced padding */
       text-align: left;
       font-weight: 600;
       color: var(--text-secondary);
@@ -999,7 +980,7 @@
     }
 
     .recovery-table td {
-      padding: 1rem;
+      padding: 0.75rem 0.5rem; /* Reduced padding */
       border-bottom: 1px solid var(--border-color);
       color: var(--text-primary);
       vertical-align: middle;
@@ -1013,11 +994,19 @@
     .recovery-table .status-active {
       color: var(--success);
       font-weight: 600;
+      background: #d1fae5;
+      padding: 0.25rem 0.5rem;
+      border-radius: 12px;
+      font-size: 0.75rem;
     }
 
     .recovery-table .status-inactive {
       color: var(--danger);
       font-weight: 600;
+      background: #fee2e2;
+      padding: 0.25rem 0.5rem;
+      border-radius: 12px;
+      font-size: 0.75rem;
     }
 
     .method-chat {
@@ -1028,13 +1017,31 @@
       color: #f59e0b;
     }
 
+    .view-notes-btn {
+      padding: 0.3rem 0.6rem;
+      border: 1px solid var(--border-color);
+      background: var(--bg-secondary);
+      color: var(--text-primary);
+      border-radius: 4px;
+      font-size: 0.7rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      white-space: nowrap;
+    }
+
+    .view-notes-btn:hover {
+      background: var(--primary);
+      color: white;
+    }
+
     .removal-btn {
       padding: 0.5rem 1rem;
       border: 1px solid var(--danger);
       background: rgba(239, 68, 68, 0.1);
       color: var(--danger);
       border-radius: 6px;
-      font-size: 0.875rem;
+      font-size: 0.75rem; /* Smaller font */
       font-weight: 500;
       cursor: pointer;
       transition: all 0.2s ease;
@@ -1234,7 +1241,7 @@
       border: 1px solid var(--border-color);
     }
 
-    /* FIXED: Player Status Container */
+    /* FIXED: Player Status Container - UPDATED */
     .player-status-container {
       background: var(--bg-secondary);
       border-radius: 12px;
@@ -1264,11 +1271,6 @@
       font-weight: 600;
       color: var(--text-primary);
       margin-bottom: 0.25rem;
-    }
-
-    .player-status-subtext {
-      font-size: 0.9rem;
-      color: var(--text-secondary);
     }
 
     /* Enhanced Player History Table */
@@ -1632,6 +1634,31 @@
       to { transform: translateX(0); opacity: 1; }
     }
 
+    /* FIXED: High Risk Table Styles - UPDATED */
+    .high-risk-table {
+      font-size: 0.8rem !important; /* Smaller font for high risk table */
+    }
+
+    .high-risk-table th {
+      padding: 0.75rem 0.5rem !important;
+      font-size: 0.75rem !important;
+    }
+
+    .high-risk-table td {
+      padding: 0.75rem 0.5rem !important;
+      font-size: 0.75rem !important;
+    }
+
+    .high-risk-table .recovery-btn {
+      font-size: 0.7rem !important;
+      padding: 0.3rem 0.6rem !important;
+    }
+
+    .high-risk-table .notes-btn {
+      font-size: 0.7rem !important;
+      padding: 0.3rem 0.6rem !important;
+    }
+
     /* Responsive */
     @media (max-width: 1024px) {
       .stats-grid,
@@ -1740,7 +1767,7 @@
       }
       
       .recovery-table {
-        font-size: 0.8rem;
+        font-size: 0.7rem;
       }
       
       .recovery-table th,
@@ -1844,7 +1871,7 @@
     </div>
   </div>
 
-  <!-- REMOVAL MODAL -->
+  <!-- REMOVAL MODAL - UPDATED -->
   <div id="removalModal" class="recovery-modal">
     <div class="recovery-modal-content">
       <h3 class="recovery-modal-title">Remove from Recovery List</h3>
@@ -1859,67 +1886,20 @@
       </div>
       
       <div>
-        <label style="display: block; margin-bottom: 0.75rem; color: var(--text-primary); font-weight: 500;">
-          Reason for Removal:
-        </label>
-        <div class="removal-reason-selector">
-          <div class="removal-reason-option" onclick="selectRemovalReason('mistake')">
-            <input type="radio" id="reason-mistake" name="removal-reason" hidden>
-            <label for="reason-mistake" style="cursor: pointer; flex: 1;">
-              <strong>Added by mistake</strong>
-              <div style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 0.25rem;">
-                Wrong player or accidental click
-              </div>
-            </label>
-          </div>
-          
-          <div class="removal-reason-option" onclick="selectRemovalReason('not-recovered')">
-            <input type="radio" id="reason-not-recovered" name="removal-reason" hidden>
-            <label for="reason-not-recovered" style="cursor: pointer; flex: 1;">
-              <strong>Not actually recovered</strong>
-              <div style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 0.25rem;">
-                Player never became active after marking
-              </div>
-            </label>
-          </div>
-          
-          <div class="removal-reason-option" onclick="selectRemovalReason('duplicate')">
-            <input type="radio" id="reason-duplicate" name="removal-reason" hidden>
-            <label for="reason-duplicate" style="cursor: pointer; flex: 1;">
-              <strong>Duplicate entry</strong>
-              <div style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 0.25rem;">
-                Player already in recovery list
-              </div>
-            </label>
-          </div>
-          
-          <div class="removal-reason-option" onclick="selectRemovalReason('other')">
-            <input type="radio" id="reason-other" name="removal-reason" hidden>
-            <label for="reason-other" style="cursor: pointer; flex: 1;">
-              <strong>Other reason</strong>
-              <div style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 0.25rem;">
-                Specify in notes below
-              </div>
-            </label>
-          </div>
-        </div>
-      </div>
-      
-      <div style="margin-top: 1.5rem;">
         <label style="display: block; margin-bottom: 0.5rem; color: var(--text-primary); font-weight: 500;">
-          Additional Notes (Optional):
+          Reason for Removal:
         </label>
         <textarea 
           id="removalNotesInput" 
           class="recovery-notes-input" 
-          placeholder="Enter removal notes..."
-          rows="2"
+          placeholder="Enter reason for removal..."
+          rows="3"
         ></textarea>
       </div>
       
       <div style="margin-top: 1.5rem;">
         <label style="display: block; margin-bottom: 0.5rem; color: var(--text-primary); font-weight: 500;">
-          Enter PIN to Confirm (8152):
+          Enter PIN to Confirm:
         </label>
         <input 
           type="password" 
@@ -2756,7 +2736,7 @@
         search: '',
         data: null,
         stats: null,
-        recoveryStatusCache: new Map() // NEW: Cache for recovery status
+        recoveryStatusCache: new Map()
       },
       removed: {
         page: 1,
@@ -3171,7 +3151,7 @@
       });
     }
 
-    // Confirm recovery
+    // Confirm recovery - UPDATED FOR REAL-TIME BUTTON UPDATE
     async function confirmRecovery() {
       if (!selectedRecoveryMethod) {
         showNotification('Please select a recovery method (Chat or Offer)', 'error');
@@ -3210,7 +3190,7 @@
         // Update recovery cache
         recoveryStatusCache.set(recoveryPlayerName, true);
         
-        // Update recovery button in all tables
+        // REAL-TIME UPDATE: Update recovery button in all tables
         updateRecoveryButtonInTables(recoveryPlayerName, true);
         
         // If we're in recovery dashboard, refresh it
@@ -3221,6 +3201,9 @@
         // Update recovery stats in dashboard
         await updateRecoveryStats();
         
+        // Update dashboard stats
+        await updateDashboardRecoveryCount();
+        
       } catch (error) {
         console.error('Error marking player as recovered:', error);
         showNotification('Error marking player as recovered: ' + error.message, 'error');
@@ -3230,23 +3213,56 @@
       }
     }
 
-    // Update recovery button in all tables
+    // Update recovery button in all tables - UPDATED FOR REAL-TIME
     function updateRecoveryButtonInTables(playerName, isRecovered) {
       // Find all recovery buttons for this player and update them
       const buttons = document.querySelectorAll('.recovery-btn');
       buttons.forEach(btn => {
-        if (btn.textContent.includes(playerName) || btn.dataset.player === playerName) {
-          if (isRecovered) {
-            btn.innerHTML = '<i class="fas fa-check"></i> Recovered';
-            btn.className = 'recovery-btn recovered';
-            btn.disabled = true;
-          } else {
-            btn.innerHTML = '<i class="fas fa-redo"></i> Mark';
-            btn.className = 'recovery-btn mark';
-            btn.disabled = false;
+        if (btn.textContent.includes('Mark') || btn.textContent.includes('Recovered')) {
+          // Check if this button is for the recovered player
+          const btnParentRow = btn.closest('tr');
+          if (btnParentRow) {
+            const playerCell = btnParentRow.querySelector('td:nth-child(2)') || btnParentRow.querySelector('td:nth-child(3)');
+            if (playerCell && playerCell.textContent.includes(playerName)) {
+              if (isRecovered) {
+                btn.innerHTML = '<i class="fas fa-check"></i> Recovered';
+                btn.className = 'recovery-btn recovered';
+                btn.disabled = true;
+                btn.onclick = null;
+              } else {
+                btn.innerHTML = '<i class="fas fa-redo"></i> Mark';
+                btn.className = 'recovery-btn mark';
+                btn.disabled = false;
+                btn.onclick = function() { showRecoveryModal(playerName); };
+              }
+            }
           }
         }
       });
+    }
+
+    // Update dashboard recovery count
+    async function updateDashboardRecoveryCount() {
+      try {
+        const { data, error } = await supabase
+          .from('client_recoveries')
+          .select('id')
+          .eq('page_name', selectedPage)
+          .eq('is_active_in_list', true);
+        
+        if (error) throw error;
+        
+        const count = data ? data.length : 0;
+        
+        // Update the recovery button in dashboard
+        const recoveryButton = document.querySelector('.stat-card.recovery .stat-value');
+        if (recoveryButton) {
+          recoveryButton.textContent = count;
+        }
+        
+      } catch (error) {
+        console.error('Error updating recovery count:', error);
+      }
     }
 
     // Show removal modal
@@ -3259,12 +3275,6 @@
       removalRecordIdInput.value = recordId;
       removalNotesInput.value = '';
       removalPinInput.value = '';
-      
-      // Reset reason selection
-      selectedRemovalReason = null;
-      document.querySelectorAll('.removal-reason-option').forEach(option => {
-        option.classList.remove('selected');
-      });
       
       removalModal.style.display = 'block';
       removalPinInput.focus();
@@ -3279,28 +3289,11 @@
       removalPinInput.value = '';
     }
 
-    // Select removal reason
-    function selectRemovalReason(reason) {
-      selectedRemovalReason = reason;
-      
-      document.querySelectorAll('.removal-reason-option').forEach(option => {
-        option.classList.remove('selected');
-        if (option.querySelector('input').id === `reason-${reason}`) {
-          option.classList.add('selected');
-        }
-      });
-    }
-
-    // Confirm removal
+    // Confirm removal - UPDATED ERROR MESSAGE
     async function confirmRemoval() {
-      if (!selectedRemovalReason) {
-        showNotification('Please select a reason for removal', 'error');
-        return;
-      }
-      
       const pin = removalPinInput.value.trim();
       if (pin !== RECOVERY_REMOVAL_PIN) {
-        showNotification('Invalid PIN. Please enter 8152 to confirm removal.', 'error');
+        showNotification('Invalid PIN. Please try again.', 'error'); // UPDATED: No PIN shown
         return;
       }
       
@@ -3316,7 +3309,7 @@
             is_active_in_list: false,
             removed_date: new Date().toISOString(),
             removed_by: userRole,
-            removal_reason: selectedRemovalReason,
+            removal_reason: 'user_removed',
             removal_notes: removalNotes || null,
             removal_pin_used: '81**',
             updated_at: new Date().toISOString()
@@ -3346,6 +3339,9 @@
           
           // Update recovery stats in dashboard
           await updateRecoveryStats();
+          
+          // Update dashboard recovery count
+          await updateDashboardRecoveryCount();
           
         } else {
           showNotification('Record not found or already removed', 'warning');
@@ -3531,7 +3527,7 @@
       clientRecoveryDashboard.style.display = 'block';
     }
 
-    // Render active recoveries - FIXED VERSION
+    // Render active recoveries - FIXED VERSION WITH UPDATED STYLING
     function renderActiveRecoveries() {
       const recoveries = recoveryState.current.data || [];
       const stats = recoveryState.current.stats || { total: 0, active: 0, inactive: 0 };
@@ -3590,13 +3586,13 @@
             <thead>
               <tr>
                 <th style="width: 50px; text-align: center;">#</th>
-                <th style="width: 120px;">Date</th>
-                <th style="width: 150px;">Player Name</th>
-                <th style="width: 100px;">Method</th>
-                <th style="width: 120px;">Current Status</th>
-                <th style="width: 150px;">Last Deposit</th>
-                <th style="width: 200px;">Recovery Notes</th>
-                <th style="width: 100px; text-align: center;">Actions</th>
+                <th style="width: 100px;">Date</th>
+                <th style="width: 120px;">Player Name</th>
+                <th style="width: 80px;">Method</th>
+                <th style="width: 100px;">Current Status</th>
+                <th style="width: 120px;">Last Deposit</th>
+                <th style="width: 150px;">Recovery Notes</th>
+                <th style="width: 80px; text-align: center;">Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -3616,17 +3612,32 @@
           const methodClass = recovery.recovery_method === 'chat' ? 'method-chat' : 'method-offer';
           const methodIcon = recovery.recovery_method === 'chat' ? '💬' : '🎁';
           const statusClass = recovery.current_status === 'Active' ? 'status-active' : 'status-inactive';
+          const statusText = recovery.current_status === 'Active' ? 'Active' : 'Inactive';
           const statusIcon = recovery.current_status === 'Active' ? '✅' : '❌';
+          
+          // Determine notes display
+          let notesDisplay = '-';
+          if (recovery.recovery_notes) {
+            if (recovery.recovery_notes.length > 30) {
+              notesDisplay = `
+                <button class="view-notes-btn" onclick="showRecoveryNotesModal('${recovery.player_name}', '${recovery.recovery_notes.replace(/'/g, "\\'")}')">
+                  View Notes
+                </button>
+              `;
+            } else {
+              notesDisplay = recovery.recovery_notes;
+            }
+          }
           
           html += `
             <tr>
               <td style="text-align: center;">${serialNumber}</td>
               <td>${convertUTCToPKTDateOnly(recovery.recovered_date)}</td>
               <td><strong>${recovery.player_name}</strong></td>
-              <td class="${methodClass}">${methodIcon} ${recovery.recovery_method.charAt(0).toUpperCase() + recovery.recovery_method.slice(1)}</td>
-              <td class="${statusClass}">${statusIcon} ${recovery.current_status}</td>
+              <td class="${methodClass}">${methodIcon}</td>
+              <td><span class="${statusClass}">${statusIcon} ${statusText}</span></td>
               <td>${recovery.last_deposit_display || 'N/A'}</td>
-              <td>${recovery.recovery_notes || '-'}</td>
+              <td>${notesDisplay}</td>
               <td style="text-align: center;">
                 <button class="removal-btn" onclick="showRemovalModal('${recovery.id}', '${recovery.player_name}', '${recovery.recovered_date}', '${recovery.recovery_method}')">
                   <i class="fas fa-times"></i> Remove
@@ -3663,7 +3674,39 @@
       return html;
     }
 
-    // Render removed clients - FIXED VERSION
+    // Show recovery notes modal
+    function showRecoveryNotesModal(playerName, notes) {
+      const modalHTML = `
+        <div class="modal" style="display: block;">
+          <div class="modal-content" style="max-width: 500px;">
+            <h3 class="modal-title">Recovery Notes - ${playerName}</h3>
+            <div style="background: var(--bg-secondary); padding: 1rem; border-radius: 8px; margin: 1rem 0; border: 1px solid var(--border-color);">
+              <p style="color: var(--text-primary); white-space: pre-wrap; line-height: 1.5;">${notes}</p>
+            </div>
+            <div class="modal-buttons">
+              <button class="btn btn-secondary" onclick="this.closest('.modal').style.display='none'">
+                <i class="fas fa-times"></i> Close
+              </button>
+            </div>
+          </div>
+        </div>
+      `;
+      
+      // Create and show modal
+      const modalDiv = document.createElement('div');
+      modalDiv.innerHTML = modalHTML;
+      document.body.appendChild(modalDiv);
+      
+      // Add click outside to close
+      modalDiv.querySelector('.modal').onclick = function(e) {
+        if (e.target === this) {
+          this.style.display = 'none';
+          document.body.removeChild(modalDiv);
+        }
+      };
+    }
+
+    // Render removed clients - FIXED VERSION WITH UPDATED STYLING
     function renderRemovedClients() {
       const removed = recoveryState.removed.data || [];
       
@@ -3674,7 +3717,7 @@
         filteredRemoved = removed.filter(r => 
           r.player_name.toLowerCase().includes(searchTerm) ||
           (r.removal_notes && r.removal_notes.toLowerCase().includes(searchTerm)) ||
-          r.removal_reason?.toLowerCase().includes(searchTerm)
+          (r.removal_reason && r.removal_reason.toLowerCase().includes(searchTerm))
         );
       }
       
@@ -3713,11 +3756,11 @@
             <thead>
               <tr>
                 <th style="width: 50px; text-align: center;">#</th>
-                <th style="width: 150px;">Player Name</th>
-                <th style="width: 120px;">Added Date</th>
-                <th style="width: 120px;">Removed Date</th>
-                <th style="width: 150px;">Removal Reason</th>
-                <th style="width: 200px;">Removal Notes</th>
+                <th style="width: 120px;">Player Name</th>
+                <th style="width: 100px;">Added Date</th>
+                <th style="width: 100px;">Removed Date</th>
+                <th style="width: 120px;">Removal Reason</th>
+                <th style="width: 150px;">Removal Notes</th>
               </tr>
             </thead>
             <tbody>
@@ -3735,14 +3778,28 @@
         paginatedRemoved.forEach((record, index) => {
           const serialNumber = startIndex + index + 1;
           
+          // Determine notes display
+          let notesDisplay = '-';
+          if (record.removal_notes) {
+            if (record.removal_notes.length > 30) {
+              notesDisplay = `
+                <button class="view-notes-btn" onclick="showRecoveryNotesModal('${record.player_name}', '${record.removal_notes.replace(/'/g, "\\'")}')">
+                  View Notes
+                </button>
+              `;
+            } else {
+              notesDisplay = record.removal_notes;
+            }
+          }
+          
           html += `
             <tr>
               <td style="text-align: center;">${serialNumber}</td>
               <td><strong>${record.player_name}</strong></td>
               <td>${convertUTCToPKTDateOnly(record.recovered_date)}</td>
               <td>${record.removed_date ? convertUTCToPKTDateOnly(record.removed_date) : '-'}</td>
-              <td>${record.removal_reason ? record.removal_reason.charAt(0).toUpperCase() + record.removal_reason.slice(1).replace('-', ' ') : '-'}</td>
-              <td>${record.removal_notes || '-'}</td>
+              <td>${record.removal_reason ? record.removal_reason.charAt(0).toUpperCase() + record.removal_reason.slice(1).replace('-', ' ') : 'User removed'}</td>
+              <td>${notesDisplay}</td>
             </tr>
           `;
         });
@@ -3887,6 +3944,7 @@
       
       // Initialize debounced search
       window.debouncedSearchRecoveries = debouncedSearchRecoveries;
+      window.showRecoveryNotesModal = showRecoveryNotesModal;
     }
 
     function showLandingPage() {
@@ -4455,9 +4513,7 @@
             <i class="${b.icon}"></i>
           </div>
           <div class="stat-value">${displayValue}</div>
-          <div class="stat-label">
-            ${b.type === "ClientRecovery" ? "👥 " : ""}${b.label}
-          </div>
+          <div class="stat-label">${b.label}</div>
         `;
 
         div.onclick = () => showBoxData(b.type);
@@ -4656,7 +4712,7 @@
       renderPagination(totalPlayers, currentPage, PLAYERS_PER_PAGE, paginationContainer, `changePlayerPage_${type}`);
     }
 
-    // OPTIMIZED: Batch recovery button generation for high risk table
+    // OPTIMIZED: Batch recovery button generation for high risk table - UPDATED FOR SMALLER SIZE
     async function renderHighRiskTable() {
       const highRiskPlayers = currentPageData.highRiskPlayers;
       const totalPlayers = highRiskPlayers.length;
@@ -4673,20 +4729,20 @@
             <div id="paginationContainer"></div>
           </div>
           <div class="table-scroll-container">
-            <table style="font-size: 0.875rem;">
+            <table class="high-risk-table">
               <thead>
                 <tr>
-                  <th style="text-align: center;">S.No</th>
-                  <th>Player</th>
-                  <th>Risk</th>
-                  <th>Gaps</th>
-                  <th>Gap Details</th>
-                  <th>Last Deposit</th>
-                  <th>Time Since</th>
-                  <th>Status</th>
-                  <th>Deposits</th>
-                  <th>Notes</th>
-                  <th>Action</th>
+                  <th style="text-align: center; width: 40px;">S.No</th>
+                  <th style="width: 100px;">Player</th>
+                  <th style="width: 70px;">Risk</th>
+                  <th style="width: 50px; text-align: center;">Gaps</th>
+                  <th style="width: 150px;">Gap Details</th>
+                  <th style="width: 100px;">Last Deposit</th>
+                  <th style="width: 100px;">Time Since</th>
+                  <th style="width: 70px;">Status</th>
+                  <th style="width: 70px; text-align: center;">Deposits</th>
+                  <th style="width: 70px; text-align: center;">Notes</th>
+                  <th style="width: 80px; text-align: center;">Action</th>
                 </tr>
               </thead>
               <tbody>
@@ -4702,7 +4758,7 @@
         let gapDetails = '';
         p.gaps.forEach((gap, gapIndex) => {
           gapDetails += `
-            <div style="font-size: 0.8rem; margin-bottom: 0.25rem; padding: 0.2rem 0.4rem; background: var(--bg-secondary); border-radius: 4px; border-left: 3px solid var(--primary);">
+            <div style="font-size: 0.7rem; margin-bottom: 0.2rem; padding: 0.15rem 0.3rem; background: var(--bg-secondary); border-radius: 3px; border-left: 2px solid var(--primary);">
               <strong>${gap.gapDays}d</strong>: ${gap.gapBetween}
             </div>
           `;
@@ -4725,21 +4781,21 @@
         
         html += `
           <tr>
-            <td style="text-align: center;">${serialNumber}</td>
-            <td><strong>${p.player}</strong></td>
-            <td class="${riskClass}"><strong>${p.riskLevel}</strong></td>
-            <td style="text-align: center;">${p.totalQualifyingGaps}</td>
-            <td>
+            <td style="text-align: center; font-size: 0.75rem;">${serialNumber}</td>
+            <td style="font-size: 0.75rem;"><strong>${p.player}</strong></td>
+            <td class="${riskClass}" style="font-size: 0.75rem;"><strong>${p.riskLevel}</strong></td>
+            <td style="text-align: center; font-size: 0.75rem;">${p.totalQualifyingGaps}</td>
+            <td style="font-size: 0.7rem;">
               <div>
                 ${gapDetails}
               </div>
             </td>
-            <td>${lastDepositPKT}</td>
-            <td>${gapDisplay}</td>
-            <td><span class="status-badge ${statusClass}">${p.currentStatus}</span></td>
-            <td style="text-align: center;">${p.totalDeposits}</td>
-            <td>
-              <button class="${notesBtnClass}" onclick="showNotesModal('${p.player.replace(/'/g, "\\'")}', this)" title="${p.hasNotes ? 'View notes' : 'Add note'}">
+            <td style="font-size: 0.75rem;">${lastDepositPKT}</td>
+            <td style="font-size: 0.75rem;">${gapDisplay}</td>
+            <td style="font-size: 0.75rem;"><span class="status-badge ${statusClass}" style="font-size: 0.7rem; padding: 0.15rem 0.4rem;">${p.currentStatus}</span></td>
+            <td style="text-align: center; font-size: 0.75rem;">${p.totalDeposits}</td>
+            <td style="text-align: center;">
+              <button class="${notesBtnClass}" style="font-size: 0.7rem; padding: 0.3rem 0.5rem;" onclick="showNotesModal('${p.player.replace(/'/g, "\\'")}', this)" title="${p.hasNotes ? 'View notes' : 'Add note'}">
                 <i class="fas ${notesBtnIcon}"></i> ${notesBtnText}
               </button>
             </td>
@@ -6231,7 +6287,7 @@
       const endIndex = Math.min(startIndex + PLAYERS_PER_PAGE, totalEntries);
       const paginatedHistory = reversedHistory.slice(startIndex, endIndex);
 
-      // FIXED: Player status in container
+      // FIXED: Player status in container - REMOVED "Last activity" line
       const statusClass = isCurrentlyActive ? 'active' : 'inactive';
       const statusIcon = isCurrentlyActive ? '✅' : '❌';
       const statusText = isCurrentlyActive ? 'ACTIVE' : 'INACTIVE';
@@ -6256,9 +6312,6 @@
           </div>
           <div class="player-status-text">
             Player is currently ${statusText} on ${pageName}
-          </div>
-          <div class="player-status-subtext">
-            Last activity: ${data.timeSinceDisplay || 'N/A'}
           </div>
         </div>
         
