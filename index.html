@@ -1027,11 +1027,19 @@
     .method-chat {
       color: var(--info);
       font-weight: 500;
+      background: rgba(6, 214, 160, 0.1);
+      padding: 0.25rem 0.5rem;
+      border-radius: 8px;
+      text-align: center;
     }
 
     .method-offer {
       color: #f59e0b;
       font-weight: 500;
+      background: rgba(245, 158, 11, 0.1);
+      padding: 0.25rem 0.5rem;
+      border-radius: 8px;
+      text-align: center;
     }
 
     .view-notes-btn {
@@ -1717,6 +1725,43 @@
     .high-risk-table .notes-btn {
       font-size: 0.7rem !important;
       padding: 0.3rem 0.6rem !important;
+    }
+
+    /* NEW: Risk Level Color Classes */
+    .risk-very-high {
+      color: #ef4444 !important;
+      font-weight: 600 !important;
+      background: rgba(239, 68, 68, 0.1);
+      padding: 0.25rem 0.5rem;
+      border-radius: 8px;
+      text-align: center;
+    }
+
+    .risk-high {
+      color: #f97316 !important;
+      font-weight: 600 !important;
+      background: rgba(249, 115, 22, 0.1);
+      padding: 0.25rem 0.5rem;
+      border-radius: 8px;
+      text-align: center;
+    }
+
+    .risk-medium {
+      color: #f59e0b !important;
+      font-weight: 600 !important;
+      background: rgba(245, 158, 11, 0.1);
+      padding: 0.25rem 0.5rem;
+      border-radius: 8px;
+      text-align: center;
+    }
+
+    .risk-low {
+      color: #10b981 !important;
+      font-weight: 600 !important;
+      background: rgba(16, 185, 129, 0.1);
+      padding: 0.25rem 0.5rem;
+      border-radius: 8px;
+      text-align: center;
     }
 
     /* Responsive */
@@ -3301,6 +3346,12 @@
       
       const recoveryNotes = recoveryNotesInput.value.trim();
       
+      // FIXED: Store player name in local variable before async operations
+      const playerNameToRecover = recoveryPlayerName;
+      const pageNameToRecover = recoveryPlayerPage;
+      
+      console.log(`Starting recovery for player: ${playerNameToRecover} on page: ${pageNameToRecover}`);
+      
       confirmRecoveryBtn.disabled = true;
       confirmRecoveryBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...';
       
@@ -3309,8 +3360,8 @@
           .from('client_recoveries')
           .insert([
             {
-              page_name: recoveryPlayerPage,
-              player_name: recoveryPlayerName,
+              page_name: pageNameToRecover,
+              player_name: playerNameToRecover,
               recovery_method: selectedRecoveryMethod,
               recovery_notes: recoveryNotes || null,
               added_by: userRole,
@@ -3324,15 +3375,17 @@
         
         if (error) throw error;
         
-        showNotification(`Player ${recoveryPlayerName} marked as recovered via ${selectedRecoveryMethod === 'chat' ? 'Chat' : 'Offer'}`, 'success');
-        
-        hideRecoveryModal();
+        showNotification(`Player ${playerNameToRecover} marked as recovered via ${selectedRecoveryMethod === 'chat' ? 'Chat' : 'Offer'}`, 'success');
         
         // Update recovery cache
-        recoveryStatusCache.set(recoveryPlayerName, true);
+        recoveryStatusCache.set(playerNameToRecover, true);
         
         // REAL-TIME UPDATE: Update recovery button in all tables - FIXED VERSION
-        updateRecoveryButtonInTables(recoveryPlayerName, true);
+        // Use the local variable, not the global one
+        updateRecoveryButtonInTables(playerNameToRecover, true);
+        
+        // Hide modal AFTER updating buttons
+        hideRecoveryModal();
         
         // If we're in recovery dashboard, refresh it
         if (currentView === 'clientRecovery') {
@@ -3496,7 +3549,8 @@
       removalRecordId = recordId;
       
       removalPlayerName.textContent = playerName;
-      removalRecoveredDate.textContent = convertUTCToPKTDateOnly(recoveredDate);
+      // FIXED: Use convertUTCToPKT instead of convertUTCToPKTDateOnly for date AND time
+      removalRecoveredDate.textContent = convertUTCToPKT(recoveredDate);
       removalMethod.textContent = method === 'chat' ? 'Chat' : 'Offer';
       removalRecordIdInput.value = recordId;
       removalNotesInput.value = '';
@@ -3817,9 +3871,9 @@
             <thead>
               <tr>
                 <th style="width: 50px; text-align: center;">#</th>
-                <th style="width: 100px;">Date</th>
+                <th style="width: 150px;">Date & Time</th>
                 <th style="width: 120px;">Player Name</th>
-                <th style="width: 80px;">Method</th>
+                <th style="width: 100px;">Method</th>
                 <th style="width: 100px;">Current Status</th>
                 <th style="width: 120px;">Last Deposit</th>
                 <th style="width: 150px;">Recovery Notes</th>
@@ -3840,13 +3894,15 @@
       } else {
         paginatedRecoveries.forEach((recovery, index) => {
           const serialNumber = startIndex + index + 1;
+          // FIXED: Use convertUTCToPKT instead of convertUTCToPKTDateOnly for date AND time
+          const recoveredDate = convertUTCToPKT(recovery.recovered_date);
           const methodClass = recovery.recovery_method === 'chat' ? 'method-chat' : 'method-offer';
-          const methodText = recovery.recovery_method === 'chat' ? 'Chat' : 'Offer'; // TEXT instead of emoji
+          const methodText = recovery.recovery_method === 'chat' ? 'Chat' : 'Offer';
           const statusClass = recovery.current_status === 'Active' ? 'status-active' : 'status-inactive';
           const statusText = recovery.current_status === 'Active' ? 'Active' : 'Inactive';
           const statusIcon = recovery.current_status === 'Active' ? '✅' : '❌';
           
-          // Determine notes display - FIXED: Show "-" if no notes, "View Notes" button if notes exist
+          // Determine notes display
           let notesDisplay = '-';
           if (recovery.recovery_notes && recovery.recovery_notes.trim() !== '') {
             notesDisplay = `
@@ -3868,7 +3924,7 @@
           html += `
             <tr>
               <td style="text-align: center;">${serialNumber}</td>
-              <td>${convertUTCToPKTDateOnly(recovery.recovered_date)}</td>
+              <td>${recoveredDate}</td>
               <td><strong>${recovery.player_name}</strong></td>
               <td class="${methodClass}"><strong>${methodText}</strong></td>
               <td><span class="${statusClass}">${statusIcon} ${statusText}</span></td>
@@ -3959,9 +4015,9 @@
               <tr>
                 <th style="width: 50px; text-align: center;">#</th>
                 <th style="width: 120px;">Player Name</th>
-                <th style="width: 100px;">Added Date</th>
-                <th style="width: 100px;">Removed Date</th>
-                <th style="width: 80px;">Method</th>
+                <th style="width: 150px;">Added Date & Time</th>
+                <th style="width: 150px;">Removed Date & Time</th>
+                <th style="width: 100px;">Method</th>
                 <th style="width: 120px;">Removal Reason</th>
                 <th style="width: 150px;">Removal Notes</th>
               </tr>
@@ -3981,9 +4037,13 @@
         paginatedRemoved.forEach((record, index) => {
           const serialNumber = startIndex + index + 1;
           const methodClass = record.recovery_method === 'chat' ? 'method-chat' : 'method-offer';
-          const methodText = record.recovery_method === 'chat' ? 'Chat' : 'Offer'; // TEXT instead of emoji
+          const methodText = record.recovery_method === 'chat' ? 'Chat' : 'Offer';
           
-          // Determine notes display - FIXED: Show "-" if no notes, "View Notes" button if notes exist
+          // FIXED: Use convertUTCToPKT instead of convertUTCToPKTDateOnly for date AND time
+          const addedDate = convertUTCToPKT(record.recovered_date);
+          const removedDate = record.removed_date ? convertUTCToPKT(record.removed_date) : '-';
+          
+          // Determine notes display
           let notesDisplay = '-';
           if (record.removal_notes && record.removal_notes.trim() !== '') {
             notesDisplay = `
@@ -3997,8 +4057,8 @@
             <tr>
               <td style="text-align: center;">${serialNumber}</td>
               <td><strong>${record.player_name}</strong></td>
-              <td>${convertUTCToPKTDateOnly(record.recovered_date)}</td>
-              <td>${record.removed_date ? convertUTCToPKTDateOnly(record.removed_date) : '-'}</td>
+              <td>${addedDate}</td>
+              <td>${removedDate}</td>
               <td class="${methodClass}"><strong>${methodText}</strong></td>
               <td>${record.removal_reason ? record.removal_reason.charAt(0).toUpperCase() + record.removal_reason.slice(1).replace('-', ' ') : 'User removed'}</td>
               <td>${notesDisplay}</td>
@@ -4886,9 +4946,29 @@
         const gapDisplay = formatTimeSince(p.originalTimestamp);
         const gapDays = p.gapDays ? p.gapDays : 'N/A';
         
-        const notesBtnClass = p.hasNotes ? 'notes-btn has-notes' : 'notes-btn';
-        const notesBtnIcon = p.hasNotes ? 'fa-sticky-note' : 'fa-plus';
-        const notesBtnText = p.hasNotes ? 'Notes' : 'Add';
+        // FIXED: Check viewer role for notes button
+        let notesBtnHTML = '';
+        if (userRole === PIN_CONFIG.ROLES.VIEWER) {
+          // Viewer can only view existing notes, not add new ones
+          if (p.hasNotes) {
+            notesBtnHTML = `<button class="notes-btn has-notes" onclick="showNotesModal('${p.player.replace(/'/g, "\\'")}', this)" title="View notes">
+              <i class="fas fa-sticky-note"></i> Notes
+            </button>`;
+          } else {
+            notesBtnHTML = `<button class="notes-btn" disabled style="opacity: 0.5; cursor: not-allowed;" title="No notes available (Viewer cannot add)">
+              <i class="fas fa-plus"></i> Add
+            </button>`;
+          }
+        } else {
+          // Admin can add/view notes
+          const notesBtnClass = p.hasNotes ? 'notes-btn has-notes' : 'notes-btn';
+          const notesBtnIcon = p.hasNotes ? 'fa-sticky-note' : 'fa-plus';
+          const notesBtnText = p.hasNotes ? 'Notes' : 'Add';
+          
+          notesBtnHTML = `<button class="${notesBtnClass}" onclick="showNotesModal('${p.player.replace(/'/g, "\\'")}', this)" title="${p.hasNotes ? 'View notes' : 'Add note'}">
+            <i class="fas ${notesBtnIcon}"></i> ${notesBtnText}
+          </button>`;
+        }
         
         const serialNumber = (currentPage - 1) * PLAYERS_PER_PAGE + i + 1;
         
@@ -4906,9 +4986,7 @@
             <td style="text-align: center;">${p.last7DaysDeposit || 0}</td>
             ${type === "RecentActive" ? `<td style="text-align: center;">${gapDays}</td>` : ''}
             <td style="text-align: center;">
-              <button class="${notesBtnClass}" onclick="showNotesModal('${p.player.replace(/'/g, "\\'")}', this)" title="${p.hasNotes ? 'View notes' : 'Add note'}">
-                <i class="fas ${notesBtnIcon}"></i> ${notesBtnText}
-              </button>
+              ${notesBtnHTML}
             </td>
             <td style="text-align: center;">
               ${recoveryButtonHTML}
@@ -4995,15 +5073,46 @@
           `;
         });
         
+        // FIXED: Updated risk classes with emojis
         let riskClass = '';
-        if (p.riskLevel === "Very High") riskClass = 'risk-very-high';
-        else if (p.riskLevel === "High") riskClass = 'risk-high';
-        else if (p.riskLevel === "Medium") riskClass = 'risk-medium';
-        else if (p.riskLevel === "Low") riskClass = 'risk-low';
+        let riskEmoji = '';
+        if (p.riskLevel === "Very High") {
+          riskClass = 'risk-very-high';
+          riskEmoji = '🔴';
+        } else if (p.riskLevel === "High") {
+          riskClass = 'risk-high';
+          riskEmoji = '🟠';
+        } else if (p.riskLevel === "Medium") {
+          riskClass = 'risk-medium';
+          riskEmoji = '🟡';
+        } else if (p.riskLevel === "Low") {
+          riskClass = 'risk-low';
+          riskEmoji = '🟢';
+        }
         
-        const notesBtnClass = p.hasNotes ? 'notes-btn has-notes' : 'notes-btn';
-        const notesBtnIcon = p.hasNotes ? 'fa-sticky-note' : 'fa-plus';
-        const notesBtnText = p.hasNotes ? 'Notes' : 'Add';
+        // FIXED: Check viewer role for notes button
+        let notesBtnHTML = '';
+        if (userRole === PIN_CONFIG.ROLES.VIEWER) {
+          // Viewer can only view existing notes, not add new ones
+          if (p.hasNotes) {
+            notesBtnHTML = `<button class="notes-btn has-notes" style="font-size: 0.7rem; padding: 0.3rem 0.5rem;" onclick="showNotesModal('${p.player.replace(/'/g, "\\'")}', this)" title="View notes">
+              <i class="fas fa-sticky-note"></i> Notes
+            </button>`;
+          } else {
+            notesBtnHTML = `<button class="notes-btn" style="font-size: 0.7rem; padding: 0.3rem 0.5rem;" disabled style="opacity: 0.5; cursor: not-allowed;" title="No notes available (Viewer cannot add)">
+              <i class="fas fa-plus"></i> Add
+            </button>`;
+          }
+        } else {
+          // Admin can add/view notes
+          const notesBtnClass = p.hasNotes ? 'notes-btn has-notes' : 'notes-btn';
+          const notesBtnIcon = p.hasNotes ? 'fa-sticky-note' : 'fa-plus';
+          const notesBtnText = p.hasNotes ? 'Notes' : 'Add';
+          
+          notesBtnHTML = `<button class="${notesBtnClass}" style="font-size: 0.7rem; padding: 0.3rem 0.5rem;" onclick="showNotesModal('${p.player.replace(/'/g, "\\'")}', this)" title="${p.hasNotes ? 'View notes' : 'Add note'}">
+            <i class="fas ${notesBtnIcon}"></i> ${notesBtnText}
+          </button>`;
+        }
         
         const serialNumber = (currentPage - 1) * PLAYERS_PER_PAGE + i + 1;
         
@@ -5014,7 +5123,7 @@
           <tr>
             <td style="text-align: center; font-size: 0.75rem;">${serialNumber}</td>
             <td style="font-size: 0.75rem;"><strong>${p.player}</strong></td>
-            <td class="${riskClass}" style="font-size: 0.75rem;"><strong>${p.riskLevel}</strong></td>
+            <td class="${riskClass}" style="font-size: 0.75rem;"><strong>${riskEmoji} ${p.riskLevel}</strong></td>
             <td style="text-align: center; font-size: 0.75rem;">${p.totalQualifyingGaps}</td>
             <td style="font-size: 0.7rem;">
               <div>
@@ -5026,9 +5135,7 @@
             <td style="font-size: 0.75rem;"><span class="status-badge ${statusClass}" style="font-size: 0.7rem; padding: 0.15rem 0.4rem;">${p.currentStatus}</span></td>
             <td style="text-align: center; font-size: 0.75rem;">${p.totalDeposits}</td>
             <td style="text-align: center;">
-              <button class="${notesBtnClass}" style="font-size: 0.7rem; padding: 0.3rem 0.5rem;" onclick="showNotesModal('${p.player.replace(/'/g, "\\'")}', this)" title="${p.hasNotes ? 'View notes' : 'Add note'}">
-                <i class="fas ${notesBtnIcon}"></i> ${notesBtnText}
-              </button>
+              ${notesBtnHTML}
             </td>
             <td style="text-align: center;">
               ${recoveryButtonHTML}
@@ -5040,6 +5147,19 @@
       html += `
               </tbody>
             </table>
+          </div>
+        </div>
+      `;
+      
+      // ADD RISK LEVEL EXPLANATION LEGEND
+      html += `
+        <div style="margin-top: 1.5rem; background: var(--bg-secondary); padding: 1rem; border-radius: 8px; border: 1px solid var(--border-color);">
+          <h5 style="color: var(--text-primary); margin-bottom: 0.5rem;">Risk Level Explanation:</h5>
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 0.75rem; font-size: 0.8rem;">
+            <div><span class="risk-very-high" style="padding: 0.15rem 0.4rem; margin-right: 0.5rem;">🔴 Very High</span>: 3+ gaps OR 12+ day gap</div>
+            <div><span class="risk-high" style="padding: 0.15rem 0.4rem; margin-right: 0.5rem;">🟠 High</span>: 2+ gaps OR 10+ day gap</div>
+            <div><span class="risk-medium" style="padding: 0.15rem 0.4rem; margin-right: 0.5rem;">🟡 Medium</span>: 1 gap with 8+ days</div>
+            <div><span class="risk-low" style="padding: 0.15rem 0.4rem; margin-right: 0.5rem;">🟢 Low</span>: Single smaller gaps</div>
           </div>
         </div>
       `;
