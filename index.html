@@ -2631,41 +2631,77 @@
       setupLogoutButton();
     }
     
-    // Apply role-based permissions
+    // Apply role-based permissions - FIXED VERSION
     function applyRolePermissions() {
       resetUI();
       
+      // Always show logout button
+      if (logoutBtnDashboard) {
+        logoutBtnDashboard.style.display = 'inline-flex';
+      }
+      
       if (userRole === PIN_CONFIG.ROLES.VIEWER) {
-        const adminButtons = document.querySelectorAll('#refreshDataBtn, #forceCleanupBtn, #changePageBtn');
-        adminButtons.forEach(btn => {
-          btn.disabled = true;
-          btn.innerHTML = `<i class="fas fa-eye"></i> ${btn.textContent.replace(/^[^a-zA-Z]*/, '')}`;
-          btn.classList.remove('btn-success', 'btn-warning', 'btn-secondary');
-          btn.classList.add('btn-secondary');
+        // Hide refresh and cleanup buttons for viewer
+        const refreshBtn = document.getElementById('refreshDataBtn');
+        const cleanupBtn = document.getElementById('forceCleanupBtn');
+        const changePageBtn = document.getElementById('changePageBtn');
+        
+        if (refreshBtn) refreshBtn.style.display = 'none';
+        if (cleanupBtn) cleanupBtn.style.display = 'none';
+        
+        // Change page button should be visible but disabled
+        if (changePageBtn) {
+          changePageBtn.disabled = false;
+          changePageBtn.style.display = 'inline-flex';
+        }
+        
+        // Disable all mark buttons in the current view
+        disableAllMarkButtons();
+        
+        // Add event listener to disable mark buttons when tables are rendered
+        document.addEventListener('DOMContentLoaded', function() {
+          disableAllMarkButtons();
         });
         
-        document.addEventListener('click', function(event) {
-          if (event.target.closest('.notes-btn')) {
-            const btn = event.target.closest('.notes-btn');
-            const playerName = btn.getAttribute('data-player') || btn.parentElement.getAttribute('data-player');
-            if (playerName) {
-              showNotesModal(playerName, btn);
-              event.preventDefault();
-              event.stopPropagation();
-            }
-          }
-        });
-        
-        const originalSaveNote = window.savePlayerNote;
-        window.savePlayerNote = function() {
-          showNotification('Viewer role cannot add notes', 'warning');
-        };
-        
+        // Update page title to show view only
         const pageTitle = document.getElementById('pageTitle');
         if (pageTitle) {
-          pageTitle.innerHTML += ' <span style="font-size: 0.8rem; background: var(--info); color: white; padding: 0.2rem 0.5rem; border-radius: 12px;">View Only</span>';
+          if (!pageTitle.textContent.includes('View Only')) {
+            pageTitle.innerHTML += ' <span style="font-size: 0.8rem; background: var(--info); color: white; padding: 0.2rem 0.5rem; border-radius: 12px;">View Only</span>';
+          }
         }
+      } else if (userRole === PIN_CONFIG.ROLES.ADMIN) {
+        // Show all buttons for admin
+        const refreshBtn = document.getElementById('refreshDataBtn');
+        const cleanupBtn = document.getElementById('forceCleanupBtn');
+        const changePageBtn = document.getElementById('changePageBtn');
+        
+        if (refreshBtn) refreshBtn.style.display = 'inline-flex';
+        if (cleanupBtn) cleanupBtn.style.display = 'inline-flex';
+        if (changePageBtn) changePageBtn.style.display = 'inline-flex';
       }
+    }
+    
+    // Disable all mark buttons for viewer role
+    function disableAllMarkButtons() {
+      if (userRole !== PIN_CONFIG.ROLES.VIEWER) return;
+      
+      // Find all mark buttons and disable them
+      const markButtons = document.querySelectorAll('.recovery-btn.mark');
+      markButtons.forEach(btn => {
+        btn.disabled = true;
+        btn.style.opacity = '0.5';
+        btn.style.cursor = 'not-allowed';
+        btn.title = 'Viewer cannot mark recoveries';
+      });
+      
+      // Also disable any mark buttons in recovery dashboard
+      const removalButtons = document.querySelectorAll('.removal-btn:not(.disabled)');
+      removalButtons.forEach(btn => {
+        btn.disabled = true;
+        btn.classList.add('disabled');
+        btn.title = 'Viewer cannot remove recovered clients';
+      });
     }
     
     // Logout function
@@ -3180,9 +3216,16 @@
                     <i class="fas fa-check"></i> Recovered
                   </button>`;
         } else {
-          return `<button class="recovery-btn mark" onclick="showRecoveryModal('${player.player.replace(/'/g, "\\'")}')">
-                    <i class="fas fa-redo"></i> Mark
-                  </button>`;
+          // Check if viewer role - disable mark button for viewer
+          if (userRole === PIN_CONFIG.ROLES.VIEWER) {
+            return `<button class="recovery-btn mark" disabled style="opacity: 0.5; cursor: not-allowed;" title="Viewer cannot mark recoveries">
+                      <i class="fas fa-redo"></i> Mark
+                    </button>`;
+          } else {
+            return `<button class="recovery-btn mark" onclick="showRecoveryModal('${player.player.replace(/'/g, "\\'")}')">
+                      <i class="fas fa-redo"></i> Mark
+                    </button>`;
+          }
         }
       });
       
@@ -3288,7 +3331,7 @@
         // Update recovery cache
         recoveryStatusCache.set(recoveryPlayerName, true);
         
-        // REAL-TIME UPDATE: Update recovery button in all tables
+        // REAL-TIME UPDATE: Update recovery button in all tables - FIXED VERSION
         updateRecoveryButtonInTables(recoveryPlayerName, true);
         
         // If we're in recovery dashboard, refresh it
@@ -3311,32 +3354,99 @@
       }
     }
 
-    // Update recovery button in all tables - FIXED FOR REAL-TIME
+    // Update recovery button in all tables - FIXED VERSION
     function updateRecoveryButtonInTables(playerName, isRecovered) {
-      // Find all recovery buttons for this player and update them
-      const buttons = document.querySelectorAll('.recovery-btn');
-      buttons.forEach(btn => {
-        if (btn.textContent.includes('Mark') || btn.textContent.includes('Recovered')) {
-          // Check if this button is for the recovered player
-          const btnParentRow = btn.closest('tr');
-          if (btnParentRow) {
-            const playerCell = btnParentRow.querySelector('td:nth-child(2)') || btnParentRow.querySelector('td:nth-child(3)');
-            if (playerCell && playerCell.textContent.includes(playerName)) {
-              if (isRecovered) {
-                btn.innerHTML = '<i class="fas fa-check"></i> Recovered';
-                btn.className = 'recovery-btn recovered';
-                btn.disabled = true;
-                btn.onclick = null;
-              } else {
-                btn.innerHTML = '<i class="fas fa-redo"></i> Mark';
-                btn.className = 'recovery-btn mark';
-                btn.disabled = false;
-                btn.onclick = function() { showRecoveryModal(playerName); };
-              }
+      console.log(`Updating recovery button for player: ${playerName}, isRecovered: ${isRecovered}`);
+      
+      // Find all recovery buttons in the document
+      const allButtons = document.querySelectorAll('.recovery-btn');
+      
+      allButtons.forEach(btn => {
+        // Get the parent row
+        const row = btn.closest('tr');
+        if (!row) return;
+        
+        // Get the player name from the row (2nd column in most tables)
+        const playerCell = row.querySelector('td:nth-child(2)');
+        if (!playerCell) return;
+        
+        const rowPlayerName = playerCell.textContent.trim();
+        
+        if (rowPlayerName === playerName) {
+          console.log(`Found button for ${playerName} in row`, row);
+          
+          if (isRecovered) {
+            // Change to recovered state
+            btn.innerHTML = '<i class="fas fa-check"></i> Recovered';
+            btn.className = 'recovery-btn recovered';
+            btn.disabled = true;
+            btn.onclick = null;
+            console.log(`Button updated to Recovered for ${playerName}`);
+          } else {
+            // Change to mark state (with proper viewer check)
+            if (userRole === PIN_CONFIG.ROLES.VIEWER) {
+              btn.innerHTML = '<i class="fas fa-redo"></i> Mark';
+              btn.className = 'recovery-btn mark';
+              btn.disabled = true;
+              btn.style.opacity = '0.5';
+              btn.style.cursor = 'not-allowed';
+              btn.title = 'Viewer cannot mark recoveries';
+              btn.onclick = null;
+            } else {
+              btn.innerHTML = '<i class="fas fa-redo"></i> Mark';
+              btn.className = 'recovery-btn mark';
+              btn.disabled = false;
+              btn.style.opacity = '';
+              btn.style.cursor = '';
+              btn.title = '';
+              btn.onclick = function() { showRecoveryModal(playerName); };
+            }
+            console.log(`Button updated to Mark for ${playerName}`);
+          }
+        }
+      });
+      
+      // Also update buttons in high risk table (different column index)
+      const highRiskButtons = document.querySelectorAll('.high-risk-table .recovery-btn');
+      highRiskButtons.forEach(btn => {
+        const row = btn.closest('tr');
+        if (!row) return;
+        
+        // High risk table has player in 3rd column
+        const playerCell = row.querySelector('td:nth-child(3)');
+        if (!playerCell) return;
+        
+        const rowPlayerName = playerCell.textContent.trim();
+        
+        if (rowPlayerName === playerName) {
+          if (isRecovered) {
+            btn.innerHTML = '<i class="fas fa-check"></i> Recovered';
+            btn.className = 'recovery-btn recovered';
+            btn.disabled = true;
+            btn.onclick = null;
+          } else {
+            if (userRole === PIN_CONFIG.ROLES.VIEWER) {
+              btn.innerHTML = '<i class="fas fa-redo"></i> Mark';
+              btn.className = 'recovery-btn mark';
+              btn.disabled = true;
+              btn.style.opacity = '0.5';
+              btn.style.cursor = 'not-allowed';
+              btn.title = 'Viewer cannot mark recoveries';
+              btn.onclick = null;
+            } else {
+              btn.innerHTML = '<i class="fas fa-redo"></i> Mark';
+              btn.className = 'recovery-btn mark';
+              btn.disabled = false;
+              btn.style.opacity = '';
+              btn.style.cursor = '';
+              btn.title = '';
+              btn.onclick = function() { showRecoveryModal(playerName); };
             }
           }
         }
       });
+      
+      console.log(`Finished updating buttons for ${playerName}`);
     }
 
     // Update dashboard recovery count
@@ -3442,10 +3552,10 @@
           hideRemovalModal();
           
           // Update recovery cache
-          recoveryStatusCache.delete(removalPlayerName.textContent);
+          const playerName = removalPlayerName.textContent;
+          recoveryStatusCache.delete(playerName);
           
           // Update recovery button in all tables
-          const playerName = removalPlayerName.textContent;
           updateRecoveryButtonInTables(playerName, false);
           
           // Refresh recovery dashboard
@@ -3641,6 +3751,11 @@
       
       clientRecoveryDashboard.innerHTML = html;
       clientRecoveryDashboard.style.display = 'block';
+      
+      // Apply viewer restrictions after rendering
+      if (userRole === PIN_CONFIG.ROLES.VIEWER) {
+        disableAllMarkButtons();
+      }
     }
 
     // Render active recoveries - FIXED VERSION WITH UPDATED STYLING
