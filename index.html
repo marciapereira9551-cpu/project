@@ -3998,7 +3998,6 @@ if (recovery.recovery_notes && recovery.recovery_notes.trim() !== '') {
                 <th style="width: 150px;">Added Date & Time</th>
                 <th style="width: 150px;">Removed Date & Time</th>
                 <th style="width: 100px;">Method</th>
-                <th style="width: 120px;">Removal Reason</th>
                 <th style="width: 150px; text-align: center;">Removal Notes</th>
               </tr>
             </thead>
@@ -4008,7 +4007,7 @@ if (recovery.recovery_notes && recovery.recovery_notes.trim() !== '') {
       if (paginatedRemoved.length === 0) {
         html += `
           <tr>
-            <td colspan="7" style="text-align: center; padding: 2rem; color: var(--text-secondary);">
+            <td colspan="6" style="text-align: center; padding: 2rem; color: var(--text-secondary);">
               ${recoveryState.removed.search ? 'No matching removed clients found' : 'No removed clients yet'}
             </td>
           </tr>
@@ -4042,7 +4041,6 @@ if (record.removal_notes && record.removal_notes.trim() !== '') {
               <td>${addedDate}</td>
               <td>${removedDate}</td>
               <td class="${methodClass}"><strong>${methodText}</strong></td>
-              <td>${record.removal_reason ? record.removal_reason.charAt(0).toUpperCase() + record.removal_reason.slice(1).replace('-', ' ') : 'User removed'}</td>
               <td>${notesDisplay}</td>
             </tr>
           `;
