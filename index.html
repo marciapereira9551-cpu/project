@@ -867,7 +867,7 @@
       color: var(--warning);
     }
 
-    /* CLIENT RECOVERY BUTTON STYLES */
+    /* CLIENT RECOVERY BUTTON STYLES - UPDATED WITH FIX #3 */
     .recovery-btn {
       padding: 0.5rem 1rem;
       border: none;
@@ -892,11 +892,16 @@
       transform: translateY(-1px);
     }
 
+    /* FIX #3: Updated Recovered button colors */
     .recovery-btn.recovered {
-      background: #e5e7eb;
-      color: #6b7280;
-      border: 1px solid #d1d5db;
+      background: #e6f7f0; /* Soft green/teal background */
+      color: #2d7a5c; /* Dark teal text */
+      border: 1px solid #a8e6cf; /* Soft green border */
       cursor: not-allowed;
+    }
+
+    .recovery-btn.recovered i {
+      color: #38a169; /* Green icon */
     }
 
     .recovery-btn:disabled {
@@ -1092,8 +1097,8 @@
       box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     }
 
-    /* FIXED: Recovery stats layout */
-    .recovery-stats {
+    /* FIX #2: Removed recovery stats container - REMOVED THIS ENTIRE SECTION */
+    /* .recovery-stats {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
       gap: 1.5rem;
@@ -1127,7 +1132,7 @@
       font-size: 0.875rem;
       color: var(--text-secondary);
       font-weight: 500;
-    }
+    } */
 
     .recovery-table-container {
       overflow-x: auto;
@@ -1166,6 +1171,7 @@
       background: var(--bg-secondary);
     }
 
+    /* FIX #1: Updated status badges in Active Recoveries table */
     .recovery-table .status-active {
       color: var(--success);
       font-weight: 600;
@@ -1173,6 +1179,7 @@
       padding: 0.25rem 0.5rem;
       border-radius: 12px;
       font-size: 0.75rem;
+      display: inline-block;
     }
 
     .recovery-table .status-inactive {
@@ -1182,6 +1189,7 @@
       padding: 0.25rem 0.5rem;
       border-radius: 12px;
       font-size: 0.75rem;
+      display: inline-block;
     }
 
     /* UPDATED: Method styles - TEXT ONLY, no background */
@@ -1420,7 +1428,7 @@
       color: #991b1b;
     }
 
-    /* Notes Button */
+    /* FIX #4: Notes Button - Updated for Viewer role */
     .notes-btn {
       padding: 0.5rem 1rem;
       border: 1px solid var(--border-color);
@@ -1435,7 +1443,7 @@
       gap: 0.5rem;
     }
 
-    .notes-btn:hover {
+    .notes-btn:hover:not(:disabled) {
       background: var(--primary);
       color: white;
       border-color: var(--primary);
@@ -1447,9 +1455,24 @@
       border-color: var(--warning);
     }
 
-    .notes-btn.has-notes:hover {
+    .notes-btn.has-notes:hover:not(:disabled) {
       background: #f59e0b;
       border-color: #f59e0b;
+    }
+
+    /* FIX #4: Disabled notes button for Viewer role */
+    .notes-btn:disabled,
+    .notes-btn.viewer-disabled {
+      opacity: 0.5;
+      cursor: not-allowed !important;
+      pointer-events: none;
+      background: var(--bg-secondary) !important;
+      color: var(--text-secondary) !important;
+      border-color: var(--border-color) !important;
+    }
+
+    .notes-btn.viewer-disabled i {
+      color: var(--text-secondary) !important;
     }
 
     /* Player History */
@@ -1914,10 +1937,6 @@
         max-width: 380px;
       }
       
-      .recovery-stats {
-        grid-template-columns: repeat(2, 1fr);
-      }
-      
       .monthly-summary {
         grid-template-columns: repeat(2, 1fr);
       }
@@ -2008,10 +2027,6 @@
 
       .recovery-method-selector {
         flex-direction: column;
-      }
-      
-      .recovery-stats {
-        grid-template-columns: 1fr;
       }
       
       .monthly-summary {
@@ -3980,7 +3995,7 @@
       }
     }
 
-    // Render recovery dashboard - UPDATED WITH INTERACTIVE FILTERS
+    // Render recovery dashboard - FIX #2: REMOVED DUPLICATE STATS CONTAINER
     function renderRecoveryDashboard() {
       const stats = getFilteredRecoveryStats();
       const filteredCount = getFilteredRecoveryCount();
@@ -4031,7 +4046,7 @@
       `;
       
       if (recoveryState.current.tab === 'active') {
-        // NEW: Interactive filter stats container
+        // FIX #2: Interactive filter stats container ONLY (removed duplicate stats below)
         html += `
           <div class="filter-stats-container">
             <div class="filter-view-label">
@@ -4082,7 +4097,7 @@
       }
     }
 
-    // Render active recoveries - UPDATED WITH FILTER SUPPORT
+    // Render active recoveries - FIX #1: Updated status badges, FIX #2: Removed stats
     function renderActiveRecoveries() {
       let recoveries = recoveryState.current.filteredData || [];
       const stats = getFilteredRecoveryStats();
@@ -4118,24 +4133,7 @@
           >
         </div>
         
-        <div class="recovery-stats">
-          <div class="recovery-stat">
-            <div class="recovery-stat-value">${filteredRecoveries.length}</div>
-            <div class="recovery-stat-label">Showing</div>
-          </div>
-          <div class="recovery-stat">
-            <div class="recovery-stat-value" style="color: var(--success);">${stats.active}</div>
-            <div class="recovery-stat-label">Currently Active</div>
-          </div>
-          <div class="recovery-stat">
-            <div class="recovery-stat-value" style="color: var(--danger);">${stats.inactive}</div>
-            <div class="recovery-stat-label">Became Inactive</div>
-          </div>
-          <div class="recovery-stat">
-            <div class="recovery-stat-value">${stats.total}</div>
-            <div class="recovery-stat-label">Total Recovered</div>
-          </div>
-        </div>
+        <!-- FIX #2: REMOVED recovery-stats container (duplicate of filter buttons) -->
         
         <div class="recovery-table-container">
           <table class="recovery-table">
@@ -4169,9 +4167,10 @@
           const recoveredDate = convertUTCToPKT(recovery.recovered_date);
           const methodClass = recovery.recovery_method === 'chat' ? 'method-chat' : 'method-offer';
           const methodText = recovery.recovery_method === 'chat' ? 'Chat' : 'Offer';
+          
+          // FIX #1: Updated status badges - using CSS classes instead of emojis
           const statusClass = recovery.current_status === 'Active' ? 'status-active' : 'status-inactive';
           const statusText = recovery.current_status === 'Active' ? 'Active' : 'Inactive';
-          const statusIcon = recovery.current_status === 'Active' ? '✅' : '❌';
           
           // Determine notes display
 let notesDisplay = '<div style="text-align: center;">-</div>';
@@ -4200,7 +4199,7 @@ if (recovery.recovery_notes && recovery.recovery_notes.trim() !== '') {
               <td>${recoveredDate}</td>
               <td><strong>${recovery.player_name}</strong></td>
               <td class="${methodClass}"><strong>${methodText}</strong></td>
-              <td><span class="${statusClass}">${statusIcon} ${statusText}</span></td>
+              <td><span class="${statusClass}">${statusText}</span></td>
               <td>${recovery.last_deposit_display || 'N/A'}</td>
               <td>${notesDisplay}</td>
               <td style="text-align: center;">
@@ -4269,17 +4268,6 @@ if (recovery.recovery_notes && recovery.recovery_notes.trim() !== '') {
             oninput="debouncedSearchRecoveries(this.value, 'removed')"
             style="width: 100%;"
           >
-        </div>
-        
-        <div class="recovery-stats">
-          <div class="recovery-stat">
-            <div class="recovery-stat-value">${removed.length}</div>
-            <div class="recovery-stat-label">Total Removed</div>
-          </div>
-          <div class="recovery-stat">
-            <div class="recovery-stat-value">${filteredRemoved.length}</div>
-            <div class="recovery-stat-label">Showing</div>
-          </div>
         </div>
         
         <div class="recovery-table-container">
@@ -5176,7 +5164,7 @@ if (record.removal_notes && record.removal_notes.trim() !== '') {
       }
     }
 
-    // OPTIMIZED: Batch recovery button generation
+    // OPTIMIZED: Batch recovery button generation - FIX #4: Updated notes button permissions
     async function renderPlayerTable(players, title, type) {
       const totalPlayers = players.length;
       const currentPage = tableState.playerTables[type].page;
@@ -5230,16 +5218,16 @@ if (record.removal_notes && record.removal_notes.trim() !== '') {
         const gapDisplay = formatTimeSince(p.originalTimestamp);
         const gapDays = p.gapDays ? p.gapDays : 'N/A';
         
-        // FIXED: Check viewer role for notes button
+        // FIX #4: Updated notes button for Viewer role
         let notesBtnHTML = '';
         if (userRole === PIN_CONFIG.ROLES.VIEWER) {
           // Viewer can only view existing notes, not add new ones
           if (p.hasNotes) {
-            notesBtnHTML = `<button class="notes-btn has-notes" onclick="showNotesModal('${p.player.replace(/'/g, "\\'")}', this)" title="View notes">
+            notesBtnHTML = `<button class="notes-btn has-notes viewer-disabled" onclick="showNotesModal('${p.player.replace(/'/g, "\\'")}', this)" title="View notes (Viewer cannot add)">
               <i class="fas fa-sticky-note"></i> Notes
             </button>`;
           } else {
-            notesBtnHTML = `<button class="notes-btn" disabled style="opacity: 0.5; cursor: not-allowed;" title="No notes available (Viewer cannot add)">
+            notesBtnHTML = `<button class="notes-btn viewer-disabled" disabled title="No notes available (Viewer cannot add)">
               <i class="fas fa-plus"></i> Add
             </button>`;
           }
@@ -5292,7 +5280,7 @@ if (record.removal_notes && record.removal_notes.trim() !== '') {
       renderPagination(totalPlayers, currentPage, PLAYERS_PER_PAGE, paginationContainer, `changePlayerPage_${type}`);
     }
 
-    // OPTIMIZED: Batch recovery button generation for high risk table - UPDATED FOR SMALLER SIZE
+    // OPTIMIZED: Batch recovery button generation for high risk table - FIX #4: Updated notes button permissions
     async function renderHighRiskTable() {
       const highRiskPlayers = currentPageData.highRiskPlayers;
       const totalPlayers = highRiskPlayers.length;
@@ -5369,16 +5357,16 @@ if (record.removal_notes && record.removal_notes.trim() !== '') {
           riskClass = 'risk-low';
         }
         
-        // FIXED: Check viewer role for notes button
+        // FIX #4: Updated notes button for Viewer role
         let notesBtnHTML = '';
         if (userRole === PIN_CONFIG.ROLES.VIEWER) {
           // Viewer can only view existing notes, not add new ones
           if (p.hasNotes) {
-            notesBtnHTML = `<button class="notes-btn has-notes" style="font-size: 0.7rem; padding: 0.3rem 0.5rem;" onclick="showNotesModal('${p.player.replace(/'/g, "\\'")}', this)" title="View notes">
+            notesBtnHTML = `<button class="notes-btn has-notes viewer-disabled" style="font-size: 0.7rem; padding: 0.3rem 0.5rem;" onclick="showNotesModal('${p.player.replace(/'/g, "\\'")}', this)" title="View notes (Viewer cannot add)">
               <i class="fas fa-sticky-note"></i> Notes
             </button>`;
           } else {
-            notesBtnHTML = `<button class="notes-btn" style="font-size: 0.7rem; padding: 0.3rem 0.5rem;" disabled style="opacity: 0.5; cursor: not-allowed;" title="No notes available (Viewer cannot add)">
+            notesBtnHTML = `<button class="notes-btn viewer-disabled" style="font-size: 0.7rem; padding: 0.3rem 0.5rem;" disabled title="No notes available (Viewer cannot add)">
               <i class="fas fa-plus"></i> Add
             </button>`;
           }
@@ -7081,7 +7069,7 @@ if (record.removal_notes && record.removal_notes.trim() !== '') {
       }
     }
 
-    // Notes Modal Functions
+    // Notes Modal Functions - FIX #4: Updated for Viewer role
     async function showNotesModal(playerName, buttonElement) {
       currentNotesPlayer = playerName;
       currentNotesPlayerName = playerName;
@@ -7095,6 +7083,7 @@ if (record.removal_notes && record.removal_notes.trim() !== '') {
       notesModal.style.display = 'block';
       noteTextInput.focus();
       
+      // FIX #4: Updated for Viewer role
       if (userRole === PIN_CONFIG.ROLES.VIEWER) {
         noteTextInput.disabled = true;
         noteTextInput.placeholder = "Viewer role cannot add notes";
