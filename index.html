@@ -707,6 +707,166 @@
       text-align: center;
     }
 
+    /* NEW: Interactive Filter Card Styles */
+    .filter-card {
+      background: var(--bg-card);
+      border-radius: 16px;
+      padding: 1.5rem;
+      box-shadow: var(--shadow);
+      transition: all 0.3s ease;
+      cursor: pointer;
+      border: 2px solid var(--border-color);
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 120px;
+    }
+
+    .filter-card:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .filter-card.selected-total {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2), var(--shadow);
+      background: linear-gradient(135deg, rgba(67, 97, 238, 0.05), rgba(67, 97, 238, 0.1));
+    }
+
+    .filter-card.selected-active {
+      border-color: var(--success);
+      box-shadow: 0 0 0 3px rgba(6, 214, 160, 0.2), var(--shadow);
+      background: linear-gradient(135deg, rgba(6, 214, 160, 0.05), rgba(6, 214, 160, 0.1));
+    }
+
+    .filter-card.selected-inactive {
+      border-color: var(--warning);
+      box-shadow: 0 0 0 3px rgba(255, 209, 102, 0.2), var(--shadow);
+      background: linear-gradient(135deg, rgba(255, 209, 102, 0.05), rgba(255, 209, 102, 0.1));
+    }
+
+    .filter-card .filter-value {
+      font-size: 2.2rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      color: var(--text-primary);
+      transition: all 0.3s ease;
+    }
+
+    .filter-card.selected-total .filter-value {
+      color: var(--primary);
+    }
+
+    .filter-card.selected-active .filter-value {
+      color: var(--success);
+    }
+
+    .filter-card.selected-inactive .filter-value {
+      color: var(--warning);
+    }
+
+    .filter-card .filter-label {
+      color: var(--text-secondary);
+      font-weight: 500;
+      font-size: 0.95rem;
+      transition: all 0.3s ease;
+    }
+
+    .filter-card.selected-total .filter-label {
+      color: var(--primary);
+      font-weight: 600;
+    }
+
+    .filter-card.selected-active .filter-label {
+      color: var(--success);
+      font-weight: 600;
+    }
+
+    .filter-card.selected-inactive .filter-label {
+      color: var(--warning);
+      font-weight: 600;
+    }
+
+    /* Filter selection indicator */
+    .filter-card::after {
+      content: '';
+      position: absolute;
+      top: -2px;
+      left: -2px;
+      right: -2px;
+      bottom: -2px;
+      border-radius: 18px;
+      border: 2px solid transparent;
+      transition: all 0.3s ease;
+      pointer-events: none;
+    }
+
+    .filter-card.selected-total::after {
+      border-color: var(--primary);
+      box-shadow: 0 0 15px rgba(67, 97, 238, 0.3);
+    }
+
+    .filter-card.selected-active::after {
+      border-color: var(--success);
+      box-shadow: 0 0 15px rgba(6, 214, 160, 0.3);
+    }
+
+    .filter-card.selected-inactive::after {
+      border-color: var(--warning);
+      box-shadow: 0 0 15px rgba(255, 209, 102, 0.3);
+    }
+
+    /* NEW: Filter stats container */
+    .filter-stats-container {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+      margin-bottom: 1.5rem;
+      padding: 1.5rem;
+      background: var(--bg-secondary);
+      border-radius: 16px;
+      border: 1px solid var(--border-color);
+    }
+
+    .filter-view-label {
+      grid-column: 1 / -1;
+      text-align: center;
+      padding: 0.75rem;
+      margin-bottom: 0.5rem;
+      background: var(--bg-card);
+      border-radius: 10px;
+      border: 1px solid var(--border-color);
+      font-weight: 600;
+      color: var(--text-primary);
+      font-size: 0.95rem;
+    }
+
+    .filter-view-label .highlight {
+      font-weight: 700;
+      padding: 0.2rem 0.5rem;
+      border-radius: 6px;
+      margin: 0 0.25rem;
+    }
+
+    .filter-view-label .highlight.total {
+      background: rgba(67, 97, 238, 0.15);
+      color: var(--primary);
+    }
+
+    .filter-view-label .highlight.active {
+      background: rgba(6, 214, 160, 0.15);
+      color: var(--success);
+    }
+
+    .filter-view-label .highlight.inactive {
+      background: rgba(255, 209, 102, 0.15);
+      color: var(--warning);
+    }
+
     /* CLIENT RECOVERY BUTTON STYLES */
     .recovery-btn {
       padding: 0.5rem 1rem;
@@ -810,10 +970,10 @@
     }
 
     .recovery-method-btn.active {
-  border-color: var(--primary);
-  background: rgba(67, 97, 238, 0.1);
-  color: var(--primary);
-}
+      border-color: var(--primary);
+      background: rgba(67, 97, 238, 0.1);
+      color: var(--primary);
+    }
 
     .recovery-method-icon {
       font-size: 1.5rem;
@@ -1025,17 +1185,16 @@
     }
 
     /* UPDATED: Method styles - TEXT ONLY, no background */
-.method-chat {
-  color: #06d6a0 !important; /* Chat green color */
-  font-weight: 600 !important;
-}
+    .method-chat {
+      color: #06d6a0 !important; /* Chat green color */
+      font-weight: 600 !important;
+    }
 
-.method-offer {
-  color: #f59e0b !important; /* Offer orange color */
-  font-weight: 600 !important;
-}
+    .method-offer {
+      color: #f59e0b !important; /* Offer orange color */
+      font-weight: 600 !important;
+    }
 
-    
     .view-notes-btn {
       padding: 0.4rem 0.8rem;
       border: 1px solid var(--border-color);
@@ -1722,25 +1881,25 @@
     }
 
     /* NEW: Risk Level Color Classes - TEXT ONLY VERSION */
-.risk-very-high {
-  color: #ef4444 !important;
-  font-weight: 600 !important;
-}
+    .risk-very-high {
+      color: #ef4444 !important;
+      font-weight: 600 !important;
+    }
 
-.risk-high {
-  color: #f97316 !important;
-  font-weight: 600 !important;
-}
+    .risk-high {
+      color: #f97316 !important;
+      font-weight: 600 !important;
+    }
 
-.risk-medium {
-  color: #f59e0b !important;
-  font-weight: 600 !important;
-}
+    .risk-medium {
+      color: #f59e0b !important;
+      font-weight: 600 !important;
+    }
 
-.risk-low {
-  color: #10b981 !important;
-  font-weight: 600 !important;
-}
+    .risk-low {
+      color: #10b981 !important;
+      font-weight: 600 !important;
+    }
     
     /* Responsive */
     @media (max-width: 1024px) {
@@ -1766,6 +1925,11 @@
       .analytics-stats,
       .analytics-stats-row2 {
         grid-template-columns: repeat(2, 1fr);
+      }
+      
+      .filter-stats-container {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1rem;
       }
     }
 
@@ -1872,6 +2036,20 @@
         padding: 0.75rem 1rem;
         font-size: 0.9rem;
       }
+      
+      .filter-stats-container {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+      }
+      
+      .filter-card {
+        padding: 1rem;
+        min-height: 100px;
+      }
+      
+      .filter-card .filter-value {
+        font-size: 1.8rem;
+      }
     }
     
     @media (max-width: 480px) {
@@ -1891,6 +2069,14 @@
       .recovery-tab {
         padding: 0.5rem 0.75rem;
         font-size: 0.8rem;
+      }
+      
+      .filter-card .filter-value {
+        font-size: 1.6rem;
+      }
+      
+      .filter-card .filter-label {
+        font-size: 0.85rem;
       }
     }
   </style>
@@ -2881,15 +3067,17 @@
     };
 
     // =============================================
-    // CLIENT RECOVERY STATE
+    // CLIENT RECOVERY STATE - UPDATED WITH FILTERS
     // =============================================
     const recoveryState = {
       current: {
         tab: 'active',
+        filter: 'total', // 'total', 'active', 'inactive'
         page: 1,
         search: '',
         data: null,
         stats: null,
+        filteredData: null,
         recoveryStatusCache: new Map()
       },
       removed: {
@@ -3176,6 +3364,62 @@
     const removalPinInput = document.getElementById('removalPinInput');
     const removalRecordIdInput = document.getElementById('removalRecordId');
     const confirmRemovalBtn = document.getElementById('confirmRemovalBtn');
+
+    // =============================================
+    // NEW: INTERACTIVE FILTER FUNCTIONS
+    // =============================================
+
+    // Set recovery filter
+    function setRecoveryFilter(filterType) {
+      recoveryState.current.filter = filterType;
+      recoveryState.current.page = 1; // Reset to page 1 when changing filter
+      
+      // Apply the filter to the data
+      applyRecoveryFilter();
+      
+      // Re-render the dashboard with the new filter
+      renderRecoveryDashboard();
+    }
+
+    // Apply filter to recovery data
+    function applyRecoveryFilter() {
+      if (!recoveryState.current.data) return;
+      
+      switch(recoveryState.current.filter) {
+        case 'total':
+          recoveryState.current.filteredData = recoveryState.current.data;
+          break;
+        case 'active':
+          recoveryState.current.filteredData = recoveryState.current.data.filter(
+            recovery => recovery.current_status === 'Active'
+          );
+          break;
+        case 'inactive':
+          recoveryState.current.filteredData = recoveryState.current.data.filter(
+            recovery => recovery.current_status === 'Inactive'
+          );
+          break;
+        default:
+          recoveryState.current.filteredData = recoveryState.current.data;
+      }
+    }
+
+    // Get filtered recovery count
+    function getFilteredRecoveryCount() {
+      if (!recoveryState.current.filteredData) return 0;
+      return recoveryState.current.filteredData.length;
+    }
+
+    // Get filtered recovery stats
+    function getFilteredRecoveryStats() {
+      if (!recoveryState.current.data) return { total: 0, active: 0, inactive: 0 };
+      
+      const total = recoveryState.current.data.length;
+      const active = recoveryState.current.data.filter(r => r.current_status === 'Active').length;
+      const inactive = total - active;
+      
+      return { total, active, inactive };
+    }
 
     // =============================================
     // PERFORMANCE OPTIMIZATION FUNCTIONS
@@ -3685,6 +3929,9 @@
           overall_success_rate: overallSuccessRate
         };
         
+        // Apply current filter to data
+        applyRecoveryFilter();
+        
         // Update recovery stats in dashboard
         await updateRecoveryStats();
         
@@ -3733,9 +3980,10 @@
       }
     }
 
-    // Render recovery dashboard - FIXED VERSION
+    // Render recovery dashboard - UPDATED WITH INTERACTIVE FILTERS
     function renderRecoveryDashboard() {
-      const stats = recoveryState.current.stats || { total: 0, active: 0, inactive: 0 };
+      const stats = getFilteredRecoveryStats();
+      const filteredCount = getFilteredRecoveryCount();
       const analytics = recoveryState.analytics.data || {
         total_recovered: 0,
         currently_active: 0,
@@ -3744,6 +3992,26 @@
         offer_success_rate: 0,
         overall_success_rate: 0
       };
+      
+      // Determine which filter is selected
+      const totalSelected = recoveryState.current.filter === 'total';
+      const activeSelected = recoveryState.current.filter === 'active';
+      const inactiveSelected = recoveryState.current.filter === 'inactive';
+      
+      // Determine filter label text
+      let filterLabelText = '';
+      let filterLabelClass = '';
+      
+      if (totalSelected) {
+        filterLabelText = `<span class="highlight total">ALL</span> recovered clients`;
+        filterLabelClass = 'total';
+      } else if (activeSelected) {
+        filterLabelText = `<span class="highlight active">ACTIVE</span> recovered clients`;
+        filterLabelClass = 'active';
+      } else if (inactiveSelected) {
+        filterLabelText = `<span class="highlight inactive">INACTIVE</span> recovered clients`;
+        filterLabelClass = 'inactive';
+      }
       
       let html = `
         <div class="recovery-dashboard">
@@ -3763,6 +4031,30 @@
       `;
       
       if (recoveryState.current.tab === 'active') {
+        // NEW: Interactive filter stats container
+        html += `
+          <div class="filter-stats-container">
+            <div class="filter-view-label">
+              Showing: ${filterLabelText} (${filteredCount} of ${stats.total} total)
+            </div>
+            
+            <div class="filter-card ${totalSelected ? 'selected-total' : ''}" onclick="setRecoveryFilter('total')">
+              <div class="filter-value">${stats.total}</div>
+              <div class="filter-label">Total Recovered</div>
+            </div>
+            
+            <div class="filter-card ${activeSelected ? 'selected-active' : ''}" onclick="setRecoveryFilter('active')">
+              <div class="filter-value">${stats.active}</div>
+              <div class="filter-label">Currently Active</div>
+            </div>
+            
+            <div class="filter-card ${inactiveSelected ? 'selected-inactive' : ''}" onclick="setRecoveryFilter('inactive')">
+              <div class="filter-value">${stats.inactive}</div>
+              <div class="filter-label">Became Inactive</div>
+            </div>
+          </div>
+        `;
+        
         html += renderActiveRecoveries();
       } else if (recoveryState.current.tab === 'removed') {
         html += renderRemovedClients();
@@ -3790,10 +4082,11 @@
       }
     }
 
-    // Render active recoveries - FIXED VERSION WITH UPDATED STYLING
+    // Render active recoveries - UPDATED WITH FILTER SUPPORT
     function renderActiveRecoveries() {
-      const recoveries = recoveryState.current.data || [];
-      const stats = recoveryState.current.stats || { total: 0, active: 0, inactive: 0 };
+      let recoveries = recoveryState.current.filteredData || [];
+      const stats = getFilteredRecoveryStats();
+      const filteredCount = getFilteredRecoveryCount();
       
       // Apply search filter
       let filteredRecoveries = recoveries;
@@ -3827,8 +4120,8 @@
         
         <div class="recovery-stats">
           <div class="recovery-stat">
-            <div class="recovery-stat-value">${stats.total}</div>
-            <div class="recovery-stat-label">Total Recovered</div>
+            <div class="recovery-stat-value">${filteredRecoveries.length}</div>
+            <div class="recovery-stat-label">Showing</div>
           </div>
           <div class="recovery-stat">
             <div class="recovery-stat-value" style="color: var(--success);">${stats.active}</div>
@@ -3839,8 +4132,8 @@
             <div class="recovery-stat-label">Became Inactive</div>
           </div>
           <div class="recovery-stat">
-            <div class="recovery-stat-value">${filteredRecoveries.length}</div>
-            <div class="recovery-stat-label">Showing</div>
+            <div class="recovery-stat-value">${stats.total}</div>
+            <div class="recovery-stat-label">Total Recovered</div>
           </div>
         </div>
         
@@ -4134,6 +4427,7 @@ if (record.removal_notes && record.removal_notes.trim() !== '') {
     // Switch recovery tab
     function switchRecoveryTab(tab) {
       recoveryState.current.tab = tab;
+      recoveryState.current.page = 1; // Reset to page 1 when switching tabs
       renderRecoveryDashboard();
     }
 
@@ -4157,7 +4451,7 @@ if (record.removal_notes && record.removal_notes.trim() !== '') {
     // Change recovery page
     function changeRecoveryPage(page) {
       if (page < 1) return;
-      const totalPages = Math.ceil((recoveryState.current.data?.length || 0) / RECOVERY_PLAYERS_PER_PAGE);
+      const totalPages = Math.ceil((recoveryState.current.filteredData?.length || 0) / RECOVERY_PLAYERS_PER_PAGE);
       if (page > totalPages) return;
       
       recoveryState.current.page = page;
@@ -4190,6 +4484,9 @@ if (record.removal_notes && record.removal_notes.trim() !== '') {
       // Initialize debounced search
       window.debouncedSearchRecoveries = debouncedSearchRecoveries;
       window.showNotesViewModal = showNotesViewModal;
+      window.setRecoveryFilter = setRecoveryFilter;
+      window.changeRecoveryPage = changeRecoveryPage;
+      window.changeRemovedPage = changeRemovedPage;
     }
 
     function showLandingPage() {
@@ -4242,6 +4539,11 @@ if (record.removal_notes && record.removal_notes.trim() !== '') {
       // Clear cache when loading new page
       recoveryStatusCache.clear();
       recoveryStatusCacheTimestamp = null;
+      
+      // Reset recovery state
+      recoveryState.current.filter = 'total';
+      recoveryState.current.page = 1;
+      recoveryState.current.search = '';
       
       await loadDashboardData();
     }
@@ -4629,9 +4931,11 @@ if (record.removal_notes && record.removal_notes.trim() !== '') {
       
       // Reset recovery state
       recoveryState.current.tab = 'active';
+      recoveryState.current.filter = 'total';
       recoveryState.current.page = 1;
       recoveryState.current.search = '';
       recoveryState.current.data = null;
+      recoveryState.current.filteredData = null;
       recoveryState.current.stats = null;
       recoveryState.removed.page = 1;
       recoveryState.removed.search = '';
@@ -4708,7 +5012,7 @@ if (record.removal_notes && record.removal_notes.trim() !== '') {
       const thirdRowBoxes = [
         { label: "Player History", value: "", type: "PlayerHistory", icon: "fas fa-history", colorClass: "history" },
         { label: "Page Deposits", value: "", type: "PageDeposits", icon: "fas fa-money-bill-wave", colorClass: "deposits" },
-{ label: "Recovered Clients", value: recoveryCount, type: "ClientRecovery", icon: "fas fa-handshake-angle", colorClass: "recovery" }
+        { label: "Recovered Clients", value: recoveryCount, type: "ClientRecovery", icon: "fas fa-handshake-angle", colorClass: "recovery" }
       ];
 
       firstRowBoxes.forEach(b => {
@@ -5054,16 +5358,16 @@ if (record.removal_notes && record.removal_notes.trim() !== '') {
         });
         
         // UPDATED: Risk classes - text only, no emojis
-let riskClass = '';
-if (p.riskLevel === "Very High") {
-  riskClass = 'risk-very-high';
-} else if (p.riskLevel === "High") {
-  riskClass = 'risk-high';
-} else if (p.riskLevel === "Medium") {
-  riskClass = 'risk-medium';
-} else if (p.riskLevel === "Low") {
-  riskClass = 'risk-low';
-}
+        let riskClass = '';
+        if (p.riskLevel === "Very High") {
+          riskClass = 'risk-very-high';
+        } else if (p.riskLevel === "High") {
+          riskClass = 'risk-high';
+        } else if (p.riskLevel === "Medium") {
+          riskClass = 'risk-medium';
+        } else if (p.riskLevel === "Low") {
+          riskClass = 'risk-low';
+        }
         
         // FIXED: Check viewer role for notes button
         let notesBtnHTML = '';
