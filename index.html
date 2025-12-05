@@ -3881,14 +3881,16 @@
           const statusIcon = recovery.current_status === 'Active' ? '✅' : '❌';
           
           // Determine notes display
-          let notesDisplay = '-';
-          if (recovery.recovery_notes && recovery.recovery_notes.trim() !== '') {
-            notesDisplay = `
-              <button class="view-notes-btn" onclick="showNotesViewModal('Notes for ${recovery.player_name}', '${recovery.recovery_notes.replace(/'/g, "\\'").replace(/\n/g, '<br>')}')">
-                <i class="fas fa-eye"></i> View Notes
-              </button>
-            `;
-          }
+let notesDisplay = '<div style="text-align: center;">-</div>';
+if (recovery.recovery_notes && recovery.recovery_notes.trim() !== '') {
+  notesDisplay = `
+    <div style="text-align: center;">
+      <button class="view-notes-btn" onclick="showNotesViewModal('Notes for ${recovery.player_name}', '${recovery.recovery_notes.replace(/'/g, "\\'").replace(/\n/g, '<br>')}')">
+        <i class="fas fa-eye"></i> View Notes
+      </button>
+    </div>
+  `;
+}
           
           // Remove button - disabled for viewer role
           const removeButton = userRole === PIN_CONFIG.ROLES.VIEWER 
@@ -4022,14 +4024,16 @@
           const removedDate = record.removed_date ? convertUTCToPKT(record.removed_date) : '-';
           
           // Determine notes display
-          let notesDisplay = '-';
-          if (record.removal_notes && record.removal_notes.trim() !== '') {
-            notesDisplay = `
-              <button class="view-notes-btn" onclick="showNotesViewModal('Removal Notes for ${record.player_name}', '${record.removal_notes.replace(/'/g, "\\'").replace(/\n/g, '<br>')}')">
-                <i class="fas fa-eye"></i> View Notes
-              </button>
-            `;
-          }
+let notesDisplay = '<div style="text-align: center;">-</div>';
+if (record.removal_notes && record.removal_notes.trim() !== '') {
+  notesDisplay = `
+    <div style="text-align: center;">
+      <button class="view-notes-btn" onclick="showNotesViewModal('Removal Notes for ${record.player_name}', '${record.removal_notes.replace(/'/g, "\\'").replace(/\n/g, '<br>')}')">
+        <i class="fas fa-eye"></i> View Notes
+      </button>
+    </div>
+  `;
+}
           
           html += `
             <tr>
