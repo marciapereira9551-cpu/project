@@ -2779,43 +2779,14 @@
     }
     
     // =============================================
-// SUPABASE CONFIGURATION WITH CORS PROXY
-// =============================================
-const SUPABASE_URL = "https://cqjeoslchevewbufpyzv.supabase.co";
-const SUPABASE_KEY = "sb_publishable_PhMKOO9MpDZQIf5c624tiQ_AJPguAHp";
+    // SUPABASE CONFIGURATION
+    // =============================================
+    const SUPABASE_URL = "https://cqjeoslchevewbufpyzv.supabase.co";
+    const SUPABASE_KEY = "sb_publishable_PhMKOO9MpDZQIf5c624tiQ_AJPguAHp";
+    
+    // Initialize Supabase client
+    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-// Use a CORS proxy to bypass the restriction
-const PROXY_URL = "https://api.allorigins.win/raw?url=";
-// Alternative proxies if one doesn't work:
-// const PROXY_URL = "https://corsproxy.io/?"; 
-// const PROXY_URL = "https://proxy.cors.sh/";
-
-// Create a custom fetch function that uses the proxy
-const customFetch = (url, options = {}) => {
-  // Use proxy for all Supabase requests
-  const proxiedUrl = PROXY_URL + encodeURIComponent(url);
-  
-  return fetch(proxiedUrl, {
-    ...options,
-    headers: {
-      ...options.headers,
-      'apikey': SUPABASE_KEY,
-      'Authorization': `Bearer ${SUPABASE_KEY}`,
-      'Content-Type': 'application/json',
-    }
-  });
-};
-
-// Initialize Supabase with custom fetch
-const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY, {
-  auth: {
-    persistSession: false, // Disable auth persistence for now
-    autoRefreshToken: false,
-  },
-  global: {
-    fetch: customFetch // Use our custom fetch function
-  }
-});
     // =============================================
     // CONSTANTS AND CONFIGURATION
     // =============================================
