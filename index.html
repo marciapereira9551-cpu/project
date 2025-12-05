@@ -1097,43 +1097,6 @@
       box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     }
 
-    /* FIX #2: Removed recovery stats container - REMOVED THIS ENTIRE SECTION */
-    /* .recovery-stats {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 1.5rem;
-      padding: 1.5rem;
-      background: var(--bg-secondary);
-      border-bottom: 1px solid var(--border-color);
-    }
-
-    .recovery-stat {
-      display: flex;
-      flex-direction: column;
-      gap: 0.5rem;
-      align-items: center;
-      justify-content: center;
-      padding: 1rem;
-      background: var(--bg-card);
-      border-radius: 12px;
-      border: 1px solid var(--border-color);
-      text-align: center;
-      box-shadow: var(--shadow);
-    }
-
-    .recovery-stat-value {
-      font-size: 1.5rem;
-      font-weight: 700;
-      color: var(--text-primary);
-      line-height: 1;
-    }
-
-    .recovery-stat-label {
-      font-size: 0.875rem;
-      color: var(--text-secondary);
-      font-weight: 500;
-    } */
-
     .recovery-table-container {
       overflow-x: auto;
     }
@@ -1338,6 +1301,22 @@
       font-size: 1.25rem;
       font-weight: 600;
       color: var(--text-primary);
+    }
+
+    /* NEW: Table search container */
+    .table-search-container {
+      padding: 1.5rem;
+      border-bottom: 1px solid var(--border-color);
+      background: var(--bg-secondary);
+    }
+
+    .table-search-container .search-input {
+      width: 100%;
+      font-size: 1rem;
+      padding: 0.875rem 1.25rem;
+      border: 2px solid var(--primary);
+      background: var(--bg-card);
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     }
 
     .pagination-controls {
@@ -1949,6 +1928,12 @@
       .filter-stats-container {
         grid-template-columns: repeat(3, 1fr);
         gap: 1rem;
+      }
+      
+      .table-header {
+        flex-direction: column;
+        gap: 1rem;
+        align-items: stretch;
       }
     }
 
@@ -3424,16 +3409,17 @@
             type: null,
             page: 1,
             data: null,
-            title: null
+            title: null,
+            search: '' // NEW: Added search state for each table
         },
         playerTables: {
-            'Total': { page: 1, data: null },
-            'Active': { page: 1, data: null },
-            'Inactive': { page: 1, data: null },
-            'RecentActive': { page: 1, data: null },
-            'RecentInactive': { page: 1, data: null }
+            'Total': { page: 1, data: null, search: '' },
+            'Active': { page: 1, data: null, search: '' },
+            'Inactive': { page: 1, data: null, search: '' },
+            'RecentActive': { page: 1, data: null, search: '' },
+            'RecentInactive': { page: 1, data: null, search: '' }
         },
-        highRisk: { page: 1, data: null },
+        highRisk: { page: 1, data: null, search: '' },
         history: { page: 1, data: null },
         deposits: { month: 0, data: null }
     };
@@ -4519,6 +4505,97 @@ if (record.removal_notes && record.removal_notes.trim() !== '') {
     }
 
     // =============================================
+    // NEW: PLAYER TABLE SEARCH FUNCTIONS
+    // =============================================
+
+    // Debounced search for player tables
+    const debouncedSearchPlayers = debounce(function(searchTerm, tableType) {
+      searchPlayersInTable(searchTerm, tableType);
+    }, SEARCH_DEBOUNCE_DELAY);
+
+    // Search players in table
+    function searchPlayersInTable(searchTerm, tableType) {
+      console.log(`Searching in ${tableType}: "${searchTerm}"`);
+      
+      // Update search state
+      if (tableType === 'HighRisk') {
+        tableState.highRisk.search = searchTerm;
+        tableState.highRisk.page = 1;
+      } else if (tableState.playerTables[tableType]) {
+        tableState.playerTables[tableType].search = searchTerm;
+        tableState.playerTables[tableType].page = 1;
+      } else {
+        tableState.current.search = searchTerm;
+        tableState.current.page = 1;
+      }
+      
+      // Re-render the current table with search filter
+      if (tableState.current.type === 'HighRisk') {
+        renderHighRiskTable();
+      } else if (tableState.playerTables[tableType]) {
+        showBoxData(tableState.current.type);
+      }
+    }
+
+    // Filter players based on search term
+    function filterPlayersBySearch(players, searchTerm) {
+      if (!searchTerm) return players;
+      
+      const searchLower = searchTerm.toLowerCase();
+      
+      return players.filter(player => {
+        // Search in player name
+        if (player.player.toLowerCase().includes(searchLower)) return true;
+        
+        // Search in status
+        if (player.status && player.status.toLowerCase().includes(searchLower)) return true;
+        
+        // Search in last deposit (formatted date)
+        if (player.lastDeposit && player.lastDeposit.toLowerCase().includes(searchLower)) return true;
+        
+        // Search in total deposit amount
+        if (player.totalDeposit && player.totalDeposit.toString().includes(searchTerm)) return true;
+        
+        // Search in last 7 days deposit amount
+        if (player.last7DaysDeposit && player.last7DaysDeposit.toString().includes(searchTerm)) return true;
+        
+        // Search in gap days for Recent Active
+        if (player.gapDays && player.gapDays.toString().includes(searchTerm)) return true;
+        
+        return false;
+      });
+    }
+
+    // Filter high risk players based on search term
+    function filterHighRiskPlayersBySearch(players, searchTerm) {
+      if (!searchTerm) return players;
+      
+      const searchLower = searchTerm.toLowerCase();
+      
+      return players.filter(player => {
+        // Search in player name
+        if (player.player.toLowerCase().includes(searchLower)) return true;
+        
+        // Search in risk level
+        if (player.riskLevel && player.riskLevel.toLowerCase().includes(searchLower)) return true;
+        
+        // Search in current status
+        if (player.currentStatus && player.currentStatus.toLowerCase().includes(searchLower)) return true;
+        
+        // Search in total deposits count
+        if (player.totalDeposits && player.totalDeposits.toString().includes(searchTerm)) return true;
+        
+        // Search in gap details
+        if (player.gaps) {
+          const gapText = player.gaps.map(gap => gap.gapBetween).join(' ');
+          if (gapText.toLowerCase().includes(searchLower)) return true;
+        }
+        
+        return false;
+      });
+    }
+
+    // =============================================
     // EXISTING FUNCTIONS (Updated for Performance)
     // =============================================
 
@@ -4533,6 +4610,7 @@ if (record.removal_notes && record.removal_notes.trim() !== '') {
       
       // Initialize debounced search
       window.debouncedSearchRecoveries = debouncedSearchRecoveries;
+      window.debouncedSearchPlayers = debouncedSearchPlayers;
       window.showNotesViewModal = showNotesViewModal;
       window.setRecoveryFilter = setRecoveryFilter;
       window.changeRecoveryPage = changeRecoveryPage;
@@ -4966,15 +5044,15 @@ if (record.removal_notes && record.removal_notes.trim() !== '') {
     }
 
     function resetAllTableStates() {
-      tableState.current = { type: null, page: 1, data: null, title: null };
+      tableState.current = { type: null, page: 1, data: null, title: null, search: '' };
       tableState.playerTables = {
-        'Total': { page: 1, data: null },
-        'Active': { page: 1, data: null },
-        'Inactive': { page: 1, data: null },
-        'RecentActive': { page: 1, data: null },
-        'RecentInactive': { page: 1, data: null }
+        'Total': { page: 1, data: null, search: '' },
+        'Active': { page: 1, data: null, search: '' },
+        'Inactive': { page: 1, data: null, search: '' },
+        'RecentActive': { page: 1, data: null, search: '' },
+        'RecentInactive': { page: 1, data: null, search: '' }
       };
-      tableState.highRisk = { page: 1, data: null };
+      tableState.highRisk = { page: 1, data: null, search: '' };
       tableState.history = { page: 1, data: null };
       tableState.deposits = { month: 0, data: null };
       
@@ -5229,7 +5307,15 @@ if (record.removal_notes && record.removal_notes.trim() !== '') {
     async function renderPlayerTable(players, title, type) {
       const totalPlayers = players.length;
       const currentPage = tableState.playerTables[type].page;
-      const paginatedPlayers = getPaginatedPlayers(players, currentPage, PLAYERS_PER_PAGE);
+      const searchTerm = tableState.playerTables[type].search || '';
+      
+      // Apply search filter
+      let filteredPlayers = players;
+      if (searchTerm) {
+        filteredPlayers = filterPlayersBySearch(players, searchTerm);
+      }
+      
+      const paginatedPlayers = getPaginatedPlayers(filteredPlayers, currentPage, PLAYERS_PER_PAGE);
       
       // Show loader for table
       document.getElementById('tableContainer').innerHTML = `
@@ -5250,9 +5336,27 @@ if (record.removal_notes && record.removal_notes.trim() !== '') {
       let html = `
         <div class="table-container">
           <div class="table-header">
-            <h3 class="table-title">${title} (${totalPlayers} total)</h3>
-            <div id="paginationContainer"></div>
+            <h3 class="table-title">${title} (${filteredPlayers.length} of ${totalPlayers} total${searchTerm ? ` - Filtered by: "${searchTerm}"` : ''})</h3>
+            <div class="pagination-controls">
+              <div class="pagination-info">
+                Page ${currentPage} of ${Math.ceil(filteredPlayers.length / PLAYERS_PER_PAGE)}
+              </div>
+              <div class="pagination-buttons" id="paginationContainer"></div>
+            </div>
           </div>
+          
+          <!-- NEW: Search Bar for Player Table -->
+          <div class="table-search-container">
+            <input 
+              type="text" 
+              class="search-input" 
+              placeholder="Search players by name, status, or amount..." 
+              value="${searchTerm}"
+              oninput="debouncedSearchPlayers(this.value, '${type}')"
+              style="width: 100%;"
+            >
+          </div>
+          
           <div class="table-scroll-container">
             <table style="font-size: 0.875rem;">
               <thead>
@@ -5272,60 +5376,70 @@ if (record.removal_notes && record.removal_notes.trim() !== '') {
               <tbody>
       `;
       
-      for (let i = 0; i < paginatedPlayers.length; i++) {
-        const p = paginatedPlayers[i];
-        const cls = p.status === "Active" ? "status-active" : "status-inactive";
-        
-        const gapDisplay = formatTimeSince(p.originalTimestamp);
-        const gapDays = p.gapDays ? p.gapDays : 'N/A';
-        
-        // FIX #4: Updated notes button for Viewer role
-        let notesBtnHTML = '';
-        if (userRole === PIN_CONFIG.ROLES.VIEWER) {
-          // Viewer can only view existing notes, not add new ones
-          if (p.hasNotes) {
-            notesBtnHTML = `<button class="notes-btn has-notes viewer-disabled" onclick="showNotesModal('${p.player.replace(/'/g, "\\'")}', this)" title="View notes (Viewer cannot add)">
-              <i class="fas fa-sticky-note"></i> Notes
-            </button>`;
-          } else {
-            notesBtnHTML = `<button class="notes-btn viewer-disabled" disabled title="No notes available (Viewer cannot add)">
-              <i class="fas fa-plus"></i> Add
-            </button>`;
-          }
-        } else {
-          // Admin can add/view notes
-          const notesBtnClass = p.hasNotes ? 'notes-btn has-notes' : 'notes-btn';
-          const notesBtnIcon = p.hasNotes ? 'fa-sticky-note' : 'fa-plus';
-          const notesBtnText = p.hasNotes ? 'Notes' : 'Add';
-          
-          notesBtnHTML = `<button class="${notesBtnClass}" onclick="showNotesModal('${p.player.replace(/'/g, "\\'")}', this)" title="${p.hasNotes ? 'View notes' : 'Add note'}">
-            <i class="fas ${notesBtnIcon}"></i> ${notesBtnText}
-          </button>`;
-        }
-        
-        const serialNumber = (currentPage - 1) * PLAYERS_PER_PAGE + i + 1;
-        
-        // Use pre-generated button HTML
-        const recoveryButtonHTML = recoveryButtonHTMLs[i];
-        
+      if (paginatedPlayers.length === 0) {
         html += `
           <tr>
-            <td style="text-align: center;">${serialNumber}</td>
-            <td>${p.player}</td>
-            <td>${p.lastDeposit}</td>
-            <td>${gapDisplay}</td>
-            <td><span class="status-badge ${cls}">${p.status}</span></td>
-            <td style="text-align: center;">${p.totalDeposit || 0}</td>
-            <td style="text-align: center;">${p.last7DaysDeposit || 0}</td>
-            ${type === "RecentActive" ? `<td style="text-align: center;">${gapDays}</td>` : ''}
-            <td style="text-align: center;">
-              ${notesBtnHTML}
-            </td>
-            <td style="text-align: center;">
-              ${recoveryButtonHTML}
+            <td colspan="${type === "RecentActive" ? 10 : 9}" style="text-align: center; padding: 2rem; color: var(--text-secondary);">
+              ${searchTerm ? 'No matching players found' : 'No players available'}
             </td>
           </tr>
         `;
+      } else {
+        for (let i = 0; i < paginatedPlayers.length; i++) {
+          const p = paginatedPlayers[i];
+          const cls = p.status === "Active" ? "status-active" : "status-inactive";
+          
+          const gapDisplay = formatTimeSince(p.originalTimestamp);
+          const gapDays = p.gapDays ? p.gapDays : 'N/A';
+          
+          // FIX #4: Updated notes button for Viewer role
+          let notesBtnHTML = '';
+          if (userRole === PIN_CONFIG.ROLES.VIEWER) {
+            // Viewer can only view existing notes, not add new ones
+            if (p.hasNotes) {
+              notesBtnHTML = `<button class="notes-btn has-notes viewer-disabled" onclick="showNotesModal('${p.player.replace(/'/g, "\\'")}', this)" title="View notes (Viewer cannot add)">
+                <i class="fas fa-sticky-note"></i> Notes
+              </button>`;
+            } else {
+              notesBtnHTML = `<button class="notes-btn viewer-disabled" disabled title="No notes available (Viewer cannot add)">
+                <i class="fas fa-plus"></i> Add
+              </button>`;
+            }
+          } else {
+            // Admin can add/view notes
+            const notesBtnClass = p.hasNotes ? 'notes-btn has-notes' : 'notes-btn';
+            const notesBtnIcon = p.hasNotes ? 'fa-sticky-note' : 'fa-plus';
+            const notesBtnText = p.hasNotes ? 'Notes' : 'Add';
+            
+            notesBtnHTML = `<button class="${notesBtnClass}" onclick="showNotesModal('${p.player.replace(/'/g, "\\'")}', this)" title="${p.hasNotes ? 'View notes' : 'Add note'}">
+              <i class="fas ${notesBtnIcon}"></i> ${notesBtnText}
+            </button>`;
+          }
+          
+          const serialNumber = (currentPage - 1) * PLAYERS_PER_PAGE + i + 1;
+          
+          // Use pre-generated button HTML
+          const recoveryButtonHTML = recoveryButtonHTMLs[i];
+          
+          html += `
+            <tr>
+              <td style="text-align: center;">${serialNumber}</td>
+              <td>${p.player}</td>
+              <td>${p.lastDeposit}</td>
+              <td>${gapDisplay}</td>
+              <td><span class="status-badge ${cls}">${p.status}</span></td>
+              <td style="text-align: center;">${p.totalDeposit || 0}</td>
+              <td style="text-align: center;">${p.last7DaysDeposit || 0}</td>
+              ${type === "RecentActive" ? `<td style="text-align: center;">${gapDays}</td>` : ''}
+              <td style="text-align: center;">
+                ${notesBtnHTML}
+              </td>
+              <td style="text-align: center;">
+                ${recoveryButtonHTML}
+              </td>
+            </tr>
+          `;
+        }
       }
       
       html += `
@@ -5338,7 +5452,7 @@ if (record.removal_notes && record.removal_notes.trim() !== '') {
       document.getElementById('tableContainer').innerHTML = html;
       
       const paginationContainer = document.getElementById('paginationContainer');
-      renderPagination(totalPlayers, currentPage, PLAYERS_PER_PAGE, paginationContainer, `changePlayerPage_${type}`);
+      renderPagination(filteredPlayers.length, currentPage, PLAYERS_PER_PAGE, paginationContainer, `changePlayerPage_${type}`);
     }
 
     // OPTIMIZED: Batch recovery button generation for high risk table - FIX #4: Updated notes button permissions
@@ -5346,7 +5460,15 @@ if (record.removal_notes && record.removal_notes.trim() !== '') {
       const highRiskPlayers = currentPageData.highRiskPlayers;
       const totalPlayers = highRiskPlayers.length;
       const currentPage = tableState.highRisk.page;
-      const paginatedPlayers = getPaginatedPlayers(highRiskPlayers, currentPage, PLAYERS_PER_PAGE);
+      const searchTerm = tableState.highRisk.search || '';
+      
+      // Apply search filter
+      let filteredPlayers = highRiskPlayers;
+      if (searchTerm) {
+        filteredPlayers = filterHighRiskPlayersBySearch(highRiskPlayers, searchTerm);
+      }
+      
+      const paginatedPlayers = getPaginatedPlayers(filteredPlayers, currentPage, PLAYERS_PER_PAGE);
       
       // Show loader for table
       document.getElementById('tableContainer').innerHTML = `
@@ -5367,9 +5489,27 @@ if (record.removal_notes && record.removal_notes.trim() !== '') {
       let html = `
         <div class="table-container">
           <div class="table-header">
-            <h3 class="table-title">High Risk Players Analysis (${totalPlayers} total)</h3>
-            <div id="paginationContainer"></div>
+            <h3 class="table-title">High Risk Players Analysis (${filteredPlayers.length} of ${totalPlayers} total${searchTerm ? ` - Filtered by: "${searchTerm}"` : ''})</h3>
+            <div class="pagination-controls">
+              <div class="pagination-info">
+                Page ${currentPage} of ${Math.ceil(filteredPlayers.length / PLAYERS_PER_PAGE)}
+              </div>
+              <div class="pagination-buttons" id="paginationContainer"></div>
+            </div>
           </div>
+          
+          <!-- NEW: Search Bar for High Risk Table -->
+          <div class="table-search-container">
+            <input 
+              type="text" 
+              class="search-input" 
+              placeholder="Search high risk players by name, risk level, or status..." 
+              value="${searchTerm}"
+              oninput="debouncedSearchPlayers(this.value, 'HighRisk')"
+              style="width: 100%;"
+            >
+          </div>
+          
           <div class="table-scroll-container">
             <table class="high-risk-table">
               <thead>
@@ -5390,86 +5530,96 @@ if (record.removal_notes && record.removal_notes.trim() !== '') {
               <tbody>
       `;
       
-      for (let i = 0; i < paginatedPlayers.length; i++) {
-        const p = paginatedPlayers[i];
-        const statusClass = p.currentStatus === "Active" ? "status-active" : "status-inactive";
-        
-        const lastDepositPKT = convertUTCToPKT(p.lastDeposit);
-        const gapDisplay = formatTimeSince(p.lastDeposit);
-        
-        let gapDetails = '';
-        p.gaps.forEach((gap, gapIndex) => {
-          gapDetails += `
-            <div style="font-size: 0.7rem; margin-bottom: 0.2rem; padding: 0.15rem 0.3rem; background: var(--bg-secondary); border-radius: 3px; border-left: 2px solid var(--primary);">
-              <strong>${gap.gapDays}d</strong>: ${gap.gapBetween}
-            </div>
-          `;
-        });
-        
-        // UPDATED: Risk classes - text only, no emojis
-        let riskClass = '';
-        if (p.riskLevel === "Very High") {
-          riskClass = 'risk-very-high';
-        } else if (p.riskLevel === "High") {
-          riskClass = 'risk-high';
-        } else if (p.riskLevel === "Medium") {
-          riskClass = 'risk-medium';
-        } else if (p.riskLevel === "Low") {
-          riskClass = 'risk-low';
-        }
-        
-        // FIX #4: Updated notes button for Viewer role
-        let notesBtnHTML = '';
-        if (userRole === PIN_CONFIG.ROLES.VIEWER) {
-          // Viewer can only view existing notes, not add new ones
-          if (p.hasNotes) {
-            notesBtnHTML = `<button class="notes-btn has-notes viewer-disabled" style="font-size: 0.7rem; padding: 0.3rem 0.5rem;" onclick="showNotesModal('${p.player.replace(/'/g, "\\'")}', this)" title="View notes (Viewer cannot add)">
-              <i class="fas fa-sticky-note"></i> Notes
-            </button>`;
-          } else {
-            notesBtnHTML = `<button class="notes-btn viewer-disabled" style="font-size: 0.7rem; padding: 0.3rem 0.5rem;" disabled title="No notes available (Viewer cannot add)">
-              <i class="fas fa-plus"></i> Add
-            </button>`;
-          }
-        } else {
-          // Admin can add/view notes
-          const notesBtnClass = p.hasNotes ? 'notes-btn has-notes' : 'notes-btn';
-          const notesBtnIcon = p.hasNotes ? 'fa-sticky-note' : 'fa-plus';
-          const notesBtnText = p.hasNotes ? 'Notes' : 'Add';
-          
-          notesBtnHTML = `<button class="${notesBtnClass}" style="font-size: 0.7rem; padding: 0.3rem 0.5rem;" onclick="showNotesModal('${p.player.replace(/'/g, "\\'")}', this)" title="${p.hasNotes ? 'View notes' : 'Add note'}">
-            <i class="fas ${notesBtnIcon}"></i> ${notesBtnText}
-          </button>`;
-        }
-        
-        const serialNumber = (currentPage - 1) * PLAYERS_PER_PAGE + i + 1;
-        
-        // Use pre-generated button HTML
-        const recoveryButtonHTML = recoveryButtonHTMLs[i];
-        
+      if (paginatedPlayers.length === 0) {
         html += `
           <tr>
-            <td style="text-align: center; font-size: 0.75rem;">${serialNumber}</td>
-            <td style="font-size: 0.75rem;"><strong>${p.player}</strong></td>
-             <td class="${riskClass}" style="font-size: 0.75rem;"><strong>${p.riskLevel}</strong></td>
-            <td style="text-align: center; font-size: 0.75rem;">${p.totalQualifyingGaps}</td>
-            <td style="font-size: 0.7rem;">
-              <div>
-                ${gapDetails}
-              </div>
-            </td>
-            <td style="font-size: 0.75rem;">${lastDepositPKT}</td>
-            <td style="font-size: 0.75rem;">${gapDisplay}</td>
-            <td style="font-size: 0.75rem;"><span class="status-badge ${statusClass}" style="font-size: 0.7rem; padding: 0.15rem 0.4rem;">${p.currentStatus}</span></td>
-            <td style="text-align: center; font-size: 0.75rem;">${p.totalDeposits}</td>
-            <td style="text-align: center;">
-              ${notesBtnHTML}
-            </td>
-            <td style="text-align: center;">
-              ${recoveryButtonHTML}
+            <td colspan="11" style="text-align: center; padding: 2rem; color: var(--text-secondary);">
+              ${searchTerm ? 'No matching high risk players found' : 'No high risk players available'}
             </td>
           </tr>
         `;
+      } else {
+        for (let i = 0; i < paginatedPlayers.length; i++) {
+          const p = paginatedPlayers[i];
+          const statusClass = p.currentStatus === "Active" ? "status-active" : "status-inactive";
+          
+          const lastDepositPKT = convertUTCToPKT(p.lastDeposit);
+          const gapDisplay = formatTimeSince(p.lastDeposit);
+          
+          let gapDetails = '';
+          p.gaps.forEach((gap, gapIndex) => {
+            gapDetails += `
+              <div style="font-size: 0.7rem; margin-bottom: 0.2rem; padding: 0.15rem 0.3rem; background: var(--bg-secondary); border-radius: 3px; border-left: 2px solid var(--primary);">
+                <strong>${gap.gapDays}d</strong>: ${gap.gapBetween}
+              </div>
+            `;
+          });
+          
+          // UPDATED: Risk classes - text only, no emojis
+          let riskClass = '';
+          if (p.riskLevel === "Very High") {
+            riskClass = 'risk-very-high';
+          } else if (p.riskLevel === "High") {
+            riskClass = 'risk-high';
+          } else if (p.riskLevel === "Medium") {
+            riskClass = 'risk-medium';
+          } else if (p.riskLevel === "Low") {
+            riskClass = 'risk-low';
+          }
+          
+          // FIX #4: Updated notes button for Viewer role
+          let notesBtnHTML = '';
+          if (userRole === PIN_CONFIG.ROLES.VIEWER) {
+            // Viewer can only view existing notes, not add new ones
+            if (p.hasNotes) {
+              notesBtnHTML = `<button class="notes-btn has-notes viewer-disabled" style="font-size: 0.7rem; padding: 0.3rem 0.5rem;" onclick="showNotesModal('${p.player.replace(/'/g, "\\'")}', this)" title="View notes (Viewer cannot add)">
+                <i class="fas fa-sticky-note"></i> Notes
+              </button>`;
+            } else {
+              notesBtnHTML = `<button class="notes-btn viewer-disabled" style="font-size: 0.7rem; padding: 0.3rem 0.5rem;" disabled title="No notes available (Viewer cannot add)">
+                <i class="fas fa-plus"></i> Add
+              </button>`;
+            }
+          } else {
+            // Admin can add/view notes
+            const notesBtnClass = p.hasNotes ? 'notes-btn has-notes' : 'notes-btn';
+            const notesBtnIcon = p.hasNotes ? 'fa-sticky-note' : 'fa-plus';
+            const notesBtnText = p.hasNotes ? 'Notes' : 'Add';
+            
+            notesBtnHTML = `<button class="${notesBtnClass}" style="font-size: 0.7rem; padding: 0.3rem 0.5rem;" onclick="showNotesModal('${p.player.replace(/'/g, "\\'")}', this)" title="${p.hasNotes ? 'View notes' : 'Add note'}">
+              <i class="fas ${notesBtnIcon}"></i> ${notesBtnText}
+            </button>`;
+          }
+          
+          const serialNumber = (currentPage - 1) * PLAYERS_PER_PAGE + i + 1;
+          
+          // Use pre-generated button HTML
+          const recoveryButtonHTML = recoveryButtonHTMLs[i];
+          
+          html += `
+            <tr>
+              <td style="text-align: center; font-size: 0.75rem;">${serialNumber}</td>
+              <td style="font-size: 0.75rem;"><strong>${p.player}</strong></td>
+              <td class="${riskClass}" style="font-size: 0.75rem;"><strong>${p.riskLevel}</strong></td>
+              <td style="text-align: center; font-size: 0.75rem;">${p.totalQualifyingGaps}</td>
+              <td style="font-size: 0.7rem;">
+                <div>
+                  ${gapDetails}
+                </div>
+              </td>
+              <td style="font-size: 0.75rem;">${lastDepositPKT}</td>
+              <td style="font-size: 0.75rem;">${gapDisplay}</td>
+              <td style="font-size: 0.75rem;"><span class="status-badge ${statusClass}" style="font-size: 0.7rem; padding: 0.15rem 0.4rem;">${p.currentStatus}</span></td>
+              <td style="text-align: center; font-size: 0.75rem;">${p.totalDeposits}</td>
+              <td style="text-align: center;">
+                ${notesBtnHTML}
+              </td>
+              <td style="text-align: center;">
+                ${recoveryButtonHTML}
+              </td>
+            </tr>
+          `;
+        }
       }
       
       html += `
@@ -5484,10 +5634,10 @@ if (record.removal_notes && record.removal_notes.trim() !== '') {
         <div style="margin-top: 1.5rem; background: var(--bg-secondary); padding: 1rem; border-radius: 8px; border: 1px solid var(--border-color);">
           <h5 style="color: var(--text-primary); margin-bottom: 0.5rem;">Risk Level Explanation:</h5>
           <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 0.75rem; font-size: 0.8rem;">
-            <div><span class="risk-very-high" style="padding: 0.15rem 0.4rem; margin-right: 0.5rem;">🔴 Very High</span>: 3+ gaps OR 12+ day gap</div>
-            <div><span class="risk-high" style="padding: 0.15rem 0.4rem; margin-right: 0.5rem;">🟠 High</span>: 2+ gaps OR 10+ day gap</div>
-            <div><span class="risk-medium" style="padding: 0.15rem 0.4rem; margin-right: 0.5rem;">🟡 Medium</span>: 1 gap with 8+ days</div>
-            <div><span class="risk-low" style="padding: 0.15rem 0.4rem; margin-right: 0.5rem;">🟢 Low</span>: Single smaller gaps</div>
+            <div><span class="risk-very-high" style="padding: 0.15rem 0.4rem; margin-right: 0.5rem;">Very High</span>: 3+ gaps OR 12+ day gap</div>
+            <div><span class="risk-high" style="padding: 0.15rem 0.4rem; margin-right: 0.5rem;">High</span>: 2+ gaps OR 10+ day gap</div>
+            <div><span class="risk-medium" style="padding: 0.15rem 0.4rem; margin-right: 0.5rem;">Medium</span>: 1 gap with 8+ days</div>
+            <div><span class="risk-low" style="padding: 0.15rem 0.4rem; margin-right: 0.5rem;">Low</span>: Single smaller gaps</div>
           </div>
         </div>
       `;
@@ -5495,7 +5645,7 @@ if (record.removal_notes && record.removal_notes.trim() !== '') {
       document.getElementById('tableContainer').innerHTML = html;
       
       const paginationContainer = document.getElementById('paginationContainer');
-      renderPagination(totalPlayers, currentPage, PLAYERS_PER_PAGE, paginationContainer, 'changeHighRiskPage');
+      renderPagination(filteredPlayers.length, currentPage, PLAYERS_PER_PAGE, paginationContainer, 'changeHighRiskPage');
     }
 
     // =============================================
