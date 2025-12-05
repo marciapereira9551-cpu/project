@@ -5057,22 +5057,17 @@
           `;
         });
         
-        // FIXED: Updated risk classes with emojis
-        let riskClass = '';
-        let riskEmoji = '';
-        if (p.riskLevel === "Very High") {
-          riskClass = 'risk-very-high';
-          riskEmoji = '🔴';
-        } else if (p.riskLevel === "High") {
-          riskClass = 'risk-high';
-          riskEmoji = '🟠';
-        } else if (p.riskLevel === "Medium") {
-          riskClass = 'risk-medium';
-          riskEmoji = '🟡';
-        } else if (p.riskLevel === "Low") {
-          riskClass = 'risk-low';
-          riskEmoji = '🟢';
-        }
+        // UPDATED: Risk classes - text only, no emojis
+let riskClass = '';
+if (p.riskLevel === "Very High") {
+  riskClass = 'risk-very-high';
+} else if (p.riskLevel === "High") {
+  riskClass = 'risk-high';
+} else if (p.riskLevel === "Medium") {
+  riskClass = 'risk-medium';
+} else if (p.riskLevel === "Low") {
+  riskClass = 'risk-low';
+}
         
         // FIXED: Check viewer role for notes button
         let notesBtnHTML = '';
