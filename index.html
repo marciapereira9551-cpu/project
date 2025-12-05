@@ -810,9 +810,10 @@
     }
 
     .recovery-method-btn.active {
-      border-color: var(--primary);
-      background: rgba(67, 97, 238, 0.1);
-    }
+  border-color: var(--primary);
+  background: rgba(67, 97, 238, 0.1);
+  color: var(--primary);
+}
 
     .recovery-method-icon {
       font-size: 1.5rem;
@@ -1023,25 +1024,18 @@
       font-size: 0.75rem;
     }
 
-    /* Method styles - TEXT instead of emoji */
-    .method-chat {
-      color: var(--info);
-      font-weight: 500;
-      background: rgba(6, 214, 160, 0.1);
-      padding: 0.25rem 0.5rem;
-      border-radius: 8px;
-      text-align: center;
-    }
+    /* UPDATED: Method styles - TEXT ONLY, no background */
+.method-chat {
+  color: #06d6a0 !important; /* Chat green color */
+  font-weight: 600 !important;
+}
 
-    .method-offer {
-      color: #f59e0b;
-      font-weight: 500;
-      background: rgba(245, 158, 11, 0.1);
-      padding: 0.25rem 0.5rem;
-      border-radius: 8px;
-      text-align: center;
-    }
+.method-offer {
+  color: #f59e0b !important; /* Offer orange color */
+  font-weight: 600 !important;
+}
 
+    
     .view-notes-btn {
       padding: 0.4rem 0.8rem;
       border: 1px solid var(--border-color);
