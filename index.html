@@ -3092,8 +3092,7 @@
         search: '',
         data: null,
         stats: null,
-        filteredData: null,
-        recoveryStatusCache: new Map()
+        filteredData: null
       },
       removed: {
         page: 1,
@@ -3104,6 +3103,143 @@
         data: null
       }
     };
+
+    // =============================================
+    // NEW: GLOBAL RECOVERY CACHE SYSTEM
+    // =============================================
+    
+    // Global recovery cache - stores recovery status for current page
+    let globalRecoveryCache = {
+      data: null, // Map of player_name -> true if recovered
+      page: null,
+      timestamp: 0,
+      lastPlayerNames: [] // Store last batch of players fetched
+    };
+    
+    const CACHE_MAX_AGE = 30000; // 30 seconds max cache age
+    
+    // NEW: Get recovery status for current page (with smart caching)
+    async function getRecoveryStatusForPage(pageName, playerNames = []) {
+      console.log(`Getting recovery status for page: ${pageName}, players: ${playerNames.length}`);
+      
+      // Check if cache is valid
+      const now = Date.now();
+      const isCacheValid = 
+        globalRecoveryCache.page === pageName && 
+        globalRecoveryCache.data !== null &&
+        (now - globalRecoveryCache.timestamp) < CACHE_MAX_AGE;
+      
+      if (isCacheValid) {
+        console.log('Using valid recovery cache');
+        return globalRecoveryCache.data;
+      }
+      
+      // Cache is invalid or expired, fetch fresh data
+      console.log('Cache invalid/expired, fetching fresh recovery data');
+      await fetchAllRecoveredPlayers(pageName);
+      return globalRecoveryCache.data;
+    }
+    
+    // NEW: Fetch ALL recovered players for a page
+    async function fetchAllRecoveredPlayers(pageName) {
+      console.log(`Fetching ALL recovered players for page: ${pageName}`);
+      
+      try {
+        const { data, error } = await supabase
+          .from('client_recoveries')
+          .select('player_name')
+          .eq('page_name', pageName)
+          .eq('is_active_in_list', true);
+        
+        if (error) throw error;
+        
+        // Convert array to map for fast lookup
+        const recoveryMap = {};
+        if (data && data.length > 0) {
+          data.forEach(record => {
+            recoveryMap[record.player_name] = true;
+          });
+        }
+        
+        // Update global cache
+        globalRecoveryCache = {
+          data: recoveryMap,
+          page: pageName,
+          timestamp: Date.now(),
+          lastPlayerNames: Object.keys(recoveryMap)
+        };
+        
+        console.log(`Recovery cache updated for ${pageName}: ${Object.keys(recoveryMap).length} players recovered`);
+        return recoveryMap;
+        
+      } catch (error) {
+        console.error('Error fetching recovered players:', error);
+        // Return empty map on error
+        return {};
+      }
+    }
+    
+    // NEW: Update cache after recovery action
+    function updateRecoveryCache(playerName, isRecovered) {
+      if (globalRecoveryCache.data === null || globalRecoveryCache.page !== selectedPage) {
+        return; // Cache not initialized for this page
+      }
+      
+      if (isRecovered) {
+        globalRecoveryCache.data[playerName] = true;
+      } else {
+        delete globalRecoveryCache.data[playerName];
+      }
+      
+      // Update timestamp to keep cache fresh
+      globalRecoveryCache.timestamp = Date.now();
+      console.log(`Cache updated: ${playerName} -> ${isRecovered ? 'Recovered' : 'Not Recovered'}`);
+    }
+    
+    // NEW: Clear cache (when changing pages or force refresh)
+    function clearRecoveryCache() {
+      globalRecoveryCache = {
+        data: null,
+        page: null,
+        timestamp: 0,
+        lastPlayerNames: []
+      };
+      console.log('Recovery cache cleared');
+    }
+    
+    // NEW: Get recovery buttons HTML using global cache
+    async function getRecoveryButtonsHTMLBulk(players) {
+      if (!players || players.length === 0) return [];
+      
+      const playerNames = players.map(p => p.player);
+      
+      // Get recovery status from cache (fetches fresh if needed)
+      const recoveryStatus = await getRecoveryStatusForPage(selectedPage, playerNames);
+      
+      // Generate HTML for all players
+      const buttonHTMLs = players.map(player => {
+        const isRecovered = recoveryStatus[player.player] || false;
+        
+        if (isRecovered) {
+          return `<button class="recovery-btn recovered" disabled>
+                    <i class="fas fa-check"></i> Recovered
+                  </button>`;
+        } else {
+          // Check if viewer role - disable mark button for viewer
+          if (userRole === PIN_CONFIG.ROLES.VIEWER) {
+            return `<button class="recovery-btn mark" disabled style="opacity: 0.5; cursor: not-allowed;" title="Viewer cannot mark recoveries">
+                      <i class="fas fa-redo"></i> Mark
+                    </button>`;
+          } else {
+            return `<button class="recovery-btn mark" onclick="showRecoveryModal('${player.player.replace(/'/g, "\\'")}')">
+                      <i class="fas fa-redo"></i> Mark
+                    </button>`;
+          }
+        }
+      });
+      
+      return buttonHTMLs;
+    }
 
     // =============================================
     // TIME CONVERSION UTILITIES
@@ -3440,80 +3576,6 @@
     // PERFORMANCE OPTIMIZATION FUNCTIONS
     // =============================================
 
-    // Batch fetch recovery status for all players
-    async function batchFetchRecoveryStatus(playerNames) {
-      // Check cache validity
-      const now = Date.now();
-      if (recoveryStatusCacheTimestamp && (now - recoveryStatusCacheTimestamp < CACHE_TTL)) {
-        console.log('Using cached recovery status');
-        return recoveryStatusCache;
-      }
-      
-      try {
-        console.log('Batch fetching recovery status for', playerNames.length, 'players');
-        
-        const { data, error } = await supabase
-          .from('client_recoveries')
-          .select('player_name')
-          .eq('page_name', selectedPage)
-          .eq('is_active_in_list', true)
-          .in('player_name', playerNames.length > 0 ? playerNames : ['']);
-        
-        if (error) {
-          console.error('Error batch fetching recovery status:', error);
-          return new Map();
-        }
-        
-        // Update cache
-        recoveryStatusCache.clear();
-        if (data) {
-          data.forEach(record => {
-            recoveryStatusCache.set(record.player_name, true);
-          });
-        }
-        recoveryStatusCacheTimestamp = now;
-        
-        console.log('Batch fetch complete. Cached', recoveryStatusCache.size, 'players');
-        return recoveryStatusCache;
-        
-      } catch (error) {
-        console.error('Error in batchFetchRecoveryStatus:', error);
-        return new Map();
-      }
-    }
-
-    // Optimized recovery button HTML generation
-    async function getRecoveryButtonsHTMLBulk(players) {
-      const playerNames = players.map(p => p.player);
-      
-      // Batch fetch all recovery statuses at once
-      const recoveryStatusMap = await batchFetchRecoveryStatus(playerNames);
-      
-      // Generate HTML for all players using cache
-      const buttonHTMLs = players.map(player => {
-        const isRecovered = recoveryStatusMap.has(player.player);
-        
-        if (isRecovered) {
-          return `<button class="recovery-btn recovered" disabled>
-                    <i class="fas fa-check"></i> Recovered
-                  </button>`;
-        } else {
-          // Check if viewer role - disable mark button for viewer
-          if (userRole === PIN_CONFIG.ROLES.VIEWER) {
-            return `<button class="recovery-btn mark" disabled style="opacity: 0.5; cursor: not-allowed;" title="Viewer cannot mark recoveries">
-                      <i class="fas fa-redo"></i> Mark
-                    </button>`;
-          } else {
-            return `<button class="recovery-btn mark" onclick="showRecoveryModal('${player.player.replace(/'/g, "\\'")}')">
-                      <i class="fas fa-redo"></i> Mark
-                    </button>`;
-          }
-        }
-      });
-      
-      return buttonHTMLs;
-    }
-
     // Debounce function for search
     function debounce(func, delay) {
       return function(...args) {
@@ -3615,7 +3677,7 @@
         showNotification(`Player ${playerNameToRecover} marked as recovered via ${selectedRecoveryMethod === 'chat' ? 'Chat' : 'Offer'}`, 'success');
         
         // Update recovery cache
-        recoveryStatusCache.set(playerNameToRecover, true);
+        updateRecoveryCache(playerNameToRecover, true);
         
         // REAL-TIME UPDATE: Update recovery button in all tables - FIXED VERSION
         // Use the local variable, not the global one
@@ -3844,7 +3906,7 @@
           
           // Update recovery cache
           const playerName = removalPlayerName.textContent;
-          recoveryStatusCache.delete(playerName);
+          updateRecoveryCache(playerName, false);
           
           // Update recovery button in all tables
           updateRecoveryButtonInTables(playerName, false);
@@ -4524,9 +4586,8 @@ if (record.removal_notes && record.removal_notes.trim() !== '') {
       showLoader();
       disableControlButtons();
       
-      // Clear cache when loading new page
-      recoveryStatusCache.clear();
-      recoveryStatusCacheTimestamp = null;
+      // Clear recovery cache when loading new page
+      clearRecoveryCache();
       
       // Reset recovery state
       recoveryState.current.filter = 'total';
@@ -5183,7 +5244,7 @@ if (record.removal_notes && record.removal_notes.trim() !== '') {
         </div>
       `;
       
-      // Batch fetch recovery status for all players
+      // Batch fetch recovery status for all players using NEW cache system
       const recoveryButtonHTMLs = await getRecoveryButtonsHTMLBulk(paginatedPlayers);
       
       let html = `
@@ -5300,7 +5361,7 @@ if (record.removal_notes && record.removal_notes.trim() !== '') {
         </div>
       `;
       
-      // Batch fetch recovery status for all players
+      // Batch fetch recovery status for all players using NEW cache system
       const recoveryButtonHTMLs = await getRecoveryButtonsHTMLBulk(paginatedPlayers);
       
       let html = `
