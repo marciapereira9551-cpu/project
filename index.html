@@ -3923,35 +3923,44 @@
 
     // Load recovery data
     async function loadRecoveryData() {
-      try {
-        // Get active recoveries
-        const { data: activeData, error: activeError } = await supabase
-          .from('client_recoveries')
-          .select('*')
+  try {
+    // Get active recoveries
+    const { data: activeData, error: activeError } = await supabase
+      .from('client_recoveries')
+      .select('*')
+      .eq('page_name', selectedPage)
+      .eq('is_active_in_list', true)
+      .order('recovered_date', { ascending: false });
+    
+    if (activeError) throw activeError;
+    
+    // Get player status for each recovery
+    const recoveriesWithStatus = await Promise.all(
+      (activeData || []).map(async (recovery) => {
+        const { data: playerData } = await supabase
+          .from('latest_status')
+          .select('last_deposit_date')
           .eq('page_name', selectedPage)
-          .eq('is_active_in_list', true)
-          .order('recovered_date', { ascending: false });
+          .eq('player_name', recovery.player_name)
+          .single();
         
-        if (activeError) throw activeError;
+        // Calculate status in real-time
+        let currentStatus = 'Inactive';
+        if (playerData?.last_deposit_date) {
+          const nowUTC = new Date();
+          const lastDepositUTC = new Date(playerData.last_deposit_date);
+          const daysSince = (nowUTC - lastDepositUTC) / (1000 * 60 * 60 * 24);
+          currentStatus = daysSince <= DAYS_ACTIVE ? 'Active' : 'Inactive';
+        }
         
-        // Get player status for each recovery
-        const recoveriesWithStatus = await Promise.all(
-          (activeData || []).map(async (recovery) => {
-            const { data: playerData } = await supabase
-              .from('latest_status')
-              .select('last_deposit_date, status')
-              .eq('page_name', selectedPage)
-              .eq('player_name', recovery.player_name)
-              .single();
-            
-            return {
-              ...recovery,
-              current_status: playerData?.status || 'inactive',
-              last_deposit: playerData?.last_deposit_date,
-              last_deposit_display: formatTimeSince(playerData?.last_deposit_date)
-            };
-          })
-        );
+        return {
+          ...recovery,
+          current_status: currentStatus,
+          last_deposit: playerData?.last_deposit_date,
+          last_deposit_display: formatTimeSince(playerData?.last_deposit_date)
+        };
+      })
+    );
         
         // Get removed recoveries
         const { data: removedData, error: removedError } = await supabase
