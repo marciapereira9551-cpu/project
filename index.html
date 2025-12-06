@@ -2790,145 +2790,6 @@
   </div>
 
   <script>
-
-  <!-- Blocked Players Dashboard -->
-<div id="blockedPlayersDashboard" class="dashboard">
-  <header class="dashboard-header">
-    <div class="header-content">
-      <h1 class="page-title" id="blockedPageTitle"></h1>
-      <div class="control-buttons">
-        <button class="btn btn-secondary" onclick="backToDashboard()">
-          <i class="fas fa-arrow-left"></i> Back to Dashboard
-        </button>
-      </div>
-    </div>
-  </header>
-
-  <div class="dashboard-content">
-    <div id="blockedLoader" style="display: none;">
-      <div class="loading-screen">
-        <div class="spinner"></div>
-        <p>Loading blocked players data...</p>
-      </div>
-    </div>
-    
-    <div id="blockedContent">
-      <!-- Content will be loaded here -->
-    </div>
-  </div>
-</div>
-
-<!-- Block Player Modal (From List) -->
-<div id="blockPlayerModal" class="modal">
-  <div class="modal-content block-player-modal">
-    <h3 class="modal-title" id="blockPlayerModalTitle">Block Player</h3>
-    
-    <div id="blockPlayerDetails" class="player-details-preview">
-      Loading player details...
-    </div>
-    
-    <div>
-      <label style="display: block; margin-bottom: 0.5rem; color: var(--text-primary); font-weight: 500;">
-        Block Reason:
-      </label>
-      <textarea 
-        id="blockReasonInput" 
-        class="recovery-notes-input" 
-        placeholder="Enter reason for blocking this player..."
-        rows="3"
-      ></textarea>
-    </div>
-    
-    <div id="blockDuplicateWarning" style="display: none; margin: 1rem 0; padding: 1rem; background: rgba(239, 71, 111, 0.1); border-radius: 8px; border: 1px solid var(--danger);">
-      <p style="color: var(--danger); font-weight: 600; margin-bottom: 0.5rem;">
-        <i class="fas fa-exclamation-triangle"></i> Player Already Blocked!
-      </p>
-      <div id="existingBlockDetails"></div>
-    </div>
-    
-    <input type="hidden" id="blockPlayerName">
-    <input type="hidden" id="blockPlayerPage">
-    
-    <div class="modal-buttons">
-      <button class="btn btn-secondary" onclick="hideBlockPlayerModal()">
-        <i class="fas fa-times"></i> Cancel
-      </button>
-      <button class="btn btn-danger" onclick="confirmBlockPlayer()" id="confirmBlockBtn">
-        <i class="fas fa-ban"></i> Confirm Block
-      </button>
-    </div>
-  </div>
-</div>
-
-<!-- Add Blocked Player Modal (Manual) -->
-<div id="addBlockedPlayerModal" class="modal">
-  <div class="modal-content block-player-modal">
-    <h3 class="modal-title">Add Blocked Player (Manual)</h3>
-    
-    <div style="margin-bottom: 1.5rem; padding: 1rem; background: var(--bg-secondary); border-radius: 8px; border: 1px solid var(--border-color);">
-      <p style="color: var(--text-primary); font-size: 0.9rem;">
-        <i class="fas fa-info-circle"></i> For historical/old clients not in current 1-week data
-      </p>
-    </div>
-    
-    <div>
-      <label style="display: block; margin-bottom: 0.5rem; color: var(--text-primary); font-weight: 500;">
-        Player Name:
-      </label>
-      <input 
-        type="text" 
-        id="manualPlayerName" 
-        class="search-input" 
-        placeholder="Enter player name..."
-        style="width: 100%; margin-bottom: 1rem;"
-        oninput="checkManualPlayerDuplicate()"
-      >
-    </div>
-    
-    <div id="manualDuplicateCheckResult"></div>
-    
-    <div>
-      <label style="display: block; margin-bottom: 0.5rem; color: var(--text-primary); font-weight: 500;">
-        Block Reason:
-      </label>
-      <textarea 
-        id="manualBlockReason" 
-        class="recovery-notes-input" 
-        placeholder="Enter reason for blocking this player..."
-        rows="3"
-      ></textarea>
-    </div>
-    
-    <div class="modal-buttons">
-      <button class="btn btn-secondary" onclick="hideAddBlockedPlayerModal()">
-        <i class="fas fa-times"></i> Cancel
-      </button>
-      <button class="btn btn-danger" onclick="confirmManualBlock()" id="confirmManualBlockBtn">
-        <i class="fas fa-ban"></i> Add to Blocked List
-      </button>
-    </div>
-  </div>
-</div>
-
-<!-- View Block Details Modal -->
-<div id="viewBlockDetailsModal" class="modal">
-  <div class="modal-content block-player-modal">
-    <h3 class="modal-title" id="viewBlockTitle">Block Details</h3>
-    
-    <div id="viewBlockContent" style="margin-bottom: 1.5rem;">
-      Loading block details...
-    </div>
-    
-    <div class="modal-buttons">
-      <button class="btn btn-secondary" onclick="hideViewBlockDetailsModal()">
-        <i class="fas fa-times"></i> Close
-      </button>
-      <button class="btn btn-success" onclick="unblockPlayerFromModal()" id="unblockFromModalBtn">
-        <i class="fas fa-check"></i> Unblock Player
-      </button>
-    </div>
-  </div>
-</div>
     
     // =============================================
     // PIN AUTHENTICATION SYSTEM
@@ -9166,5 +9027,152 @@ document.addEventListener('DOMContentLoaded', function() {
   
     
   </script>
+
+<!-- ============================================= -->
+<!-- BLOCKED PLAYERS SYSTEM HTML -->
+<!-- ============================================= -->
+
+<!-- Blocked Players Dashboard -->
+<div id="blockedPlayersDashboard" class="dashboard">
+  <header class="dashboard-header">
+    <div class="header-content">
+      <h1 class="page-title" id="blockedPageTitle"></h1>
+      <div class="control-buttons">
+        <button class="btn btn-secondary" onclick="backToDashboardFromBlocked()">
+          <i class="fas fa-arrow-left"></i> Back to Dashboard
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <div class="dashboard-content">
+    <div id="blockedLoader" style="display: none;">
+      <div class="loading-screen">
+        <div class="spinner"></div>
+        <p>Loading blocked players data...</p>
+      </div>
+    </div>
+    
+    <div id="blockedContent">
+      <!-- Content will be loaded here -->
+    </div>
+  </div>
+</div>
+
+<!-- Block Player Modal (From List) -->
+<div id="blockPlayerModal" class="modal">
+  <div class="modal-content block-player-modal">
+    <h3 class="modal-title" id="blockPlayerModalTitle">Block Player</h3>
+    
+    <div id="blockPlayerDetails" class="player-details-preview">
+      Loading player details...
+    </div>
+    
+    <div>
+      <label style="display: block; margin-bottom: 0.5rem; color: var(--text-primary); font-weight: 500;">
+        Block Reason:
+      </label>
+      <textarea 
+        id="blockReasonInput" 
+        class="recovery-notes-input" 
+        placeholder="Enter reason for blocking this player..."
+        rows="3"
+      ></textarea>
+    </div>
+    
+    <div id="blockDuplicateWarning" style="display: none; margin: 1rem 0; padding: 1rem; background: rgba(239, 71, 111, 0.1); border-radius: 8px; border: 1px solid var(--danger);">
+      <p style="color: var(--danger); font-weight: 600; margin-bottom: 0.5rem;">
+        <i class="fas fa-exclamation-triangle"></i> Player Already Blocked!
+      </p>
+      <div id="existingBlockDetails"></div>
+    </div>
+    
+    <input type="hidden" id="blockPlayerName">
+    <input type="hidden" id="blockPlayerPage">
+    
+    <div class="modal-buttons">
+      <button class="btn btn-secondary" onclick="hideBlockPlayerModal()">
+        <i class="fas fa-times"></i> Cancel
+      </button>
+      <button class="btn btn-danger" onclick="confirmBlockPlayer()" id="confirmBlockBtn">
+        <i class="fas fa-ban"></i> Confirm Block
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Add Blocked Player Modal (Manual) -->
+<div id="addBlockedPlayerModal" class="modal">
+  <div class="modal-content block-player-modal">
+    <h3 class="modal-title">Add Blocked Player (Manual)</h3>
+    
+    <div style="margin-bottom: 1.5rem; padding: 1rem; background: var(--bg-secondary); border-radius: 8px; border: 1px solid var(--border-color);">
+      <p style="color: var(--text-primary); font-size: 0.9rem;">
+        <i class="fas fa-info-circle"></i> For historical/old clients not in current 1-week data
+      </p>
+    </div>
+    
+    <div>
+      <label style="display: block; margin-bottom: 0.5rem; color: var(--text-primary); font-weight: 500;">
+        Player Name:
+      </label>
+      <input 
+        type="text" 
+        id="manualPlayerName" 
+        class="search-input" 
+        placeholder="Enter player name..."
+        style="width: 100%; margin-bottom: 1rem;"
+        oninput="checkManualPlayerDuplicate()"
+      >
+    </div>
+    
+    <div id="manualDuplicateCheckResult"></div>
+    
+    <div>
+      <label style="display: block; margin-bottom: 0.5rem; color: var(--text-primary); font-weight: 500;">
+        Block Reason:
+      </label>
+      <textarea 
+        id="manualBlockReason" 
+        class="recovery-notes-input" 
+        placeholder="Enter reason for blocking this player..."
+        rows="3"
+      ></textarea>
+    </div>
+    
+    <div class="modal-buttons">
+      <button class="btn btn-secondary" onclick="hideAddBlockedPlayerModal()">
+        <i class="fas fa-times"></i> Cancel
+      </button>
+      <button class="btn btn-danger" onclick="confirmManualBlock()" id="confirmManualBlockBtn">
+        <i class="fas fa-ban"></i> Add to Blocked List
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- View Block Details Modal -->
+<div id="viewBlockDetailsModal" class="modal">
+  <div class="modal-content block-player-modal">
+    <h3 class="modal-title" id="viewBlockTitle">Block Details</h3>
+    
+    <div id="viewBlockContent" style="margin-bottom: 1.5rem;">
+      Loading block details...
+    </div>
+    
+    <div class="modal-buttons">
+      <button class="btn btn-secondary" onclick="hideViewBlockDetailsModal()">
+        <i class="fas fa-times"></i> Close
+      </button>
+      <button class="btn btn-success" onclick="unblockPlayerFromModal()" id="unblockFromModalBtn">
+        <i class="fas fa-check"></i> Unblock Player
+      </button>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
+  
 </body>
 </html>
