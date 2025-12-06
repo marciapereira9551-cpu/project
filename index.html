@@ -2863,6 +2863,25 @@
     </div>
   </div>
 
+  <!-- Blocked Players PIN Modal -->
+<div id="blockedPinModal" class="modal">
+  <div class="modal-content">
+    <h3 class="modal-title">Authorization Required</h3>
+    <p style="text-align: center; color: var(--text-secondary); margin-bottom: 1.5rem;">
+      Enter PIN to access Blocked Players
+    </p>
+    <input type="password" id="blockedPinInput" class="modal-input" placeholder="****" maxlength="4" inputmode="numeric">
+    <div class="modal-buttons">
+      <button class="btn btn-secondary" onclick="hideBlockedPinModal()">
+        <i class="fas fa-times"></i> Cancel
+      </button>
+      <button class="btn btn-danger" onclick="confirmBlockedPin()">
+        <i class="fas fa-check"></i> Confirm
+      </button>
+    </div>
+  </div>
+</div>
+  
   <div id="notesModal" class="modal">
     <div class="modal-content">
       <h3 class="modal-title" id="notesModalTitle">Add Note for Player</h3>
@@ -3399,6 +3418,8 @@ function disableBlockedPlayerActions() {
       sessionStorage.removeItem('searchPlayerPage');
       sessionStorage.removeItem('searchPlayerPages');
       sessionStorage.removeItem('currentSearchedPlayer');
+      sessionStorage.removeItem('blockedPinVerified');
+
       
       userRole = PIN_CONFIG.ROLES.NONE;
       
@@ -8067,6 +8088,49 @@ function getPaginatedPlayers(players, page, pageSize) {
       }
     }
 
+    // Blocked Players PIN Modal Functions
+function showBlockedPinModal() {
+  document.getElementById('blockedPinInput').value = '';
+  document.getElementById('blockedPinModal').style.display = 'block';
+  document.getElementById('blockedPinInput').focus();
+}
+
+function hideBlockedPinModal() {
+  document.getElementById('blockedPinModal').style.display = 'none';
+  document.getElementById('blockedPinInput').value = '';
+}
+
+function confirmBlockedPin() {
+  const pin = document.getElementById('blockedPinInput').value.trim();
+  
+  if (!pin) {
+    showNotification('Please enter PIN', 'error');
+    return;
+  }
+  
+  // Check if PIN matches 8152
+  if (pin !== "8152") {
+    showNotification('Invalid PIN', 'error');
+    document.getElementById('blockedPinInput').value = '';
+    document.getElementById('blockedPinInput').focus();
+    return;
+  }
+  
+  // PIN is correct
+  showNotification('PIN verified. Access granted to Blocked Players.', 'success');
+  
+  // Store verification in session storage (expires when browser closes)
+  sessionStorage.setItem('blockedPinVerified', 'true');
+  
+  // Hide modal
+  hideBlockedPinModal();
+  
+  // Now proceed to show blocked players dashboard
+  setTimeout(() => {
+    showBlockedPlayersDashboard();
+  }, 500);
+}
+
     function disableAllButtons() {
   changePageBtn.disabled = true;
   refreshBtn.disabled = true;
@@ -8115,7 +8179,20 @@ function getPaginatedPlayers(players, page, pageSize) {
       if (event.target === notesViewModal) {
         hideNotesViewModal();
       }
+      if (event.target === document.getElementById('blockedPinModal')) {
+      hideBlockedPinModal();
+      }
     });
+
+    // Add keypress listener for blocked PIN input
+const blockedPinInput = document.getElementById('blockedPinInput');
+if (blockedPinInput) {
+  blockedPinInput.addEventListener('keypress', function(event) {
+    if (event.key === 'Enter') {
+      confirmBlockedPin();
+    }
+  });
+}
 
     refreshPinInput.addEventListener('keypress', function(event) {
       if (event.key === 'Enter') {
@@ -8221,9 +8298,18 @@ async function showBlockedPlayersDashboard() {
   // CHECK: Block viewers from accessing blocked players
   if (userRole === PIN_CONFIG.ROLES.VIEWER) {
     showNotification('Viewer role cannot access blocked players', 'warning');
-    return; // Exit function - don't proceed
+    return;
   }
   
+  // ADD PIN CHECK: Only show PIN modal if not already verified
+  const blockedPinVerified = sessionStorage.getItem('blockedPinVerified') === 'true';
+  
+  if (!blockedPinVerified) {
+    showBlockedPinModal();
+    return; // Exit - wait for PIN verification
+  }
+  
+  // If PIN verified, proceed to show dashboard
   currentView = 'blockedPlayers';
   sessionStorage.setItem('currentView', 'blockedPlayers');
   
