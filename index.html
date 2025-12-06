@@ -2784,6 +2784,9 @@
       <!-- Client Recovery Dashboard -->
       <div id="clientRecoveryDashboard" style="display: none;"></div>
 
+      <div id="blockedPlayersDashboard" style="display: none;"></div>
+
+
       <!-- Page Deposits View -->
       <div id="pageDepositsView" style="display: none;"></div>
 
@@ -8125,15 +8128,25 @@ async function showBlockedPlayersDashboard() {
   sessionStorage.setItem('currentView', 'blockedPlayers');
   
   // Hide other sections
-  document.getElementById('dashboardBoxes').style.display = 'none';
-  document.getElementById('tableContainer').style.display = 'none';
-  document.getElementById('playerHistorySection').style.display = 'none';
-  document.getElementById('globalPlayerHistorySection').style.display = 'none';
-  document.getElementById('pageDepositsView').style.display = 'none';
-  document.getElementById('clientRecoveryDashboard').style.display = 'none';
+  const sectionsToHide = [
+    'dashboardBoxes',
+    'tableContainer', 
+    'playerHistorySection',
+    'globalPlayerHistorySection',
+    'pageDepositsView',
+    'clientRecoveryDashboard'
+  ];
+  
+  sectionsToHide.forEach(id => {
+    const elem = document.getElementById(id);
+    if (elem) elem.style.display = 'none';
+  });
   
   // Update page title
-  document.getElementById('pageTitle').textContent = `${selectedPage} - Blocked Players`;
+  const pageTitle = document.getElementById('pageTitle');
+  if (pageTitle) {
+    pageTitle.textContent = `${selectedPage} - Blocked Players`;
+  }
   
   // Show loader
   showLoader();
@@ -8149,7 +8162,18 @@ async function showBlockedPlayersDashboard() {
     hideLoader();
     
     // Show blocked dashboard
-    document.getElementById('blockedPlayersDashboard').style.display = 'block';
+    const blockedDashboard = document.getElementById('blockedPlayersDashboard');
+    if (blockedDashboard) {
+      blockedDashboard.style.display = 'block';
+    } else {
+      console.error('Could not find blockedPlayersDashboard element');
+      // Try to create it
+      renderBlockedPlayersDashboard();
+      const newBlockedDashboard = document.getElementById('blockedPlayersDashboard');
+      if (newBlockedDashboard) {
+        newBlockedDashboard.style.display = 'block';
+      }
+    }
     
   } catch (error) {
     hideLoader();
@@ -8275,7 +8299,7 @@ function setBlockedFilter(filterType) {
   renderBlockedPlayersDashboard();
 }
 
-// Render blocked players dashboard
+/// Render blocked players dashboard
 function renderBlockedPlayersDashboard() {
   const stats = blockedPlayersState.current.stats || { total: 0, active: 0, manual: 0 };
   const filteredCount = blockedPlayersState.current.filteredData?.length || 0;
@@ -8355,7 +8379,18 @@ function renderBlockedPlayersDashboard() {
     </div>
   `;
   
-  document.getElementById('blockedPlayersDashboard').innerHTML = html;
+  // SAFE UPDATE: Check if element exists
+  const blockedDashboard = document.getElementById('blockedPlayersDashboard');
+  if (blockedDashboard) {
+    blockedDashboard.innerHTML = html;
+  } else {
+    console.error('blockedPlayersDashboard element not found');
+    // Create it dynamically if it doesn't exist
+    const newDiv = document.createElement('div');
+    newDiv.id = 'blockedPlayersDashboard';
+    newDiv.innerHTML = html;
+    document.querySelector('.dashboard-content').appendChild(newDiv);
+  }
 }
 
 // Render blocked players table
