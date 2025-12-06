@@ -2078,6 +2078,352 @@
       .filter-card .filter-label {
         font-size: 0.85rem;
       }
+
+/* ============================================= */
+/* BLOCKED PLAYERS CSS STYLES */
+/* ============================================= */
+
+/* Blocked Players Dashboard */
+#blockedPlayersDashboard {
+  display: none;
+  min-height: 100vh;
+  background: var(--bg-secondary);
+}
+
+/* Tabs for Blocked Players */
+.blocked-tabs {
+  display: flex;
+  border-bottom: 1px solid var(--border-color);
+  background: var(--bg-primary);
+  padding: 0;
+  margin-bottom: 1.5rem;
+}
+
+.blocked-tab {
+  padding: 1rem 2rem;
+  background: var(--bg-secondary);
+  border: none;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+  flex: 1;
+  text-align: center;
+  border-right: 1px solid var(--border-color);
+}
+
+.blocked-tab:last-child {
+  border-right: none;
+}
+
+.blocked-tab:hover {
+  color: var(--text-primary);
+  background: var(--bg-card);
+}
+
+.blocked-tab.active {
+  color: var(--primary);
+  background: var(--bg-card);
+  border-bottom: 3px solid var(--primary);
+}
+
+/* Stats cards for blocked players */
+.blocked-stats-container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+  padding: 1.5rem;
+  background: var(--bg-secondary);
+  border-radius: 16px;
+  border: 1px solid var(--border-color);
+}
+
+.blocked-stat-card {
+  background: var(--bg-card);
+  border-radius: 12px;
+  padding: 1.5rem;
+  text-align: center;
+  border: 1px solid var(--border-color);
+  box-shadow: var(--shadow);
+}
+
+.blocked-stat-card.warning {
+  border-left: 4px solid var(--warning);
+  background: rgba(255, 209, 102, 0.1);
+}
+
+.blocked-stat-value {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  color: var(--text-primary);
+}
+
+.blocked-stat-label {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+/* Blocked Players Table */
+.blocked-table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+  font-size: 0.85rem;
+}
+
+.blocked-table th {
+  background: var(--bg-secondary);
+  padding: 0.875rem 0.75rem;
+  text-align: left;
+  font-weight: 600;
+  color: var(--text-secondary);
+  border-bottom: 2px solid var(--border-color);
+  white-space: nowrap;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.blocked-table td {
+  padding: 0.875rem 0.75rem;
+  border-bottom: 1px solid var(--border-color);
+  color: var(--text-primary);
+  vertical-align: middle;
+  word-wrap: break-word;
+}
+
+.blocked-table tr:hover {
+  background: var(--bg-secondary);
+}
+
+/* Status badges for blocked players */
+.status-badge.blocked-active {
+  background: rgba(6, 214, 160, 0.1);
+  color: var(--success);
+  padding: 0.25rem 0.5rem;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  display: inline-block;
+}
+
+.status-badge.blocked-inactive {
+  background: rgba(239, 71, 111, 0.1);
+  color: var(--danger);
+  padding: 0.25rem 0.5rem;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  display: inline-block;
+}
+
+.status-badge.blocked-manual {
+  background: rgba(148, 163, 184, 0.1);
+  color: var(--gray);
+  padding: 0.25rem 0.5rem;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  display: inline-block;
+}
+
+/* Added From badges */
+.added-from-badge {
+  padding: 0.25rem 0.5rem;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  display: inline-block;
+}
+
+.added-from-page {
+  background: rgba(67, 97, 238, 0.1);
+  color: var(--primary);
+}
+
+.added-from-highrisk {
+  background: rgba(245, 158, 11, 0.1);
+  color: #f59e0b;
+}
+
+.added-from-history {
+  background: rgba(139, 92, 246, 0.1);
+  color: #8b5cf6;
+}
+
+.added-from-manual {
+  background: rgba(148, 163, 184, 0.1);
+  color: var(--gray);
+}
+
+/* Block/Unblock buttons */
+.block-btn {
+  padding: 0.4rem 0.8rem;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.block-btn.block {
+  background: var(--danger);
+  color: white;
+}
+
+.block-btn.block:hover:not(:disabled) {
+  background: #dc2626;
+  transform: translateY(-1px);
+}
+
+.block-btn.unblock {
+  background: var(--success);
+  color: white;
+}
+
+.block-btn.unblock:hover:not(:disabled) {
+  background: #059669;
+  transform: translateY(-1px);
+}
+
+.block-btn.view-block {
+  background: var(--warning);
+  color: var(--dark);
+}
+
+.block-btn.view-block:hover:not(:disabled) {
+  background: #f59e0b;
+  transform: translateY(-1px);
+}
+
+.block-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none !important;
+}
+
+/* Manual add form */
+.manual-add-section {
+  background: var(--bg-card);
+  border-radius: 16px;
+  padding: 2rem;
+  margin-bottom: 2rem;
+  border: 1px solid var(--border-color);
+}
+
+.duplicate-check-result {
+  margin: 1rem 0;
+  padding: 1rem;
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+  font-size: 0.9rem;
+}
+
+.duplicate-check-result.success {
+  background: rgba(6, 214, 160, 0.1);
+  border-color: var(--success);
+  color: var(--success);
+}
+
+.duplicate-check-result.warning {
+  background: rgba(255, 209, 102, 0.1);
+  border-color: var(--warning);
+  color: var(--warning);
+}
+
+.duplicate-check-result.error {
+  background: rgba(239, 71, 111, 0.1);
+  border-color: var(--danger);
+  color: var(--danger);
+}
+
+/* Block player modal */
+.block-player-modal {
+  max-width: 500px;
+  width: 90%;
+}
+
+.player-details-preview {
+  background: var(--bg-secondary);
+  padding: 1rem;
+  border-radius: 8px;
+  margin: 1rem 0;
+  border: 1px solid var(--border-color);
+}
+
+/* Pagination for blocked players */
+.blocked-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  padding: 1rem;
+  border-top: 1px solid var(--border-color);
+  margin-top: 1rem;
+}
+
+.blocked-pagination-info {
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+}
+
+/* Blocked player badge in regular tables */
+.blocked-badge {
+  background: var(--danger);
+  color: white;
+  padding: 0.2rem 0.5rem;
+  border-radius: 12px;
+  font-size: 0.7rem;
+  font-weight: 500;
+  margin-left: 0.5rem;
+  vertical-align: middle;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .blocked-tab {
+    padding: 0.75rem 1rem;
+    font-size: 0.9rem;
+  }
+  
+  .blocked-stats-container {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  
+  .blocked-table {
+    font-size: 0.7rem;
+  }
+  
+  .blocked-table th,
+  .blocked-table td {
+    padding: 0.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .blocked-tab {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.8rem;
+  }
+  
+  .block-btn {
+    padding: 0.3rem 0.6rem;
+    font-size: 0.7rem;
+  }
+}
+
+      
     }
   </style>
 </head>
@@ -2309,6 +2655,8 @@
           <button id="forceCleanupBtn" class="btn btn-warning" onclick="showCleanupModal()">
             <i class="fas fa-broom"></i> Force Cleanup
           </button>
+          <button id="blockedPlayersBtn" class="btn btn-danger" onclick="showBlockedPlayersDashboard()">
+        <i class="fas fa-ban"></i> Blocked 🚫
           <button id="logoutBtnDashboard" class="btn btn-secondary" style="display: none;">
             <i class="fas fa-sign-out-alt"></i> Logout
           </button>
@@ -2442,6 +2790,146 @@
   </div>
 
   <script>
+
+  <!-- Blocked Players Dashboard -->
+<div id="blockedPlayersDashboard" class="dashboard">
+  <header class="dashboard-header">
+    <div class="header-content">
+      <h1 class="page-title" id="blockedPageTitle"></h1>
+      <div class="control-buttons">
+        <button class="btn btn-secondary" onclick="backToDashboard()">
+          <i class="fas fa-arrow-left"></i> Back to Dashboard
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <div class="dashboard-content">
+    <div id="blockedLoader" style="display: none;">
+      <div class="loading-screen">
+        <div class="spinner"></div>
+        <p>Loading blocked players data...</p>
+      </div>
+    </div>
+    
+    <div id="blockedContent">
+      <!-- Content will be loaded here -->
+    </div>
+  </div>
+</div>
+
+<!-- Block Player Modal (From List) -->
+<div id="blockPlayerModal" class="modal">
+  <div class="modal-content block-player-modal">
+    <h3 class="modal-title" id="blockPlayerModalTitle">Block Player</h3>
+    
+    <div id="blockPlayerDetails" class="player-details-preview">
+      Loading player details...
+    </div>
+    
+    <div>
+      <label style="display: block; margin-bottom: 0.5rem; color: var(--text-primary); font-weight: 500;">
+        Block Reason:
+      </label>
+      <textarea 
+        id="blockReasonInput" 
+        class="recovery-notes-input" 
+        placeholder="Enter reason for blocking this player..."
+        rows="3"
+      ></textarea>
+    </div>
+    
+    <div id="blockDuplicateWarning" style="display: none; margin: 1rem 0; padding: 1rem; background: rgba(239, 71, 111, 0.1); border-radius: 8px; border: 1px solid var(--danger);">
+      <p style="color: var(--danger); font-weight: 600; margin-bottom: 0.5rem;">
+        <i class="fas fa-exclamation-triangle"></i> Player Already Blocked!
+      </p>
+      <div id="existingBlockDetails"></div>
+    </div>
+    
+    <input type="hidden" id="blockPlayerName">
+    <input type="hidden" id="blockPlayerPage">
+    
+    <div class="modal-buttons">
+      <button class="btn btn-secondary" onclick="hideBlockPlayerModal()">
+        <i class="fas fa-times"></i> Cancel
+      </button>
+      <button class="btn btn-danger" onclick="confirmBlockPlayer()" id="confirmBlockBtn">
+        <i class="fas fa-ban"></i> Confirm Block
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Add Blocked Player Modal (Manual) -->
+<div id="addBlockedPlayerModal" class="modal">
+  <div class="modal-content block-player-modal">
+    <h3 class="modal-title">Add Blocked Player (Manual)</h3>
+    
+    <div style="margin-bottom: 1.5rem; padding: 1rem; background: var(--bg-secondary); border-radius: 8px; border: 1px solid var(--border-color);">
+      <p style="color: var(--text-primary); font-size: 0.9rem;">
+        <i class="fas fa-info-circle"></i> For historical/old clients not in current 1-week data
+      </p>
+    </div>
+    
+    <div>
+      <label style="display: block; margin-bottom: 0.5rem; color: var(--text-primary); font-weight: 500;">
+        Player Name:
+      </label>
+      <input 
+        type="text" 
+        id="manualPlayerName" 
+        class="search-input" 
+        placeholder="Enter player name..."
+        style="width: 100%; margin-bottom: 1rem;"
+        oninput="checkManualPlayerDuplicate()"
+      >
+    </div>
+    
+    <div id="manualDuplicateCheckResult"></div>
+    
+    <div>
+      <label style="display: block; margin-bottom: 0.5rem; color: var(--text-primary); font-weight: 500;">
+        Block Reason:
+      </label>
+      <textarea 
+        id="manualBlockReason" 
+        class="recovery-notes-input" 
+        placeholder="Enter reason for blocking this player..."
+        rows="3"
+      ></textarea>
+    </div>
+    
+    <div class="modal-buttons">
+      <button class="btn btn-secondary" onclick="hideAddBlockedPlayerModal()">
+        <i class="fas fa-times"></i> Cancel
+      </button>
+      <button class="btn btn-danger" onclick="confirmManualBlock()" id="confirmManualBlockBtn">
+        <i class="fas fa-ban"></i> Add to Blocked List
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- View Block Details Modal -->
+<div id="viewBlockDetailsModal" class="modal">
+  <div class="modal-content block-player-modal">
+    <h3 class="modal-title" id="viewBlockTitle">Block Details</h3>
+    
+    <div id="viewBlockContent" style="margin-bottom: 1.5rem;">
+      Loading block details...
+    </div>
+    
+    <div class="modal-buttons">
+      <button class="btn btn-secondary" onclick="hideViewBlockDetailsModal()">
+        <i class="fas fa-times"></i> Close
+      </button>
+      <button class="btn btn-success" onclick="unblockPlayerFromModal()" id="unblockFromModalBtn">
+        <i class="fas fa-check"></i> Unblock Player
+      </button>
+    </div>
+  </div>
+</div>
+    
     // =============================================
     // PIN AUTHENTICATION SYSTEM
     // =============================================
@@ -4616,10 +5104,13 @@ if (record.removal_notes && record.removal_notes.trim() !== '') {
     function initializeApp() {
       initPinSystem();
       setupLogoutButton();
+      initBlockedPlayersSystem(); 
+
       
       // Initialize debounced search
       window.debouncedSearchRecoveries = debouncedSearchRecoveries;
       window.debouncedSearchPlayers = debouncedSearchPlayers;
+      window.debouncedSearchBlocked = debouncedSearchBlocked;
       window.showNotesViewModal = showNotesViewModal;
       window.setRecoveryFilter = setRecoveryFilter;
       window.changeRecoveryPage = changeRecoveryPage;
@@ -7553,7 +8044,7 @@ if (record.removal_notes && record.removal_notes.trim() !== '') {
     }
 
     // Event listeners
-    window.addEventListener('click', function(event) {
+        window.addEventListener('click', function(event) {
       if (event.target === refreshModal) {
         hideRefreshModal();
       }
@@ -7572,11 +8063,15 @@ if (record.removal_notes && record.removal_notes.trim() !== '') {
       if (event.target === notesViewModal) {
         hideNotesViewModal();
       }
-    });
-
-    refreshPinInput.addEventListener('keypress', function(event) {
-      if (event.key === 'Enter') {
-        confirmRefresh();
+      // ADD THESE FOR BLOCKED MODALS:
+      if (event.target === document.getElementById('blockPlayerModal')) {
+        hideBlockPlayerModal();
+      }
+      if (event.target === document.getElementById('addBlockedPlayerModal')) {
+        hideAddBlockedPlayerModal();
+      }
+      if (event.target === document.getElementById('viewBlockDetailsModal')) {
+        hideViewBlockDetailsModal();
       }
     });
 
@@ -7613,6 +8108,1063 @@ if (record.removal_notes && record.removal_notes.trim() !== '') {
 
     window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', detectTheme);
     detectTheme();
+
+// =============================================
+// PART 1: BLOCKED PLAYERS STATE & CONSTANTS
+// =============================================
+
+// Blocked players state
+const blockedState = {
+  current: {
+    tab: 'all',
+    page: 1,
+    search: '',
+    data: null,
+    stats: null,
+    filteredData: null
+  },
+  active: {
+    page: 1,
+    search: '',
+    data: null
+  },
+  manual: {
+    page: 1,
+    search: '',
+    data: null
+  }
+};
+
+const BLOCKED_PLAYERS_PER_PAGE = 50;
+
+    // =============================================
+// PART 2: CORE BLOCKED PLAYERS FUNCTIONS
+// =============================================
+
+// Initialize blocked players system
+function initBlockedPlayersSystem() {
+  // Add block button to existing player tables
+  setTimeout(() => {
+    addBlockButtonsToTables();
+  }, 1000);
+}
+
+// Show blocked players dashboard
+async function showBlockedPlayersDashboard() {
+  // Hide all other views
+  document.getElementById('dashboardBoxes').style.display = 'none';
+  document.getElementById('tableContainer').style.display = 'none';
+  document.getElementById('playerHistorySection').style.display = 'none';
+  document.getElementById('globalPlayerHistorySection').style.display = 'none';
+  document.getElementById('pageDepositsView').style.display = 'none';
+  document.getElementById('clientRecoveryDashboard').style.display = 'none';
+  
+  // Show blocked players dashboard
+  document.getElementById('dashboard').style.display = 'none';
+  document.getElementById('blockedPlayersDashboard').style.display = 'block';
+  
+  // Update title
+  document.getElementById('blockedPageTitle').textContent = 
+    `${selectedPage} - Blocked Players Management`;
+  
+  // Load blocked players data
+  await loadBlockedPlayersData();
+}
+
+// Load blocked players data
+async function loadBlockedPlayersData() {
+  showBlockedLoader();
+  
+  try {
+    // Load all blocked players for current page
+    const { data: blockedData, error } = await supabase
+      .from('blocked_players')
+      .select('*')
+      .eq('page_name', selectedPage)
+      .order('blocked_date', { ascending: false });
+    
+    if (error) throw error;
+    
+    // Process the data
+    const processedData = await processBlockedPlayers(blockedData || []);
+    
+    // Update state
+    blockedState.current.data = processedData;
+    blockedState.active.data = processedData.filter(p => p.current_status === 'Active');
+    blockedState.manual.data = processedData.filter(p => p.added_from === 'Manual');
+    
+    // Calculate stats
+    const total = processedData.length;
+    const active = blockedState.active.data.length;
+    const manual = blockedState.manual.data.length;
+    
+    blockedState.current.stats = { total, active, manual };
+    
+    // Render the dashboard
+    renderBlockedPlayersDashboard();
+    
+  } catch (error) {
+    console.error('Error loading blocked players:', error);
+    showNotification('Error loading blocked players: ' + error.message, 'error');
+    hideBlockedLoader();
+  }
+}
+
+// Process blocked players with current status
+async function processBlockedPlayers(blockedPlayers) {
+  const processed = [];
+  
+  for (const player of blockedPlayers) {
+    let currentStatus = '-';
+    let lastDeposit = '-';
+    let daysActive = '-';
+    
+    // Only check status for non-manual entries
+    if (player.added_from !== 'Manual') {
+      const { data: playerData } = await supabase
+        .from('latest_status')
+        .select('last_deposit_date')
+        .eq('page_name', selectedPage)
+        .eq('player_name', player.player_name)
+        .single();
+      
+      if (playerData?.last_deposit_date) {
+        const nowUTC = new Date();
+        const lastDepositUTC = new Date(playerData.last_deposit_date);
+        const daysSince = (nowUTC - lastDepositUTC) / (1000 * 60 * 60 * 24);
+        
+        currentStatus = daysSince <= DAYS_ACTIVE ? 'Active' : 'Inactive';
+        lastDeposit = formatTimeSince(playerData.last_deposit_date);
+        daysActive = Math.floor(daysSince);
+      } else {
+        currentStatus = 'Inactive';
+      }
+    }
+    
+    processed.push({
+      ...player,
+      current_status: currentStatus,
+      last_deposit: lastDeposit,
+      days_active: daysActive,
+      display_date: convertUTCToPKT(player.blocked_date)
+    });
+  }
+  
+  return processed;
+}
+
+    // =============================================
+// PART 3: RENDER FUNCTIONS
+// =============================================
+
+// Render blocked players dashboard
+function renderBlockedPlayersDashboard() {
+  const stats = blockedState.current.stats || { total: 0, active: 0, manual: 0 };
+  
+  let html = `
+    <div class="blocked-tabs">
+      <button class="blocked-tab ${blockedState.current.tab === 'all' ? 'active' : ''}" onclick="switchBlockedTab('all')">
+        All Blocked (${stats.total})
+      </button>
+      <button class="blocked-tab ${blockedState.current.tab === 'active' ? 'active' : ''}" onclick="switchBlockedTab('active')">
+        Active Blocked ⚠️ (${stats.active})
+      </button>
+      <button class="blocked-tab ${blockedState.current.tab === 'manual' ? 'active' : ''}" onclick="switchBlockedTab('manual')">
+        Manual Added (${stats.manual})
+      </button>
+    </div>
+    
+    <div class="blocked-content">
+  `;
+  
+  if (blockedState.current.tab === 'all') {
+    html += renderAllBlockedPlayers();
+  } else if (blockedState.current.tab === 'active') {
+    html += renderActiveBlockedPlayers();
+  } else if (blockedState.current.tab === 'manual') {
+    html += renderManualBlockedPlayers();
+  }
+  
+  html += `
+    </div>
+    <div style="margin-top: 2rem; text-align: center;">
+      <button class="btn btn-secondary" onclick="backToDashboard()">
+        <i class="fas fa-arrow-left"></i> Back to Main Dashboard
+      </button>
+    </div>
+  `;
+  
+  document.getElementById('blockedContent').innerHTML = html;
+  hideBlockedLoader();
+}
+
+// Render all blocked players
+function renderAllBlockedPlayers() {
+  let players = blockedState.current.data || [];
+  const stats = blockedState.current.stats || { total: 0, active: 0, manual: 0 };
+  const searchTerm = blockedState.current.search || '';
+  
+  // Apply search filter
+  if (searchTerm) {
+    const searchLower = searchTerm.toLowerCase();
+    players = players.filter(p => 
+      p.player_name.toLowerCase().includes(searchLower) ||
+      p.block_reason.toLowerCase().includes(searchLower) ||
+      p.added_from.toLowerCase().includes(searchLower)
+    );
+  }
+  
+  // Pagination
+  const totalPages = Math.ceil(players.length / BLOCKED_PLAYERS_PER_PAGE);
+  const currentPage = blockedState.current.page;
+  const startIndex = (currentPage - 1) * BLOCKED_PLAYERS_PER_PAGE;
+  const endIndex = Math.min(startIndex + BLOCKED_PLAYERS_PER_PAGE, players.length);
+  const paginatedPlayers = players.slice(startIndex, endIndex);
+  
+  let html = `
+    <div class="blocked-stats-container">
+      <div class="blocked-stat-card">
+        <div class="blocked-stat-value">${stats.total}</div>
+        <div class="blocked-stat-label">Total Blocked</div>
+      </div>
+      <div class="blocked-stat-card warning">
+        <div class="blocked-stat-value">${stats.active}</div>
+        <div class="blocked-stat-label">Active Now ⚠️</div>
+      </div>
+      <div class="blocked-stat-card">
+        <div class="blocked-stat-value">${stats.manual}</div>
+        <div class="blocked-stat-label">Manual Added</div>
+      </div>
+    </div>
+    
+    <div style="display: flex; gap: 1rem; margin-bottom: 1.5rem;">
+      <div style="flex: 1;">
+        <input 
+          type="text" 
+          class="search-input" 
+          placeholder="Search blocked players..." 
+          value="${searchTerm}"
+          oninput="debouncedSearchBlocked(this.value, 'all')"
+          style="width: 100%;"
+        >
+      </div>
+      <button class="btn btn-danger" onclick="showAddBlockedPlayerModal()">
+        <i class="fas fa-plus"></i> Add Manually
+      </button>
+    </div>
+    
+    <div class="table-container">
+      <table class="blocked-table">
+        <thead>
+          <tr>
+            <th style="width: 150px;">Date</th>
+            <th style="width: 120px;">Player</th>
+            <th style="width: 80px;">Status</th>
+            <th style="width: 100px;">Added From</th>
+            <th style="width: 200px;">Reason</th>
+            <th style="width: 100px;">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+  `;
+  
+  if (paginatedPlayers.length === 0) {
+    html += `
+      <tr>
+        <td colspan="6" style="text-align: center; padding: 2rem; color: var(--text-secondary);">
+          ${searchTerm ? 'No matching blocked players found' : 'No blocked players yet'}
+        </td>
+      </tr>
+    `;
+  } else {
+    paginatedPlayers.forEach((player, index) => {
+      const serialNumber = startIndex + index + 1;
+      
+      // Status badge
+      let statusBadge = '';
+      if (player.current_status === 'Active') {
+        statusBadge = '<span class="status-badge blocked-active">Active</span>';
+      } else if (player.current_status === 'Inactive') {
+        statusBadge = '<span class="status-badge blocked-inactive">Inactive</span>';
+      } else {
+        statusBadge = '<span class="status-badge blocked-manual">-</span>';
+      }
+      
+      // Added from badge
+      let addedFromBadge = '';
+      if (player.added_from === 'Page List') {
+        addedFromBadge = '<span class="added-from-badge added-from-page">Page List</span>';
+      } else if (player.added_from === 'High Risk') {
+        addedFromBadge = '<span class="added-from-badge added-from-highrisk">High Risk</span>';
+      } else if (player.added_from === 'Player History') {
+        addedFromBadge = '<span class="added-from-badge added-from-history">History</span>';
+      } else {
+        addedFromBadge = '<span class="added-from-badge added-from-manual">Manual</span>';
+      }
+      
+      html += `
+        <tr>
+          <td>${player.display_date}</td>
+          <td><strong>${player.player_name}</strong></td>
+          <td>${statusBadge}</td>
+          <td>${addedFromBadge}</td>
+          <td>${player.block_reason || 'No reason provided'}</td>
+          <td>
+            <button class="block-btn view-block" onclick="viewBlockDetails('${player.id}')" title="View details">
+              <i class="fas fa-eye"></i> View
+            </button>
+            <button class="block-btn unblock" onclick="unblockPlayer('${player.id}', '${player.player_name}')" title="Unblock player">
+              <i class="fas fa-check"></i> Unblock
+            </button>
+          </td>
+        </tr>
+      `;
+    });
+  }
+  
+  html += `
+        </tbody>
+      </table>
+    </div>
+  `;
+  
+  // Add pagination if needed
+  if (totalPages > 1) {
+    html += `
+      <div class="blocked-pagination">
+        <button class="pagination-btn" ${currentPage === 1 ? 'disabled' : ''} onclick="changeBlockedPage('all', ${currentPage - 1})">
+          <i class="fas fa-chevron-left"></i> Previous
+        </button>
+        <span class="blocked-pagination-info">
+          Page ${currentPage} of ${totalPages} • Showing ${startIndex + 1}-${endIndex} of ${players.length} players
+        </span>
+        <button class="pagination-btn" ${currentPage === totalPages ? 'disabled' : ''} onclick="changeBlockedPage('all', ${currentPage + 1})">
+          Next <i class="fas fa-chevron-right"></i>
+        </button>
+      </div>
+    `;
+  }
+  
+  return html;
+}
+
+    // =============================================
+// PART 4: MORE RENDER FUNCTIONS
+// =============================================
+
+// Render active blocked players
+function renderActiveBlockedPlayers() {
+  let players = blockedState.active.data || [];
+  const searchTerm = blockedState.active.search || '';
+  
+  // Apply search filter
+  if (searchTerm) {
+    const searchLower = searchTerm.toLowerCase();
+    players = players.filter(p => 
+      p.player_name.toLowerCase().includes(searchLower) ||
+      p.block_reason.toLowerCase().includes(searchLower)
+    );
+  }
+  
+  // Filter only active players
+  players = players.filter(p => p.current_status === 'Active');
+  
+  // Pagination
+  const totalPages = Math.ceil(players.length / BLOCKED_PLAYERS_PER_PAGE);
+  const currentPage = blockedState.active.page;
+  const startIndex = (currentPage - 1) * BLOCKED_PLAYERS_PER_PAGE;
+  const endIndex = Math.min(startIndex + BLOCKED_PLAYERS_PER_PAGE, players.length);
+  const paginatedPlayers = players.slice(startIndex, endIndex);
+  
+  let html = `
+    <div style="margin-bottom: 1.5rem; padding: 1rem; background: rgba(255, 209, 102, 0.1); border-radius: 8px; border: 1px solid var(--warning);">
+      <p style="color: var(--warning); font-weight: 600;">
+        <i class="fas fa-exclamation-triangle"></i> These blocked players are still active/depositing! Consider unblocking.
+      </p>
+    </div>
+    
+    <div style="display: flex; gap: 1rem; margin-bottom: 1.5rem;">
+      <div style="flex: 1;">
+        <input 
+          type="text" 
+          class="search-input" 
+          placeholder="Search active blocked players..." 
+          value="${searchTerm}"
+          oninput="debouncedSearchBlocked(this.value, 'active')"
+          style="width: 100%;"
+        >
+      </div>
+    </div>
+    
+    <div class="table-container">
+      <table class="blocked-table">
+        <thead>
+          <tr>
+            <th style="width: 150px;">Date</th>
+            <th style="width: 120px;">Player</th>
+            <th style="width: 120px;">Last Deposit</th>
+            <th style="width: 100px;">Days Active</th>
+            <th style="width: 100px;">Added From</th>
+            <th style="width: 100px;">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+  `;
+  
+  if (paginatedPlayers.length === 0) {
+    html += `
+      <tr>
+        <td colspan="6" style="text-align: center; padding: 2rem; color: var(--text-secondary);">
+          ${searchTerm ? 'No matching active blocked players found' : 'No active blocked players'}
+        </td>
+      </tr>
+    `;
+  } else {
+    paginatedPlayers.forEach((player, index) => {
+      const serialNumber = startIndex + index + 1;
+      
+      // Added from badge
+      let addedFromBadge = '';
+      if (player.added_from === 'Page List') {
+        addedFromBadge = '<span class="added-from-badge added-from-page">Page List</span>';
+      } else if (player.added_from === 'High Risk') {
+        addedFromBadge = '<span class="added-from-badge added-from-highrisk">High Risk</span>';
+      } else if (player.added_from === 'Player History') {
+        addedFromBadge = '<span class="added-from-badge added-from-history">History</span>';
+      } else {
+        addedFromBadge = '<span class="added-from-badge added-from-manual">Manual</span>';
+      }
+      
+      // Manual players show dashes
+      const lastDeposit = player.added_from === 'Manual' ? '-' : player.last_deposit;
+      const daysActive = player.added_from === 'Manual' ? '-' : player.days_active;
+      
+      html += `
+        <tr>
+          <td>${player.display_date}</td>
+          <td><strong>${player.player_name}</strong></td>
+          <td>${lastDeposit}</td>
+          <td>${daysActive}</td>
+          <td>${addedFromBadge}</td>
+          <td>
+            <button class="block-btn view-block" onclick="viewBlockDetails('${player.id}')" title="View details">
+              <i class="fas fa-eye"></i> View
+            </button>
+            <button class="block-btn unblock" onclick="unblockPlayer('${player.id}', '${player.player_name}')" title="Unblock player">
+              <i class="fas fa-check"></i> Unblock
+            </button>
+          </td>
+        </tr>
+      `;
+    });
+  }
+  
+  html += `
+        </tbody>
+      </table>
+    </div>
+  `;
+  
+  // Add pagination if needed
+  if (totalPages > 1) {
+    html += `
+      <div class="blocked-pagination">
+        <button class="pagination-btn" ${currentPage === 1 ? 'disabled' : ''} onclick="changeBlockedPage('active', ${currentPage - 1})">
+          <i class="fas fa-chevron-left"></i> Previous
+        </button>
+        <span class="blocked-pagination-info">
+          Page ${currentPage} of ${totalPages} • Showing ${startIndex + 1}-${endIndex} of ${players.length} players
+        </span>
+        <button class="pagination-btn" ${currentPage === totalPages ? 'disabled' : ''} onclick="changeBlockedPage('active', ${currentPage + 1})">
+          Next <i class="fas fa-chevron-right"></i>
+        </button>
+      </div>
+    `;
+  }
+  
+  return html;
+}
+
+// Render manual blocked players
+function renderManualBlockedPlayers() {
+  let players = blockedState.manual.data || [];
+  const searchTerm = blockedState.manual.search || '';
+  
+  // Apply search filter
+  if (searchTerm) {
+    const searchLower = searchTerm.toLowerCase();
+    players = players.filter(p => 
+      p.player_name.toLowerCase().includes(searchLower) ||
+      p.block_reason.toLowerCase().includes(searchLower)
+    );
+  }
+  
+  // Pagination
+  const totalPages = Math.ceil(players.length / BLOCKED_PLAYERS_PER_PAGE);
+  const currentPage = blockedState.manual.page;
+  const startIndex = (currentPage - 1) * BLOCKED_PLAYERS_PER_PAGE;
+  const endIndex = Math.min(startIndex + BLOCKED_PLAYERS_PER_PAGE, players.length);
+  const paginatedPlayers = players.slice(startIndex, endIndex);
+  
+  let html = `
+    <div style="margin-bottom: 1.5rem; padding: 1rem; background: rgba(148, 163, 184, 0.1); border-radius: 8px; border: 1px solid var(--gray);">
+      <p style="color: var(--text-secondary);">
+        <i class="fas fa-info-circle"></i> Manually added historical/old clients (not in current 1-week data)
+      </p>
+    </div>
+    
+    <div style="display: flex; gap: 1rem; margin-bottom: 1.5rem;">
+      <div style="flex: 1;">
+        <input 
+          type="text" 
+          class="search-input" 
+          placeholder="Search manually added players..." 
+          value="${searchTerm}"
+          oninput="debouncedSearchBlocked(this.value, 'manual')"
+          style="width: 100%;"
+        >
+      </div>
+      <button class="btn btn-danger" onclick="showAddBlockedPlayerModal()">
+        <i class="fas fa-plus"></i> Add New
+      </button>
+    </div>
+    
+    <div class="table-container">
+      <table class="blocked-table">
+        <thead>
+          <tr>
+            <th style="width: 150px;">Date Added</th>
+            <th style="width: 120px;">Player</th>
+            <th style="width: 80px;">Status</th>
+            <th style="width: 200px;">Reason</th>
+            <th style="width: 100px;">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+  `;
+  
+  if (paginatedPlayers.length === 0) {
+    html += `
+      <tr>
+        <td colspan="5" style="text-align: center; padding: 2rem; color: var(--text-secondary);">
+          ${searchTerm ? 'No matching manual players found' : 'No manually added players yet'}
+        </td>
+      </tr>
+    `;
+  } else {
+    paginatedPlayers.forEach((player, index) => {
+      const serialNumber = startIndex + index + 1;
+      
+      html += `
+        <tr>
+          <td>${player.display_date}<br><small style="color: var(--text-secondary);">(Manual)</small></td>
+          <td><strong>${player.player_name}</strong></td>
+          <td><span class="status-badge blocked-manual">-</span></td>
+          <td>${player.block_reason || 'No reason provided'}</td>
+          <td>
+            <button class="block-btn view-block" onclick="viewBlockDetails('${player.id}')" title="View details">
+              <i class="fas fa-eye"></i> View
+            </button>
+            <button class="block-btn unblock" onclick="unblockPlayer('${player.id}', '${player.player_name}')" title="Unblock player">
+              <i class="fas fa-check"></i> Unblock
+            </button>
+          </td>
+        </tr>
+      `;
+    });
+  }
+  
+  html += `
+        </tbody>
+      </table>
+    </div>
+  `;
+  
+  // Add pagination if needed
+  if (totalPages > 1) {
+    html += `
+      <div class="blocked-pagination">
+        <button class="pagination-btn" ${currentPage === 1 ? 'disabled' : ''} onclick="changeBlockedPage('manual', ${currentPage - 1})">
+          <i class="fas fa-chevron-left"></i> Previous
+        </button>
+        <span class="blocked-pagination-info">
+          Page ${currentPage} of ${totalPages} • Showing ${startIndex + 1}-${endIndex} of ${players.length} players
+        </span>
+        <button class="pagination-btn" ${currentPage === totalPages ? 'disabled' : ''} onclick="changeBlockedPage('manual', ${currentPage + 1})">
+          Next <i class="fas fa-chevron-right"></i>
+        </button>
+      </div>
+    `;
+  }
+  
+  return html;
+}
+
+    // =============================================
+// PART 5: UTILITY FUNCTIONS
+// =============================================
+
+// Switch blocked tab
+function switchBlockedTab(tab) {
+  blockedState.current.tab = tab;
+  blockedState.current.page = 1;
+  blockedState.active.page = 1;
+  blockedState.manual.page = 1;
+  renderBlockedPlayersDashboard();
+}
+
+// Change blocked page
+function changeBlockedPage(type, page) {
+  if (page < 1) return;
+  
+  if (type === 'all') {
+    const totalPages = Math.ceil((blockedState.current.data?.length || 0) / BLOCKED_PLAYERS_PER_PAGE);
+    if (page > totalPages) return;
+    blockedState.current.page = page;
+  } else if (type === 'active') {
+    const totalPages = Math.ceil((blockedState.active.data?.length || 0) / BLOCKED_PLAYERS_PER_PAGE);
+    if (page > totalPages) return;
+    blockedState.active.page = page;
+  } else if (type === 'manual') {
+    const totalPages = Math.ceil((blockedState.manual.data?.length || 0) / BLOCKED_PLAYERS_PER_PAGE);
+    if (page > totalPages) return;
+    blockedState.manual.page = page;
+  }
+  
+  renderBlockedPlayersDashboard();
+}
+
+// Search blocked players
+const debouncedSearchBlocked = debounce(function(searchTerm, type) {
+  if (type === 'all') {
+    blockedState.current.search = searchTerm;
+    blockedState.current.page = 1;
+  } else if (type === 'active') {
+    blockedState.active.search = searchTerm;
+    blockedState.active.page = 1;
+  } else if (type === 'manual') {
+    blockedState.manual.search = searchTerm;
+    blockedState.manual.page = 1;
+  }
+  renderBlockedPlayersDashboard();
+}, SEARCH_DEBOUNCE_DELAY);
+
+// Check if player is already blocked
+async function checkIfPlayerBlocked(playerName) {
+  const { data, error } = await supabase
+    .from('blocked_players')
+    .select('id')
+    .eq('page_name', selectedPage)
+    .eq('player_name', playerName);
+  
+  return !error && data && data.length > 0;
+}
+
+    // =============================================
+// PART 6: MODAL FUNCTIONS
+// =============================================
+
+// Show block player modal (from list)
+async function showBlockPlayerModal(playerName) {
+  // Check if player is already blocked
+  const isAlreadyBlocked = await checkIfPlayerBlocked(playerName);
+  
+  if (isAlreadyBlocked) {
+    showDuplicateBlockWarning(playerName);
+    return;
+  }
+  
+  // Get player details
+  const { data: playerData } = await supabase
+    .from('latest_status')
+    .select('*')
+    .eq('page_name', selectedPage)
+    .eq('player_name', playerName)
+    .single();
+  
+  document.getElementById('blockPlayerName').value = playerName;
+  document.getElementById('blockPlayerPage').value = selectedPage;
+  document.getElementById('blockReasonInput').value = '';
+  
+  let playerDetails = `
+    <p><strong>Player:</strong> ${playerName}</p>
+    <p><strong>Page:</strong> ${selectedPage}</p>
+  `;
+  
+  if (playerData) {
+    const lastDeposit = formatTimeSince(playerData.last_deposit_date);
+    const daysSince = Math.floor((new Date() - new Date(playerData.last_deposit_date)) / (1000 * 60 * 60 * 24));
+    const status = calculatePlayerStatus(daysSince);
+    
+    playerDetails += `
+      <p><strong>Current Status:</strong> <span class="status-badge ${status === 'Active' ? 'blocked-active' : 'blocked-inactive'}">${status}</span></p>
+      <p><strong>Last Deposit:</strong> ${lastDeposit}</p>
+    `;
+  }
+  
+  document.getElementById('blockPlayerDetails').innerHTML = playerDetails;
+  document.getElementById('blockDuplicateWarning').style.display = 'none';
+  document.getElementById('confirmBlockBtn').disabled = false;
+  
+  document.getElementById('blockPlayerModal').style.display = 'block';
+  document.getElementById('blockReasonInput').focus();
+}
+
+// Show duplicate block warning
+async function showDuplicateBlockWarning(playerName) {
+  // Get existing block details
+  const { data: existingBlock } = await supabase
+    .from('blocked_players')
+    .select('*')
+    .eq('page_name', selectedPage)
+    .eq('player_name', playerName)
+    .single();
+  
+  if (existingBlock) {
+    const blockDate = convertUTCToPKT(existingBlock.blocked_date);
+    
+    document.getElementById('existingBlockDetails').innerHTML = `
+      <p><strong>Already Blocked On:</strong> ${blockDate}</p>
+      <p><strong>Added From:</strong> ${existingBlock.added_from}</p>
+      <p><strong>Reason:</strong> ${existingBlock.block_reason || 'No reason provided'}</p>
+    `;
+  }
+  
+  document.getElementById('blockPlayerModal').style.display = 'block';
+  document.getElementById('blockDuplicateWarning').style.display = 'block';
+  document.getElementById('confirmBlockBtn').disabled = true;
+}
+
+// Hide block player modal
+function hideBlockPlayerModal() {
+  document.getElementById('blockPlayerModal').style.display = 'none';
+  document.getElementById('blockPlayerName').value = '';
+  document.getElementById('blockPlayerPage').value = '';
+  document.getElementById('blockReasonInput').value = '';
+  document.getElementById('blockDuplicateWarning').style.display = 'none';
+}
+
+// Confirm block player
+async function confirmBlockPlayer() {
+  const playerName = document.getElementById('blockPlayerName').value;
+  const reason = document.getElementById('blockReasonInput').value.trim();
+  
+  if (!reason) {
+    showNotification('Please enter a block reason', 'error');
+    return;
+  }
+  
+  const confirmBtn = document.getElementById('confirmBlockBtn');
+  confirmBtn.disabled = true;
+  confirmBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Blocking...';
+  
+  try {
+    const { data, error } = await supabase
+      .from('blocked_players')
+      .insert([
+        {
+          page_name: selectedPage,
+          player_name: playerName,
+          block_reason: reason,
+          added_from: 'Page List',
+          blocked_by: userRole,
+          blocked_date: new Date().toISOString(),
+          is_active: true,
+          created_at: new Date().toISOString()
+        }
+      ])
+      .select();
+    
+    if (error) throw error;
+    
+    showNotification(`Player ${playerName} blocked successfully`, 'success');
+    
+    // Update blocked players data
+    await loadBlockedPlayersData();
+    
+    hideBlockPlayerModal();
+    
+  } catch (error) {
+    console.error('Error blocking player:', error);
+    showNotification('Error blocking player: ' + error.message, 'error');
+  } finally {
+    confirmBtn.disabled = false;
+    confirmBtn.innerHTML = '<i class="fas fa-ban"></i> Confirm Block';
+  }
+}
+
+// Show add blocked player modal (manual)
+function showAddBlockedPlayerModal() {
+  document.getElementById('manualPlayerName').value = '';
+  document.getElementById('manualBlockReason').value = '';
+  document.getElementById('manualDuplicateCheckResult').innerHTML = '';
+  document.getElementById('confirmManualBlockBtn').disabled = false;
+  
+  document.getElementById('addBlockedPlayerModal').style.display = 'block';
+  document.getElementById('manualPlayerName').focus();
+}
+
+// Hide add blocked player modal
+function hideAddBlockedPlayerModal() {
+  document.getElementById('addBlockedPlayerModal').style.display = 'none';
+}
+
+// Check manual player duplicate
+async function checkManualPlayerDuplicate() {
+  const playerName = document.getElementById('manualPlayerName').value.trim();
+  
+  if (!playerName) {
+    document.getElementById('manualDuplicateCheckResult').innerHTML = '';
+    return;
+  }
+  
+  const resultDiv = document.getElementById('manualDuplicateCheckResult');
+  
+  // Check 1: Already in blocked list?
+  const { data: blockedData } = await supabase
+    .from('blocked_players')
+    .select('*')
+    .eq('page_name', selectedPage)
+    .eq('player_name', playerName);
+  
+  if (blockedData && blockedData.length > 0) {
+    const existing = blockedData[0];
+    const blockDate = convertUTCToPKT(existing.blocked_date);
+    
+    resultDiv.innerHTML = `
+      <div class="duplicate-check-result error">
+        <p><strong><i class="fas fa-times-circle"></i> Already Blocked!</strong></p>
+        <p>Player "${playerName}" is already blocked on ${selectedPage}.</p>
+        <p><strong>Blocked On:</strong> ${blockDate}</p>
+        <p><strong>Added From:</strong> ${existing.added_from}</p>
+        <p><strong>Reason:</strong> ${existing.block_reason || 'No reason'}</p>
+        <p style="margin-top: 0.5rem;"><strong>❌ Cannot add duplicate player!</strong></p>
+      </div>
+    `;
+    document.getElementById('confirmManualBlockBtn').disabled = true;
+    return;
+  }
+  
+  // Check 2: In current players list?
+  const { data: currentPlayer } = await supabase
+    .from('latest_status')
+    .select('*')
+    .eq('page_name', selectedPage)
+    .eq('player_name', playerName)
+    .single();
+  
+  if (currentPlayer) {
+    const lastDeposit = formatTimeSince(currentPlayer.last_deposit_date);
+    const daysSince = Math.floor((new Date() - new Date(currentPlayer.last_deposit_date)) / (1000 * 60 * 60 * 24));
+    const status = calculatePlayerStatus(daysSince);
+    
+    resultDiv.innerHTML = `
+      <div class="duplicate-check-result warning">
+        <p><strong><i class="fas fa-exclamation-triangle"></i> Found in Current Players List!</strong></p>
+        <p>Player "${playerName}" exists in current 1-week data.</p>
+        <p><strong>Status:</strong> <span class="status-badge ${status === 'Active' ? 'blocked-active' : 'blocked-inactive'}">${status}</span></p>
+        <p><strong>Last Deposit:</strong> ${lastDeposit}</p>
+        <p style="margin-top: 0.5rem;">
+          <strong>💡 Recommendation:</strong> 
+          <button class="block-btn block" onclick="showBlockPlayerModal('${playerName.replace(/'/g, "\\'")}')" style="margin-left: 0.5rem;">
+            <i class="fas fa-ban"></i> Block from List
+          </button>
+        </p>
+        <p><small>Or continue to add as manual entry anyway.</small></p>
+      </div>
+    `;
+    document.getElementById('confirmManualBlockBtn').disabled = false;
+    document.getElementById('confirmManualBlockBtn').innerHTML = '<i class="fas fa-ban"></i> Add Manually Anyway';
+    return;
+  }
+  
+  // Player not found anywhere
+  resultDiv.innerHTML = `
+    <div class="duplicate-check-result success">
+      <p><strong><i class="fas fa-check-circle"></i> Available to Add</strong></p>
+      <p>Player "${playerName}" is not in blocked list or current players.</p>
+      <p><small>Will be added as historical/manual entry.</small></p>
+    </div>
+  `;
+  document.getElementById('confirmManualBlockBtn').disabled = false;
+  document.getElementById('confirmManualBlockBtn').innerHTML = '<i class="fas fa-ban"></i> Add to Blocked List';
+}
+
+// Confirm manual block
+async function confirmManualBlock() {
+  const playerName = document.getElementById('manualPlayerName').value.trim();
+  const reason = document.getElementById('manualBlockReason').value.trim();
+  
+  if (!playerName) {
+    showNotification('Please enter player name', 'error');
+    return;
+  }
+  
+  if (!reason) {
+    showNotification('Please enter a block reason', 'error');
+    return;
+  }
+  
+  const confirmBtn = document.getElementById('confirmManualBlockBtn');
+  confirmBtn.disabled = true;
+  confirmBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Adding...';
+  
+  try {
+    const { data, error } = await supabase
+      .from('blocked_players')
+      .insert([
+        {
+          page_name: selectedPage,
+          player_name: playerName,
+          block_reason: reason,
+          added_from: 'Manual',
+          blocked_by: userRole,
+          blocked_date: new Date().toISOString(),
+          is_active: true,
+          created_at: new Date().toISOString()
+        }
+      ])
+      .select();
+    
+    if (error) throw error;
+    
+    showNotification(`Player ${playerName} added to blocked list (manual)`, 'success');
+    
+    // Update blocked players data
+    await loadBlockedPlayersData();
+    
+    hideAddBlockedPlayerModal();
+    
+  } catch (error) {
+    console.error('Error adding manual block:', error);
+    showNotification('Error adding player: ' + error.message, 'error');
+  } finally {
+    confirmBtn.disabled = false;
+    confirmBtn.innerHTML = '<i class="fas fa-ban"></i> Add to Blocked List';
+  }
+}
+
+// View block details
+async function viewBlockDetails(blockId) {
+  const { data: blockData } = await supabase
+    .from('blocked_players')
+    .select('*')
+    .eq('id', blockId)
+    .single();
+  
+  if (!blockData) {
+    showNotification('Block details not found', 'error');
+    return;
+  }
+  
+  const blockDate = convertUTCToPKT(blockData.blocked_date);
+  const addedFromBadge = blockData.added_from === 'Manual' 
+    ? '<span class="added-from-badge added-from-manual">Manual</span>'
+    : `<span class="added-from-badge added-from-page">${blockData.added_from}</span>`;
+  
+  let detailsHtml = `
+    <div style="margin-bottom: 1rem;">
+      <p><strong>Player:</strong> ${blockData.player_name}</p>
+      <p><strong>Page:</strong> ${blockData.page_name}</p>
+      <p><strong>Blocked On:</strong> ${blockDate}</p>
+      <p><strong>Added From:</strong> ${addedFromBadge}</p>
+      <p><strong>Blocked By:</strong> ${blockData.blocked_by}</p>
+    </div>
+    <div style="background: var(--bg-secondary); padding: 1rem; border-radius: 8px;">
+      <p><strong>Block Reason:</strong></p>
+      <p>${blockData.block_reason || 'No reason provided'}</p>
+    </div>
+  `;
+  
+  // Check if player is in current list
+  const { data: currentPlayer } = await supabase
+    .from('latest_status')
+    .select('last_deposit_date')
+    .eq('page_name', blockData.page_name)
+    .eq('player_name', blockData.player_name)
+    .single();
+  
+  if (currentPlayer && blockData.added_from !== 'Manual') {
+    const lastDeposit = formatTimeSince(currentPlayer.last_deposit_date);
+    const daysSince = Math.floor((new Date() - new Date(currentPlayer.last_deposit_date)) / (1000 * 60 * 60 * 24));
+    const status = calculatePlayerStatus(daysSince);
+    
+    detailsHtml += `
+      <div style="margin-top: 1rem; padding: 1rem; background: ${status === 'Active' ? 'rgba(255, 209, 102, 0.1)' : 'rgba(148, 163, 184, 0.1)'}; border-radius: 8px; border: 1px solid ${status === 'Active' ? 'var(--warning)' : 'var(--gray)'};">
+        <p><strong>Current Status:</strong> <span class="status-badge ${status === 'Active' ? 'blocked-active' : 'blocked-inactive'}">${status}</span></p>
+        <p><strong>Last Deposit:</strong> ${lastDeposit}</p>
+        ${status === 'Active' ? '<p><small style="color: var(--warning);"><i class="fas fa-exclamation-triangle"></i> Player is still active!</small></p>' : ''}
+      </div>
+    `;
+  }
+  
+  document.getElementById('viewBlockTitle').textContent = `Block Details: ${blockData.player_name}`;
+  document.getElementById('viewBlockContent').innerHTML = detailsHtml;
+  document.getElementById('unblockFromModalBtn').setAttribute('onclick', `unblockPlayerFromModal('${blockId}', '${blockData.player_name}')`);
+  
+  document.getElementById('viewBlockDetailsModal').style.display = 'block';
+}
+
+// Hide view block details modal
+function hideViewBlockDetailsModal() {
+  document.getElementById('viewBlockDetailsModal').style.display = 'none';
+}
+
+// Unblock player
+async function unblockPlayer(blockId, playerName) {
+  if (!confirm(`Are you sure you want to unblock ${playerName}?`)) {
+    return;
+  }
+  
+  try {
+    const { data, error } = await supabase
+      .from('blocked_players')
+      .delete()
+      .eq('id', blockId);
+    
+    if (error) throw error;
+    
+    showNotification(`Player ${playerName} unblocked successfully`, 'success');
+    
+    // Update blocked players data
+    await loadBlockedPlayersData();
+    
+  } catch (error) {
+    console.error('Error unblocking player:', error);
+    showNotification('Error unblocking player: ' + error.message, 'error');
+  }
+}
+
+// Unblock player from modal
+function unblockPlayerFromModal(blockId, playerName) {
+  hideViewBlockDetailsModal();
+  unblockPlayer(blockId, playerName);
+}
+
+// Show blocked loader
+function showBlockedLoader() {
+  document.getElementById('blockedLoader').style.display = 'block';
+  document.getElementById('blockedContent').innerHTML = '';
+}
+
+// Hide blocked loader
+function hideBlockedLoader() {
+  document.getElementById('blockedLoader').style.display = 'none';
+}
+
+// Back to main dashboard from blocked
+function backToDashboardFromBlocked() {
+  document.getElementById('blockedPlayersDashboard').style.display = 'none';
+  document.getElementById('dashboard').style.display = 'block';
+  backToDashboard();
+}
+
+// Initialize blocked system on page load
+document.addEventListener('DOMContentLoaded', function() {
+  initBlockedPlayersSystem();
+});
+  
+    
   </script>
 </body>
 </html>
