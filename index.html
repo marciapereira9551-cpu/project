@@ -5172,6 +5172,8 @@ if (record.removal_notes && record.removal_notes.trim() !== '') {
       currentView = 'dashboard';
       sessionStorage.setItem('currentView', 'dashboard');
       enableControlButtons();
+      document.getElementById('blockedPlayersDashboard').style.display = 'none';
+
     }
 
     function handleDataError(error) {
@@ -5183,6 +5185,8 @@ if (record.removal_notes && record.removal_notes.trim() !== '') {
 
     function showLoader() {
       loader.style.display = 'block';
+        hideAllDashboardSections(); // Use the new function
+
       document.getElementById('dashboardBoxes').style.display = 'none';
       document.getElementById('tableContainer').innerHTML = '';
       document.getElementById('playerHistorySection').style.display = 'none';
@@ -5190,6 +5194,8 @@ if (record.removal_notes && record.removal_notes.trim() !== '') {
       document.getElementById('backContainer').innerHTML = '';
       pageDepositsView.style.display = 'none';
       clientRecoveryDashboard.style.display = 'none';
+      document.getElementById('blockedPlayersDashboard').style.display = 'none';
+
     }
 
     function hideLoader() {
@@ -5498,6 +5504,7 @@ if (record.removal_notes && record.removal_notes.trim() !== '') {
       updatePageTitle();
       disableControlButtons();
       showLoader();
+      document.getElementById('blockedPlayersDashboard').style.display = 'none';
       loadDashboardData();
     }
 
@@ -5565,6 +5572,8 @@ if (record.removal_notes && record.removal_notes.trim() !== '') {
       clearPlayerHistory();
       pageDepositsView.style.display = 'none';
       clientRecoveryDashboard.style.display = 'none';
+      document.getElementById('blockedPlayersDashboard').style.display = 'none';
+
 
       // Get recovery count
       let recoveryCount = 0;
@@ -6145,6 +6154,37 @@ if (record.removal_notes && record.removal_notes.trim() !== '') {
         }
       }, 5000);
     }
+
+    // ADD THE hideAllDashboardSections FUNCTION RIGHT HERE:
+function hideAllDashboardSections() {
+  const sections = [
+    'dashboardBoxes',
+    'tableContainer',
+    'playerHistorySection', 
+    'globalPlayerHistorySection',
+    'pageDepositsView',
+    'clientRecoveryDashboard',
+    'blockedPlayersDashboard'
+  ];
+  
+  sections.forEach(id => {
+    const elem = document.getElementById(id);
+    if (elem) {
+      elem.style.display = 'none';
+    }
+  });
+  
+  // Also clear back container
+  const backContainer = document.getElementById('backContainer');
+  if (backContainer) backContainer.innerHTML = '';
+}
+
+// This function should be after showNotification and before getPaginatedPlayers
+function getPaginatedPlayers(players, page, pageSize) {
+  const startIndex = (page - 1) * pageSize;
+  const endIndex = startIndex + pageSize;
+  return players.slice(startIndex, endIndex);
+}
 
     function getPaginatedPlayers(players, page, pageSize) {
       const startIndex = (page - 1) * pageSize;
@@ -7928,6 +7968,8 @@ if (record.removal_notes && record.removal_notes.trim() !== '') {
       hideRefreshModal();
       disableAllButtons();
       refreshBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Refreshing...';
+       currentView = 'dashboard';
+  sessionStorage.setItem('currentView', 'dashboard');
       showLoader();
       
       try {
@@ -7964,6 +8006,8 @@ if (record.removal_notes && record.removal_notes.trim() !== '') {
       hideCleanupModal();
       disableAllButtons();
       forceCleanupBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Cleaning...';
+      currentView = 'dashboard';
+  sessionStorage.setItem('currentView', 'dashboard');
       showLoader();
       
       try {
@@ -8127,7 +8171,7 @@ async function showBlockedPlayersDashboard() {
   currentView = 'blockedPlayers';
   sessionStorage.setItem('currentView', 'blockedPlayers');
   
-  // Hide other sections
+  // Hide ALL other sections
   const sectionsToHide = [
     'dashboardBoxes',
     'tableContainer', 
@@ -8139,8 +8183,18 @@ async function showBlockedPlayersDashboard() {
   
   sectionsToHide.forEach(id => {
     const elem = document.getElementById(id);
-    if (elem) elem.style.display = 'none';
+    if (elem) {
+      elem.style.display = 'none';
+      // Also clear any content if needed
+      if (id === 'tableContainer' || id === 'backContainer') {
+        elem.innerHTML = '';
+      }
+    }
   });
+  
+  // Also hide the back container
+  const backContainer = document.getElementById('backContainer');
+  if (backContainer) backContainer.innerHTML = '';
   
   // Update page title
   const pageTitle = document.getElementById('pageTitle');
@@ -8161,18 +8215,10 @@ async function showBlockedPlayersDashboard() {
     // Hide loader
     hideLoader();
     
-    // Show blocked dashboard
+    // Show blocked dashboard and hide others
     const blockedDashboard = document.getElementById('blockedPlayersDashboard');
     if (blockedDashboard) {
       blockedDashboard.style.display = 'block';
-    } else {
-      console.error('Could not find blockedPlayersDashboard element');
-      // Try to create it
-      renderBlockedPlayersDashboard();
-      const newBlockedDashboard = document.getElementById('blockedPlayersDashboard');
-      if (newBlockedDashboard) {
-        newBlockedDashboard.style.display = 'block';
-      }
     }
     
   } catch (error) {
