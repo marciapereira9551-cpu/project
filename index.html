@@ -3308,7 +3308,8 @@
     // Hide refresh and cleanup buttons for viewer
     if (refreshBtn) refreshBtn.style.display = 'none';
     if (cleanupBtn) cleanupBtn.style.display = 'none';
-    
+    if (blockedBtn) blockedBtn.style.display = 'none'; 
+
     // Change page and blocked players buttons should be visible but will be controlled by loading states
     if (changePageBtn) {
       changePageBtn.disabled = false;
@@ -8217,10 +8218,10 @@ function initBlockedPlayersSystem() {
 
 // Show blocked players dashboard
 async function showBlockedPlayersDashboard() {
-  // Check if user has permission (viewers can view but not edit)
+  // CHECK: Block viewers from accessing blocked players
   if (userRole === PIN_CONFIG.ROLES.VIEWER) {
-    // Still allow viewing, but actions will be disabled
-    console.log('Viewer accessing blocked players dashboard (view-only)');
+    showNotification('Viewer role cannot access blocked players', 'warning');
+    return; // Exit function - don't proceed
   }
   
   currentView = 'blockedPlayers';
@@ -8233,9 +8234,6 @@ async function showBlockedPlayersDashboard() {
   const pageTitle = document.getElementById('pageTitle');
   if (pageTitle) {
     pageTitle.textContent = `${selectedPage} - Blocked Players`;
-    if (userRole === PIN_CONFIG.ROLES.VIEWER) {
-      pageTitle.innerHTML += ' <span style="font-size: 0.8rem; background: var(--info); color: white; padding: 0.2rem 0.5rem; border-radius: 12px;">View Only</span>';
-    }
   }
   
   // Show loader
@@ -8255,11 +8253,6 @@ async function showBlockedPlayersDashboard() {
     const blockedDashboard = document.getElementById('blockedPlayersDashboard');
     if (blockedDashboard) {
       blockedDashboard.style.display = 'block';
-    }
-    
-    // Apply viewer restrictions after rendering
-    if (userRole === PIN_CONFIG.ROLES.VIEWER) {
-      disableBlockedPlayerActions();
     }
     
   } catch (error) {
@@ -8610,13 +8603,7 @@ const debouncedSearchBlockedPlayers = debounce(function(searchTerm) {
 }, SEARCH_DEBOUNCE_DELAY);
 
 // Show add blocked player modal
-function showAddBlockedModal() {
-  // Check if user has permission
-  if (userRole === PIN_CONFIG.ROLES.VIEWER) {
-    showNotification('Viewer role cannot add blocked players', 'warning');
-    return;
-  }
-  
+function showAddBlockedModal() {  
   // Reset form
   document.getElementById('blockedPlayerName').value = '';
   document.getElementById('blockedReason').value = '';
