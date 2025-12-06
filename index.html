@@ -3401,6 +3401,79 @@
     const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
     // =============================================
+// DEBUG: TEST SUPABASE API CONNECTION
+// =============================================
+async function testBlockedPlayersAPI() {
+  console.log('🔍 Testing blocked_players API...');
+  
+  try {
+    // Test 1: Direct fetch to see the raw response
+    const testUrl = `${SUPABASE_URL}/rest/v1/blocked_players?select=*&limit=1`;
+    console.log('Test URL:', testUrl);
+    
+    const directResponse = await fetch(testUrl, {
+      headers: {
+        'apikey': SUPABASE_KEY,
+        'Authorization': `Bearer ${SUPABASE_KEY}`,
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Prefer': 'return=representation'
+      }
+    });
+    
+    console.log('Direct fetch response:', {
+      status: directResponse.status,
+      statusText: directResponse.statusText,
+      headers: Object.fromEntries(directResponse.headers.entries()),
+      ok: directResponse.ok
+    });
+    
+    if (!directResponse.ok) {
+      const errorText = await directResponse.text();
+      console.error('Direct fetch error:', errorText);
+    } else {
+      const data = await directResponse.json();
+      console.log('Direct fetch success:', data);
+    }
+    
+    // Test 2: Use Supabase client with simple query
+    console.log('\n🔍 Testing with Supabase client...');
+    const { data, error } = await supabase
+      .from('blocked_players')
+      .select('count')
+      .limit(1);
+    
+    console.log('Supabase client result:', { data, error });
+    
+    // Test 3: Try with different query format
+    console.log('\n🔍 Testing alternative query format...');
+    const { data: data2, error: error2 } = await supabase
+      .from('blocked_players')
+      .select('*')
+      .limit(1);
+    
+    console.log('Alternative query result:', { data2, error2 });
+    
+    return { success: !error && !error2, error: error || error2 };
+    
+  } catch (error) {
+    console.error('Test failed completely:', error);
+    return { success: false, error };
+  }
+}
+
+// Run test automatically after 3 seconds
+setTimeout(() => {
+  console.log('🚀 Running Supabase API test...');
+  testBlockedPlayersAPI().then(result => {
+    console.log('🎯 Test completed:', result);
+    if (!result.success) {
+      console.warn('⚠️ API Test Failed. Using localStorage fallback.');
+    }
+  });
+}, 3000);
+
+    // =============================================
     // CONSTANTS AND CONFIGURATION
     // =============================================
     const DAYS_ACTIVE = 2.99;
