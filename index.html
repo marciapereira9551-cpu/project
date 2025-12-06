@@ -3401,79 +3401,6 @@
     const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
     // =============================================
-// DEBUG: TEST SUPABASE API CONNECTION
-// =============================================
-async function testBlockedPlayersAPI() {
-  console.log('🔍 Testing blocked_players API...');
-  
-  try {
-    // Test 1: Direct fetch to see the raw response
-    const testUrl = `${SUPABASE_URL}/rest/v1/blocked_players?select=*&limit=1`;
-    console.log('Test URL:', testUrl);
-    
-    const directResponse = await fetch(testUrl, {
-      headers: {
-        'apikey': SUPABASE_KEY,
-        'Authorization': `Bearer ${SUPABASE_KEY}`,
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
-        'Prefer': 'return=representation'
-      }
-    });
-    
-    console.log('Direct fetch response:', {
-      status: directResponse.status,
-      statusText: directResponse.statusText,
-      headers: Object.fromEntries(directResponse.headers.entries()),
-      ok: directResponse.ok
-    });
-    
-    if (!directResponse.ok) {
-      const errorText = await directResponse.text();
-      console.error('Direct fetch error:', errorText);
-    } else {
-      const data = await directResponse.json();
-      console.log('Direct fetch success:', data);
-    }
-    
-    // Test 2: Use Supabase client with simple query
-    console.log('\n🔍 Testing with Supabase client...');
-    const { data, error } = await supabase
-      .from('blocked_players')
-      .select('count')
-      .limit(1);
-    
-    console.log('Supabase client result:', { data, error });
-    
-    // Test 3: Try with different query format
-    console.log('\n🔍 Testing alternative query format...');
-    const { data: data2, error: error2 } = await supabase
-      .from('blocked_players')
-      .select('*')
-      .limit(1);
-    
-    console.log('Alternative query result:', { data2, error2 });
-    
-    return { success: !error && !error2, error: error || error2 };
-    
-  } catch (error) {
-    console.error('Test failed completely:', error);
-    return { success: false, error };
-  }
-}
-
-// Run test automatically after 3 seconds
-setTimeout(() => {
-  console.log('🚀 Running Supabase API test...');
-  testBlockedPlayersAPI().then(result => {
-    console.log('🎯 Test completed:', result);
-    if (!result.success) {
-      console.warn('⚠️ API Test Failed. Using localStorage fallback.');
-    }
-  });
-}, 3000);
-
-    // =============================================
     // CONSTANTS AND CONFIGURATION
     // =============================================
     const DAYS_ACTIVE = 2.99;
@@ -8260,11 +8187,11 @@ async function loadBlockedPlayersData() {
   try {
     // Fetch blocked players for current page
     const { data, error } = await supabase
-      .from(BLOCKED_TABLE)
-      .select('*')
-      .eq('page_name', selectedPage)
-      .eq('is_active', true)
-      .order('created_at', { ascending: false });
+  .from('blocked_players')
+  .select('*')
+  .eq('page_name', selectedPage)
+  .eq('is_active', true)
+  .order('created_at', { ascending: false });
     
     if (error) throw error;
     
@@ -8616,7 +8543,7 @@ function hideAddBlockedModal() {
   blockedPlayersState.selectedCurrentPlayer = null;
 }
 
-// Check for duplicate player
+// FIXED: checkBlockedDuplicate function
 async function checkBlockedDuplicate() {
   const playerName = document.getElementById('blockedPlayerName').value.trim();
   
@@ -8634,27 +8561,40 @@ async function checkBlockedDuplicate() {
   resultsDiv.style.display = 'block';
   
   try {
-    // Check if player is already blocked
+    console.log(`🔍 Checking: "${playerName}" on "${selectedPage}"`);
+    
+    // FIX: Use .limit(1) instead of .single() or .maybeSingle()
     const { data: blockedData, error: blockedError } = await supabase
-      .from(BLOCKED_TABLE)
+      .from('blocked_players')
       .select('*')
       .eq('page_name', selectedPage)
       .eq('player_name', playerName)
       .eq('is_active', true)
-      .single();
+      .limit(1);  // Changed from .single() to .limit(1)
     
-    if (blockedError && blockedError.code !== 'PGRST116') {
+    console.log('Blocked players query result:', { 
+      data: blockedData, 
+      error: blockedError,
+      count: blockedData ? blockedData.length : 0
+    });
+    
+    if (blockedError) {
+      console.error('Supabase query error:', blockedError);
       throw blockedError;
     }
     
     // Check if player exists in current players
     const currentPlayers = currentPageData?.players || [];
-    const currentPlayer = currentPlayers.find(p => p.player.toLowerCase() === playerName.toLowerCase());
+    const currentPlayer = currentPlayers.find(p => 
+      p.player.toLowerCase() === playerName.toLowerCase()
+    );
     
     let resultsHTML = '';
     
-    if (blockedData) {
-      // Player already blocked
+    // Check if blockedData has any rows
+    if (blockedData && blockedData.length > 0) {
+      const blocked = blockedData[0];
+      
       resultsHTML = `
         <div class="duplicate-item duplicate">
           <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
@@ -8665,12 +8605,12 @@ async function checkBlockedDuplicate() {
             <strong>${playerName}</strong> is already blocked on ${selectedPage}
           </div>
           <div style="font-size: 0.8rem; color: var(--text-secondary); margin-top: 0.5rem;">
-            • Blocked on: ${convertUTCToPKTDateOnly(blockedData.created_at)}<br>
-            • Reason: ${blockedData.block_reason || 'No reason provided'}<br>
-            • Added from: ${blockedData.added_from === 'manual' ? 'Manual' : 'Page List'}
+            • Blocked on: ${convertUTCToPKTDateOnly(blocked.created_at)}<br>
+            • Reason: ${blocked.block_reason || 'No reason provided'}<br>
+            • Added from: ${blocked.added_from === 'manual' ? 'Manual' : 'Page List'}
           </div>
           <div style="margin-top: 0.75rem; padding-top: 0.75rem; border-top: 1px solid var(--border-color);">
-            <button class="view-notes-btn" onclick="showEditBlockedModal('${blockedData.id}', '${playerName.replace(/'/g, "\\'")}')" style="width: 100%;">
+            <button class="view-notes-btn" onclick="showEditBlockedModal('${blocked.id}', '${playerName.replace(/'/g, "\\'")}')" style="width: 100%;">
               <i class="fas fa-eye"></i> View Existing Block
             </button>
           </div>
@@ -8680,12 +8620,11 @@ async function checkBlockedDuplicate() {
         </div>
       `;
       
-      // Disable add button
       document.getElementById('confirmAddBlockedBtn').disabled = true;
       document.getElementById('confirmAddBlockedBtn').innerHTML = '<i class="fas fa-ban"></i> Cannot Add (Duplicate)';
       
     } else if (currentPlayer) {
-      // Player found in current players
+      // Player found in current players (not blocked yet)
       const statusClass = currentPlayer.status === 'Active' ? 'active' : 'inactive';
       const statusIcon = currentPlayer.status === 'Active' ? '🟢' : '🔴';
       
@@ -8763,12 +8702,25 @@ async function checkBlockedDuplicate() {
     resultsDiv.innerHTML = resultsHTML;
     
   } catch (error) {
+    console.error('Error in checkBlockedDuplicate:', error);
+    
     resultsDiv.innerHTML = `
       <div style="text-align: center; padding: 1rem; color: var(--danger);">
-        <i class="fas fa-exclamation-circle"></i> Error checking duplicates: ${error.message}
+        <i class="fas fa-exclamation-circle"></i>
+        <div style="margin-top: 0.5rem; font-weight: 500;">
+          Error checking duplicates
+        </div>
+        <div style="font-size: 0.8rem; margin-top: 0.5rem; color: var(--text-secondary);">
+          ${error.message || 'Unknown error'}
+        </div>
+        <div style="font-size: 0.75rem; margin-top: 1rem; padding: 0.75rem; background: rgba(239, 71, 111, 0.1); border-radius: 6px;">
+          <strong>Debug Info:</strong><br>
+          Player: ${playerName}<br>
+          Page: ${selectedPage}<br>
+          Time: ${new Date().toLocaleTimeString()}
+        </div>
       </div>
     `;
-    console.error('Error checking duplicates:', error);
   }
 }
 
