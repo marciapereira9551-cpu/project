@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PC Activity Dashboard</title>
+  <link rel="stylesheet" href="pc-styles.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+  <!-- PC Dashboard -->
+  <div id="pcDashboard">
+    <!-- Header -->
+    <header class="dashboard-header">
+      <div class="header-content">
+        <h1 class="page-title">
+          <i class="fas fa-desktop"></i> PC Activity Dashboard
+        </h1>
+        <div class="control-buttons">
+          <button class="btn btn-secondary" onclick="backToMain()">
+            <i class="fas fa-arrow-left"></i> Back to Main
+          </button>
+          <button class="btn btn-success" onclick="refreshPCDashboard()">
+            <i class="fas fa-sync-alt"></i> Refresh
+          </button>
+          <button class="btn btn-info" onclick="showShiftView('morning')">
+            <i class="fas fa-sun"></i> Morning
+          </button>
+          <button class="btn btn-warning" onclick="showShiftView('evening')">
+            <i class="fas fa-moon"></i> Evening
+          </button>
+          <button class="btn btn-dark" onclick="showShiftView('night')">
+            <i class="fas fa-star"></i> Night
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="dashboard-content">
+      <!-- Shift Info Bar -->
+      <div id="shiftInfoBar" class="shift-info-bar">
+        <div class="shift-indicator">
+          <span id="currentShiftIcon">🌇</span>
+          <span id="currentShiftText">Evening Shift</span>
+          <span id="currentShiftTime">(4 PM - 12 AM)</span>
+        </div>
+        <div class="time-indicator">
+          <span id="currentTimePKT">Loading PKT time...</span>
+          <span id="windowStatus">Window: 00-15 minutes</span>
+        </div>
+        <div class="stats-indicator">
+          <span id="pcStats">🟢 0/4 Active</span>
+          <span id="breakStats">⏸️ 0 on break</span>
+          <span id="coverageStats">❌ 0% Coverage</span>
+        </div>
+      </div>
+
+      <!-- PC Activity Grid -->
+      <div class="pc-grid-container">
+        <div class="pc-grid-header">
+          <div class="time-column">Time</div>
+          <div class="pc-column">PC1</div>
+          <div class="pc-column">PC2</div>
+          <div class="pc-column">PC3</div>
+          <div class="pc-column">PC4</div>
+          <div class="stats-column">% Active</div>
+        </div>
+        
+        <div id="pcActivityGrid" class="pc-activity-grid">
+          <!-- Will be populated by JavaScript -->
+          <div class="loading-grid">
+            <div class="spinner"></div>
+            <p>Loading PC activity data...</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- PC Status Summary -->
+      <div class="pc-status-summary">
+        <h3><i class="fas fa-info-circle"></i> PC Status Summary</h3>
+        <div id="pcStatusCards" class="pc-status-cards">
+          <!-- Will be populated by JavaScript -->
+        </div>
+      </div>
+
+      <!-- Wave Button for Check-in -->
+      <div id="waveButton" class="wave-button">
+        <div class="wave-emoji" onclick="showPCCheckinModal()">👋</div>
+        <div class="wave-text" id="waveText">Click to check-in</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PC Check-in Modal -->
+  <div id="pcCheckinModal" class="modal">
+    <div class="modal-content">
+      <h3 class="modal-title" id="pcCheckinTitle">PC Station Check-in</h3>
+      
+      <div class="pc-checkin-form">
+        <div class="form-group">
+          <label>Station:</label>
+          <select id="pcNumberSelect" class="form-select">
+            <option value="">Select PC</option>
+            <option value="PC1">PC1 - Station Alpha</option>
+            <option value="PC2">PC2 - Station Beta</option>
+            <option value="PC3">PC3 - Station Gamma</option>
+            <option value="PC4">PC4 - Station Delta</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>Who is at this PC?</label>
+          <input type="text" id="employeeNameInput" class="form-input" 
+                 placeholder="Enter your name" list="employeeSuggestions">
+          <datalist id="employeeSuggestions">
+            <!-- Will be populated from previous entries -->
+          </datalist>
+        </div>
+
+        <div class="form-group">
+          <label>Activity:</label>
+          <div class="activity-options">
+            <button class="activity-btn active" data-activity="working" onclick="selectActivity('working')">
+              <i class="fas fa-laptop"></i> Working
+            </button>
+            <button class="activity-btn" data-activity="break" onclick="selectActivity('break')">
+              <i class="fas fa-coffee"></i> Taking Break
+            </button>
+            <button class="activity-btn" data-activity="handover" onclick="selectActivity('handover')">
+              <i class="fas fa-exchange-alt"></i> Shift Handover
+            </button>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Notes (Optional):</label>
+          <textarea id="pcCheckinNotes" class="form-textarea" 
+                    placeholder="Any issues with this PC? Special tasks?"></textarea>
+        </div>
+
+        <div class="modal-buttons">
+          <button class="btn btn-secondary" onclick="hidePCCheckinModal()">
+            <i class="fas fa-times"></i> Cancel
+          </button>
+          <button class="btn btn-success" onclick="submitPCCheckin()" id="submitPCCheckinBtn">
+            <i class="fas fa-check"></i> Mark Active
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Break Management Modal -->
+  <div id="breakModal" class="modal">
+    <div class="modal-content">
+      <h3 class="modal-title">Break Management</h3>
+      <div id="breakModalContent">
+        <!-- Will be populated dynamically -->
+      </div>
+    </div>
+  </div>
+
+  <script src="pc-scripts.js"></script>
+</body>
+</html>
