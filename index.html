@@ -8736,7 +8736,7 @@ async function checkBlockedDuplicate() {
       .from('blocked_players')
       .select('*')
       .eq('page_name', selectedPage)
-      .eq('player_name', playerName)
+      .ilike('player_name', playerName)  // Changed from eq to ilike
       .eq('is_active', true)
       .limit(1);  // Changed from .single() to .limit(1)
     
