@@ -2283,7 +2283,10 @@
       <button id="findBtn" class="btn btn-primary" onclick="findData()">
         <i class="fas fa-arrow-right"></i> Access Dashboard
       </button>
-      
+      <button class="btn btn-info" onclick="window.location.href='pc-dashboard.html'" 
+        style="margin-top: 1rem;">
+  <i class="fas fa-desktop"></i> PC Activity Dashboard
+</button>
       <!-- Logout Button on Landing Page - UPDATED: Removed secure session text and added more spacing -->
       <div id="landingLogoutSection" style="margin-top: 2.5rem; padding-top: 1.5rem; border-top: 1px solid var(--border-color); text-align: center; display: none;">
         <button id="logoutBtnLanding" class="btn btn-secondary" style="width: auto; padding: 0.75rem 1.5rem;">
@@ -2309,6 +2312,9 @@
           <button id="forceCleanupBtn" class="btn btn-warning" onclick="showCleanupModal()">
             <i class="fas fa-broom"></i> Force Cleanup
           </button>
+          <button class="btn btn-info" onclick="window.location.href='pc-dashboard.html'">
+    <i class="fas fa-desktop"></i> PC Activity
+  </button>
           <button id="logoutBtnDashboard" class="btn btn-secondary" style="display: none;">
             <i class="fas fa-sign-out-alt"></i> Logout
           </button>
@@ -7597,6 +7603,7 @@ if (record.removal_notes && record.removal_notes.trim() !== '') {
         confirmRemoval();
       }
     });
+
 
     document.addEventListener('click', function(event) {
       if (!event.target.closest('.search-container')) {
