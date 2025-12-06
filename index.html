@@ -2971,16 +2971,16 @@
     
     // Store original button states for UI reset
     function storeOriginalButtonStates() {
-      const adminButtons = document.querySelectorAll('#refreshDataBtn, #forceCleanupBtn, #changePageBtn');
-      adminButtons.forEach(btn => {
-        const id = btn.id;
-        originalButtonStates[id] = {
-          className: btn.className,
-          innerHTML: btn.innerHTML,
-          disabled: btn.disabled
-        };
-      });
-    }
+  const adminButtons = document.querySelectorAll('#refreshDataBtn, #forceCleanupBtn, #changePageBtn, #blockedPlayersBtn');
+  adminButtons.forEach(btn => {
+    const id = btn.id;
+    originalButtonStates[id] = {
+      className: btn.className,
+      innerHTML: btn.innerHTML,
+      disabled: btn.disabled
+    };
+  });
+}
     
     // Reset UI to default state
     function resetUI() {
@@ -3291,54 +3291,56 @@
     
     // Apply role-based permissions - FIXED VERSION
     function applyRolePermissions() {
-      resetUI();
-      
-      // Always show logout button
-      if (logoutBtnDashboard) {
-        logoutBtnDashboard.style.display = 'inline-flex';
-      }
-      
-      if (userRole === PIN_CONFIG.ROLES.VIEWER) {
-        // Hide refresh and cleanup buttons for viewer
-        const refreshBtn = document.getElementById('refreshDataBtn');
-        const cleanupBtn = document.getElementById('forceCleanupBtn');
-        const changePageBtn = document.getElementById('changePageBtn');
-        
-        if (refreshBtn) refreshBtn.style.display = 'none';
-        if (cleanupBtn) cleanupBtn.style.display = 'none';
-        
-        // Change page button should be visible but disabled
-        if (changePageBtn) {
-          changePageBtn.disabled = false;
-          changePageBtn.style.display = 'inline-flex';
-        }
-        
-        // Disable all mark buttons in the current view
-        disableAllMarkButtons();
-        
-        // Add event listener to disable mark buttons when tables are rendered
-        document.addEventListener('DOMContentLoaded', function() {
-          disableAllMarkButtons();
-        });
-        
-        // Update page title to show view only
-        const pageTitle = document.getElementById('pageTitle');
-        if (pageTitle) {
-          if (!pageTitle.textContent.includes('View Only')) {
-            pageTitle.innerHTML += ' <span style="font-size: 0.8rem; background: var(--info); color: white; padding: 0.2rem 0.5rem; border-radius: 12px;">View Only</span>';
-          }
-        }
-      } else if (userRole === PIN_CONFIG.ROLES.ADMIN) {
-        // Show all buttons for admin
-        const refreshBtn = document.getElementById('refreshDataBtn');
-        const cleanupBtn = document.getElementById('forceCleanupBtn');
-        const changePageBtn = document.getElementById('changePageBtn');
-        
-        if (refreshBtn) refreshBtn.style.display = 'inline-flex';
-        if (cleanupBtn) cleanupBtn.style.display = 'inline-flex';
-        if (changePageBtn) changePageBtn.style.display = 'inline-flex';
+  resetUI();
+  
+  // Always show logout button
+  if (logoutBtnDashboard) {
+    logoutBtnDashboard.style.display = 'inline-flex';
+  }
+  
+  // Get all control buttons
+  const refreshBtn = document.getElementById('refreshDataBtn');
+  const cleanupBtn = document.getElementById('forceCleanupBtn');
+  const changePageBtn = document.getElementById('changePageBtn');
+  const blockedBtn = document.getElementById('blockedPlayersBtn');
+  
+  if (userRole === PIN_CONFIG.ROLES.VIEWER) {
+    // Hide refresh and cleanup buttons for viewer
+    if (refreshBtn) refreshBtn.style.display = 'none';
+    if (cleanupBtn) cleanupBtn.style.display = 'none';
+    
+    // Change page and blocked players buttons should be visible but will be controlled by loading states
+    if (changePageBtn) {
+      changePageBtn.disabled = false;
+      changePageBtn.style.display = 'inline-flex';
+    }
+    
+    if (blockedBtn) {
+      blockedBtn.disabled = false; // Will be controlled by loading states
+      blockedBtn.style.display = 'inline-flex';
+    }
+    
+    // Disable all mark buttons in the current view
+    disableAllMarkButtons();
+    
+    // Disable blocked player actions for viewer
+    disableBlockedPlayerActions();
+    
+    // Update page title to show view only
+    const pageTitle = document.getElementById('pageTitle');
+    if (pageTitle) {
+      if (!pageTitle.textContent.includes('View Only')) {
+        pageTitle.innerHTML += ' <span style="font-size: 0.8rem; background: var(--info); color: white; padding: 0.2rem 0.5rem; border-radius: 12px;">View Only</span>';
       }
     }
+  } else if (userRole === PIN_CONFIG.ROLES.ADMIN) {
+    // Show all buttons for admin
+    if (refreshBtn) refreshBtn.style.display = 'inline-flex';
+    if (cleanupBtn) cleanupBtn.style.display = 'inline-flex';
+    if (changePageBtn) changePageBtn.style.display = 'inline-flex';
+    if (blockedBtn) blockedBtn.style.display = 'inline-flex';
+  }
+}
     
     // Disable all mark buttons for viewer role
     function disableAllMarkButtons() {
@@ -3361,6 +3363,29 @@
         btn.title = 'Viewer cannot remove recovered clients';
       });
     }
+
+    // Disable blocked player actions for viewer role
+function disableBlockedPlayerActions() {
+  if (userRole !== PIN_CONFIG.ROLES.VIEWER) return;
+  
+  // Disable add button in blocked dashboard
+  const addBlockedBtn = document.querySelector('.btn.btn-danger[onclick*="showAddBlockedModal"]');
+  if (addBlockedBtn) {
+    addBlockedBtn.disabled = true;
+    addBlockedBtn.style.opacity = '0.5';
+    addBlockedBtn.style.cursor = 'not-allowed';
+    addBlockedBtn.title = 'Viewer cannot add blocked players';
+  }
+  
+  // Disable edit buttons in blocked table
+  const editBlockedBtns = document.querySelectorAll('.edit-blocked-btn');
+  editBlockedBtns.forEach(btn => {
+    btn.disabled = true;
+    btn.style.opacity = '0.5';
+    btn.style.cursor = 'not-allowed';
+    btn.title = 'Viewer cannot edit blocked players';
+  });
+}
     
     // Logout function
     function logout() {
@@ -5207,20 +5232,32 @@ if (record.removal_notes && record.removal_notes.trim() !== '') {
     }
 
     function disableControlButtons() {
-      changePageBtn.disabled = true;
-      refreshBtn.disabled = true;
-      forceCleanupBtn.disabled = true;
-      if (logoutBtnDashboard) logoutBtnDashboard.disabled = true;
-      if (logoutBtnLanding) logoutBtnLanding.disabled = true;
-    }
+  changePageBtn.disabled = true;
+  refreshBtn.disabled = true;
+  forceCleanupBtn.disabled = true;
+  
+  // ADD THIS LINE:
+  if (document.getElementById('blockedPlayersBtn')) {
+    document.getElementById('blockedPlayersBtn').disabled = true;
+  }
+  
+  if (logoutBtnDashboard) logoutBtnDashboard.disabled = true;
+  if (logoutBtnLanding) logoutBtnLanding.disabled = true;
+}
 
     function enableControlButtons() {
-      changePageBtn.disabled = false;
-      refreshBtn.disabled = false;
-      forceCleanupBtn.disabled = false;
-      if (logoutBtnDashboard) logoutBtnDashboard.disabled = false;
-      if (logoutBtnLanding) logoutBtnLanding.disabled = false;
-    }
+  changePageBtn.disabled = false;
+  refreshBtn.disabled = false;
+  forceCleanupBtn.disabled = false;
+  
+  // ADD THIS LINE:
+  if (document.getElementById('blockedPlayersBtn')) {
+    document.getElementById('blockedPlayersBtn').disabled = false;
+  }
+  
+  if (logoutBtnDashboard) logoutBtnDashboard.disabled = false;
+  if (logoutBtnLanding) logoutBtnLanding.disabled = false;
+}
 
     function clearBackContainer() {
       document.getElementById('backContainer').innerHTML = '';
@@ -8030,20 +8067,32 @@ function getPaginatedPlayers(players, page, pageSize) {
     }
 
     function disableAllButtons() {
-      changePageBtn.disabled = true;
-      refreshBtn.disabled = true;
-      forceCleanupBtn.disabled = true;
-      if (logoutBtnDashboard) logoutBtnDashboard.disabled = true;
-      if (logoutBtnLanding) logoutBtnLanding.disabled = true;
-    }
+  changePageBtn.disabled = true;
+  refreshBtn.disabled = true;
+  forceCleanupBtn.disabled = true;
+  
+  // ADD THIS LINE:
+  if (document.getElementById('blockedPlayersBtn')) {
+    document.getElementById('blockedPlayersBtn').disabled = true;
+  }
+  
+  if (logoutBtnDashboard) logoutBtnDashboard.disabled = true;
+  if (logoutBtnLanding) logoutBtnLanding.disabled = true;
+}
 
     function enableAllButtons() {
-      changePageBtn.disabled = false;
-      refreshBtn.disabled = false;
-      forceCleanupBtn.disabled = false;
-      if (logoutBtnDashboard) logoutBtnDashboard.disabled = false;
-      if (logoutBtnLanding) logoutBtnLanding.disabled = false;
-    }
+  changePageBtn.disabled = false;
+  refreshBtn.disabled = false;
+  forceCleanupBtn.disabled = false;
+  
+  // ADD THIS LINE:
+  if (document.getElementById('blockedPlayersBtn')) {
+    document.getElementById('blockedPlayersBtn').disabled = false;
+  }
+  
+  if (logoutBtnDashboard) logoutBtnDashboard.disabled = false;
+  if (logoutBtnLanding) logoutBtnLanding.disabled = false;
+}
 
     // Event listeners
     window.addEventListener('click', function(event) {
@@ -8168,38 +8217,25 @@ function initBlockedPlayersSystem() {
 
 // Show blocked players dashboard
 async function showBlockedPlayersDashboard() {
+  // Check if user has permission (viewers can view but not edit)
+  if (userRole === PIN_CONFIG.ROLES.VIEWER) {
+    // Still allow viewing, but actions will be disabled
+    console.log('Viewer accessing blocked players dashboard (view-only)');
+  }
+  
   currentView = 'blockedPlayers';
   sessionStorage.setItem('currentView', 'blockedPlayers');
   
   // Hide ALL other sections
-  const sectionsToHide = [
-    'dashboardBoxes',
-    'tableContainer', 
-    'playerHistorySection',
-    'globalPlayerHistorySection',
-    'pageDepositsView',
-    'clientRecoveryDashboard'
-  ];
-  
-  sectionsToHide.forEach(id => {
-    const elem = document.getElementById(id);
-    if (elem) {
-      elem.style.display = 'none';
-      // Also clear any content if needed
-      if (id === 'tableContainer' || id === 'backContainer') {
-        elem.innerHTML = '';
-      }
-    }
-  });
-  
-  // Also hide the back container
-  const backContainer = document.getElementById('backContainer');
-  if (backContainer) backContainer.innerHTML = '';
+  hideAllDashboardSections();
   
   // Update page title
   const pageTitle = document.getElementById('pageTitle');
   if (pageTitle) {
     pageTitle.textContent = `${selectedPage} - Blocked Players`;
+    if (userRole === PIN_CONFIG.ROLES.VIEWER) {
+      pageTitle.innerHTML += ' <span style="font-size: 0.8rem; background: var(--info); color: white; padding: 0.2rem 0.5rem; border-radius: 12px;">View Only</span>';
+    }
   }
   
   // Show loader
@@ -8215,10 +8251,15 @@ async function showBlockedPlayersDashboard() {
     // Hide loader
     hideLoader();
     
-    // Show blocked dashboard and hide others
+    // Show blocked dashboard
     const blockedDashboard = document.getElementById('blockedPlayersDashboard');
     if (blockedDashboard) {
       blockedDashboard.style.display = 'block';
+    }
+    
+    // Apply viewer restrictions after rendering
+    if (userRole === PIN_CONFIG.ROLES.VIEWER) {
+      disableBlockedPlayerActions();
     }
     
   } catch (error) {
@@ -8570,6 +8611,12 @@ const debouncedSearchBlockedPlayers = debounce(function(searchTerm) {
 
 // Show add blocked player modal
 function showAddBlockedModal() {
+  // Check if user has permission
+  if (userRole === PIN_CONFIG.ROLES.VIEWER) {
+    showNotification('Viewer role cannot add blocked players', 'warning');
+    return;
+  }
+  
   // Reset form
   document.getElementById('blockedPlayerName').value = '';
   document.getElementById('blockedReason').value = '';
